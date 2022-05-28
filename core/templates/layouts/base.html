@@ -1,0 +1,198 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+    
+
+    <head>
+
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <title>
+            Dashboard Kach-PETK
+        </title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+
+            <link rel="icon" href="/static/assets/img/iconx.png" type="image/x-icon" />
+            <link rel="canonical" href="">
+
+            <!-- Fonts and icons -->
+            <script src="/static/assets/js/plugin/webfont/webfont.min.js"></script>
+            <script>
+                WebFont.load({
+                    google: { "families": ["Lato:300,400,700,900"] },
+                    custom: {
+                        "families": ["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"],
+                        urls: ['/static/assets/css/fonts.min.css']
+                    },
+                    active: function () {
+                        sessionStorage.fonts = true;
+                    }
+                });
+            </script>
+
+            
+        
+
+            <!-- CSS Files -->
+            <link rel="stylesheet" href="/static/assets/css/bootstrap.min.css">
+            <link rel="stylesheet" href="/static/assets/css/atlantis.min.css">
+
+            <!-- css-portalWeb -->
+            <link rel="stylesheet" href="/static/assets/css/customize-template-prueba1.css">
+            <link rel="stylesheet" href="/static/assets/css/portal-css.css">
+            <!-- <link rel="stylesheet" href="/static/assets/css/portal-grid-css.css"> -->
+
+            <link rel="stylesheet" href="/static/assets/css/courses-cards.css">
+            <link rel="stylesheet" href="/static/assets/css/common-components.css">
+            <link rel="stylesheet" href="/static/assets/css/common.css">
+            <link rel="stylesheet" href="/static/assets/css/card-list.css">
+            <link rel="stylesheet" href="/static/assets/css/resources-bank.css">
+            <!-- <link rel="stylesheet" href="/static/assets/css/summernote-bs4.min.css"> -->
+            <link rel="stylesheet" href="/static/assets/css/owl.carousel.min.css">
+            <link rel="stylesheet" href="/static/assets/css/dropzone.css">
+            <link rel="stylesheet" href="/static/assets/css/bootstrap-tagsinput.css">
+            <link rel="stylesheet" href="/static/assets/css/owl.theme.default.min.css">
+            
+            
+            <!-- enb css-portalWeb -->
+            <style>
+                .wrapper-body{
+                    
+                    position: relative;
+                    top: 62px;
+                    height: calc(100% - 62px);
+                    width: 100%;
+                    height: auto;
+                }
+
+    
+                .body-barnav .content-portal .links .btn-links .div-caret::before {
+                    content: '';
+                    position: absolute;
+                    height: 20px;
+                    width: 20px;
+                    background: #fff;
+                    left: 7px;
+                    top: -8px;
+                    transform: rotate(45deg);
+                }
+
+                .drop-links.activo{
+                    background: #1252c2;
+                    border-radius: 4px;
+                    border-bottom: 4px solid #edf1f3;
+                    border-right: 4px solid #edf1f3;
+                    text-decoration: none;
+                    padding: 9px 9px 0px 9px;
+                }
+
+
+
+            </style>
+
+            <!-- Specific Page CSS goes HERE  -->
+            {% block stylesheets %}{% endblock stylesheets %}
+    </head>
+    <body>
+
+        {% include 'Dashboard_Portal/includes/navigation.html' %}
+
+        <div id="body-container">
+                
+            <div id="body-content">
+                {% include 'Dashboard_Portal/includes/menu.html' %}
+                <div class="wrapper-body" id="wrapper">
+                    
+                    {% block content %}{% endblock content %}
+                    
+                    {% include 'Dashboard_Portal/includes/footer.html' %}
+                    
+                </div>
+                
+
+            
+            </div>
+        </div>
+
+        {% include 'Dashboard_Portal/includes/scriptslocal.html' %}
+          
+        <!-- Specific Page JS goes HERE  -->
+		{% block javascripts %}{% endblock javascripts %}
+        
+        
+        <script>
+            let btn_toggle = document.querySelector('#btn-toggle');
+            let sidebar = document.querySelector('#body-barnav');
+            let btn_collapse = document.querySelector('.navbar-toggler.sidenav-toggler.ml-auto');
+            let wrapper = document.querySelector('.wrapper-body');
+
+
+            btn_toggle.addEventListener('click', ()=>{
+
+                sidebar.classList.toggle('active')
+                
+            })
+
+            btn_collapse.addEventListener('click', ()=>{
+
+                sidebar.classList.toggle('active')
+                
+
+            })
+
+            // block de codigo para el btn de ir arriba
+            let btn_ir_arriba = document.querySelector('#ir-arriba-btn')
+            
+            const obtener_px_inicio = () => document.documentElement.scrollTop || document.body.scrollTop
+            
+            
+
+            const irArriba = () => {
+                if (obtener_px_inicio() > 0){
+                    requestAnimationFrame(irArriba)
+
+                    scrollTo(0, obtener_px_inicio() - (obtener_px_inicio()/10))
+                }
+            }
+
+            btn_ir_arriba.addEventListener('click', irArriba)
+
+            const mostrar_ocultar = () =>{
+                
+                if (obtener_px_inicio() > 450){
+                    btn_ir_arriba.className = 'mostrar'
+                }else{
+                    btn_ir_arriba.className = 'ocultar'
+                }
+
+            }
+
+            window.addEventListener('scroll', mostrar_ocultar)
+            // endblock
+
+            // codigo para activar btn
+            let selectactive = document.querySelectorAll('.links .btn-links .drop-links')
+	            selectactive.forEach((item) =>{
+                    
+                    item.addEventListener("click", ()=>{
+                        let activarClase= document.querySelector('.activo')
+                        // console.log(activarClase.classList)
+                        activarClase.classList.remove("activo")
+                        item.classList.add("activo")
+                        // console.log(item)
+                    })
+	            })
+            // endblok
+
+            
+
+        </script>
+
+
+    </body>
+</html>

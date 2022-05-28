@@ -1,0 +1,514 @@
+
+
+
+    <div class="ocultar" id="ir-arriba-btn">
+        <i class="fa fa-angle-up fa-4x"></i>
+    </div>
+    <div class="main-header1">
+
+        <!-- Logo Header -->
+        <div class="logo-header">
+            
+            <a href="#" class="logo" width="100px">
+                        <img src="/static/assets/img/logo_PETK.jpg" alt="navbar brand" class="navbar-brand">
+            </a>
+            <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon">
+                    <i class="icon-menu"></i>
+                </span>
+            </button>
+            <button class="topbar-toggler more"><i class="icon-options-vertical"></i></button>
+            <div class="nav-toggle">
+                <button class="btn btn-toggle toggle-sidebar" id="btn-toggle">
+                    <i class="icon-menu"></i>
+                </button>
+            </div>
+        </div>
+        <!-- End Logo Header -->
+
+        <!-- Navbar Header -->
+        <nav class="navbar navbar-header navbar-expand-lg">
+            {% csrf_token %}
+            <div class="container-fluid">
+
+                <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+                    
+                    <li class="nav-item dropdown hidden-caret">
+                        <a class="nav-link dropdown-toggle" href="#" id="messageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                        <ul class="dropdown-menu messages-notif-box animated fadeIn" aria-labelledby="messageDropdown">
+                            <li>
+                                <div class="dropdown-title d-flex justify-content-between align-items-center">
+                                    Email 									
+                                    <!-- <a href="#" class="small">Mark all as read</a> -->
+                                </div>
+                            </li>
+                            <li>
+                                <div class="message-notif-scroll scrollbar-outer">
+                                    <div class="notif-center">
+                                        <a href="mailto:soporte@productivityscience.net" target="_blank" rel="noopener noreferrer">
+                                            <div class="notif-icon notif-default"> 
+                                                <i class='fas fa-envelope-open fa-lg'></i>
+                                            </div>
+                                            <div class="notif-content mt-2">
+                                                <!-- <span class="subject">Jimmy Denis</span> -->
+                                                <span class="">Contactanos aqui <i class="fa fa-angle-right ml-5"></i> </span>
+                                                <!-- <span class="time">5 minutes ago</span>  -->
+                                                
+                                            </div>
+                                            
+                                        </a>
+                                        
+                                    </div>
+                                </div>
+                            </li>
+                            
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown hidden-caret">
+                        <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-bell"></i>
+                            <span class="notification bg-danger">4</span>
+                        </a>
+                        <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown" style="width:650px;">
+                            <div class="container">
+                                <li>
+                                    
+                                    <div class="dropdown-title d-flex flex-row mt-3" style="background-color:#1572e8; color: whitesmoke;">  
+                                        <div class="float-left">
+                                            <span class="h3">4</span>
+                                        </div>
+                                        <span class="ml-2 mt-1">Notificaciones Pendientes</span> 
+                                        
+                                        
+                                    </div>	
+                                </li>
+                            </div>
+                            
+                            <li>
+                                <div class="notif-scroll scrollbar-outer">
+                                    <div class="notif-center">
+                                        <a href="#">
+                                            <div class="notif-icon notif-primary"> <i class="fa fa-user-plus"></i> </div>
+                                            <div class="notif-content">
+                                                <span class="block">
+                                                    New user registered
+                                                </span>
+                                                <span class="time">5 minutes ago</span> 
+                                            </div>
+                                        </a>
+                                        <a href="http://127.0.0.1:8000/Dashboard?">
+                                            <div class="notif-icon notif-primary"> <i class="fa fa-user-plus"></i> </div>
+                                            <div class="notif-content">
+                                                <span class="block">
+                                                    New user registered
+                                                </span>
+                                                <span class="time">5 minutes ago</span> 
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="notif-icon notif-success"> <i class="fa fa-comment"></i> </div>
+                                            <div class="notif-content">
+                                                <span class="block">
+                                                    Rahmad commented on Admin
+                                                </span>
+                                                <span class="time">12 minutes ago</span> 
+                                            </div>
+                                        </a>
+                                        
+                                        <a href="#">
+                                            <div class="notif-icon notif-danger"> <i class="fa fa-heart"></i> </div>
+                                            <div class="notif-content">
+                                                <span class="block">
+                                                    Farrah liked Admin
+                                                </span>
+                                                <span class="time">17 minutes ago</span> 
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li>
+                                <a class="see-all"  href="javascript:void(0);">See all notifications<i class="fa fa-angle-right"></i> </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown hidden-caret">
+                        <a class="nav-link dropdown-toggle" href="#" id="favoritoDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class='fas fa-star' style='font-size:20px;color:#d7b814'></i> 
+                        </a>
+                        <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="favoritoDropdown" style="width:340px;">
+                            <div class="container">
+                                <li>
+                                    
+                                    <div class="dropdown-title d-flex flex-row mt-3">  
+                                        <div class="float-left">
+                                            <i class='fas fa-splotch' style='font-size:20px;color:#d7b814'></i>
+                                        </div>
+                                        <span class="ml-2">Añadir Marcador</span> 
+                                        
+                                        
+                                    </div>	
+                                </li>
+                            </div>
+                            
+                            <li>
+                                
+                                <div class="container pb-4">
+                                    <div class="form-row">
+                                        
+                                        <label for="text-url" class="col-form-label"><strong>Nombre:</strong></label>      
+                                        
+                                        <div class="input-group " id="form_save">
+                                            <input id="text-url" type="text" class="form-control" placeholder="Nombre">
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn" id="guardar-fav" data-toggle="tooltip" data-placement="top" title="Añadir"> <span> <i class="fas fa-plus" style="font-size: 20px;color: #1572e8;"></i></span> </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="input-group " id="form_editar" hidden>
+                                            <input id="text-edit" type="text" class="form-control" placeholder="editar URL">
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn" id="guardar-edit" data-toggle="tooltip" data-placement="top" title="Editar"> <span> <i class="fas fa-plus" style="font-size: 20px;color: #1572e8;"></i></span> </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-12" id="msj_validar">
+                                                    
+                                        </div>
+                                        
+                                        
+                                    </div>
+
+                                    <div class="dropdown-title d-flex flex-row">  
+                                        <div class="float-left">
+                                            <i class='fas fa-splotch' style='font-size:20px;color:#d7b814'></i>
+                                        </div>
+                                        <span class="ml-2">Mis Marcador</span>  
+                                    </div>
+
+                                    <div class="notif-scroll scrollbar-outer" id="showFaviritos_id">
+                                        <p>No Hay Marcadores</p>
+                                        <input type="checkbox" name="tema" data-idchecked="999999"  value="999999" id="select_Check" class="mr-1" hidden style="position: absolute;right: 10px;left: 278px;">
+                                    </div>
+                                    <div class="d-flex justify-content-between container p-0 ">
+                                        <button class="btn btn-naranja" id="vaciar_marcadores">Vaciar</button>
+                                        <button class="btn btn-azul" id="editar_marcadores">Editar</button>
+                                        <button class=" btn btn-naranja" id="eliminar_marcadores"><i class="fas fa-trash-alt" style="color: #fff;"></i></button>
+                                    </div>
+                                </div>
+                            </li>
+                            
+                        </ul>
+                    </li>
+                    
+                    <li class="nav-item dropdown hidden-caret">
+                        <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
+                            <div class="avatar-sm">
+                                <img src="/static/assets/img/default-user-icon.png" alt="..." class="avatar-img rounded-circle">
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user animated fadeIn">
+                            <div class="dropdown-user-scroll scrollbar-outer">
+                                <li>
+                                    <div class="user-box">
+                                        <div class="avatar-lg"><img src="/static/assets/img/default-user-icon.png" alt="image profile" class="avatar-img rounded"></div>
+                                        <div class="u-text">
+                                            <h4>
+                                                
+                                            </h4>
+                                            <p class="text-muted">
+                                            
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#"><i class="fas fa-user-circle mr-1"></i> Mi perfil</a>
+                                    
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#"><i class="fas fa-cog mr-1"></i> Configuracion</a>
+                                    
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#"><i class="fas fa-user-cog mr-1"></i> Seguridad</a>
+                                    
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#"><i class='fas fa-paper-plane fa-lg mr-1'></i> Crear Notificaciones</a>
+                                    
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{% url 'home' %}"><i class="fas fa-door-open mr-1"></i>Salir </a>
+                                </li>
+                            </div>
+                        </ul>
+                    </li>
+                </ul>
+                
+            </div>
+            
+        </nav>
+        <!-- End Navbar -->
+    </div>
+
+    {% block javascripts %}
+        <script src="/static/assets/js/core/jquery.3.2.1.min.js"></script>
+        
+        <script>
+            
+            
+                let guardar_fav = document.querySelector('#guardar-fav')
+                let fav_Dropdown = document.querySelector('#favoritoDropdown')
+                let text_url = document.querySelector('#text-url')
+                let text_edit = document.querySelector('#text-edit')
+                
+                
+                let msj_validar = document.querySelector('#msj_validar')
+                let vaciar_marcadores = document.querySelector('#vaciar_marcadores')
+                let eliminar_marcadores = document.querySelector('#eliminar_marcadores')
+                let editar_marcadores = document.querySelector('#editar_marcadores')
+                let form_editar = document.querySelector('#form_editar')
+                let form_save = document.querySelector('#form_save')
+                let guardar_edit = document.querySelector('#guardar-edit') 
+
+                // variables globales
+                let idCheckbox = {}
+                let idCheckdelete = {}
+                let url_actual = ''
+                let nombre_url = ''
+                // endblock
+
+                text_url.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault()
+                    }
+                });
+                
+                fav_Dropdown.addEventListener('click', ()=>{
+                    form_save.removeAttribute('hidden', '')
+                    form_editar.setAttribute('hidden', '')
+
+                    url_actual =document.URL
+                    text_url.value = ''
+
+                    text_url.setAttribute('placeholder', url_actual )
+                    
+                    msj_validar.innerHTML =``
+                   
+                    showFaviritos()
+                })
+
+                guardar_fav.addEventListener('click', (e) =>{
+                    
+                    if (text_url.value){
+                        nombre_url = text_url.value
+                    }else{
+                        nombre_url = url_actual
+                    }
+
+                    fetch("{% url 'añadirFavoritos' %}", {
+                        ...fetchObject,
+                            body: JSON.stringify({
+                            acceso:'save',
+                            item:url_actual,
+                            item1:nombre_url
+                        })
+                    })
+                    .then(async(res)=>{
+                        const valor = JSON.parse(await res.text())
+                        if (valor.message == "Perfect"){
+                            msj_validar.innerHTML = `<div class=" d-flex justify-content-center align-items-center flex-column"><p class="p-0">Guardado Exitoso</p></div>`
+                            
+                            showFaviritos()
+                        }
+                        if (valor.message == "existe"){
+                            msj_validar.innerHTML = `<div class=" d-flex justify-content-center align-items-center flex-column"><p class="p-0">La URL ya existe</p></div>`
+                        }
+                    })
+
+                    
+                })
+
+                function showFaviritos(){
+                    fetch("{% url 'mostrarfavoritos' %}", {
+                        ...fetchObject,
+                            body: JSON.stringify({
+                            acceso:"show",
+                            idCheckbox
+                        })
+                    })
+                    .then(async(res)=>{
+                        result = await res.text()
+                        if (result.length > 38){
+                            
+                            document.querySelector("#showFaviritos_id").innerHTML = result
+                        }else{
+                            document.querySelector("#showFaviritos_id").innerHTML = `<div class=" d-flex justify-content-center align-items-center flex-column"><p class="p-0">No Hay Marcadores</p></div>
+                                                                                    <input type="checkbox" name="tema" data-idchecked="999999"  value="999999" id="select_Check" class="mr-1" hidden style="position: absolute;right: 10px;left: 278px;">`
+                        
+                        }
+                        
+                        
+                        
+                    })
+                }
+            
+            
+            // codigo para bloquear dropdown
+			$('.dropdown-menu').on('click', function (e) {
+				e.stopPropagation();
+				// console.log(`${e.target.textContent} clicado!`);
+			});
+			//  endblok
+            
+            vaciar_marcadores.addEventListener('click', ()=>{
+
+                cont = $('input[type=checkbox]').length;
+            
+
+				$('#select_Check[type=checkbox]').prop('checked', true)
+				
+				$('#select_Check:checked').each(function(indice, op) {
+						
+					idCheckbox[indice]=$(op).val();
+				
+				});
+
+                
+                
+                if ( (Object.keys(idCheckbox).length) > 0 && idCheckbox[0] < 999999){
+                    // console.log(idCheckbox[0])
+                    fetch("{% url 'mostrarfavoritos' %}", {
+                        ...fetchObject,
+                            body: JSON.stringify({
+                            acceso:"vaciar",
+                            idCheckbox,
+                            idCheckdelete
+                        })
+                    })
+                    .then(async(res)=>{
+                        result = await res.text()
+
+                        form_save.removeAttribute('hidden', '')
+                        form_editar.setAttribute('hidden', '')
+
+                        msj_validar.innerHTML = ` `
+
+                        document.querySelector("#showFaviritos_id").innerHTML = ``
+                        document.querySelector("#showFaviritos_id").innerHTML = `<div class=" d-flex justify-content-center align-items-center flex-column"><p class="p-0">No Hay Marcadores</p></div>
+                                                                                <input type="checkbox" name="tema" data-idchecked="999999"  value="999999" id="select_Check" class="mr-1" hidden style="position: absolute;right: 10px;left: 278px;">`
+                          
+                    })
+                }
+                    
+                
+            })
+
+            eliminar_marcadores.addEventListener('click', ()=>{
+                cont = $('input[type=checkbox]').length;
+				idCheckdelete = {}
+				$('#select_Check:checked').each(function(indice, op) {
+						
+					idCheckdelete[indice]=$(op).val();
+				
+				});
+
+                
+                
+                if ( (Object.keys(idCheckdelete).length) > 0 && idCheckdelete[0] < 999999){
+                    
+                    fetch("{% url 'mostrarfavoritos' %}", {
+                        ...fetchObject,
+                            body: JSON.stringify({
+                            acceso:"delete",
+                            idCheckbox,
+                            idCheckdelete
+                        })
+                    })
+                    .then(async(res)=>{
+                        result = await res.text()
+                        form_save.removeAttribute('hidden', '')
+                        form_editar.setAttribute('hidden', '')
+                        msj_validar.innerHTML = ` `
+                        showFaviritos()
+                                  
+                    })
+                }
+                
+            })
+
+            editar_marcadores.addEventListener('click', ()=>{
+
+                valor = $('input[type=checkbox]').val();
+                
+                if (valor == 999999){
+                    // form_save.setAttribute('hidden', '')
+                    // form_editar.removeAttribute('hidden', '')
+
+                    msj_validar.innerHTML = `<div class=" d-flex justify-content-center align-items-center flex-column"><p class="p-0">No Hay Marcadores</p></div>`   
+            
+                }else{
+                    form_save.setAttribute('hidden', '')
+                    form_editar.removeAttribute('hidden', '')
+
+                    msj_validar.innerHTML = `<div class=" d-flex justify-content-center align-items-center flex-column"><p class="p-0">Editar Nombre URL</p></div>`   
+            
+                }
+
+                
+            })
+
+            guardar_edit.addEventListener('click', ()=>{
+                let contador=0
+                cont = $('input[type=checkbox]').length;
+				idCheckdelete = {}
+				$('#select_Check:checked').each(function(indice, op) {
+					contador += 1
+					idCheckdelete[indice]=$(op).val();
+				
+				});
+
+                if (text_edit.value){
+                    nombre_url = text_edit.value
+                }else{
+                    nombre_url = "Sin Nombre"
+                }
+
+                // console.log(idCheckdelete[0])
+                if ( (Object.keys(idCheckdelete).length) > 0 && idCheckdelete[0] < 999999 && contador == 1){
+                    
+                    fetch("{% url 'mostrarfavoritos' %}", {
+                        ...fetchObject,
+                            body: JSON.stringify({
+                            acceso:"edit",
+                            idCheckbox,
+                            item:idCheckdelete[0],
+                            item1:nombre_url
+                            
+                        })
+                    })
+                    .then(async(res)=>{
+                        result = await res.text()
+                        form_save.removeAttribute('hidden', '')
+                        form_editar.setAttribute('hidden', '')
+                        msj_validar.innerHTML = ` `
+                        showFaviritos()
+                                  
+                    })
+                }
+                if (contador == 0){
+                    msj_validar.innerHTML = `<div class=" d-flex justify-content-center align-items-center flex-column"><p class="p-0">Seleccionar un Marcador</p></div>`
+                }
+                if (contador == 2){
+                    msj_validar.innerHTML = `<div class=" d-flex justify-content-center align-items-center flex-column"><p class="p-0">Seleccionar Solo un Marcador</p></div>`
+                }
+            })
+            
+
+
+        </script>
+    {% endblock javascripts %}
+    

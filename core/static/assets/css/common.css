@@ -1,0 +1,75 @@
+:root{
+	--color_nav_top_l: rgb(18, 82, 194);
+	--color_nav_top_r: rgb(16, 33, 40);
+  }
+
+.bootstrap-tagsinput{
+   width: 100% !important;
+}
+.modal-body{
+   position: relative;
+   max-height: 65vh !important;
+   overflow-y: auto;
+}
+.modal-header{
+   background: linear-gradient(to bottom, var(--color_nav_top_l), var(--color_nav_top_r));
+   color: #fff;
+}
+
+.modal-header > button > span{
+   color: #fff;
+}
+
+.modal-title{
+   font-size: 1.2rem !important;
+   font-weight: bold;
+}
+
+.table-component-like > thead{
+   background-color: #1a2035 !important;
+   color: white;
+}
+.table-component-like > tbody:nth-child(3n){
+   background-color: rgba(0, 0, 0, 0.2) !important;
+}
+.table-component-like{
+   margin: 0;
+   border-radius: .25rem;
+}
+
+.color-footer-modal{
+   background: linear-gradient(to bottom, var(--color_nav_top_l), var(--color_nav_top_r));
+}
+
+/* css para los colores de los botones estandar */
+
+/* nota: usar los tipos de colores acompañadas la class btn o btn-radius  */
+
+.btn-radius{
+   border: 3px solid rgba(100, 100, 100, 0.1);
+   border-radius: 3rem;
+   color: #fff;
+}
+
+/* tipos de colores */
+.btn-azul{
+   background: none;
+   background-size: 300%;
+   background-image: linear-gradient(to left, #00B7DA, #161569, #00B7DA);
+}
+.btn-mora{
+   background: none;
+   background-size: 300%;
+   background-image: linear-gradient(to left, #A950A1, #2D3A54, #A950A1);
+}
+.btn-rosa{
+   background: none;
+   background-size: 300%;
+   background-image: linear-gradient(to left, #ffcae3, #ff499d, #ffcae3);
+}
+.btn-naranja{
+   background: none;
+   background-size: 300%;
+   background-image: linear-gradient(to left, #ff5733, #b81b57, #ff5733);
+}
+/* endblock */

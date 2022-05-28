@@ -1,0 +1,169 @@
+<!-- menu de opciones -->
+
+<div class="body-barnav body-barnav-horizontal body-barnav-fixed" id="body-barnav">
+    <div class="content-portal">
+        
+        <ul class=" links ">
+            <li class="btn-links dropdown hidden-caret">
+                <a href="#" class="drop-links  dropdown-toggle" id="notifDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="icon-graduation icon-large"></i> Capacitacion
+                </a>
+                <ul class="dropdown-menu mt-2" aria-labelledby="notifDropdown">
+                    <div class="div-caret"></div>
+                    <li>
+                        <a class="dropdown-item mt-2" href="#"><i class="fas fa-user-circle mr-1"></i> Registo</a>
+                        
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#"><i class="fas fa-cog mr-1"></i> Configuracion</a>
+                        
+                        <!-- no borrar le da un margin-bottom -->
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item mb-2" href="{% url 'home' %}"><i class="fas fa-door-open mr-1"></i> Actul/Datos</a>
+                        <!-- endblock -->
+                    </li>
+
+                </ul>
+                
+            </li>
+            
+
+            <li class="btn-links dropdown hidden-caret">
+                <a href="#" class="drop-links  dropdown-toggle" id="planificacionDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="icon-organization icon-large"></i> Planificacion/Control
+                </a>
+                <ul class="dropdown-menu mt-2" aria-labelledby="planificacionDropdown">
+                    <div class="div-caret"></div>
+                    <li>
+                        <a class="dropdown-item mt-2" href="{% url 'func_Planning' %}"><i class="fas fa-user-circle mr-1"></i> Perfil</a>
+                        <!-- no borrar le da un margin-bottom -->
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item mb-2" href="{% url 'createBoletin' %}"><i class="fas fa-door-open mr-1"></i> Create Boletin </a>
+                        <!-- endblock -->
+                    </li>
+
+                </ul>
+                
+            </li>
+
+
+            <li class="btn-links dropdown hidden-caret">
+                <a href="#" class="drop-links  dropdown-toggle" id="registraseDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="icon-note icon-large"></i> Capacitacion/Seguimiento
+                </a>
+                <ul class="dropdown-menu mt-2" aria-labelledby="registraseDropdown">
+                    <div class="div-caret"></div>
+                    <li>
+                        <a class="dropdown-item mt-2" href="#"><i class="fas fa-user-circle mr-1"></i> Matricula </a>
+                        
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item mb-2" href="{% url 'home' %}"><i class="fas fa-door-open mr-1"></i>Otras Opciones </a>
+                    </li>
+
+                </ul>
+                
+            </li>
+
+            <li class="btn-links dropdown hidden-caret">
+                <a href="#" class="drop-links  dropdown-toggle" id="socios1Dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="icon-people icon-large"></i> Patrocinadores
+                </a>
+                <ul class="dropdown-menu mt-2" aria-labelledby="socios1Dropdown">
+                    <div class="div-caret"></div>
+                    <li>
+                        <a class="dropdown-item mt-2" href="#"><i class="fas fa-user-circle mr-1"></i> Entrenamiento</a>
+                        
+                        
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item mb-2" href="{% url 'home' %}"><i class="fas fa-door-open mr-1"></i>Otras Opciones </a>
+                    </li>
+
+                </ul>
+                
+            </li>
+
+
+            <li class="btn-links dropdown hidden-caret">
+                <a href="#" class="drop-links  dropdown-toggle" id="capacitacion3Dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="icon-rocket icon-large"></i> Estructura/Organizacion
+                </a>
+                <ul class="dropdown-menu mt-2" aria-labelledby="capacitacion3Dropdown">
+                    <div class="div-caret"></div>
+                    <li>
+                        <a class="dropdown-item mt-2" href="#"><i class="fas fa-user-circle mr-1"></i> Entrenamiento</a>
+                        
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#"><i class="fas fa-cog mr-1"></i> Cursos Dinamicos</a>
+                        
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item mb-2" href="{% url 'home' %}"><i class="fas fa-door-open mr-1"></i>Otras Opciones </a>
+                    </li>
+
+                </ul>
+                
+            </li>
+
+            <li class="btn-links dropdown hidden-caret">
+                <a href="#" class="drop-links  dropdown-toggle" id="capacitacion2Dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="icon-graduation icon-large"></i> Evento/Pagos
+                </a>
+                <ul class="dropdown-menu mt-2" aria-labelledby="capacitacion2Dropdown">
+                    <div class="div-caret"></div>
+                    <li>
+                        <a class="dropdown-item mt-2" href="#"><i class="fas fa-user-circle mr-1"></i> Formas de Pago</a>
+                        
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#"><i class='fas fa-paper-plane fa-lg mr-1'></i> Pagos USD</a>
+                        
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item mb-2" href="{% url 'home' %}"><i class="fas fa-door-open mr-1"></i> Otras Opciones </a>
+                    </li>
+
+                </ul>
+                
+            </li>
+
+            
+
+            <li class="btn-links dropdown hidden-caret">
+                <a href="#" class="drop-links  dropdown-toggle" id="tabDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="icon-screen-tablet icon-large"></i> Tabla Personalizada
+                </a>
+                <ul class="dropdown-menu mt-2" aria-labelledby="tabDropdown">
+                    <div class="div-caret"></div>
+                    <li>
+                        <a class="dropdown-item mt-2" href="#"><i class="fas fa-user-circle mr-1"></i> Entrenamiento</a>
+                        
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#"><i class="fas fa-cog mr-1"></i> Cursos Dinamicos</a>
+                        
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#"><i class="fas fa-user-cog mr-1"></i> c#</a>
+                        
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#"><i class='fas fa-paper-plane fa-lg mr-1'></i> Crear Notificaciones</a>
+                        
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item mb-2" href="{% url 'home' %}"><i class="fas fa-door-open mr-1"></i>Salir </a>
+                    </li>
+
+                </ul>
+                
+            </li>
+
+
+            <!-- codigo active no borrar -->
+            
+                <li class="btn-links dropdown hidden-caret" hidden>
+                    <a href="#" class="drop-links activo dropdown-toggle" id="hiddenDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="icon-people icon-large"></i> Socios
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="hiddenDropdown">
+                        <div class="div-caret"></div>
+                        
+                            
+                    </ul> 
+                </li>
+            <!-- endblock -->
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,429 @@
+{% extends "layouts/base.html" %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+	<style>
+		#gestor .card{
+			background-image: url('/static/assets/img/bg-card.jpg');
+			height: 100%;
+		}
+		.product-stripe{
+            overflow-x: hidden;
+            overflow-y: hidden;
+            height: 180px;
+            
+        }
+        
+        .stripe-container{
+            transform: translateX(-0);
+            animation: slider 15s infinite;
+        }
+
+		/* css btn close boletinModal */
+		#btn-modal-close{
+                position: absolute;
+                z-index: 1000;
+                top: 0px;
+				left: 450px;
+                background:linear-gradient(to bottom, var(--color_nav_top_l), var(--color_nav_top_r));
+                width: 64px;
+                height: 64px;
+                color: #fff;
+                text-align: center;
+                border-radius: 50%;
+                transition: all .2s;
+                opacity: 1
+            }
+
+
+            #btn-modal-close:hover{
+                cursor: pointer;
+                transform: scale(1.1);
+            }
+            
+            .close .ocultar{
+                opacity: 0;
+                visibility: hidden;
+            }
+            .close .mostrar{
+                opacity: 1;
+                visibility: visible;
+            }
+		/* endblock */
+
+		/* codigo css para las tarjetas dinamicas */
+		:root{
+		--blanco:#fff;
+		}
+
+		.background-top-row{
+			background: rgba(52, 3, 45, 0.3);
+			backdrop-filter: blur(.4rem);
+		}
+
+		
+
+		.content-card{
+			display: flex;
+			justify-content: center;
+			height: 90vh;
+			align-items: center;
+		}
+
+		.card-dinamica{
+			position: relative;
+			width: 20rem;
+			height: 430px;
+		}
+
+		.card-dinamica .face{
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			backface-visibility: hidden;
+			border-radius: 10px;
+			overflow: hidden;
+			transition: .5s;
+		}
+
+		.card-dinamica .front1{
+			transform: perspective(600px) rotateY(0deg);
+			box-shadow: 0 5px 10px rgb(245, 237, 237);
+		}
+
+		.card-dinamica .front1 img{
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+		.card-dinamica .front1 h3{
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			padding-top: 0px;
+			
+			color: #fff;
+			background: rgba(0, 0, 0, .4);
+			text-align: center;
+			margin-bottom: 0px;
+		}
+
+		.card-dinamica .card-black{
+			transform: perspective(600px) rotateY(180deg);
+			background-color: rgba(255, 255, 255, 0.060);
+			border-radius: 1rem;
+			box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.2);
+			display: flex;
+			flex-direction: column;
+			
+			overflow: hidden;
+			width: 20rem;
+			backdrop-filter: blur(1rem);
+			border: .1rem solid rgba(255, 255, 255, 0.18);
+			color: var(--blanco);
+		}
+
+		.card-black h6{
+			letter-spacing: .1rem;
+			text-transform: uppercase;
+		}
+
+		.card-black h2{
+			letter-spacing: .1rem;
+			
+		}
+
+		.top-row{
+			padding: 1rem;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.top-row i{
+			font-size: 2rem;
+		}
+
+		.content-black{
+			padding: 2rem;
+			/* width: 100%; */
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			justify-content: space-between;
+		}
+
+		.content-black p{
+			font-size: .9rem;
+		}
+
+		.content-black .button{
+			border-radius: 3rem;
+			color: var(--blanco);
+			font-size: .8rem;
+			padding: .5rem 4rem;
+			letter-spacing: .1rem;
+			align-self: flex-end;
+			cursor: pointer;
+			border: .1rem solid rgba(255, 255, 255, .18);
+		}
+
+		.content-black button a{
+			text-decoration: none;
+		}
+
+		.card-dinamica:hover .front1{
+			transform: perspective(600px) rotateY(180deg);
+		}
+
+		.card-dinamica:hover .card-black{
+			transform: perspective(600px) rotateY(360deg);
+		}
+
+		.card{
+    		background-size: cover;
+			background-position:center;
+			background-blend-mode: normal;
+			overflow: hidden;
+		}
+
+		/* endblock */
+
+	</style>
+{% endblock stylesheets %}
+
+{% block content %}
+	<div class="content">
+		<div class="panel-header">
+			<div class="page-inner py-5">
+				<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+					<div>
+						<h1 class="pb-2 fw-bold" style="padding-top:.2rem;font-size:3rem;">Bienvenido </h1>
+					</div>
+					<div class="ml-md-auto py-2 py-md-0">
+						<a href="#" class=" text-white btn bg-dark2 btn-round">Mi perfil</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="page-inner animated fadeInUp mt--5">
+			
+			<section id="gestor">
+				<div class="row mt--2 d-flex justify-content-center">
+					<div class="col-md-12">
+						<div class="card">
+							<div class="card-body">
+								<!-- <div class="row mb-2"><h1><strong>Atajos:</strong></h1></div> -->
+								
+								<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+									<ol class="carousel-indicators">
+									  <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active" style="height:10px;border-radius:8px;width:10px;"></li>
+									  <li data-target="#carouselExampleIndicators" data-slide-to="1" style="height:10px;border-radius:8px;width:10px;"></li>
+									  <li data-target="#carouselExampleIndicators" data-slide-to="2" style="height:10px;border-radius:8px;width:10px;"></li>
+									  <li data-target="#carouselExampleIndicators" data-slide-to="3" style="height:10px;border-radius:8px;width:10px;"></li>
+									</ol>
+									<div class="carousel-inner">
+									  	<div class="carousel-item active">
+											<div class="content-card">
+												<div class="card-dinamica">
+													<div class=" face front1 " >
+														<img src="/static/assets/img/imgPost1.png" alt="">
+														<h3>Captacion</h3>
+													</div>
+											
+													<div class="face card-black">
+														<div class=" top-row background-top-row " >
+															<h4 style="margin-top: 0;">Captacion</h4>
+															<i class="fab fa-instagram" aria-hidden="true"></i>
+														</div>
+														<div class=" content-black ">
+															<h2>Captacion</h2>
+															<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit delectus quod ducimus facilis, modi minus illum laborum omnis corporis aperiam?</p>
+															
+															<div class="container d-flex justify-content-center align-items-center">
+																<button class=" button background-top-row"><a href="{% url 'func_Planning' %}">Empesar</a></button>
+															</div>
+															
+														</div>
+												
+													</div>  
+										
+												
+												</div>
+											</div>
+
+											 
+
+										</div>
+
+										<div class="carousel-item">
+											<div class="content-card">
+												<div class="card-dinamica">
+													<div class=" face front1 " >
+														<img src="/static/assets/img/preguntas-mas-frecuentes.png" alt="">
+														<h3>Capacitacion</h3>
+													</div>
+											
+													<div class="face card-black">
+														<div class=" top-row background-top-row " >
+															<h4 style="margin-top: 0;">Capacitacion</h4>
+															
+															<i class="icon-organization icon-large"></i>
+														</div>
+														<div class=" content-black ">
+															<h2>Capacitacion</h2>
+															<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit delectus quod ducimus facilis, modi minus illum laborum omnis corporis aperiam?</p>
+															
+															<div class="container d-flex justify-content-center align-items-center">
+																<button class=" button background-top-row"><a href="{% url 'func_Planning' %}">Empesar</a></button>
+															</div>
+														</div>
+												
+													</div>  
+										
+												
+												</div>
+											</div>
+
+											
+											       
+										</div>
+										
+										<div class="carousel-item">
+											<div class="content-card">
+												<div class="card-dinamica">
+													<div class=" face front1 " >
+														<img src="/static/assets/img/imgPost1.png" alt="">
+														<h3>Eventos/Pagos</h3>
+													</div>
+											
+													<div class="face card-black">
+														<div class=" top-row background-top-row " >
+															<h4 style="margin-top: 0;">Eventos/Pagos</h4>
+															<i class="fas fa-address-card"></i>
+														</div>
+														<div class=" content-black ">
+															<h2>Eventos/Pagos</h2>
+															<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit delectus quod ducimus facilis, modi minus illum laborum omnis corporis aperiam?</p>
+															
+															<div class="container d-flex justify-content-center align-items-center">
+																<button class=" button background-top-row"><a href="{% url 'func_Planning' %}">Empesar</a></button>
+															</div>
+														</div>
+												
+													</div>  
+										
+												
+												</div>
+											</div>
+
+											
+											       
+										</div>
+
+										<div class="carousel-item">
+											<div class="content-card">
+												<div class="card-dinamica">
+													<div class=" face front1 " >
+														<img src="/static/assets/img/lesson.png" alt="">
+														<h3>Configuracion</h3>
+													</div>
+											
+													<div class="face card-black">
+														<div class=" top-row background-top-row " >
+															<h4 style="margin-top: 0;">Configuracion</h4>
+															<i class="fas fa-cog"></i>
+														</div>
+														<div class=" content-black ">
+															<h2>Configuracion</h2>
+															<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit delectus quod ducimus facilis, modi minus illum laborum omnis corporis aperiam?</p>
+															
+															<div class="container d-flex justify-content-center align-items-center">
+																<button class=" button background-top-row"><a href="{% url 'func_Planning' %}">Empesar</a></button>
+															</div>
+														</div>
+												
+													</div>  
+										
+												
+												</div>
+											</div>
+
+											
+											       
+										</div>
+										
+									</div>
+		
+									<a class="carousel-control-prev op-9" href="#carouselExampleIndicators" role="button" data-slide="prev">
+									  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+									  <span class="sr-only">Previous</span>
+									</a>
+		
+									<a class="carousel-control-next op-9" href="#carouselExampleIndicators" role="button" data-slide="next">
+									  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+									  <span class="sr-only">Next</span>
+									</a>
+								</div>		
+									
+
+								
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			
+		</div>
+
+		<div class="modal fade" id="boletinModal" tabindex="-1" role="dialog" aria-hidden="true">
+			<div id="boletinModalContent" class="modal-dialog  modal-dialog-centered" role="document">
+		
+			</div>
+		</div>
+
+	</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<script>
+
+	function showBoletin(){
+		fetch("{% url 'showBoletin'%}", {
+        	...fetchObject,
+        	body: JSON.stringify({
+             	acceso:"buscar"
+             		
+          	})
+            
+        })
+        .then(async (res) => {
+            document.getElementById("boletinModalContent").innerHTML = await res.text()
+        })
+        .then(() => {
+            $("#boletinModal").modal("show")
+            const formSave = document.getElementById("formSave")
+            formSave.addEventListener("submit", (e) => {
+               	
+				e.preventDefault()
+               	  	
+				
+                $("#boletinModal").modal("hide")
+                     	
+            
+            })
+        })
+	}
+
+
+	// showBoletin()
+</script>
+
+{% endblock javascripts %}

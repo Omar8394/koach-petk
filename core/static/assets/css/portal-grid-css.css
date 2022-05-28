@@ -1,0 +1,145 @@
+.contenedor{
+    width: 90%; 
+    margin: auto;
+    padding: 40px 0;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 20px;
+   
+}
+
+.card{
+    
+    height: 200px;
+
+    background-size: cover;
+    background-position:center;
+    background-color: rgba(0, 0, 0, 0.295);
+    background-blend-mode: normal;
+    color:rgb(240, 239, 245);
+    position: relative;
+    overflow: hidden;
+    padding: 20px;
+    margin-bottom: 0;
+    border-radius: 10px;
+}
+
+.banner{
+    
+    
+    background-size: cover;
+    background-position:center center;
+    background-color: rgba(0, 0, 0, 0.295);
+    background-blend-mode:darken;
+    color:rgb(240, 239, 245);
+    border-radius: 10px;
+    text-align: center;
+    justify-items: center;
+    
+    
+}
+
+.banner h1{
+    padding: 10px 0px;
+}
+
+.contenedor-conciertos{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    
+}
+
+.txtos{
+    height: 100%;
+    color: rgb(8, 1, 1);
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+
+    /* display: grid;
+    grid-template-rows: 1fr auto; */
+}
+
+.txtos p{
+    margin: 0px;
+}
+
+.card-body-css p{
+    text-align: justify;
+    padding: 10px 20px;
+    
+}
+
+@media screen and (max-width: 900px) {
+    .contenedor{
+    margin: auto;
+    padding: 40px 0;
+
+    display: grid;
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+   
+   }
+}
+
+@media screen and (max-width: 700px) {
+    .contenedor{
+    margin: auto;
+    padding: 40px 0;
+
+    display: grid;
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+   
+   }
+   .contenedor-conciertos{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    
+    }
+    
+}
+
+@media screen and (max-width: 600px) {
+    .contenedor{
+    margin: auto;
+    padding: 40px 0;
+
+    display: grid;
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+   
+   }
+   .contenedor-conciertos{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .contenedor{
+    margin: auto;
+    padding: 40px 0;
+
+    display: grid;
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+   
+   }
+   .contenedor-conciertos{
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+    
+    }
+}

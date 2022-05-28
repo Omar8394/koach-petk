@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static%}
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal KoachSoluciones</title>
+
+        <link rel="icon" href="/static/assets/img/iconx.png" type="image/x-icon" />
+		<link rel="canonical" href="">
+
+		<!-- Fonts and icons -->
+		<script src="/static/assets/js/plugin/webfont/webfont.min.js"></script>
+		<script>
+			WebFont.load({
+				google: { "families": ["Lato:300,400,700,900"] },
+				custom: {
+					"families": ["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"],
+					urls: ['/static/assets/css/fonts.min.css']
+				},
+				active: function () {
+					sessionStorage.fonts = true;
+				}
+			});
+		</script>
+
+		
+	
+
+		<!-- CSS Files -->
+		<link rel="stylesheet" href="/static/assets/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/static/assets/css/atlantis.min.css">
+		<link rel="stylesheet" href="/static/assets/css/courses-cards.css">
+		<link rel="stylesheet" href="/static/assets/css/common-components.css">
+		<link rel="stylesheet" href="/static/assets/css/common.css">
+		<link rel="stylesheet" href="/static/assets/css/card-list.css">
+		<link rel="stylesheet" href="/static/assets/css/resources-bank.css">
+		
+		<link rel="stylesheet" href="/static/assets/css/owl.theme.default.min.css">
+        <!-- css-portalWeb -->
+        <link rel="stylesheet" href="/static/assets/css/customize-template-prueba1.css">
+        <link rel="stylesheet" href="/static/assets/css/portal-css.css">
+        <link rel="stylesheet" href="/static/assets/css/portal-grid-css.css">
+        
+        <!-- enb css-portalWeb -->
+		
+
+        <style>
+            .wrapper-body{
+                
+                position: relative;
+                top: 62px;
+                height: calc(100% - 62px);
+                width: 100%;
+                height: auto;
+                
+            }
+            
+            .contenedor-login{
+                width: 100%;
+                max-width: 800px;
+                margin: auto;
+                position: relative;
+                
+                pointer-events: auto;
+            }
+            .caja__trasera{
+                width: 100%;
+                padding: 10px 20px;
+                display: flex;
+                justify-content: center;
+                -webkit-backdrop-filter: blur(10px);
+                backdrop-filter: blur(10px);
+                background-color: rgba(0, 128, 255, 0.5);
+
+            }
+
+            .caja__trasera div{
+                margin: 65px 40px;
+                color: white;
+                transition: all 500ms;
+            }
+
+            .caja__trasera div p,
+            .caja__trasera button{
+                margin-top: 30px;
+            }
+
+            .caja__trasera div h3{
+                font-weight: 400;
+                font-size: 26px;
+            }
+
+            .caja__trasera #btn__iniciar-sesion, .caja__trasera #btn__registrarse{
+                padding: 10px 40px;
+                border: 2px solid #fff;
+                font-size: 14px;
+                background: transparent;
+                font-weight: 600;
+                cursor: pointer;
+                color: white;
+                outline: none;
+                transition: all 300ms;
+                border-radius: 4px;
+            }
+
+            .caja__trasera #btn__registrarse:hover, .caja__trasera #btn__iniciar-sesion:hover{
+                background: #fff;
+                color: #46A2FD;
+            }
+
+            /* formularios */
+            .contenedor__login-register{
+                display: flex;
+                align-items: center;
+                width: 100%;
+                max-width: 380px;
+                position: relative;
+                top: -205px;
+                left: 10px;
+
+                /*La transicion va despues del codigo JS*/
+                transition: left 500ms cubic-bezier(0.175, 0.885, 0.320, 1.275);
+            }
+
+            .contenedor__login-register form{
+                width: 100%;
+                padding: 60px 20px;
+                background: white;
+                position: absolute;
+                border-radius: 20px;
+            }
+
+            .contenedor__login-register form h2{
+                font-size: 30px;
+                text-align: center;
+                margin-bottom: 20px;
+                color: #46A2FD;
+            }
+            .contenedor__login-register form .login-links{
+                font-size: 15px;    
+            }
+
+            .contenedor__login-register form .form-input {
+                width: 100%;
+                margin-top: 20px;
+                padding: 10px;
+                border: none;
+                background: #F2F2F2;
+                font-size: 16px;
+                border-top-right-radius: 3px;
+                border-bottom-right-radius: 3px;
+                outline: none;
+            }
+
+            .formulario__login{
+                opacity: 1;
+                display: block;
+            }
+            .formulario__register{
+                display: none;
+            }
+
+            /* btn-login edgard */
+
+            .content-login
+            {
+                
+                align-content: center;
+                justify-content: center;
+                display: grid;
+                flex-wrap: wrap;
+                padding-top: 1.5rem;
+                
+            }
+
+            .btn-login
+            {
+                position: relative;
+                padding: 12px 28px;
+                width: 200px;
+                background:linear-gradient(to left, #0087DA,#0626b6,#0626b6,#0087DA),transparent;
+                border: 2px solid rgb(0, 47, 255);
+                outline: none;
+                border-radius: 28px;
+                
+                text-transform: uppercase;
+                font-weight: 600;
+                font-size: 16px;
+                text-decoration: none;
+                letter-spacing: 2px;
+                color: #ecf3f5;
+                background-size: 250%;
+                transition: 0.15s;
+                transition-delay: 0s;
+                
+
+            }
+
+            .btn-login:hover
+            {
+                transition-delay: 0.8s;
+                color: rgb(25, 238, 227);
+                box-shadow: 0 0 10px #030eaae0,
+                0 0 20px #030eaae0,
+                0 0 40px #030eaae0,
+                0 0 80px #030eaae0,
+                0 0 160px #030eaae0;
+                overflow: hidden;
+            }
+
+            .content-login button span
+            {
+                position: relative;
+                z-index: 100;
+            }
+
+
+
+            .btn-login::before
+            {
+                content: '';
+                position: absolute;
+                left: -20px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 30px;
+                height: 2px;
+                background: #030eaae0;
+                box-shadow: 4px -8px 0 #030eaae0 ,
+                            4px 8px 0 #030eaae0 ;
+                transition: width 0.1s, left 0.1s, height 0.2s, box-shadow 0.2s;  
+                transition-delay: 0.3s,0.1s,0s,0s;          
+                            
+            }
+
+            .content-login button:hover::before
+            {
+                width: 60%;
+                height: 100%;
+                left: -2px;
+                box-shadow: 4px 0 0 #030eaae0 ,
+                            4px 0 0 #030eaae0 ;
+                transition-delay: 0s,0.2s,0.4s,0.4s; 
+
+            }
+
+            .content-login button::after
+            {
+                content: '';
+                position: absolute;
+                right: -20px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 20px;
+                height: 2px;
+                background: #030eaae0;
+                box-shadow: -5px -8px 0 #030eaae0 ,
+                            -5px 8px 0 #030eaae0 ;
+                transition: width 0.1s, left 0.1s, height 0.2s, box-shadow 0.2s;  
+                transition-delay: 0.3s,0.1s,0s,0s;          
+                            
+            }
+
+            .content-login button:hover::after
+            {
+                width: 60%;
+                height: 100%;
+                right: -2px;
+                box-shadow: -5px 0 0 #030eaae0 ,
+                            -5px 0 0 #030eaae0;
+                transition-delay: 0s,0.2s,0.4s,0.4s; 
+
+            }
+
+            /* endblock */
+
+
+            @media (max-width: 991px) {
+                
+            }
+
+            @media screen and (max-width: 991px){
+
+                .caja__trasera{
+                    max-width: 350px;
+                    height: 300px;
+                    flex-direction: column;
+                    margin: auto;
+                }
+
+                .caja__trasera div{
+                    margin: 0px;
+                    position: absolute;
+                }
+
+
+                /*Formularios*/
+
+                .contenedor__login-register{
+                    top: -10px;
+                    left: 0px;
+                    margin: auto;
+                }
+
+                .contenedor__login-register form{
+                    position: relative;
+                }
+
+                
+            }
+                    
+            
+
+            #btn-modal-close{
+                position: absolute;
+                z-index: 1000;
+                top: -300px;
+                left: -70px;
+                background:linear-gradient(to left, #0087DA,#0626b6,#0626b6,#0087DA),transparent;
+                width: 64px;
+                height: 64px;
+                color: #fff;
+                text-align: center;
+                border-radius: 50%;
+                transition: all .2s;
+                opacity: 1
+            }
+
+
+            #btn-modal-close:hover{
+                cursor: pointer;
+                transform: scale(1.1);
+            }
+            
+            .close .ocultar{
+                opacity: 0;
+                visibility: hidden;
+            }
+            .close .mostrar{
+                opacity: 1;
+                visibility: visible;
+            }
+        </style>
+
+
+</head>
+<body>
+    <div class="ocultar" id="ir-arriba-btn">
+        <i class="fa fa-angle-up fa-4x"></i>
+    </div>
+    <div class="main-header1">
+
+        <!-- Logo Header -->
+        <div class="logo-header">
+            
+            <a href="#" class="logo" width="100px">
+                         <img src="/static/assets/img/logo_PETK.jpg" alt="navbar brand" class="navbar-brand">
+            </a>
+            <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon">
+                    <i class="icon-menu"></i>
+                </span>
+            </button>
+            <button class="topbar-toggler more"><i class="icon-options-vertical"></i></button>
+            <div class="nav-toggle">
+                <button class="btn btn-toggle toggle-sidebar" id="btn-toggle">
+                    <i class="icon-menu"></i>
+                </button>
+            </div>
+        </div>
+        <!-- End Logo Header -->
+
+        <!-- Navbar Header -->
+        <nav class="navbar navbar-header navbar-expand-lg">
+            
+            <div class="container-fluid">
+
+                <ul class="navbar-nav topbar-nav align-items-center">
+                    <li class="nav-item dropdown hidden-caret">
+                        <a class="nav-link dropdown-toggle" href="#" id="opcionesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="text-span"><strong>Informacion</strong></span>  <i class="fa fa-caret-down"></i> 
+                        </a>
+                        <ul class="dropdown-menu messages-notif-box animated fadeIn" aria-labelledby="opcionesDropdown">
+                            <li>
+                                <div class="dropdown-title d-flex justify-content-between align-items-center">
+                                    <strong>Opciones</strong>									
+                                    <!-- <a href="#" class="small">Mark all as read</a> -->
+                                </div>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item mt-2" href="#section-a"><i class="fas fa-user-circle mr-1"></i> Quienes Somos?</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#"><i class="fas fa-cog mr-1"></i>Udicacion</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item mb-2" href="#"><i class="fas fa-cog mr-1"></i> Mision/Visioin</a>
+                                
+                            </li>
+                            
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown hidden-caret">
+                        <a class="nav-link dropdown-toggle" href="#" id="contactosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="text-span"> <strong>Contactanos</strong></span>  <i class="fa fa-caret-down"></i> 
+                        </a>
+                        <ul class="dropdown-menu messages-notif-box animated fadeIn" aria-labelledby="contactosDropdown">
+                            <li>
+                                <div class="dropdown-title d-flex justify-content-between align-items-center">
+                                    <strong>Redes Sociales</strong> 									
+                                    
+                                </div>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item mt-2" href="#section-a"><i class="fas fa-user-circle mr-1"></i> Faceboock</a>
+                                    
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#"><i class="fas fa-cog mr-1"></i> Instagram</a>
+                                
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#"><i class="fas fa-user-cog mr-1"></i> Telegram </a>
+                                
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item mb-2" href="#"><i class='fas fa-paper-plane fa-lg mr-1'></i> Youtube </a>
+                            </li>
+                            
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown hidden-caret">
+                        <a class="nav-link dropdown-toggle" href="#" id="serviciosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="text-span"><strong>Servicios</strong></span>  <i class="fa fa-caret-down"></i> 
+                        </a>
+                        <ul class="dropdown-menu messages-notif-box animated fadeIn" aria-labelledby="serviciosDropdown">
+                            <li>
+                                <div class="dropdown-title d-flex justify-content-between align-items-center">
+                                    <strong>Servicios</strong>									
+                                    
+                                </div>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item mt-2" href="#section-a"><i class="fas fa-user-circle mr-1"></i> Paginas Web</a>
+                                    
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#"><i class="fas fa-cog mr-1"></i> Sistemas </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#"><i class="fas fa-cog mr-1"></i> Soporte tecnico </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item mb-2" href="#"><i class="fas fa-cog mr-1"></i> Instalacion y Soporte de Servidores </a>
+                                
+                            </li>
+                            
+                        </ul>
+                    </li>
+                    
+                </ul>
+
+                <ul class="navbar-nav topbar-nav align-items-center">
+
+                    <li class="nav-item dropdown hidden-caret">
+                        <a class="nav-link " href="#" id="btn-login" role="button">
+                            <strong><span class="text-span">Login</span>  <i class="icon-login icon-large"></i></strong>
+                            
+                        </a>
+                        							
+                    </li>
+
+                </ul>
+                
+            </div>
+            
+        </nav>
+        <!-- End Navbar -->
+    </div>
+
+    <div id="body-container">
+            
+        <div id="body-content">
+            <div class="body-barnav body-barnav-horizontal body-barnav-fixed" id="body-barnav">
+                <div class="content-portal">
+                    <ul class=" links ">
+                        <li class="btn-links">
+                            <a href="#section-a">
+                                <i class="icon-question icon-large"></i> Quienes Somos?
+                            </a>
+                        </li>
+                        <li class="btn-links">
+                            <a href="#">
+                                <i class="icon-shuffle icon-large"></i> Mision/Vision
+                            </a>
+                        </li>
+                        <li class="btn-links">
+                            <a href="#section-e">
+                                <i class="icon-directions icon-large"></i> Contactanos
+                            </a>
+                        </li>
+                        <li class="btn-links">
+                            <a href="#">
+                                <i class="icon-handbag icon-large"></i> Planes
+                            </a>
+                        </li>
+                        <li class="btn-links">
+                            <a href="#">
+                                <i class="icon-location-pin icon-large"></i> Ubicacion
+                            </a>
+                        </li>
+                        <li class="btn-links">
+                            <a href="#">
+                                <i class="icon-wrench icon-large"></i> Servicios
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+            <div class="wrapper-body" id="wrapper">
+                <!-- header area -->
+                <header id="showcase" class="grid">
+                    <div class="bg-image"></div>
+                    <div class="content-wrap">
+                        <h1><strong>Bienvenidos a Koach Soluciones</strong></h1>
+
+                        <p> <strong>Lorem ipsum dolor sit amet consectetur, adipisicing elit. S
+                            apiente architecto adipisci dicta nihil
+                            quia ullam cumque fuga accusantium id provident?</strong> 
+                        </p>
+
+                        <a href="#section-b" class="btn-portal"> Leer Mas </a>
+                    </div>
+                </header>
+
+                <!-- Main Area -->
+
+                <main id="main" class="">
+                    <!-- section A -->
+                    <section id="section-a">
+
+                        <div class="content-wrap">
+                            <h1 class="content-title pb-0 ml-5"> Quienes Somos?</h1>
+                            
+                        </div>
+                        <div class="container mb-5" id="contenedor1">
+                            <p class="text-justify">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid quisquam dolore dignissimos unde laborum, corrupti sequi similique, harum blanditiis eveniet minus veniam minima nemo nesciunt error at consequuntur nostrum aliquam illo! Minus temporibus blanditiis libero ad? Odit sint beatae rem ratione quia nihil error quas expedita voluptatibus? Saepe nemo consequuntur delectus a. Odio maxime quod nihil, assumenda deleniti corrupti, eligendi quasi atque inventore hic sapiente vero quas ad facere saepe eaque culpa velit eos. Nisi nihil nemo maxime cumque unde.
+                            </p>
+                            <img class="float-right ml-4" src="/static/assets/img/imgPost1.png" alt="personas trabajando en equipo">
+                            <p class="text-justify">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit animi hic quidem iste. Temporibus minus beatae excepturi saepe aperiam ratione blanditiis, nisi delectus laborum ab culpa voluptatum, voluptatem, rem adipisci quasi numquam sit dicta modi nobis qui sint sequi neque. Illum praesentium, reprehenderit ipsam maxime sequi id, ea porro vel commodi optio fugit eaque quae in dolorum et accusantium asperiores officia esse voluptatem voluptate, aperiam fugiat nobis. Maiores commodi sapiente inventore nihil? Tempore quidem nostrum deleniti consequuntur. Quod illum repellendus necessitatibus fuga ducimus repudiandae ipsam molestiae? Accusantium dolor ducimus reprehenderit nobis iure officiis rem. Dolorem in sed ipsam omnis asperiores!
+                            </p>
+                        </div>
+
+                    </section>
+
+                    <!-- section B -->
+                    <section>
+                        <div class="contenedor">
+            
+                            <div class="contenedor-conciertos">
+                                <div class="card" style="background-image: url('/static/assets/img/homework.png');">
+                                    <div class="txtos">
+                                        <h3></h3>
+                                        <p><button class="btn btn-primary">Ver</button> </p>
+                                    </div>
+                                </div>
+                        
+                                <div class="card" style="background-image: url('/static/assets/img/img_notify1.jpg');">
+                                    <div class="txtos">
+                                        <h3> Music Cristiana</h3>
+                                        
+                                        <p>fecha 22 marzo 2022</p>
+                                    </div>
+                                </div>
+                        
+                                <div class="card" style="background-image: url('/static/assets/img/JC-Energy.png');">
+                                    <div class="txtos">
+                                        <h3> Music Cristiana</h3>
+                                        <p>fecha 22 marzo 2022</p>
+                                    </div>
+                                </div>
+                        
+                                <div class="card" style="background-image: url('/static/assets/img/Logo-Koach.jpg');">
+                                    <div class="txtos">
+                                        <h3> Music Cristiana</h3>
+                                        <p> fecha 22 marzo 2022</p>
+                                    </div>
+                                </div>
+                        
+                                <div class="card" style="background-image: url('/static/assets/img/lesson.png');">
+                                    <div class="txtos">
+                                        <h3> Music Cristiana</h3>
+                                        <p> fecha 22 marzo 2022</p>
+                                    </div>
+                                </div>
+                        
+                                <div class="card" style="background-image: url('/static/assets/img/iconx.png');">
+                                    <div class="txtos">
+                                        <h3> Music Cristiana</h3>
+                                        <p> fecha 22 marzo 2022</p>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="banner" style="background-image: url('/static/assets/img/CapturaReydeVida.png');">
+                                
+                                <div class="card-body-css">
+                                    <h1>hola</h1>
+                        
+                                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus laborum labore amet aspernatur unde perspiciatis doloribus dolore dicta culpa, ducimus itaque laudantium asperiores quidem corporis nobis dolor nulla atque quisquam dolorum? In nam maxime possimus consectetur earum. Delectus, autem libero. Laboriosam vel incidunt odio perspiciatis id iste animi, dolore veritatis dolorum numquam rem adipisci illo quis earum est accusamus aperiam.</p>
+                                
+                                    <button class="btn-baner">Leer Mas</button>
+                                </div>
+                                
+                            </div>
+                        
+                        </div>
+                    </section>
+
+                    <!-- section C -->
+
+                    <section id="section-c" class="grid">
+                        <div class="content-wrap">
+                            <h2 class="content-title"> Bienbenido a tu section info</h2>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem eos dicta perferendis vero explicabo ullam culpa esse, libero nulla. Eligendi.</p>
+                        </div>
+                    </section>
+
+                    <!-- section D -->
+
+                    <section id="section-d" class="grid">
+                        <div class="box">
+                            <h2 class="content-title">Contact us</h2>
+                            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cupiditate voluptates sunt reiciendis officiis dignissimos sed.</p>
+                            <p>analista0093@gmail.com</p>
+                            <a href="#section-b" class="btn-section"> Red More </a>
+                        </div>
+
+                        <div class="box">
+                            <h2 class="content-title">About Our company</h2>
+                            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cupiditate voluptates sunt reiciendis officiis dignissimos sed.</p>
+                            <p>analista0093@gmail.com</p>
+                        </div>
+                        
+                    </section>
+
+                    <!-- Sectioin E  contactanos-->
+                    <section id="section-e" class="bg-light py-5">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    <h2> <strong>Contactanos</strong></h2>
+                                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Animi, maiores?</p>
+
+                                    <form action="">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <i class="fas fa-user input-group-text"></i>
+                                            </div>
+                                            <input type="text" class="form-control" placeholder="Nombre">
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <i class="fas fa-envelope input-group-text"></i>
+                                            </div>
+                                            <input type="email" class="form-control" placeholder="Email">
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <i class="fas fa-pencil-alt input-group-text" style="align-items: flex-start;"></i>
+                                            </div>
+                                            <textarea name="" id="" cols="30" rows="10" placeholder="Escribe tu mensage" class="form-control"></textarea>
+                                        </div>
+                                        <button class="btn btn-primary btn-lg btn-block">
+                                            Enviar Mensaje
+                                        </button>
+                                    </form>
+                                </div>
+                                <div class="col-lg-3 align-self-center">
+                                    
+                                    <img src="/static/assets/img/img-contactanos.png" alt="logo de la pagina" style="border-radius: 0;">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Section F Carusel -->
+                    <section>
+                        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                            <ol class="carousel-indicators">
+                              <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                              <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                              <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                              <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                            </ol>
+                            <div class="carousel-inner">
+                              <div class="carousel-item active">
+                                    <img class="d-block w-100" src="/static/assets/img/Logo-Koach.jpg" alt="First slide" style="height: 250px; width: 250px;">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <div class="card card-stats card-primary card-round">
+											<div class="card-body">
+												<div class="row">
+													<div class="col-5">
+														<div class="icon-big text-center">
+															<i class="icon-graduation icon-large"></i>
+														</div>
+													</div>
+													<div class="col-7 col-stats text-center">
+														<div class="numbers">
+															<p class="card-category">Capacitacion</p>
+															<h4 class="card-title" style="color: white;">Ir
+																<a href="#"  style="color: white;">
+																	<i class="icon-arrow-right-circle ml-2"></i>
+																</a>
+															</h4>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+                                    </div>        
+                                </div>
+
+                                <div class="carousel-item">
+                                    <img class="d-block w-100" src="/static/assets/img/log-file.png" alt="Second slide" style="height: 250px; width: 250px;">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <div class="card card-stats card-info card-round">
+											<div class="card-body">
+												<div class="row">
+													<div class="col-5">
+														<div class="icon-big text-center">
+															<i class="fas fa-address-card"></i>
+														</div>
+													</div>
+													<div class="col-7 col-stats">
+														<div class="numbers">
+															<p class="card-category">Registrar</p>
+															<h4 class="card-title" style="color: white;">Ir
+																<a href="#"  style="color: white;">
+																	<i class="icon-arrow-right-circle ml-2"></i>
+																</a>
+															</h4>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+                                    </div> 
+                                </div>
+
+                                <div class="carousel-item">
+                                    <img class="d-block w-100" src="/static/assets/img/logo_cursos.jpg" alt="Third slide" style="height: 250px; width: 250px;">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <div class="card card-stats card-success card-round">
+											<div class="card-body ">
+												<div class="row">
+													<div class="col-5">
+														<div class="icon-big text-center">
+															<i class="icon-organization icon-large"></i>
+														</div>
+													</div>
+													<div class="col-7 col-stats">
+														<div class="numbers">
+															<p class="card-category">Planificacion</p>
+															<h4 class="card-title" style="color: white;">Ir
+																<a href="#"  style="color: white;">
+																	<i class="icon-arrow-right-circle ml-2"></i>
+																</a>
+															</h4>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+                                    </div> 
+                                </div>
+
+                                <div class="carousel-item">
+                                    <img class="d-block w-100" src="/static/assets/img/logo_cursos.jpg" alt="Third slide" style="height: 250px; width: 250px;">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <div class="card card-stats card-secondary card-round">
+											<div class="card-body ">
+												<div class="row">
+													<div class="col-5">
+														<div class="icon-big text-center">
+															<i class="fas fa-cog"></i>
+														</div>
+													</div>
+													<div class="col-7 col-stats">
+														<div class="numbers">
+															<p class="card-category">Configuracion</p>
+															<h4 class="card-title" style="color: white;">Ir
+																<a href="#"  style="color: white;">
+																	<i class="icon-arrow-right-circle ml-2"></i>
+																</a>
+															</h4>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+                                    </div> 
+                                </div>
+                            </div>
+
+                            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                              <span class="sr-only">Previous</span>
+                            </a>
+
+                            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                              <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    </section>
+
+                </main>
+
+                <!-- footer -->
+                <footer id="main-footer">
+                    <div class="grid">
+                        <div>
+                            <section class="mb-4">
+                                <!-- Facebook -->
+                                <a class="btn btn-outline-light btn-floating m-1" style="border-color: transparent;" href="#!" role="button"
+                                    ><i class="fab fa-facebook-f" style="font-size: 30px;"></i
+                                ></a>
+                            
+                                <!-- Twitter -->
+                                <a class="btn btn-outline-light btn-floating m-1" style="border-color: transparent;" href="#!" role="button"
+                                    ><i class="fab fa-twitter" style="font-size: 30px;"></i
+                                ></a>
+                            
+                                <!-- Google -->
+                                <a class="btn btn-outline-light btn-floating m-1" style="border-color: transparent;" href="#!" role="button"
+                                    ><i class="fab fa-google" style="font-size: 30px;"></i
+                                ></a>
+                            
+                                <!-- Instagram -->
+                                <a class="btn btn-outline-light btn-floating m-1" style="border-color: transparent;" href="#!" role="button"
+                                    ><i class="fab fa-instagram" style="font-size: 30px;"></i
+                                ></a>
+                            
+                                <!-- Linkedin -->
+                                <a class="btn btn-outline-light btn-floating m-1" style="border-color: transparent;" href="#!" role="button"
+                                    ><i class="fab fa-linkedin-in" style="font-size: 30px;"></i
+                                ></a>
+                            
+                                <!-- Github -->
+                                <a class="btn btn-outline-light btn-floating m-1" style="border-color: transparent;" href="#!" role="button"
+                                    ><i class="fab fa-github" style="font-size: 30px;"></i
+                                ></a>
+                                </section>
+                                <!-- Section: Social media -->
+                              </section>
+                              <!-- Section: Social media -->
+                          
+                              <!-- Section: Form -->
+                              <section class="">
+                                <form action="">
+                                  <!--Grid row-->
+                                  <div class="row d-flex justify-content-center">
+                                    <!--Grid column-->
+                                    <div class="col-auto">
+                                      <p class="pt-2">
+                                        <strong>Sign up for our newsletter</strong>
+                                      </p>
+                                    </div>
+                                    <!--Grid column-->
+                          
+                                    <!--Grid column-->
+                                    <div class="col-md-5 col-12">
+                                      <!-- Email input -->
+                                      <div class="form-outline form-white mb-4">
+                                        <input type="email" id="form5Example21" class="form-control" placeholder="Email address" />
+                                        
+                                      </div>
+                                    </div>
+                                    <!--Grid column-->
+                          
+                                    <!--Grid column-->
+                                    <div class="col-auto">
+                                      <!-- Submit button -->
+                                      <button type="submit" class="btn btn-outline-light mb-4">
+                                        Subscribe
+                                      </button>
+                                    </div>
+                                    <!--Grid column-->
+                                  </div>
+                                  <!--Grid row-->
+                                </form>
+                              </section>
+                              <!-- Section: Form -->
+                        </div>
+    
+                        <div>
+                            <p>Application Footer</p>
+                            <p>This is an example disclaimer. All right reserved.</p>
+                            <p>Copyright © keaplogik 2011-2012</p>
+                        </div>
+                    </div>
+                    
+
+                    <!-- Copyright -->
+                    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+                        © 2020 Copyright:
+                        <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+                    </div>
+                    <!-- Copyright -->
+
+                </footer>
+                <!-- endblock footer -->
+            </div>
+            
+            <div class="modal fade" id="Modal-login" tabindex="-1" role="dialog" aria-hidden="true">
+                <div id="ModalContent-login" class="modal-dialog  modal-dialog-centered modal-lg" role="document" style="margin-top: 5.75rem;">
+                    
+                     
+                    <div class="contenedor-login">
+                        <div class="caja__trasera">
+                            <div class="caja__trasera-login">
+                                <h3>¿Ya tienes una cuenta?</h3>
+                                <p>Inicia sesión para entrar en la página</p>
+                                <button id="btn__iniciar-sesion">Iniciar Sesión</button>
+                            </div>
+                            <div class="caja__trasera-register">
+                                <h3>¿Aún no tienes una cuenta?</h3>
+                                <p>Regístrate para que puedas iniciar sesión</p>
+                                <button id="btn__registrarse">Regístrarse</button>
+                            </div>
+                        </div>
+
+                        <!--Formulario de Login y registro-->
+                        <div class="contenedor__login-register">
+                            <!--Login-->
+                            <button type="button" class="close mostrar" id="btn-modal-close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                             </button>
+                            <form action="{% url 'Dashboard' %}" class="formulario__login">
+                                
+                                <h2 class="mb-0">Iniciar Sesión</h2>
+                                
+                                <div class="form-group row">
+                                    <div class="col-md-12 pr-0">
+                                        <div class="form-group pl-0 pr-0 pb-0">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="icon-user"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="input-group-append" style="width: 85%;">
+                                                    <input type="text" class=" form-input mt-0" placeholder="Usuario">
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-md-12 pr-0">
+                                        <div class="form-group pl-0 pr-0 pb-0">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="icon-lock"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="input-group-append" style="width: 85%;">
+                                                    <input type="password" class=" form-input mt-0" placeholder="Contraseña">
+                                                </div>
+                                            </div>
+                                        </div>
+                                         
+                                    </div>   
+                                </div>
+                                    
+                                <div class="content-login">
+                                    <button class="btn-login">
+                                        <span>Iniciar</span> 
+                                    </button>
+                                </div>
+                                <div class="d-flex justify-content-between mt-4 ">
+                                    <a class="login-links" href="">¿Olvido su Contraseña?</a>
+                                    <a class="login-links" href="">¿Cambiar Contraseña?</a>
+                                </div>
+                            </form>
+
+                            <!--Register-->
+                            <form action="" class="formulario__register">
+                                <h2 class=" mb-0 p-0 ">Regístrarse</h2>
+
+                                <div class="form-group row pb-0">
+                                    <div class="col-md-12 pr-0">
+                                        <div class="form-group pl-0 pr-0 pb-0">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="icon-user"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="input-group-append" style="width: 85%;">
+                                                    <input type="text" class=" form-input mt-0" placeholder="Nombre Completo">
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row pb-0">
+                                    <div class="col-md-12 pr-0">
+                                        <div class="form-group pl-0 pr-0 pb-0">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fa fa-envelope"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="input-group-append" style="width: 85%;">
+                                                    <input type="text" class=" form-input mt-0" placeholder="Email">
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row pb-0">
+                                    <div class="col-md-12 pr-0">
+                                        <div class="form-group pl-0 pr-0 pb-0">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="icon-user"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="input-group-append" style="width: 85%;">
+                                                    <input type="text" class=" form-input mt-0" placeholder="Usuario">
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row pb-0">
+                                    <div class="col-md-12 pr-0">
+                                        <div class="form-group pl-0 pr-0 pb-0">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="icon-lock"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="input-group-append" style="width: 85%;">
+                                                    <input type="password" class=" form-input mt-0" placeholder="Contraseña">
+                                                </div>
+                                            </div>
+                                        </div>
+                                         
+                                    </div>   
+                                </div>
+                                <div class="form-group row pb-0">
+                                    <div class="col-md-12 pr-0">
+                                        <div class="form-group pl-0 pr-0 pb-0">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="icon-lock"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="input-group-append" style="width: 85%;">
+                                                    <input type="password" class=" form-input mt-0" placeholder="Confirmar Contraseña">
+                                                </div>
+                                            </div>
+                                        </div>
+                                         
+                                    </div>   
+                                </div>
+        
+                                <div class="content-login">
+                                    <button class="btn-login">
+                                        <span>Regístrar</span> 
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+
+                    </div>
+                    
+                </div>
+            </div>
+        
+        </div>
+    </div>
+
+
+    {% include 'Dashboard_Portal/includes/scriptslocal.html' %}
+
+
+
+<script>
+    let btn_toggle = document.querySelector('#btn-toggle');
+    let sidebar = document.querySelector('#body-barnav');
+    let btn_collapse = document.querySelector('.navbar-toggler.sidenav-toggler.ml-auto');
+    let wrapper = document.querySelector('.wrapper-body');
+    let btn_login = document.querySelector('#btn-login');
+
+
+    // btn-login modal
+    btn_login.addEventListener('click', ()=>{
+        $("#Modal-login").modal("show")
+       
+
+    })
+
+    // endblock
+
+    btn_toggle.addEventListener('click', ()=>{
+
+        sidebar.classList.toggle('active')
+        
+    })
+
+    btn_collapse.addEventListener('click', ()=>{
+
+        sidebar.classList.toggle('active')
+        
+
+    })
+
+    // block de codigo para el btn de ir arriba
+    let btn_ir_arriba = document.querySelector('#ir-arriba-btn')
+    
+    const obtener_px_inicio = () => document.documentElement.scrollTop || document.body.scrollTop
+   
+
+    const irArriba = () => {
+        if (obtener_px_inicio() > 0){
+            requestAnimationFrame(irArriba)
+
+            scrollTo(0, obtener_px_inicio() - (obtener_px_inicio()/10))
+        }
+    }
+
+    btn_ir_arriba.addEventListener('click', irArriba)
+
+    const mostrar_ocultar = () =>{
+        
+        if (obtener_px_inicio() > 450){
+            btn_ir_arriba.className = 'mostrar'
+        }else{
+            btn_ir_arriba.className = 'ocultar'
+        }
+
+    }
+
+    window.addEventListener('scroll', mostrar_ocultar)
+    // enblock
+
+    // codigo para el form de login/registrase
+
+    // codigo para el risize
+        window.addEventListener('resize', anchoPage );
+        
+    // endblock
+
+    let contenedor_login_register = document.querySelector(".contenedor__login-register");
+
+    let form_login = document.querySelector('.formulario__login');
+    let form_registro = document.querySelector('.formulario__register');
+
+    let caja_trasera_login = document.querySelector(".caja__trasera-login");
+    let caja_trasera_register = document.querySelector(".caja__trasera-register");
+
+    let btn_in_sesion = document.querySelector('#btn__iniciar-sesion');
+    let btn_register = document.querySelector('#btn__registrarse');
+    let btn_modal_close = document.querySelector('#btn-modal-close')
+    
+
+    let form_activo = "login"
+
+    function anchoPage(){
+        
+        if (window.innerWidth > 991){
+            
+            
+            caja_trasera_register.style.display = "block";
+            caja_trasera_login.style.display = "block";
+            if (form_activo == "login"){
+                contenedor_login_register.style.left = "10px";
+            }
+            
+        }else{
+            
+            
+            caja_trasera_register.style.display = "block";
+            caja_trasera_register.style.opacity = "1";
+            caja_trasera_login.style.display = "none";
+            form_login.style.display = "block";
+            contenedor_login_register.style.left = "0px";
+            form_registro.style.display = "none";   
+        }
+
+        
+        
+        if (window.innerWidth < 550){
+            btn_modal_close.style.top = "-340px";
+            btn_modal_close.style.left = "-10px"
+        }
+        if (window.innerWidth > 550){
+            btn_modal_close.style.top = "-300px";
+            btn_modal_close.style.left = "-70px"
+        }
+        
+    }
+
+    anchoPage();
+
+
+    btn_in_sesion.addEventListener('click', () =>{
+        form_activo="login"
+
+        if (window.innerWidth >991){
+            form_registro.style.display = "none";
+            contenedor_login_register.style.left = "10px";
+            form_login.style.display = "block";
+            caja_trasera_register.style.opacity = "1";
+            caja_trasera_login.style.opacity = "0";
+        }else{
+            form_registro.style.display = "none";
+            contenedor_login_register.style.left = "0px";
+            form_login.style.display = "block";
+            caja_trasera_register.style.display = "block";
+            caja_trasera_login.style.display = "none";
+        }
+        
+    })
+    
+    btn_register.addEventListener('click', () =>{
+        form_activo="register"
+
+        
+
+        if (window.innerWidth > 991){
+        form_registro.style.display = "block";
+        contenedor_login_register.style.left = "410px";
+        form_login.style.display = "none";
+        caja_trasera_register.style.opacity = "0";
+        caja_trasera_login.style.opacity = "1";
+        }else{
+            form_registro.style.display = "block";
+            contenedor_login_register.style.left = "0px";
+            form_login.style.display = "none";
+            caja_trasera_register.style.display = "none";
+            caja_trasera_login.style.display = "block";
+            caja_trasera_login.style.opacity = "1";
+        }
+    })
+
+
+
+    // endblock
+
+    $('.carousel').carousel({
+        interval: 2000
+    })
+
+    $('carousel').carousel('pause')
+
+</script>
+
+
+</body>
+</html>

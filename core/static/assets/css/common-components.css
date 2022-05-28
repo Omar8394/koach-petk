@@ -1,0 +1,75 @@
+:root{
+	--color_nav_top_l: rgb(18, 82, 194);
+	--color_nav_top_r: rgb(16, 33, 40);
+  }
+
+
+.content-table-hijo{
+				display: flex;
+				border-radius: .25rem;
+				margin: 10px 2px;
+				padding: 0;
+				align-content: center;
+				justify-content: center;
+				box-shadow: 0px 0px 4px 2px #0003;
+				overflow: hidden;
+			}
+			.table-component > thead{
+				background-color: #1a2035 !important;
+				color: white;
+			}
+			.table-component > tbody:nth-child(3n){
+				background-color: rgba(0, 0, 0, 0.2) !important;
+			}
+			.table-component{
+				margin: 0;
+				border-radius: .25rem;
+				overflow: hidden;
+			}
+			.list-group-item:hover {
+				/* transform: scale(1.04); */
+				transition: transform 0.1s linear;
+				transition: outline 0.5s linear;
+				outline: 0.5px solid #00000050;
+			}
+
+			.list-group-item {
+				position: relative !important;
+				overflow: hidden;
+				outline: 0.2px solid #00000000;
+				cursor: pointer;
+			}
+
+			.overlay {
+				position: absolute;
+				background: #000;
+				border-radius: 50%;
+				left: 0;
+				top: 0;
+				animation: incremental 0.5s linear infinite;
+				transform: translate(-50%, -50%);
+			}
+
+			@keyframes incremental {
+				0% {
+					height: 0px;
+					width: 0px;
+					opacity: 0.5;
+				}
+
+				100% {
+					height: 300px;
+					width: 300px;
+					opacity: 0;
+				}
+			}
+
+.navbar-header, .logo-header{
+	background-image: -moz-linear-gradient(top, var(--color_nav_top_l), var(--color_nav_top_r));
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(var(--color_nav_top_l)), to(var(--color_nav_top_r)));
+	background-image: -webkit-linear-gradient(top, var(--color_nav_top_l), var(--color_nav_top_r));
+	background-image: -o-linear-gradient(top, var(--color_nav_top_l), var(--color_nav_top_r));
+	background-image: linear-gradient(to bottom, var(--color_nav_top_l), var(--color_nav_top_r));
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='var(--color_nav_top_l)', endColorstr='var(--color_nav_top_r)', GradientType=0);
+}

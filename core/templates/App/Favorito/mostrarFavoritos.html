@@ -1,0 +1,18 @@
+
+{% for item in data %}
+
+    <div class="d-flex justify-content-center align-items-center flex-row">
+        
+        <a class="dropdown-item mt-2" href="{{ item.direccion_url }}">
+            <p style="width: 250px; margin: 0px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;padding: 0px;"><i class='fas fa-angle-double-right mr-2' style='font-size:18px;color:black'></i>{{ item.descripcion_url }}</p>
+        </a>
+        <input type="checkbox" name="tema" data-idchecked="{{ item.direccion_url }}" value="{{ item.idmisfavoritos }}" id="select_Check" class="mr-1" style="position: absolute;right: 10px;left: 278px;">
+    </div>                                   
+    <div class="dropdown-divider"></div>
+                                    
+{% endfor %}
+
+
+
+
+                                
