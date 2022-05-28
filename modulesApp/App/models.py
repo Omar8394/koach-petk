@@ -1,12 +1,5 @@
-from email.policy import default
-from pyexpat import model
-from select import select
-from statistics import mode
-import turtle
 from django.db import models
-from django.conf import settings
-from django.contrib.auth.models import User
-from django.forms.utils import to_current_timezone
+
 
 # Create your models here.
 
