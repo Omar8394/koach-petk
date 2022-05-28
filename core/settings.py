@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'modulesApp.Capacitacion',
     'modulesApp.Comunication',
     'modulesApp.Configuration',
-    'modulesApp.DashboardPortal'
+    'modulesApp.DashboardPortal',
+    'modulesApp.Events_Success'
 ]
 
 MIDDLEWARE = [
