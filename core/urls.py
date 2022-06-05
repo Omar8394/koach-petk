@@ -28,6 +28,7 @@ urlpatterns = [
     path("", include("modulesApp.App.urls")),
     path("", include("modulesApp.Comunication.urls")),
     path("", include("modulesApp.Planning.urls")),
+    path("security/", include("modulesApp.Security.urls",namespace="security")),
     path('admin/', admin.site.urls),
     
 ]

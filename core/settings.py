@@ -11,24 +11,26 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from unipath import Path
-
+from django.contrib.messages import constants as messages
+import environ
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).parent
 CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+env = environ.Env()
+environ.Env().read_env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-+=@d^*t(g9g6ndm+*c$!uqqw8zt)vq4m)ky940=z_j(_j4)*hx'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG")
 
 ALLOWED_HOSTS = []
-
+AUTH_USER_MODEL = 'Security.User'
 
 # Application definition
 
@@ -48,7 +50,8 @@ INSTALLED_APPS = [
     'modulesApp.Comunication',
     'modulesApp.Configuration',
     'modulesApp.DashboardPortal',
-    'modulesApp.Events_Success'
+    'modulesApp.Events_Success',
+    'modulesApp.Security'
 ]
 
 MIDDLEWARE = [
@@ -94,10 +97,10 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = MYSQL = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'KOACH_PETK',
-        'USER': 'tadifred',
-        'PASSWORD': 'Neobux-123',
-        'PORT': '3306',
+        'NAME': os.environ.get("db_name"),
+        'USER': os.environ.get("db_user"),
+        'PASSWORD': os.environ.get("db_password"),
+        'PORT': os.environ.get("db_port"),
     }
 }
 
@@ -124,7 +127,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# Provide a lists of languages which your site supports.
+
+LANGUAGE_CODE = 'en'
 
 TIME_ZONE = 'UTC'
 
@@ -133,6 +138,12 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+# Tell Django where the project's translation files should be.
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale'),
+)
 
 
 # Default primary key field type
@@ -153,3 +164,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATICFILES_DIRS = (
     os.path.join(CORE_DIR, 'core/static'),
 )
+
+
+
+MESSAGE_TAGS = {
+        messages.DEBUG: 'alert-secondary',
+        messages.INFO: 'alert-info',
+        messages.SUCCESS: 'alert-success',
+        messages.WARNING: 'alert-warning',
+        messages.ERROR: 'alert-danger',
+ }

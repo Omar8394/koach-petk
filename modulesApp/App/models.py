@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.conf import settings
 
 # Create your models here.
 
@@ -24,6 +24,8 @@ class AppPublico(models.Model):
     pais = models.IntegerField(blank=True, null=True)
     telefono_principal = models.TextField()
     direccion = models.TextField()
+    telegram_id = models.TextField(blank=True, null=True)
+    user_id = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, blank=True, null=True)
 
     def __str__(self):
         return self.nombre +" " +self.apellido

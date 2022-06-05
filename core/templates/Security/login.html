@@ -1,0 +1,47 @@
+{% extends 'Security/base.html' %}
+{% block ruta %}"{% url 'security:login' %}"{% endblock ruta %} 
+{% block preContenido %}{% endblock preContenido %}
+{% block contenidoForm %}
+{% block inputUsuario %}
+<div class="form-group row">
+  <div class="col-md-12 pr-0">
+      <div class="form-group pl-0 pr-0 pb-0">
+          <div class="input-group">
+              <div class="input-group-prepend">
+                  <span class="input-group-text">
+                      <i class="icon-user"></i>
+                  </span>
+              </div>
+              <div class="input-group-append" style="width: 85%;">
+                  <input type="text" name="username" class=" form-input mt-0" placeholder="Usuario" required>
+              </div>
+              
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock inputUsuario %}                            
+
+{% block inputClave %}
+<div class="form-group row">
+  <div class="col-md-12 pr-0">
+      <div class="form-group pl-0 pr-0 pb-0">
+          <div class="input-group">
+              <div class="input-group-prepend">
+                  <span class="input-group-text">
+                      <i class="icon-lock"></i>
+                  </span>
+              </div>
+              <div class="input-group-append" style="width: 85%;">
+                  <input type="password" name={% block namePassword %}"password"{% endblock namePassword %} class=" form-input mt-0" placeholder="Contraseña" required>
+              </div>
+          </div>
+      </div>
+       
+  </div>   
+</div>
+{% endblock inputClave %} 
+{% endblock contenidoForm %}
+{% block postContenido %}{% endblock postContenido %}
+
+     

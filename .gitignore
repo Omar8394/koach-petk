@@ -1,3 +1,7 @@
 ./.idea
 .env
 /env
+__pycache__*
+0*.py
+.idea
+.vscode

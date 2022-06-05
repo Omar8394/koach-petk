@@ -1,0 +1,47 @@
+{% extends 'Security/login.html' %}
+{% block ruta %}"{% url 'security:register' %}"{% endblock ruta %}
+{% block titulo %}Regístrarse{% endblock titulo %}
+{% block btnActionName %}Regístrar{% endblock btnActionName %}
+{% block classForm %}"formulario__register"{% endblock classForm %}
+{% block namePassword %}"password1"{% endblock namePassword %}"password1"
+{% block preContenido %}
+<div class="form-group row pb-0">
+    <div class="col-md-12 pr-0">
+        <div class="form-group pl-0 pr-0 pb-0">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="fa fa-envelope"></i>
+                    </span>
+                </div>
+                <div class="input-group-append" style="width: 85%;">
+                    <input type="text" name="email" class=" form-input mt-0" placeholder="Email" required>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>{% endblock preContenido %}
+{% block postContenido %}
+
+<div class="form-group row pb-0">
+    <div class="col-md-12 pr-0">
+        <div class="form-group pl-0 pr-0 pb-0">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="icon-lock"></i>
+                    </span>
+                </div>
+                <div class="input-group-append" style="width: 85%;">
+                    <input type="password" name="password2" class=" form-input mt-0" placeholder="Confirmar Contraseña" required>
+                </div>
+            </div>
+        </div>
+         
+    </div>   
+</div>
+{% endblock postContenido %}
+{% block footerActionLinks %}{% endblock footerActionLinks %}
+
+
