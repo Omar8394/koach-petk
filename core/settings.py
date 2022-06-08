@@ -13,6 +13,7 @@ import os
 from unipath import Path
 from django.contrib.messages import constants as messages
 import environ
+from django.utils.translation import gettext_lazy as _
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).parent
@@ -58,6 +59,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -83,6 +85,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.i18n'
             ],
         },
     },
@@ -129,7 +132,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Provide a lists of languages which your site supports.
 
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = 'es'
+
+LANGUAGES = [
+ ('es', _('Spanish')),
+ ('en', _('English')),
+]
+
 
 TIME_ZONE = 'UTC'
 
@@ -144,7 +153,6 @@ USE_TZ = True
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

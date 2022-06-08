@@ -1,4 +1,6 @@
-{% extends 'Security/base.html' %}
+{% extends 'base_login.html' %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 {% block ruta %}"{% url 'security:login' %}"{% endblock ruta %} 
 {% block preContenido %}{% endblock preContenido %}
 {% block contenidoForm %}
@@ -13,7 +15,7 @@
                   </span>
               </div>
               <div class="input-group-append" style="width: 85%;">
-                  <input type="text" name="username" class=" form-input mt-0" placeholder="Usuario" required>
+                  <input type="text" name="username" class=" form-input mt-0" placeholder={% translate "Usuario" %} required>
               </div>
               
           </div>
@@ -33,7 +35,7 @@
                   </span>
               </div>
               <div class="input-group-append" style="width: 85%;">
-                  <input type="password" name={% block namePassword %}"password"{% endblock namePassword %} class=" form-input mt-0" placeholder="Contraseña" required>
+                  <input type="password" name={% block namePassword %}"password"{% endblock namePassword %} class=" form-input mt-0" placeholder={% translate "Contraseña" %} required>
               </div>
           </div>
       </div>

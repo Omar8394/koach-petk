@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     {% load static%}
+    {% load i18n %}
+    {% get_current_language as LANGUAGE_CODE %}
 <head>
 
     <meta charset="UTF-8">
@@ -381,7 +383,7 @@
                 <ul class="navbar-nav topbar-nav align-items-center">
                     <li class="nav-item dropdown hidden-caret">
                         <a class="nav-link dropdown-toggle" href="#" id="opcionesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="text-span"><strong>Informacion</strong></span>  <i class="fa fa-caret-down"></i> 
+                            <span class="text-span"><strong>{% translate "Informacion" %} </strong></span>  <i class="fa fa-caret-down"></i> 
                         </a>
                         <ul class="dropdown-menu messages-notif-box animated fadeIn" aria-labelledby="opcionesDropdown">
                             <li>
@@ -405,7 +407,7 @@
 
                     <li class="nav-item dropdown hidden-caret">
                         <a class="nav-link dropdown-toggle" href="#" id="contactosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="text-span"> <strong>Contactanos</strong></span>  <i class="fa fa-caret-down"></i> 
+                            <span class="text-span"> <strong>{% translate "Contactanos" as contactanos %}{% blocktranslate %}{{contactanos}}{% endblocktranslate %} </strong></span>  <i class="fa fa-caret-down"></i> 
                         </a>
                         <ul class="dropdown-menu messages-notif-box animated fadeIn" aria-labelledby="contactosDropdown">
                             <li>
@@ -433,7 +435,7 @@
 
                     <li class="nav-item dropdown hidden-caret">
                         <a class="nav-link dropdown-toggle" href="#" id="serviciosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="text-span"><strong>Servicios</strong></span>  <i class="fa fa-caret-down"></i> 
+                            <span class="text-span"><strong>{% translate "Servicios" as servicios %}{% blocktranslate %}{{servicios}}{% endblocktranslate %} </strong></span>  <i class="fa fa-caret-down"></i> 
                         </a>
                         <ul class="dropdown-menu messages-notif-box animated fadeIn" aria-labelledby="serviciosDropdown">
                             <li>
@@ -464,10 +466,27 @@
 
                     <li class="nav-item dropdown hidden-caret">
                         <a class="nav-link " href="#" id="btn-login" role="button">
-                            <strong><span class="text-span">Login</span>  <i class="icon-login icon-large"></i></strong>
+                            <strong><span class="text-span">{% translate "Entrar" %}</span>  <i class="icon-login icon-large"></i></strong>
                             
                         </a>
                         							
+                    </li>
+                    <li>
+                       <form action="{% url 'set_language' %}" method="post">
+                           {% csrf_token %}
+                                <div class="form-group">
+                                  <select class="form-control" onchange="this.form.submit();" name="language" id="language">
+                                    {% get_current_language as LANGUAGE_CODE %}
+                                    {% get_available_languages as LANGUAGES %}
+                                    {% get_language_info_list for LANGUAGES as languages %}
+                                    {% for language in languages %}
+                                        <option value="{{language.code}}"{% if LANGUAGE_CODE == language.code  %}selected{% endif %}>
+                                            {{language.name_local|title}}({{language.code}})
+                                        </option>   
+                                    {% endfor %}
+                                  </select>
+                                </div>  
+                            </form>
                     </li>
 
                 </ul>
@@ -486,32 +505,32 @@
                     <ul class=" links ">
                         <li class="btn-links">
                             <a href="#section-a">
-                                <i class="icon-question icon-large"></i> Quienes Somos?
+                                <i class="icon-question icon-large"></i>{% translate "Quienes Somos?" %} 
                             </a>
                         </li>
                         <li class="btn-links">
                             <a href="#">
-                                <i class="icon-shuffle icon-large"></i> Mision/Vision
+                                <i class="icon-shuffle icon-large"></i>{% translate "Mision/Vision" %} 
                             </a>
                         </li>
                         <li class="btn-links">
                             <a href="#section-e">
-                                <i class="icon-directions icon-large"></i> Contactanos
+                                <i class="icon-directions icon-large"></i>{% blocktranslate %}{{contactanos}}{% endblocktranslate %} 
                             </a>
                         </li>
                         <li class="btn-links">
                             <a href="#">
-                                <i class="icon-handbag icon-large"></i> Planes
+                                <i class="icon-handbag icon-large"></i>{% translate "Planes" %} 
                             </a>
                         </li>
                         <li class="btn-links">
                             <a href="#">
-                                <i class="icon-location-pin icon-large"></i> Ubicacion
+                                <i class="icon-location-pin icon-large"></i> {% translate "Ubicacion" %} 
                             </a>
                         </li>
                         <li class="btn-links">
                             <a href="#">
-                                <i class="icon-wrench icon-large"></i> Servicios
+                                <i class="icon-wrench icon-large"></i> {% blocktranslate %}{{servicios}}{% endblocktranslate %} 
                             </a>
                         </li>
                         
@@ -523,7 +542,7 @@
                 <header id="showcase" class="grid">
                     <div class="bg-image"></div>
                     <div class="content-wrap">
-                        <h1><strong>Bienvenidos a Koach Soluciones</strong></h1>
+                        <h1><strong>{% translate "Bienvenidos a Koach Soluciones" %} </strong></h1>
 
                         <p> <strong>Lorem ipsum dolor sit amet consectetur, adipisicing elit. S
                             apiente architecto adipisci dicta nihil
@@ -940,8 +959,8 @@
                             <button type="button" class="close mostrar" id="btn-modal-close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                              </button>
-                             {% include 'Security/login.html' %}
-                             {% include 'Security/register.html'%}
+                             {% include 'login.html' %}
+                             {% include 'register.html'%}
                         </div>
 
 

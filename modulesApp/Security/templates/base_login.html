@@ -1,8 +1,9 @@
-
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 <form action={% block ruta %}{% endblock ruta %} method="post" class={% block classForm %}"formulario__login"{% endblock classForm %}>
     {% csrf_token %}
     <input type="hidden" name="next" value="{{ next }}">
-    <h2 class="mb-0">{% block titulo %}Iniciar Sesión{% endblock titulo %}</h2>
+    <h2 class="mb-0">{% block titulo %}{% translate "Iniciar Sesion" %}{% endblock titulo %}</h2>
     {% block mensajes %}
     {% if messages %} 
     {% for message in messages %} 
@@ -18,13 +19,13 @@
     {% block postContenido %}{% endblock postContenido %}  
     <div class="content-login">
         <button class="btn-login">
-            <span>{% block btnActionName %}Iniciar{% endblock btnActionName %}</span> 
+            <span>{% block btnActionName %}{% translate "Iniciar" %}{% endblock btnActionName %}</span> 
         </button>
     </div>
     <div class="d-flex justify-content-between mt-4 ">
         {% block footerActionLinks %}
-        <a class="login-links" href="">¿Olvido su Contraseña?</a>
-        <a class="login-links" href="">¿Cambiar Contraseña?</a>
+        <a class="login-links" href="">{% translate "¿Olvido su Contraseña?" %}</a>
+        <a class="login-links" href="">{% translate "¿Cambiar Contraseña?" %}</a>
         {% endblock footerActionLinks %}      
     </div>
 </form>
