@@ -1,10 +1,12 @@
 from django.template import loader
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required,permission_required
 # Create your views here.
 
 def index(request):
-    
+    if request.user.is_authenticated:
+        return redirect("Dashboard")
     context = {'mess':'Cristo me escuchas'}
     context['segment'] = 'index'
     html_template = loader.get_template( 'index.html' )

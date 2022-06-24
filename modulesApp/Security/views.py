@@ -5,8 +5,12 @@ from django.views import View
 from .forms import LoginForm, SignUpForm
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from .models import User
-from .methods import es_correo_valido
+from .methods import es_correo_valido,change_password
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password, check_password
+from django.http.response import JsonResponse
+
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -46,8 +50,52 @@ def register_view(request):
             else:
                 messages.error(request, form.errors.as_text())
     return render(request, "index.html",{"login_show":login_show})
-                
+ 
+@login_required(login_url="security/login/")
+def changePassword(request):
+    if request.method == 'POST':
+        actual_password = request.POST.get('password')
+        new_password = request.POST.get('password1')
+        # verificar encriptacion
+        if actual_password != new_password:
+            if check_password(actual_password, request.user.password):
+                change_password(request, new_password)
+                response = {
+                    'mensaje': 'Your password has been changed correctly',
+                    'tipo': 4,
+                    'titulo': 'Password changed successfully',
+                    'code': 'changed'
+                }
+                # operacion = TablasConfiguracion.objects.get(valor_elemento='change_passsword')
+                # modulo = TablasConfiguracion.objects.get(valor_elemento='module_security')
+                # descripcion = "Not Adiccional data!!!"
+                # LogSeguridad.objects.create(fecha_transaccion=datetime.today(), fk_cta_usuario=request.user,
+                #                             fk_tipo_operacion=operacion, modulo=modulo, valor_dato=descripcion)
+            else:
+                response = {
+                    'mensaje': 'the current password entered is incorrect, please verify your password and try again to change your password',
+                    'tipo': 5,
+                    'titulo': 'Incorrect Password'
+                }
+        else:
+            response = {
+                'mensaje': 'the password you want to change cannot be the same as the current password', 'tipo': 5,
+                'titulo': 'Same password'
+            }
+        return JsonResponse(response)
+    elif request.method == 'GET':
+        return render(request, "cambiarclave.html")
+    
+@login_required(login_url="security/login/")
+def changeSecretQuestion(request):
+    pass
 
+    
+@login_required(login_url="security/login/")
+def securitySettings(request):
+    return render(request, "securitySettings.html")
+
+@login_required(login_url="security/login/")
 def logout_view(request):
     logout(request)
     return redirect("/")
