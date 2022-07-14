@@ -35,8 +35,8 @@ msgid "¿Cambiar Contraseña?"
 msgstr "Change Password?"
 
 #: modulesApp/Security/templates/login.html:18
-msgid "Usuario"
-msgstr "User"
+msgid "Usuario o Correo electronico"
+msgstr "Username or Email"
 
 #: modulesApp/Security/templates/login.html:38
 msgid "Contraseña"

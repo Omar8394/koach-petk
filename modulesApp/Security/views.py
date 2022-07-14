@@ -90,7 +90,8 @@ def changePassword(request):
 def changeSecretQuestion(request):
     pass
 
-    
+
+
 @login_required(login_url="security/login/")
 def securitySettings(request):
     return render(request, "securitySettings.html")
