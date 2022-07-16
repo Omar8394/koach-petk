@@ -26,9 +26,11 @@ from django.views.static import serve
 urlpatterns = [
     path("", include("modulesApp.DashboardPortal.urls")),
     url(r'^i18n/', include('django.conf.urls.i18n')),
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     path("", include("modulesApp.App.urls")),
     path("", include("modulesApp.Comunication.urls")),
     path("", include("modulesApp.Planning.urls")),
+    path("Helping/", include("modulesApp.Helping.urls", namespace="helping")),
     path("security/", include("modulesApp.Security.urls",namespace="security")),
     path('admin/', admin.site.urls),
     

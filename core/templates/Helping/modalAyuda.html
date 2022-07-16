@@ -1,0 +1,50 @@
+
+
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title">Ayudas</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form id="formTopico" class="form needs-validation was-validated">
+            <div class="modal-body">
+               <div class="form-row">
+                  <div class="form-group col-12">
+                     <label for="padreTopic" class="col-form-label">Tipo de Ayuda</label>
+                     <select class="custom-select" name="tipo" id="padreTopic" required>
+                        <option value="" disabled {% if not data %}selected{% endif %}>Tipo de ayuda</option>
+                        <option value="1" {% if data %}{% if data.tipo == 1 %}selected{% endif %}{% endif %}>Manuales</option>
+                        <option value="2" {% if data %}{% if data.tipo == 2 %}selected{% endif %}{% endif %}>Ayudas</option>
+                        <option value="3" {% if data %}{% if data.tipo == 3 %}selected{% endif %}{% endif %}>Tutoriales</option>
+                        <option value="4" {% if data %}{% if data.tipo == 4 %}selected{% endif %}{% endif %}>Preguntas Frecuentes</option>
+                     </select>
+                     
+                     <div class="invalid-feedback">Debes seleccionar una ayuda</div>
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-12">
+                     <label for="descriptionTopic" class="col-form-label">Titulo</label>
+                     <input type="text" class="form-control" name="titulo" id="descriptionTopic"
+                        placeholder="Enter a title" {% if data %}value = {{ data.titulo }}{% endif %} required>
+                     <div class="invalid-feedback">Debes escribir un titulo</div>
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-12">
+                     <label for="resumenTopic" class="col-form-label">Descripcion</label>
+                     <textarea required class="form-control" name="descripcion" id="resumenTopic"
+                        placeholder="Enter a description here">{% if data %}{{ data.descripcion }}{% endif %}</textarea>
+                     <div class="invalid-feedback">Debes escribir una descripcion para la ayuda</div>
+                  </div>
+               </div>
+            </div>
+            
+            <div class="modal-footer color-footer-modal">
+               <button type="button" class="btn btn-radius btn-naranja mr-auto" data-dismiss="modal"><i
+                     class="fas fa-arrow-left mr-2"></i>Back</button>
+               <button type="submit" class="btn btn-radius btn-azul">Save<i class="fas fa-save ml-2"></i></button>
+            </div>
+         </form>
+      </div>

@@ -1,0 +1,446 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %}{% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<style>
+
+   .carousel-indicators>li.active{
+      opacity: 100%;
+   }
+   .carousel-indicators>li{
+      opacity: 25%;
+   }
+
+   .form-control:valid{
+      background-position: right calc(.375em + .1875rem) center;
+      background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+      background-repeat: no-repeat;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+   }
+   
+   .form-control:invalid{
+      background-position: right calc(.375em + .1875rem) center;
+      background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+      background-repeat: no-repeat;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+   }
+
+   .custom-select:valid{
+      background:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") right .75rem center/8px 10px no-repeat,#fff url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e") center right 1.75rem/calc(.75em + .375rem) calc(.75em + .375rem) no-repeat;
+   }
+
+   .custom-select:invalid{
+      background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") right .75rem center/8px 10px no-repeat,#fff url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e") center right 1.75rem/calc(.75em + .375rem) calc(.75em + .375rem) no-repeat;
+   }
+
+   .btn-radius{
+        border: 3px solid rgba(100, 100, 100, 0.1);
+        border-radius: 3rem;
+        color: #fff;
+        cursor: pointer;
+        padding: 10px;
+        width: 130px;
+        transition: 0.6s;
+    }
+    .btn-azul{
+        background: none;
+        background-size: 300%;
+        background-image: linear-gradient(to left, #00B7DA, #161569, #00B7DA);
+    }
+    .btn-mora{
+        background: none;
+        background-size: 300%;
+        background-image: linear-gradient(to left, #A950A1, #2D3A54, #A950A1);
+    }
+    .btn-rosa{
+        background: none;
+        background-size: 300%;
+        background-image: linear-gradient(to left, #ffcae3, #ff499d, #ffcae3);
+    }
+    .btn-naranja{
+        background: none;
+        background-size: 300%;
+        background-image: linear-gradient(to left, #ff5733, #b81b57, #ff5733);
+    }
+    .btn-radius:hover{
+        background-position: right;
+    }
+
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="content">
+   <div class="page-inner">
+
+      <div class="page-header mb-4">
+         <h4 class="page-title">Ayudas</h4>
+         <ul class="breadcrumbs">
+            <li class="nav-home">
+               <a href="{% url 'Dashboard' %}">
+                  <i class="flaticon-home"></i>
+               </a>
+            </li>
+            <li class="separator">
+               <i class="flaticon-right-arrow"></i>
+            </li>
+            <li class="nav-item">
+               <span>Ayudas</span>
+            </li>
+            <li class="separator">
+               <i class="flaticon-right-arrow"></i>
+            </li>
+            <li class="nav-item">
+               <a href="#">Nuevo</a>
+            </li>
+         </ul>
+      </div>
+      
+      <div class="page-category">
+
+            <main class="card shadow mb-4">
+               
+               <section class="p-5">
+
+                  <ul class="card-list">
+                     <li class="card-list-item">
+                        <div class="card-list-item-inner">
+                           <div class="card-list-item-title">Agregar nueva ayuda</div>
+                           <div class="card-list-item-actions">
+                              <div onclick="openAddTopic()" class="btn btn-icon btn-success btn-round add-btn btn-card-lg">
+                                 <i class="fas fa-plus"></i>
+                              </div>
+                           </div>
+                        </div>
+                     </li>
+                  </ul>
+
+                  <ul class="card-list" id="listaPaginas">
+
+                  </ul>
+
+               </section>
+
+            </main>
+       
+      </div>
+
+   </div>
+</div>
+
+<!-- Modal nuevo carrusel -->
+<div class="modal fade p-0" style="background-color: rgba(0, 0, 0, 0.9);" data-backdrop="static" data-keyboard="false" id="addNewCarrusel" tabindex="-1" role="dialog">
+   <div class="modal-dialog modal-dialog-centered" style="justify-content: center;" role="document" id="addNewCarruselContenido">
+
+   </div>
+</div>
+
+<!-- Modal nuevo tópico -->
+<div class="modal fade" id="addNewModal" tabindex="-1" role="dialog">
+   <div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="addNewModalContent">
+
+
+
+   </div>
+</div>
+<!-- Modal escoger actividad -->
+<div class="modal fade" id="addChooseActivities" tabindex="-1" role="dialog">
+   <div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="modalContentChoose">
+
+   </div>
+</div>
+
+<!-- Modal nueva evaluación -->
+<div class="modal fade" id="addNewTest" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" >
+   <div class="modal-dialog  modal-dialog-centered modal-lg" role="document" id="modalContentTest">
+
+
+   </div>
+</div>
+
+<!-- Modal banco de recursos -->
+<div class="modal fade" id="bankModal" tabindex="-1" role="dialog">
+   <div class="modal-dialog  modal-dialog-centered" role="document" id="bankModalContent">
+
+   </div>
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+
+<script>
+
+
+   $(document).ready(function () {
+
+
+      fetch("{% url 'helping:modalGuardarAyuda' %}", {
+         ...fetchObject
+      }).then(async (res) => {
+         
+         document.getElementById("listaPaginas").innerHTML = await res.text()
+
+      })
+
+   });
+
+   const showChilds = (fk, id = -1) => {
+
+      fetch("{% url 'helping:modalAddPagina'%}", {
+         ...fetchObject,
+         body: JSON.stringify({
+            id,
+            fk
+         })
+      }).then(async (res) => {
+         document.getElementById("modalContentTest").innerHTML = await res.text()
+      }).then(() => {
+
+         $("#addNewTest").modal("show")
+
+         $(`#summernote`).summernote({
+            dialogsInBody: true,
+            height: 600,
+            placeholder: 'Escriba su contenido aqui...',
+            disableDragAndDrop: true,
+            toolbar: [
+               ['style', ['style']],
+               ['font', ['bold', 'underline', 'clear']],
+               ['fontname', ['fontname']],
+               ['color', ['color']],
+               ['para', ['ul', 'ol', 'paragraph']],
+               ['table', ['table']],
+               ['insert', ['picture']],
+            ],
+            callbacks: {
+               onImageUpload: function(image){
+                  subirImagen(image[0])
+               },
+               onMediaDelete : function(target) {
+                  borrarImagen($(target[0]).attr('src'))
+               },
+            }
+         });
+
+         const subirImagen = (file) =>{
+               
+         data = new FormData();
+         data.append("imagen", file);
+
+            fetch("{% url 'helping:modalGuardarImagen' %}", {
+               ...fetchObject,
+               body:
+                  data
+            }).then(async (res) => {
+
+               const img = await res.text()
+               $('#summernote').summernote("pasteHTML", img);
+
+            })
+         
+         }
+
+         const borrarImagen = (file) =>{
+
+            fetch("{% url 'helping:modalEliminarImagen' %}", {
+               ...fetchObject,
+               body:JSON.stringify({
+                  file
+               })
+            }).then(async (res) => {
+               
+            })
+         
+         }
+
+         const formPaginas = document.getElementById("formPaginas")
+         formPaginas.addEventListener("submit", (e) => {
+
+            e.preventDefault()
+
+            if (!$('#summernote').summernote('isEmpty')){
+
+               const formData = new FormData(formPaginas);
+               const data = Object.fromEntries(formData.entries())
+               
+               fetch("{% url 'helping:modalGuardarPagina' %}", {
+                  ...fetchObject,
+                  body: JSON.stringify({
+                     data,
+                     id,
+                     fk
+                  })
+               }).then(async (res) => {
+                  
+                  $("#addNewTest").modal("hide")
+                  alertaMensajitos(4,'Muy Bien!','Registro guardado')
+
+               })
+
+            }else{
+               alertaMensajitos(5,'Alerta','Debes agregar algun contenido...')
+            }
+            
+         })
+
+      })
+
+   }
+  
+
+   const updateModel = (url, method, data, id) => {
+      return fetch(url, {
+         ...fetchObject,
+         body: JSON.stringify({
+            method,
+            data,
+            id,
+            padreActivity: selectedActivity
+         })
+      })
+   }
+
+   const openAddActivity = (id) => {
+
+      return fetch("{% url 'helping:modalHijosPagina'%}", {
+         ...fetchObject,
+         body: JSON.stringify({
+            id
+         })
+      })
+         .then(async (res) => {
+            document.getElementById("modalContentChoose").innerHTML = await res.text()
+         })
+         .then(() => {
+            $("#addChooseActivities").modal("show")
+         })
+   }
+
+   
+   const openDeleteTopic = async (id) => {
+
+      const elimino = await alertaMensajitos(6, 'Atencion!', 'Desea eliminar este archivo')
+
+      if (elimino) {
+
+         fetch("{% url 'helping:modalEliminarAyuda'%}", {
+            ...fetchObject,
+            body: JSON.stringify({
+               id
+            })
+         })
+            .then(async (res) => {
+
+               
+               document.getElementById("listaPaginas").innerHTML = await res.text()
+                  
+               $("#addNewModal").modal("hide")
+               // const text = JSON.parse(await res.text())
+               // if (text.message == "error") alerta(5)
+               // else alerta(4)
+            })
+            // .then(() => {
+            //    renderContent()
+            // })
+
+      }
+   }
+   
+   const openDeleteHijos = async (fk, id) => {
+
+      const elimino = await alertaMensajitos(6, 'Atencion!', 'Desea eliminar este archivo')
+
+      if (elimino) {
+
+         fetch("{% url 'helping:modalEliminarHijoPagina'%}", {
+            ...fetchObject,
+            body: JSON.stringify({
+               id,
+               fk
+            })
+         })
+            .then(async (res) => {
+
+               
+               document.getElementById("modalContentChoose").innerHTML = await res.text()
+                  
+               // const text = JSON.parse(await res.text())
+               // if (text.message == "error") alerta(5)
+               // else alerta(4)
+            })
+            // .then(() => {
+            //    renderContent()
+            // })
+
+      }
+
+   }
+ 
+ 
+   const openCarrusel = (id = -1) => {
+      
+            // $("#addNewCarrusel").modal("show")
+      fetch("{% url 'helping:modalAddCarruserl'%}", {
+         ...fetchObject,
+         body: JSON.stringify({
+            id
+         })
+      }).then(async (res) => {
+
+         const text = await res.text()
+         if(text){
+            document.getElementById("addNewCarruselContenido").innerHTML = text
+            $('.carousel').carousel({interval: 0})
+            $("#addNewCarrusel").modal("show")
+         }else
+            alertaMensajitos(7, 'Alerta!', 'No hay paginas asignadas para esta ayuda')
+         
+
+      })
+
+   }
+
+   const openAddTopic = (id = -1) => {
+      
+      fetch("{% url 'helping:modalAddAyuda'%}", {
+         ...fetchObject,
+         body: JSON.stringify({
+            id
+         })
+      }).then(async (res) => {
+         document.getElementById("addNewModalContent").innerHTML = await res.text()
+      })
+         .then(() => {
+            $("#addNewModal").modal("show")
+            const formTopico = document.getElementById("formTopico")
+           
+            formTopico.addEventListener("submit", (e) => {
+
+               e.preventDefault()
+               
+               const formData = new FormData(formTopico);
+               const data = Object.fromEntries(formData.entries())
+               
+               fetch("{% url 'helping:modalGuardarAyuda' %}", {
+                  ...fetchObject,
+                  body: JSON.stringify({
+                     data,
+                     id
+                  })
+               }).then(async (res) => {
+                  
+                  document.getElementById("listaPaginas").innerHTML = await res.text()
+                  $("#addNewModal").modal("hide")
+                  alertaMensajitos(4, 'Muy Bien!', 'Registro guardado')
+
+               })
+            })
+         })
+   }
+   
+</script>
+{% endblock javascripts %}

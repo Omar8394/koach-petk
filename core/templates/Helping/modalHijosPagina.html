@@ -1,0 +1,47 @@
+
+      <div class="modal-content">
+        <div class="modal-header">
+           <h5 class="modal-title">{% if data %}{{ data.titulo }}{% endif %}</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+           </button>
+        </div>
+
+        <div class="card">
+           <main class="card-body is-loading-lg">
+              <ul class="card-list" id="listaPaginas">
+
+                {% for page in paginas %}
+
+                <li class="card-list-item">
+                    <div class="card-list-item-inner">
+                       <div class="card-list-item-title">{{ forloop.counter }}</div>
+                       <div class="card-list-item-actions">
+                          <div class="btn-group" role="group">
+                          
+                             <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip"
+                                data-placement="top" title="Editar" onclick="showChilds('{{data.idtutorial}}', '{{page.idpagina}}')">
+                                <i class="fas fa-edit"></i>
+                             </button>
+                             <button type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"
+                                data-placement="top" title="Eliminar" onclick="openDeleteHijos('{{data.idtutorial}}', '{{page.idpagina}}')">
+                                <i class="fas fa-trash-alt"></i>
+                             </button>
+
+                          </div>
+                       </div>
+                    </div>
+                 </li>
+
+                 {% empty %}
+                 <li class="card-list-item">
+                    <div class="card-list-item-inner">
+                        <div class="card-list-item-title">Sin contenido</div>
+                     </div>
+                 </li>
+                 {% endfor %}
+
+              </ul>
+           </main>
+        </div>
+     </div>

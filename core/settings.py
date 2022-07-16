@@ -52,7 +52,8 @@ INSTALLED_APPS = [
     'modulesApp.Configuration',
     'modulesApp.DashboardPortal',
     'modulesApp.Events_Success',
-    'modulesApp.Security'
+    'modulesApp.Security',
+    'modulesApp.Helping',
 ]
 
 MIDDLEWARE = [

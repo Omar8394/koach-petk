@@ -12,6 +12,7 @@ urlpatterns = [
     # path('', views.index, name='home'),
     path('App/Favorito/mostrarfavoritos/', views.mostrarfavoritos, name='mostrarfavoritos'), 
     path('App/Favorito/añadirFavoritos/', views.añadirFavoritos, name='añadirFavoritos'),
+    path('App/configuracion/', views.configuracion, name='configuracion'),
     
     #Calendar & index settings
     

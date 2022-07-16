@@ -4,7 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from django.template import loader
 
 from ..App.models import ConfMisfavoritos
-
+from django.shortcuts import render
 
 # Create your views here.
 
@@ -92,3 +92,7 @@ def añadirFavoritos(request):
 
                 
                 
+
+def configuracion(request):
+    
+    return render(request, "App/portalSettings.html")

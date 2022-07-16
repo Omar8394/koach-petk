@@ -1,0 +1,33 @@
+{% for page in data%}
+<li class="card-list-item">
+    <div class="card-list-item-inner">
+       <div class="card-list-item-title" onclick="showContent('{{page.idtutorial}}')">{{page.titulo}}</div>
+       <div class="card-list-item-actions">
+          <div class="btn-group" role="group">
+          
+            <button type="button" class="btn btn-icon btn-sm btn-success" data-placement="top" title="Agragar pagina"
+            data-toggle="tooltip" data-target="tooltip" onclick="showChilds('{{page.idtutorial}}')">
+                <i class="fas fa-plus"></i>
+            </button>
+            <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip"
+            data-placement="top" title="Editar" onclick="openAddTopic('{{page.idtutorial}}')">
+                <i class="fas fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"
+            data-placement="top" title="Eliminar" onclick="openDeleteTopic('{{page.idtutorial}}')">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+            <button type="button" class="btn btn-icon btn-sm btn-warning ml-1" data-toggle="tooltip"
+            data-placement="top" title="Acceder paginas" onclick="openAddActivity('{{page.idtutorial}}')">
+                <i class="fas fa-clipboard"></i>
+            </button>
+            
+            <button type="button" class="btn btn-icon btn-sm btn-dark ml-1" data-toggle="tooltip"
+            data-placement="top" title="Mostrar paginas" onclick="openCarrusel('{{page.idtutorial}}')">
+                <i class="fas fa-list-ol"></i>
+            </button>
+          </div>
+       </div>
+    </div>
+ </li>
+ {% endfor %}
