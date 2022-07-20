@@ -14,19 +14,27 @@
                 {% for page in paginas %}
 
                 <li class="card-list-item">
-                    <div class="card-list-item-inner">
-                       <div class="card-list-item-title">{{ forloop.counter }}</div>
+                    <div class="card-list-item-inner {% if page.idpagina == orden.idpagina %}bg-primary{% endif %}">
+                       <div class="card-list-item-title">{{ page.ordenamiento }}{% if page.titulo %} - {{ page.titulo  | truncatechars:20}}{% endif %}</div>
                        <div class="card-list-item-actions">
                           <div class="btn-group" role="group">
                           
-                             <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip"
-                                data-placement="top" title="Editar" onclick="showChilds('{{data.idtutorial}}', '{{page.idpagina}}')">
-                                <i class="fas fa-edit"></i>
-                             </button>
-                             <button type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"
-                                data-placement="top" title="Eliminar" onclick="openDeleteHijos('{{data.idtutorial}}', '{{page.idpagina}}')">
-                                <i class="fas fa-trash-alt"></i>
-                             </button>
+                              <button type="button" class="btn btn-icon btn-sm btn-success ml-1" data-toggle="tooltip"
+                                 data-placement="top" title="Editar" onclick="move('{{data.idtutorial}}', '{{page.idpagina}}', 0)">
+                                 <i class="fa fa-arrow-up"></i>
+                              </button>
+                              <button type="button" class="btn btn-icon btn-sm btn-success ml-1" data-toggle="tooltip"
+                                 data-placement="top" title="Editar" onclick="move('{{data.idtutorial}}', '{{page.idpagina}}', 1)">
+                                 <i class="fa fa-arrow-down"></i>
+                              </button>
+                              <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip"
+                                 data-placement="top" title="Editar" onclick="showChilds('{{data.idtutorial}}', '{{page.idpagina}}')">
+                                 <i class="fas fa-edit"></i>
+                              </button>
+                              <button type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"
+                                 data-placement="top" title="Eliminar" onclick="openDeleteHijos('{{data.idtutorial}}', '{{page.idpagina}}')">
+                                 <i class="fas fa-trash-alt"></i>
+                              </button>
 
                           </div>
                        </div>

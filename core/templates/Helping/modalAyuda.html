@@ -7,7 +7,7 @@
                <span aria-hidden="true">&times;</span>
             </button>
          </div>
-         <form id="formTopico" class="form needs-validation was-validated">
+         <form id="formAyuda" class="form needs-validation was-validated">
             <div class="modal-body">
                <div class="form-row">
                   <div class="form-group col-12">
@@ -26,16 +26,14 @@
                <div class="form-row">
                   <div class="form-group col-12">
                      <label for="descriptionTopic" class="col-form-label">Titulo</label>
-                     <input type="text" class="form-control" name="titulo" id="descriptionTopic"
-                        placeholder="Enter a title" {% if data %}value = {{ data.titulo }}{% endif %} required>
+                     <input type="text" class="form-control" name="titulo" maxlength="15" id="descriptionTopic" {% if data %}value = "{{ data.titulo }}"{% endif %} required>
                      <div class="invalid-feedback">Debes escribir un titulo</div>
                   </div>
                </div>
                <div class="form-row">
                   <div class="form-group col-12">
                      <label for="resumenTopic" class="col-form-label">Descripcion</label>
-                     <textarea required class="form-control" name="descripcion" id="resumenTopic"
-                        placeholder="Enter a description here">{% if data %}{{ data.descripcion }}{% endif %}</textarea>
+                     <textarea required class="form-control" name="descripcion" id="resumenTopic">{% if data %}{{ data.descripcion }}{% endif %}</textarea>
                      <div class="invalid-feedback">Debes escribir una descripcion para la ayuda</div>
                   </div>
                </div>

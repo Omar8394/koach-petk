@@ -19,6 +19,7 @@ urlpatterns = [
     path('modalAddCarruserl', views.modalAddCarruserl, name='modalAddCarruserl'),
     path('modalGuardarImagen', views.modalGuardarImagen, name='modalGuardarImagen'),
     path('modalEliminarImagen', views.modalEliminarImagen, name='modalEliminarImagen'),
+    path('modalPaginaMover', views.modalPaginaMover, name='modalPaginaMover'),
     
 
 ]

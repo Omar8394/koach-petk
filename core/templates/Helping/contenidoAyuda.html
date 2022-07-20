@@ -10,11 +10,11 @@
                 <i class="fas fa-plus"></i>
             </button>
             <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip"
-            data-placement="top" title="Editar" onclick="openAddTopic('{{page.idtutorial}}')">
+            data-placement="top" title="Editar" onclick="openAddAyuda('{{page.idtutorial}}')">
                 <i class="fas fa-edit"></i>
             </button>
             <button type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"
-            data-placement="top" title="Eliminar" onclick="openDeleteTopic('{{page.idtutorial}}')">
+            data-placement="top" title="Eliminar" onclick="openDeleteAyuda('{{page.idtutorial}}')">
                 <i class="fas fa-trash-alt"></i>
             </button>
             <button type="button" class="btn btn-icon btn-sm btn-warning ml-1" data-toggle="tooltip"
@@ -29,5 +29,6 @@
           </div>
        </div>
     </div>
+    <div id="contentAyuda{{page.idtutorial}}" class="card-list-item-descripcion card-list-item-close"><strong>Descripcion:</strong> &nbsp;{{page.descripcion}}</div>
  </li>
  {% endfor %}

@@ -1,24 +1,30 @@
 
-      <div class="modal-content">
-        <div class="modal-header">
-           <h5 class="modal-title">{% if data %}{{ data.titulo }}{% endif %}</h5>
-           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-           </button>
-        </div>
-        <form id="formPaginas" class="form">
-           <div class="modal-body">
-              <div class="form-row">
-                 <div class="form-group col-12">
-                    <textarea class="form-control" name="descripcion" id="summernote"
-                       placeholder="Enter a description here">{% if pagina %}{{ pagina.contenido }}{% endif %}</textarea>
-                 </div>
-              </div>
-           </div>
-           <div class="modal-footer color-footer-modal">
-              <button type="button" class="btn btn-radius btn-naranja mr-auto" data-dismiss="modal"><i
-                    class="fas fa-arrow-left mr-2"></i>Atras</button>
-              <button type="submit" class="btn btn-radius btn-azul">Guardar<i class="fas fa-save ml-2"></i></button>
-           </div>
-        </form>
-     </div>
+<div class="modal-content">
+   <div class="modal-header">
+      <h5 class="modal-title">{% if pagina and pagina.titulo %}{{ pagina.titulo }}{% else %}{{data.titulo}}{% endif %}</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+         <span aria-hidden="true">&times;</span>
+      </button>
+   </div>
+   <form id="formPaginas" class="form">
+      <div class="modal-body">
+         <div class="form-row">
+            <div class="form-group col-12">
+               <label for="tituloPagina" class="col-form-label">Titulo</label>
+               <input type="text" class="form-control" name="titulo" id="tituloPagina" maxlength="50"
+                  placeholder="Escriba un titulo" {% if pagina and pagina.titulo %}value="{{ pagina.titulo }}"{% endif %}>
+            </div>
+         </div>
+         <div class="form-row">
+            <div class="form-group col-12">
+               <textarea class="form-control" name="descripcion" id="summernote">{% if pagina %}{{ pagina.contenido }}{% endif %}</textarea>
+            </div>
+         </div>
+      </div>
+      <div class="modal-footer color-footer-modal">
+         <button type="button" class="btn btn-radius btn-naranja mr-auto" data-dismiss="modal">
+            <i class="fas fa-arrow-left mr-2"></i>Atras</button>
+         <button type="submit" class="btn btn-radius btn-azul">Guardar<i class="fas fa-save ml-2"></i></button>
+      </div>
+   </form>
+</div>
