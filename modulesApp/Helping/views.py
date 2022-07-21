@@ -32,7 +32,6 @@ def modalAddPagina(request):
             if int(id) > 0:
 
                 paginas=paginasHelping.objects.get(idpagina=id)
-                print(paginas.titulo)
                 context = {'data': helping, 'pagina' : paginas}
  
     html_template = (loader.get_template('Helping/modalPagina.html'))
@@ -244,9 +243,10 @@ def modalEliminarHijoPagina(request):
             paginas=paginasHelping.objects.filter(fk_tutorial__idtutorial=fk, ordenamiento__gte=pagina.ordenamiento)
 
             for pg in paginas:
-                print(pg.ordenamiento)
+
                 pg.ordenamiento = pg.ordenamiento - 1
                 pg.save()
+                
             pagina.delete()
 
         helping=tutoriales.objects.get(idtutorial=fk)

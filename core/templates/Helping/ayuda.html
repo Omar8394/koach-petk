@@ -1,4 +1,5 @@
 {% extends "layouts/base.html" %}
+{% load i18n %}
 {% load static %}
 
 {% block title %}{% endblock %}
@@ -78,7 +79,7 @@
    <div class="page-inner">
 
       <div class="page-header mb-4">
-         <h4 class="page-title">Ayudas</h4>
+         <h4 class="page-title">{% translate "Ayudas" %}</h4>
          <ul class="breadcrumbs">
             <li class="nav-home">
                <a href="{% url 'Dashboard' %}">
@@ -89,13 +90,13 @@
                <i class="flaticon-right-arrow"></i>
             </li>
             <li class="nav-item">
-               <span>Ayudas</span>
+               <span>{% translate "Ayudas" %}</span>
             </li>
             <li class="separator">
                <i class="flaticon-right-arrow"></i>
             </li>
             <li class="nav-item">
-               <a href="#">Nuevo</a>
+               <a href="#">{% translate "Nuevo" %}</a>
             </li>
          </ul>
       </div>
@@ -109,7 +110,7 @@
                   <ul class="card-list">
                      <li class="card-list-item">
                         <div class="card-list-item-inner">
-                           <div class="card-list-item-title">Agregar nueva ayuda</div>
+                           <div class="card-list-item-title">{% translate "Agregar nueva ayuda" %}</div>
                            <div class="card-list-item-actions">
                               <div onclick="openAddAyuda()" class="btn btn-icon btn-success btn-round add-btn btn-card-lg">
                                  <i class="fas fa-plus"></i>
@@ -281,13 +282,13 @@
                      document.getElementById("modalContentChoose").innerHTML = await res.text()
 
                   $("#addNewTest").modal("hide")
-                  alertaMensajitos(4,'Muy Bien!','Registro guardado')
+                  alertaMensajitos(4,"{% translate 'Muy Bien!' %}","{% translate 'Registro guardado' %}")
 
                })
 
             }else{
 
-               alertaMensajitos(5,'Alerta','Debes agregar algun contenido...')
+               alertaMensajitos(5,"{% translate 'Alerta' %}","{% translate 'Debes agregar algun contenido...' %}")
 
             }
             
@@ -329,7 +330,7 @@
    
    const openDeleteAyuda = async (id) => {
 
-      const elimino = await alertaMensajitos(6, 'Atencion!', 'Desea eliminar este archivo')
+      const elimino = await alertaMensajitos(6, "{% translate 'Atencion!' %}", "{% translate 'Desea eliminar este archivo' %}")
 
       if (elimino) {
 
@@ -363,7 +364,7 @@
 
    const openDeleteHijos = async (fk, id) => {
 
-      const elimino = await alertaMensajitos(6, 'Atencion!', 'Desea eliminar este archivo')
+      const elimino = await alertaMensajitos(6, "{% translate 'Atencion!' %}", "{% translate 'Desea eliminar este archivo' %}")
 
       if (elimino) {
 
@@ -408,7 +409,7 @@
             $('.carousel').carousel({interval: 0})
             $("#addNewCarrusel").modal("show")
          }else
-            alertaMensajitos(7, 'Alerta!', 'No hay paginas asignadas para esta ayuda')
+            alertaMensajitos(7, "{% translate 'Alerta!' %}", "{% translate 'No hay paginas asignadas para esta ayuda' %}")
          
 
       })
@@ -446,7 +447,7 @@
                   
                   document.getElementById("listaPaginas").innerHTML = await res.text()
                   $("#addNewModal").modal("hide")
-                  alertaMensajitos(4, 'Muy Bien!', 'Registro guardado')
+                  alertaMensajitos(4, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}")
 
                })
             })

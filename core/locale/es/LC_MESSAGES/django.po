@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-08 04:37-0400\n"
+"POT-Creation-Date: 2022-07-21 12:46-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,56 +18,189 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: core/settings.py:138
+#: .\core\settings.py:139
 msgid "Spanish"
 msgstr ""
 
-#: core/settings.py:139
+#: .\core\settings.py:140
 msgid "English"
 msgstr ""
 
-#: core/templates/index.html:386
+#: .\core\templates\Helping\ayuda.html:82
+#: .\core\templates\Helping\ayuda.html:93
+#: .\core\templates\Helping\modalAyuda.html:6
+msgid "Ayudas"
+msgstr ""
+
+#: .\core\templates\Helping\ayuda.html:99
+msgid "Nuevo"
+msgstr ""
+
+#: .\core\templates\Helping\ayuda.html:113
+msgid "Agregar nueva ayuda"
+msgstr ""
+
+#: .\core\templates\Helping\ayuda.html:285
+#: .\core\templates\Helping\ayuda.html:450
+msgid "Muy Bien!"
+msgstr ""
+
+#: .\core\templates\Helping\ayuda.html:285
+#: .\core\templates\Helping\ayuda.html:450
+msgid "Registro guardado"
+msgstr ""
+
+#: .\core\templates\Helping\ayuda.html:291
+msgid "Alerta"
+msgstr ""
+
+#: .\core\templates\Helping\ayuda.html:291
+msgid "Debes agregar algun contenido..."
+msgstr ""
+
+#: .\core\templates\Helping\ayuda.html:333
+#: .\core\templates\Helping\ayuda.html:367
+msgid "Atencion!"
+msgstr ""
+
+#: .\core\templates\Helping\ayuda.html:333
+#: .\core\templates\Helping\ayuda.html:367
+msgid "Desea eliminar este archivo"
+msgstr ""
+
+#: .\core\templates\Helping\ayuda.html:412
+msgid "Alerta!"
+msgstr ""
+
+#: .\core\templates\Helping\ayuda.html:412
+msgid "No hay paginas asignadas para esta ayuda"
+msgstr ""
+
+#: .\core\templates\Helping\contenidoAyuda.html:9
+msgid "Agragar pagina"
+msgstr ""
+
+#: .\core\templates\Helping\contenidoAyuda.html:14
+#: .\core\templates\Helping\modalHijosPagina.html:32
+msgid "Editar"
+msgstr ""
+
+#: .\core\templates\Helping\contenidoAyuda.html:18
+#: .\core\templates\Helping\modalHijosPagina.html:36
+msgid "Eliminar"
+msgstr ""
+
+#: .\core\templates\Helping\contenidoAyuda.html:22
+msgid "Acceder paginas"
+msgstr ""
+
+#: .\core\templates\Helping\contenidoAyuda.html:27
+msgid "Mostrar paginas"
+msgstr ""
+
+#: .\core\templates\Helping\contenidoAyuda.html:33
+#: .\core\templates\Helping\modalAyuda.html:36
+msgid "Descripcion"
+msgstr ""
+
+#: .\core\templates\Helping\modalAyuda.html:15
+msgid "Tipo de Ayuda"
+msgstr ""
+
+#: .\core\templates\Helping\modalAyuda.html:24
+msgid "Debes seleccionar una ayuda"
+msgstr ""
+
+#: .\core\templates\Helping\modalAyuda.html:29
+#: .\core\templates\Helping\modalPagina.html:14
+msgid "Titulo"
+msgstr ""
+
+#: .\core\templates\Helping\modalAyuda.html:31
+msgid "Debes escribir un titulo"
+msgstr ""
+
+#: .\core\templates\Helping\modalAyuda.html:38
+msgid "Debes escribir una descripcion para la ayuda"
+msgstr ""
+
+#: .\core\templates\Helping\modalAyuda.html:45
+#: .\core\templates\Helping\modalPagina.html:27
+msgid "Atras"
+msgstr ""
+
+#: .\core\templates\Helping\modalAyuda.html:46
+#: .\core\templates\Helping\modalPagina.html:28
+msgid "Guardar"
+msgstr ""
+
+#: .\core\templates\Helping\modalCarrusel.html:38
+#: .\core\templates\Helping\modalHijosPagina.html:48
+msgid "Sin contenido"
+msgstr ""
+
+#: .\core\templates\Helping\modalCarrusel.html:46
+msgid "Anterior"
+msgstr ""
+
+#: .\core\templates\Helping\modalCarrusel.html:50
+msgid "Siguiente"
+msgstr ""
+
+#: .\core\templates\Helping\modalHijosPagina.html:24
+msgid "Subir"
+msgstr ""
+
+#: .\core\templates\Helping\modalHijosPagina.html:28
+msgid "Bajar"
+msgstr ""
+
+#: .\core\templates\Helping\modalPagina.html:16
+msgid "Escriba un titulo"
+msgstr ""
+
+#: .\core\templates\index.html:386
 msgid "Informacion"
 msgstr ""
 
-#: core/templates/index.html:410
+#: .\core\templates\index.html:410
 msgid "Contactanos"
 msgstr ""
 
-#: core/templates/index.html:410 core/templates/index.html:518
+#: .\core\templates\index.html:410 .\core\templates\index.html:518
 #, python-format
 msgid "%(contactanos)s"
 msgstr ""
 
-#: core/templates/index.html:438
+#: .\core\templates\index.html:438
 msgid "Servicios"
 msgstr ""
 
-#: core/templates/index.html:438 core/templates/index.html:533
+#: .\core\templates\index.html:438 .\core\templates\index.html:533
 #, python-format
 msgid "%(servicios)s"
 msgstr ""
 
-#: core/templates/index.html:469
+#: .\core\templates\index.html:469
 msgid "Entrar"
 msgstr ""
 
-#: core/templates/index.html:508
+#: .\core\templates\index.html:508
 msgid "Quienes Somos?"
 msgstr ""
 
-#: core/templates/index.html:513
+#: .\core\templates\index.html:513
 msgid "Mision/Vision"
 msgstr ""
 
-#: core/templates/index.html:523
+#: .\core\templates\index.html:523
 msgid "Planes"
 msgstr ""
 
-#: core/templates/index.html:528
+#: .\core\templates\index.html:528
 msgid "Ubicacion"
 msgstr ""
 
-#: core/templates/index.html:545
+#: .\core\templates\index.html:545
 msgid "Bienvenidos a Koach Soluciones"
 msgstr ""

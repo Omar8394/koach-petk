@@ -1,4 +1,5 @@
 
+{% load i18n %}
 <div class="modal-content">
    <div class="modal-header">
       <h5 class="modal-title">{% if pagina and pagina.titulo %}{{ pagina.titulo }}{% else %}{{data.titulo}}{% endif %}</h5>
@@ -10,9 +11,9 @@
       <div class="modal-body">
          <div class="form-row">
             <div class="form-group col-12">
-               <label for="tituloPagina" class="col-form-label">Titulo</label>
+               <label for="tituloPagina" class="col-form-label">{% translate "Titulo" %}</label>
                <input type="text" class="form-control" name="titulo" id="tituloPagina" maxlength="50"
-                  placeholder="Escriba un titulo" {% if pagina and pagina.titulo %}value="{{ pagina.titulo }}"{% endif %}>
+                  placeholder='{% translate "Escriba un titulo" %}' {% if pagina and pagina.titulo %}value="{{ pagina.titulo }}"{% endif %}>
             </div>
          </div>
          <div class="form-row">
@@ -23,8 +24,8 @@
       </div>
       <div class="modal-footer color-footer-modal">
          <button type="button" class="btn btn-radius btn-naranja mr-auto" data-dismiss="modal">
-            <i class="fas fa-arrow-left mr-2"></i>Atras</button>
-         <button type="submit" class="btn btn-radius btn-azul">Guardar<i class="fas fa-save ml-2"></i></button>
+            <i class="fas fa-arrow-left mr-2"></i>{% translate "Atras" %}</button>
+         <button type="submit" class="btn btn-radius btn-azul">{% translate "Guardar" %}<i class="fas fa-save ml-2"></i></button>
       </div>
    </form>
 </div>
