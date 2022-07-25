@@ -1,12 +1,11 @@
 from django.shortcuts import render
-from .forms import helpingImageForm
-from .models import tutoriales, paginas as paginasHelping, helpingImage
+from .forms import helpingImageForm, helpingPdfForm
+from .models import helpingPdf, tutoriales, paginas as paginasHelping, helpingImage
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.http import HttpResponse
 import json
 from django.db.models import Q
-
 
 def nuevo(request): 
 
@@ -68,6 +67,7 @@ def modalGuardarPagina(request):
                 pagina.ordenamiento = len(paginasHelping.objects.filter(fk_tutorial=helping)) + 1
             pagina.save()
             borrar_imagenes()
+            borrar_pdfs()
             paginas = paginasHelping.objects.filter(fk_tutorial=helping)
             context = {'data': helping, 'paginas':paginas}
 
@@ -172,9 +172,32 @@ def modalGuardarImagen(request):
         if form.is_valid():
 
             imagen = form.save()
+        
+        else:
+
+            return HttpResponse()
 
     html_template = (loader.get_template('Helping/image.html'))
     return HttpResponse(html_template.render({'data': imagen}, request))
+
+def modalGuardarPdf(request): 
+
+    pdf = None
+
+    if request.method == "POST":
+
+        form = helpingPdfForm(request.POST, request.FILES)
+
+        if form.is_valid():
+
+            pdf = form.save()
+        
+        else:
+
+            return HttpResponse()
+
+    html_template = (loader.get_template('Helping/pdf.html'))
+    return HttpResponse(html_template.render({'data': pdf}, request))
 
 def modalEliminarImagen(request): 
 
@@ -205,10 +228,27 @@ def borrar_imagenes():
     Paginas = paginasHelping.objects.all()
 
     for img in images:
+
         query = str(img.imagen)+"\""
+
         if not Paginas.filter(contenido__icontains=query):
+
             img.imagen.delete(save=True)
             img.delete()
+
+def borrar_pdfs():
+
+    pdfs = helpingPdf.objects.all()
+    Paginas = paginasHelping.objects.all()
+
+    for pdf in pdfs:
+
+        query = str(pdf.pdf)+"#"
+
+        if not Paginas.filter(contenido__icontains=query):
+
+            pdf.pdf.delete(save=True)
+            pdf.delete()
 
 def modalEliminarAyuda(request): 
 
@@ -301,3 +341,24 @@ def modalPaginaMover(request):
  
     html_template = (loader.get_template('Helping/modalHijosPagina.html'))
     return HttpResponse(html_template.render(context, request))
+
+def validarTituloAyuda(request): 
+
+    if request.method == "POST":
+
+        if request.body:
+
+            titulo = json.load(request)['titulo']
+            helping = tutoriales.objects.filter(titulo=titulo)
+
+            if not helping:
+                
+                return JsonResponse({'valido':'valido'})
+
+    return HttpResponse()
+
+    
+def modalPdf(request): 
+
+    html_template = (loader.get_template('Helping/modalPdf.html'))
+    return HttpResponse(html_template.render({}, request))

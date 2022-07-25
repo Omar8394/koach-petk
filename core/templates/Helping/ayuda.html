@@ -7,7 +7,9 @@
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}
 <style>
-
+   img{
+      width: auto;
+   }
    .carousel-indicators>li.active{
       opacity: 100%;
    }
@@ -169,6 +171,13 @@
 
    </div>
 </div>
+
+<!-- modal pdf -->
+<div class="modal note-modal" tabindex="-1" role="dialog" aria-label="Insert Pdf" style="padding-right: 17px;" id="pdfModal">
+   <div class="modal-dialog" role="document" id="pdfModalContent">
+
+   </div>
+</div>
 {% endblock content %}
 
 {% block javascripts %}
@@ -206,8 +215,9 @@
          $(`#summernote`).summernote({
             dialogsInBody: true,
             height: 600,
-            placeholder: 'Escriba su contenido aqui...',
+            placeholder: "{% translate 'Escriba su contenido aqui...' %}",
             disableDragAndDrop: true,
+            disableResizeEditor: true,
             toolbar: [
                ['style', ['style']],
                ['font', ['bold', 'underline', 'clear']],
@@ -216,10 +226,38 @@
                ['para', ['ul', 'ol', 'paragraph']],
                ['table', ['table']],
                ['insert', ['picture']],
+               ['mybutton', ['hello']],
             ],
+            buttons: {
+               hello: HelloButton
+            },
             callbacks: {
-               onImageUpload: function(image){
-                  subirImagen(image[0])
+
+               onImageUpload: async function(image){
+               
+               const img = await image[0]
+               let val = true;
+
+               if((img['size'] / 1000) > 3000){
+
+                  val = false;
+
+                  alertaMensajitos(5, "{% translate 'Alerta' %}", "{% translate 'Seleccione una imagen menor a 3Mb' %}")
+
+               }
+
+               if(img['type'] != 'image/jpeg' && img['type'] != 'image/png'){
+
+                  val = false;
+
+                  alertaMensajitos(5, "{% translate 'Alerta' %}", "{% translate 'Seleccione una imagen en formato png o jpeg' %}")
+
+               }
+
+               if(val)
+
+                  subirImagen(img)
+
                },
                onMediaDelete : function(target) {
                   // borrarImagen($(target[0]).attr('src'))
@@ -239,7 +277,14 @@
             }).then(async (res) => {
 
                const img = await res.text()
-               $('#summernote').summernote("pasteHTML", img);
+
+               if (img)
+
+                  $('#summernote').summernote("pasteHTML", img);
+               
+               else
+
+                  alertaMensajitos(5,"{% translate 'Error' %}", "{% translate 'Algo ha ocurrido al subir el archivo al servidor' %}")
 
             })
          
@@ -299,17 +344,83 @@
    }
   
 
-   const updateModel = (url, method, data, id) => {
-      return fetch(url, {
-         ...fetchObject,
-         body: JSON.stringify({
-            method,
-            data,
-            id,
-            padreActivity: selectedActivity
-         })
-      })
-   }
+
+   const HelloButton = function (context) {
+
+      const ui = $.summernote.ui;
+      // create button
+      const button = ui.button({
+         contents: '<i class="far fa-file-pdf"></i>',
+         tooltip: 'Pdf',
+         click: function () {
+         // invoke insertText method with 'hello' on editor module.
+            // context.invoke('editor.insertText', 'hello');
+            fetch("{% url 'helping:modalPdf'%}", {
+               ...fetchObject,
+            }).then(async (res) => {
+
+               const text = await res.text()
+
+               if(text){
+                     
+                  document.getElementById("pdfModalContent").innerHTML = text
+                  const pdfFile =document.getElementById("pdfFile")
+                  
+                  pdfFile.addEventListener("change", (e) => {
+               
+                     const pdf = pdfFile.files[0]
+                     let val = true;
+
+                     if(pdf['type'] != 'application/pdf'){
+
+                        val = false;
+                        alertaMensajitos(5, "{% translate 'Alerta' %}", "{% translate 'Seleccione un documento Pdf' %}")
+                        $("#pdfModal").modal("hide")
+
+                     }
+
+                     if(val){
+               
+                        data = new FormData();
+                        data.append("pdf", pdf);
+
+                        fetch("{% url 'helping:modalGuardarPdf' %}", {
+                           ...fetchObject,
+                           body:
+                              data
+                        }).then(async (res) => {
+
+                           const img = await res.text()
+
+                           if (img)
+
+                              $('#summernote').summernote("pasteHTML", img);
+                           
+                           else
+
+                              alertaMensajitos(5,"{% translate 'Error' %}", "{% translate 'Algo ha ocurrido al subir el archivo al servidor' %}")
+
+                        }).finally(() => {
+
+                           $("#pdfModal").modal("hide")
+
+                        });
+
+                     }
+
+                  })
+
+                  $("#pdfModal").modal("show")
+
+               }
+            })
+
+         }
+      });
+
+      return button.render();   // return button as jquery object
+      
+   } 
 
    const openAddActivity = (id) => {
 
@@ -404,11 +515,15 @@
       }).then(async (res) => {
 
          const text = await res.text()
+
          if(text){
+
             document.getElementById("addNewCarruselContenido").innerHTML = text
             $('.carousel').carousel({interval: 0})
             $("#addNewCarrusel").modal("show")
+
          }else
+
             alertaMensajitos(7, "{% translate 'Alerta!' %}", "{% translate 'No hay paginas asignadas para esta ayuda' %}")
          
 
@@ -424,9 +539,11 @@
             id
          })
       }).then(async (res) => {
+
          document.getElementById("addNewModalAyuda").innerHTML = await res.text()
-      })
-         .then(() => {
+
+      }).then(() => {
+
             $("#addNewModal").modal("show")
             const formAyuda = document.getElementById("formAyuda")
            
@@ -436,20 +553,65 @@
                
                const formData = new FormData(formAyuda);
                const data = Object.fromEntries(formData.entries())
-               
-               fetch("{% url 'helping:modalGuardarAyuda' %}", {
-                  ...fetchObject,
-                  body: JSON.stringify({
-                     data,
-                     id
-                  })
-               }).then(async (res) => {
-                  
-                  document.getElementById("listaPaginas").innerHTML = await res.text()
-                  $("#addNewModal").modal("hide")
-                  alertaMensajitos(4, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}")
 
-               })
+               if(data.titulo && data.descripcion && data.tipo){
+
+                  const titulo = data.titulo
+
+                  fetch("{% url 'helping:validarTituloAyuda' %}", {
+                     ...fetchObject,
+                     body: JSON.stringify({
+                        titulo,
+                     })
+                  }).then(async (res) => {
+                     
+                     const resTitulo = await res.text()
+
+                     if(resTitulo){
+                              
+                        fetch("{% url 'helping:modalGuardarAyuda' %}", {
+                           ...fetchObject,
+                           body: JSON.stringify({
+                              data,
+                              id
+                           })
+                        }).then(async (res) => {
+                           
+                           document.getElementById("listaPaginas").innerHTML = await res.text()
+                           $("#addNewModal").modal("hide")
+                           alertaMensajitos(4, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}")
+
+                        })
+
+                     }else{
+
+                        swal({
+                           title: "{% translate 'Alerta!' %}",
+                           text: "{% translate 'El titulo de esta ayuda ya existe, debes cambialo por otro' %}",
+                           icon: 'error',
+                           buttons: {
+                              confirm: {
+                                 className: 'btn btn-danger'
+                              }
+                           },
+                        }).then(()=>{
+                           
+                           $('#descriptionTopic').focus()
+
+                        })
+
+                     }
+
+                  })
+
+
+               }else if(!formAyuda.classList.contains('needs-validation')){
+
+                  formAyuda.classList.add('needs-validation', 'was-validated')
+                  formAyuda.removeAttribute('novalidate');
+
+               }
+                  
             })
          })
    }

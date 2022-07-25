@@ -28,4 +28,10 @@ class paginas(models.Model):
 
 
 class helpingImage(models.Model):
+
     imagen = models.ImageField(upload_to='images/')
+    
+
+class helpingPdf(models.Model):
+    
+    pdf = models.FileField(upload_to='pdfs/')
