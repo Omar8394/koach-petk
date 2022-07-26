@@ -1,0 +1,96 @@
+{% load static%}
+{% load i18n %}
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 style="left: initial; color:white;" class="modal-title">{% translate "Guardar configuraciones" %}</h4>
+
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+        aria-hidden="true">&times;</span></button>
+  </div>
+  <form id="formActividad" >
+  <div class="modal-body">
+   
+   <div class="form-row">
+      <div class="form-group col-12">
+         
+         <label for="categoryProgram" class="col-form-label">{% translate "Modulo" %}</label>
+         <select class="form-control" name="categoryProgram" id="categoryPrograma" onchange="cambiar_comb()" >
+            <option value="">{% translate "Seleccione una opcion" %}</option>
+            {% for item in modules %}
+            
+            <option value= {{item.id_tabla}} >{{item.desc_elemento}}</option>
+            
+            {% endfor%}
+         </select>
+         <label for="category" class="col-form-label">{% translate "Preferencia" %}</label>
+      <select class="form-control" name="categoriasProcess" id="categoriasProcess">
+        
+
+      </select>
+      <label for="disponibleLesson">{% translate "Fecha" %}</label>
+      <input type="date" class="form-control" name="entregaHomework" id="entregaHomework" >
+      <label for="categoryProgram" class="col-form-label">{% translate "Configuracion" %}</label>
+      <select class="form-control" name="set" id="set">
+         <option value="">{% translate "Seleccione una opcion" %}</option>
+         {% for item in set %}
+         
+         <option value= {{item.id_tabla}} >{{item.desc_elemento}}</option>
+         
+         {% endfor%}
+      </select>
+      <label for="categoryProgram" class="col-form-label">{% translate "Tipo de dato" %}</label>
+      <select class="form-control" name="dato" id="dato">
+         <option value="">{% translate "Seleccione una opcion" %}</option>
+         {% for item in dato %}
+         
+         <option value= {{item.id_tabla}} >{{item.desc_elemento}}</option>
+         
+         {% endfor%}
+      </select>
+      <div class="form-row">
+         <div class="form-group col-12">
+            <label for="titleCourse" class="col-form-label">{% translate "valor setting" %}</label>
+            <input type="text" class="form-control" id="titleCourse" name="titleCourse"
+               placeholder="Enter a title for this course" required>
+         </div>
+      </div>
+      <div class="form-group col-12">
+         <div class="custom-control custom-checkbox ml-2">
+            <input type="checkbox" class="custom-control-input" name="checkDurationCB" id="checkDurationCB">
+               
+            <label class="custom-control-label" for="checkDurationCB">{% translate "Permite borrar" %}</label>
+         </div>
+         <div class="custom-control custom-checkbox ml-2">
+            <input type="checkbox" class="custom-control-input" name="checkDuration" id="checkDuration"  onclick="toggle()">
+               
+            <label class="custom-control-label" for="checkDuration">{% translate "Tiene Rango" %}</label>
+         </div>
+      </div>
+      <div class="form-group col-12">
+      <div class="form-group col-md-6">
+         <label for="max_points">{% translate "Rango Minimo" %}</label>
+         <input type="number" class="form-control" name="min_points" id="min_points" placeholder={% translate "ingrese un numero" %} disabled>
+     </div>
+     <div class="form-group col-md-6">
+      <label for="max_points">{% translate "Rango maximo" %}</label>
+      <input type="number" class="form-control" name="max_points" id="max_points" placeholder={% translate "ingrese un numero" %} disabled>
+     </div>
+      </div>
+   </div>
+     
+
+   </div>
+    
+
+  
+  
+  </div>
+
+  <div class="modal-footer">
+   <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+         class="fas fa-arrow-left mr-2"></i>{% translate "cerrar" %}</button>
+   <button type="submit" class="btn btn-primary">{% translate "Guardar" %}<i class="fas fa-save ml-2"></i></button>
+</div>
+</form>
+
+</div>

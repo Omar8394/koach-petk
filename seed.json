@@ -1,0 +1,332 @@
+[
+{
+      "model": "App.ConfTablasConfiguracion",
+      "pk": 1,
+      "fields": {
+        "desc_elemento": "First register",
+        "fk_tabla_padre_id": 1,
+        "tipo_elemento": 1,
+        "permite_cambios":1,
+        "valor_elemento":"Padre",
+        "mostrar_en_combos":0,
+        "maneja_lista":1,
+        "datos_adicional":"",
+        "tipo_dato":0
+      }
+},
+    {
+        "model": "App.ConfTablasConfiguracion",
+        "pk": 2,
+        "fields": {
+          "desc_elemento": "Modulos",
+          "fk_tabla_padre_id": 1,
+          "tipo_elemento": 1,
+          "permite_cambios":1,
+          "valor_elemento":"Modulos",
+          "mostrar_en_combos":0,
+          "maneja_lista":1,
+          "datos_adicional":"",
+          "tipo_dato":0
+        }
+      },
+      {
+        "model": "App.ConfTablasConfiguracion",
+        "pk": 3,
+        "fields": {
+          "desc_elemento": "Analytics",
+          "fk_tabla_padre_id": 2,
+          "tipo_elemento": 1,
+          "permite_cambios":1,
+          "valor_elemento":"Modulo_anali",
+          "mostrar_en_combos":1,
+          "maneja_lista":0,
+          "datos_adicional":"",
+          "tipo_dato":0
+        }
+      },
+      {
+      "model": "App.ConfTablasConfiguracion",
+        "pk": 4,
+        "fields": {
+          "desc_elemento": "Capacitacion",
+          "fk_tabla_padre_id": 2,
+          "tipo_elemento": 1,
+          "permite_cambios":1,
+          "valor_elemento":"Modulo_cap",
+          "mostrar_en_combos":1,
+          "maneja_lista":0,
+          "datos_adicional":"",
+          "tipo_dato":0
+        }
+      },
+      {
+        "model": "App.ConfTablasConfiguracion",
+          "pk": 5,
+          "fields": {
+            "desc_elemento": "Comunicacion",
+            "fk_tabla_padre_id": 2,
+            "tipo_elemento": 1,
+            "permite_cambios":1,
+            "valor_elemento":"Modulo_comunica",
+            "mostrar_en_combos":1,
+            "maneja_lista":0,
+            "datos_adicional":"",
+            "tipo_dato":0
+          }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 6,
+              "fields": {
+                "desc_elemento": "Configuracion",
+                "fk_tabla_padre_id": 2,
+                "tipo_elemento": 1,
+                "permite_cambios":1,
+                "valor_elemento":"Modulo_configura",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 7,
+              "fields": {
+                "desc_elemento": "DashboardPortal",
+                "fk_tabla_padre_id": 2,
+                "tipo_elemento": 1,
+                "permite_cambios":1,
+                "valor_elemento":"Modulo_Portal",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 8,
+              "fields": {
+                "desc_elemento": "Event_Succes",
+                "fk_tabla_padre_id": 2,
+                "tipo_elemento": 1,
+                "permite_cambios":1,
+                "valor_elemento":"Modulo_Event",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 9,
+              "fields": {
+                "desc_elemento": "Helping",
+                "fk_tabla_padre_id": 2,
+                "tipo_elemento": 1,
+                "permite_cambios":1,
+                "valor_elemento":"Modulo_help",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 10,
+              "fields": {
+                "desc_elemento": "Magnet",
+                "fk_tabla_padre_id": 2,
+                "tipo_elemento": 1,
+                "permite_cambios":1,
+                "valor_elemento":"Modulo_Mag",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 11,
+              "fields": {
+                "desc_elemento": "Organizational_network",
+                "fk_tabla_padre_id": 2,
+                "tipo_elemento": 1,
+                "permite_cambios":1,
+                "valor_elemento":"Modulo_Net_o",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 12,
+              "fields": {
+                "desc_elemento": "Payments",
+                "fk_tabla_padre_id": 2,
+                "tipo_elemento": 1,
+                "permite_cambios":1,
+                "valor_elemento":"Modulo_Payments",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 13,
+              "fields": {
+                "desc_elemento": "Planning",
+                "fk_tabla_padre_id": 2,
+                "tipo_elemento": 1,
+                "permite_cambios":1,
+                "valor_elemento":"Modulo_Planning",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 14,
+              "fields": {
+                "desc_elemento": "Security",
+                "fk_tabla_padre_id": 2,
+                "tipo_elemento": 1,
+                "permite_cambios":1,
+                "valor_elemento":"Modulo_Security",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 15,
+              "fields": {
+                "desc_elemento": "Sponsors",
+                "fk_tabla_padre_id": 2,
+                "tipo_elemento": 1,
+                "permite_cambios":1,
+                "valor_elemento":"Modulo_Sponsors",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 16,
+              "fields": {
+                "desc_elemento": "TabPersonal",
+                "fk_tabla_padre_id": 2,
+                "tipo_elemento": 1,
+                "permite_cambios":1,
+                "valor_elemento":"Modulo_Tabpersonal",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 17,
+              "fields": {
+                "desc_elemento": "Training",
+                "fk_tabla_padre_id": 2,
+                "tipo_elemento": 1,
+                "permite_cambios":1,
+                "valor_elemento":"Modulo_training",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 18,
+              "fields": {
+                "desc_elemento": "Utilidades",
+                "fk_tabla_padre_id": 2,
+                "tipo_elemento": 1,
+                "permite_cambios":1,
+                "valor_elemento":"Modulo_utilidades",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 19,
+              "fields": {
+                "desc_elemento": "Tipo de dato",
+                "fk_tabla_padre_id": 1,
+                "tipo_elemento": 1,
+                "permite_cambios":1,
+                "valor_elemento":"Tipo_dato",
+                "mostrar_en_combos":0,
+                "maneja_lista":1,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 20,
+              "fields": {
+                "desc_elemento": "numerico",
+                "fk_tabla_padre_id": 19,
+                "tipo_elemento": 1,
+                "permite_cambios":1,
+                "valor_elemento":"Tipo_dato_numerico",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 21,
+              "fields": {
+                "desc_elemento": "Atributo",
+                "fk_tabla_padre_id": 1,
+                "tipo_elemento": 1,
+                "permite_cambios":1,
+                "valor_elemento":"Atributo",
+                "mostrar_en_combos":0,
+                "maneja_lista":1,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 22,
+              "fields": {
+                "desc_elemento": "Contraseña",
+                "fk_tabla_padre_id": 21,
+                "tipo_elemento": 1,
+                "permite_cambios":1,
+                "valor_elemento":"Atributo_Contraseña",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        }
+]

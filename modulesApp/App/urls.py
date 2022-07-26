@@ -15,7 +15,11 @@ urlpatterns = [
     path('App/configuracion/', views.configuracion, name='configuracion'),
     
     #Calendar & index settings
-    
+    path('App/settings/preferencias/', views.preferencias, name='preferencias'),
+    path('App/settings/modalprefer/', views.getmodalprefer, name='modalprefer'),
+    path('App/settings/saveprefer/', views.saveprefer, name='saveprefer'),
+    path('App/settings/upprefer/', views.setprefer, name='updatepre'),
+    path('App/settings/combobox/', views.combobox, name='combobox'),
 
     #Security Settings
     

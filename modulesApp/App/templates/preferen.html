@@ -1,0 +1,61 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}{% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<link rel="stylesheet" href="/static/assets/css/preffertwo.css">
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+	<div class="content">
+		<div class="page-inner">
+			<div class="page-header">
+				<h4 class="page-title">Starter page</h4>
+				<ul class="breadcrumbs">
+					<li class="nav-home">
+						<a href="{% url 'Dashboard' %}">
+							<i class="flaticon-home"></i>
+						</a>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<span>Module name</span>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<a href="#">Page 1</a>
+					</li>
+				</ul>
+			</div>
+			<div class="page-category">
+        		<div class="barra">
+        			<h2>Preferencias</h2>
+                    <ul>
+                        <li><a href="">inicio</a></li>
+                        <li><a href="">inicio</a></li>
+                        <li><a href="">inicio</a></li>
+                        <li><a href="">inicio</a></li>
+                    </ul>
+                </div>	
+                <div class="contenido">
+                    <span class="icon-menu abrir"><span>
+                        <p class="texto">loren jhgjhfhhhhhhhhhhhhhhhhhhhhhjkkkkkkkkkkkkkkkk
+                            hjghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhyyyyyyyyyyyyy
+                        </p>
+                </div>   
+      		</div>
+		</div>
+	</div>
+
+{% endblock content %}
+	
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+{% endblock javascripts %}

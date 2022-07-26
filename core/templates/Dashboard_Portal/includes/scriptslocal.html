@@ -61,7 +61,32 @@
 
 <script>
 	//con mensajitos
+	function setLoading() {
 
+		var element = document.getElementById("loaderManueljuju");
+
+		element.classList.add("lds-ring");
+		
+
+	}
+	function stopLoading() {
+
+		var element = document.getElementById("loaderManueljuju");
+		element.classList.remove("lds-ring");
+	}
+	function alerta(tipoAlerta) {
+		if (tipoAlerta === 1) {
+			swal("Bien Hecho!", "Registro fue guardado satisfactoriamente!",
+				{
+					icon: "success",
+					buttons: {
+						confirm: {
+							className: 'btn btn-success'
+						}
+					},
+				});
+		}
+	}
 	function alertaMensajitos(tipoAlerta, tittle, mssg) {
 		if (tipoAlerta === 1) {
 			swal(tittle, mssg,

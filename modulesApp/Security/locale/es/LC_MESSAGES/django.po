@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-08 04:37-0400\n"
+"POT-Creation-Date: 2022-07-25 21:40-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,42 +18,38 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: modulesApp/Security/templates/base_login.html:6
+#: .\modulesApp\Security\templates\base_login.html:6
 msgid "Iniciar Sesion"
 msgstr ""
 
-#: modulesApp/Security/templates/base_login.html:22
+#: .\modulesApp\Security\templates\base_login.html:22
 msgid "Iniciar"
 msgstr ""
 
-#: modulesApp/Security/templates/base_login.html:27
-msgid "¿Olvido su Contraseña?"
+#: .\modulesApp\Security\templates\base_login.html:27
+msgid "¿Olvido su Contraseña o su Cuenta esta bloqueada?"
 msgstr ""
 
-#: modulesApp/Security/templates/base_login.html:28
-msgid "¿Cambiar Contraseña?"
+#: .\modulesApp\Security\templates\login.html:18
+msgid "Usuario o Correo electronico"
 msgstr ""
 
-#: modulesApp/Security/templates/login.html:18
-msgid "Usuario"
-msgstr ""
-
-#: modulesApp/Security/templates/login.html:38
+#: .\modulesApp\Security\templates\login.html:38
 msgid "Contraseña"
 msgstr ""
 
-#: modulesApp/Security/templates/register.html:4
+#: .\modulesApp\Security\templates\register.html:4
 msgid "Regístrarse"
 msgstr ""
 
-#: modulesApp/Security/templates/register.html:5
+#: .\modulesApp\Security\templates\register.html:5
 msgid "Regístrar"
 msgstr ""
 
-#: modulesApp/Security/templates/register.html:19
+#: .\modulesApp\Security\templates\register.html:19
 msgid "Correo Electronico"
 msgstr ""
 
-#: modulesApp/Security/templates/register.html:38
+#: .\modulesApp\Security\templates\register.html:38
 msgid "Confirmar Contraseña"
 msgstr ""

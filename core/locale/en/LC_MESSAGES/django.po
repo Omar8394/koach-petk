@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-08 04:37-0400\n"
+"POT-Creation-Date: 2022-07-25 21:40-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,58 +18,58 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: core/settings.py:138
+#: .\core\settings.py:139
 msgid "Spanish"
 msgstr ""
 
-#: core/settings.py:139
+#: .\core\settings.py:140
 msgid "English"
 msgstr ""
 
-#: core/templates/index.html:386
+#: .\core\templates\index.html:386
 msgid "Informacion"
 msgstr "Information"
 
-#: core/templates/index.html:410
+#: .\core\templates\index.html:410
 msgid "Contactanos"
 msgstr "Contact us"
 
-#: core/templates/index.html:410 core/templates/index.html:518
+#: .\core\templates\index.html:410 .\core\templates\index.html:518
 #, fuzzy, python-format
 #| msgid "Contactanos"
 msgid "%(contactanos)s"
 msgstr "Contact us"
 
-#: core/templates/index.html:438
+#: .\core\templates\index.html:438
 msgid "Servicios"
 msgstr "Services"
 
-#: core/templates/index.html:438 core/templates/index.html:533
+#: .\core\templates\index.html:438 .\core\templates\index.html:533
 #, fuzzy, python-format
 #| msgid "Servicios"
 msgid "%(servicios)s"
 msgstr "Services"
 
-#: core/templates/index.html:469
+#: .\core\templates\index.html:469
 msgid "Entrar"
 msgstr "Login"
 
-#: core/templates/index.html:508
+#: .\core\templates\index.html:508
 msgid "Quienes Somos?"
 msgstr "About us?"
 
-#: core/templates/index.html:513
+#: .\core\templates\index.html:513
 msgid "Mision/Vision"
 msgstr "Mission vision"
 
-#: core/templates/index.html:523
+#: .\core\templates\index.html:523
 msgid "Planes"
 msgstr ""
 
-#: core/templates/index.html:528
+#: .\core\templates\index.html:528
 msgid "Ubicacion"
 msgstr "Location"
 
-#: core/templates/index.html:545
+#: .\core\templates\index.html:545
 msgid "Bienvenidos a Koach Soluciones"
 msgstr "Welcome to Koach Soluciones"

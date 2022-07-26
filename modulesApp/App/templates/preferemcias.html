@@ -1,0 +1,807 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% block title %}{% endblock title %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<link rel="stylesheet" href="/static/assets/css/prefer.css">
+<style>
+	.signupFrm {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100vh;
+	  }
+	  .form {
+		background-color: white;
+		width: 400px;
+		border-radius: 8px;
+		padding: 20px 40px;
+		box-shadow: 0 10px 25px rgba(92, 99, 105, .2);
+	  }
+	  
+	  .title {
+		font-size: 50px;
+		margin-bottom: 50px;
+	  }
+	  .inputContainer {
+		position: relative;
+		height: 45px;
+		width: 70%;
+		margin-bottom: 17px;
+	  }	
+	  .input {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		height: 100%;
+		width: 100%;
+		border: 1px solid #DADCE0;
+		border-radius: 7px;
+		font-size: 16px;
+		padding: 0 20px;
+		outline: none;
+		background: none;
+		z-index: 1;
+	  }
+	  
+	  /* Hide the placeholder texts (a) */
+	  
+	  ::placeholder {
+		color: transparent;
+	  }
+	  .label {
+		position: absolute;
+		top: 15px;
+		left: 15px;
+		padding: 0 4px;
+		background-color: white;
+		color: #DADCE0;
+		font-size: 16px;
+		transition: 0.5s;
+		z-index: 0;
+	  }
+	  .submitBtn {
+		display: block;
+		margin-left: auto;
+		padding: 15px 30px;
+		border: none;
+		background-color: #000;
+		color: white;
+		border-radius: 6px;
+		cursor: pointer;
+		font-size: 10px;
+		margin-top: 30px;
+	  }
+	  
+	  .submitBtn:hover {
+		background-color: #9867C5;
+		transform: translateY(-2px);
+	  }
+	  .checkbox-JASoft {
+		display: inline-block;
+		position: relative;
+		width: 70px;
+		height: 30px;
+		background: #555;
+		border-radius: 15px;
+		box-shadow: inset 0px 1px 1px rgba(0,0,0,0.6), 0px 1px 0px rgba(255,255,255,0.3);   
+	}
+	.checkbox-JASoft label {
+
+		/* aspecto */
+		display: block;
+		width: 34px;
+		height: 20px;
+		border-radius: 17px;
+		box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.35);
+		background: #fcfff4;
+		background: linear-gradient(to top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+		cursor: pointer;
+		
+		/* Posicionamiento */
+		position: absolute;
+		top: 5px;
+		left: 5px;
+		z-index: 1;
+		
+		/* Comportamiento */
+		transition: all .4s ease;
+		
+		/* ocultar el posible texto que tenga */
+		overflow: hidden;
+		text-indent: 35px;  
+		transition: text-indent 0s;
+	}
+	.checkbox-JASoft input[type=checkbox]:checked + label {
+		left: auto;
+		right: 5px;
+	}
+	.checkbox-JASoft:after {
+		content: 'NO';
+		font: 12px/30px Arial, sans-serif;
+		color: #AAA;
+		position: absolute;
+		right: 10px;
+		z-index: 0;
+		font-weight: bold;
+		text-shadow: 1px 1px 0px rgba(255,255,255,.20);
+	}
+	
+	.checkbox-JASoft:before {
+		content: 'SÍ';
+		font: 12px/30px Arial, sans-serif;
+		color: lime;
+		position: absolute;
+		left: 10px;
+		z-index: 0;
+		font-weight: bold;
+	}
+
+
+
+
+
+
+	.content-input{
+		margin-bottom: 15px;
+		cursor: pointer;
+	}
+	
+	.content-input{
+		position: relative;
+		margin-bottom: 30px;
+		padding:5px 0 5px 60px;
+		display: block;
+	}
+	
+	/* 
+	La propiedadd appearance da un aspecto standard a un elemento.
+	Por ejemplo: appearance: button
+	Como vamos a personalizar nuestros elemento aÃ±adimos el valor none
+	 */
+	.content-input input,
+	.content-select select{
+		appearance: none;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+	}
+	
+	
+	.content-input i,
+	.content-input i:before{
+		transition: all 0.25s ease;
+	}
+	
+	/* 
+	Ocultamos nuestros inputs.
+	Con opacity 0. Si utilizamos visibility:hidden o display:none;
+	no funcionarÃ­an
+	*/
+	.content-input input{
+		visibility: hidden;
+		position: absolute;
+		right: 0;
+	}
+	
+	/*
+	Propiedades para cualquier el elmento i despuÃ©s de un input
+	dentro de la capa .content-input
+	*/
+	.content-input input + i{
+		background: #f0f0f0;
+		border:2px solid rgba(0,0,0,0.2);
+		position: absolute;
+		left: 0;
+		top: 0;
+	}
+	
+	/*
+	Propiedades para el checkbox
+	*/
+	.content-input input[type=checkbox ] + i{
+		width: 52px;
+		height: 30px;
+		border-radius: 15px;
+	}
+	
+	/*
+	Propiedades para radio
+	*/
+	.content-input input[type=radio] + i{
+		height: 30px;
+		width: 30px;
+		border-radius: 100%;
+		left: 15px;
+	}
+	
+	
+	/*
+	Creamos el cÃ­rculo que aparece encima de los checkbox
+	con la etqieta before. Importante aunque no haya contenido
+	debemos poner definir este valor.
+	*/
+	.content-input input[type=checkbox] + i:before{
+		content: ''; /* No hay contenido */
+		width: 26px;
+		height: 26px;
+		background: #fff;
+		border-radius: 50%;
+		position: absolute;
+		z-index: 1;
+		left: 0px;
+		top: 0px;
+		-webkit-box-shadow: 3px 0 3px 0 rgba(0,0,0,0.2);
+		box-shadow: 3px 0 3px 0 rgba(0,0,0,0.2);
+	}
+	
+	
+	.content-input input[type=checkbox] + i:after{
+		content: 'ON';
+		position: absolute;
+		font-size: 10px;
+		color: rgba(255,255,255,0.6);
+		top: 8px;
+		left: 4px;
+		opacity: 0;
+		transition: all 0.25s ease 0.25s;
+	}
+	
+	/*
+	Creamos el cÃ­culo que se mostrarÃ¡ cuando hagamos click 
+	en cualquier radio y lo ocultamos con opacity 0
+	*/
+	.content-input input[type=radio] + i:before{
+		content: '';
+		display: block;
+		height: 18px;
+		width: 18px;
+		background: red;
+		border-radius: 100%;
+		position: absolute;
+		z-index: 1;
+		top: 4px;
+		left: 4px;
+		background:#2AC176;
+		transition: all 0.25s ease;
+		transform: scale(0);
+		opacity: 0; /* Lo ocultamos*/
+	}
+	
+	
+	
+	.content-input:hover input[type=radio]:not(:checked) + i,
+	.content-input:hover input[type=checkbox]:not(:checked) + i{
+		background: #B1E8CD;
+	}
+	
+	
+	
+	/*
+	Con :checked definimos los valores css cuando un input
+	como radio o checkbox estÃ¡ checheado
+	*/
+	.content-input input[type=checkbox]:checked + i{
+		background: #2AC176;
+	}
+	
+	.content-input input[type=checkbox]:checked + i:before{
+		left: 22px;
+		-webkit-box-shadow: -3px 0 3px 0 rgba(0,0,0,0.2);
+		box-shadow: 3px 0 -3px 0 rgba(0,0,0,0.2);
+	}
+	
+	.content-input input[type=checkbox]:checked + i:after{
+		opacity: 1;
+	}
+	
+	.content-input input[type=radio]:checked + i:before{
+		transform: scale(1);
+		opacity: 1;
+	}
+	
+	/* Select */
+	
+	
+	
+	
+	
+	/* 
+	Creamos la fecha que aparece a la izquierda del select.
+	Realmente este elemento es un cuadrado que sÃ³lo tienen
+	dos bordes con color y que giramos con transform: rotate(-45deg);
+	*/
+	
+</style>
+
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="content">
+	<div class="page-inner">
+		<div class="page-header">
+			<h4 class="page-title">{% translate "Pagina de inicio" %}</h4>
+			<ul class="breadcrumbs">
+				<li class="nav-home">
+					<a href="{% url 'Dashboard' %}">
+						<i class="flaticon-home"></i>
+					</a>
+				</li>
+				<li class="separator">
+					<i class="flaticon-right-arrow"></i>
+				</li>
+				<li class="nav-item">
+					<span>{% translate "Configuracion" %}</span>
+				</li>
+				<li class="separator">
+					<i class="flaticon-right-arrow"></i>
+				</li>
+				<li class="nav-item">
+					<a href="#">{% translate "Preferencias" %}</a>
+				</li>
+			</ul>
+		</div>
+		<div class="page-category">
+
+				 <div class="site-wrapper">
+					
+					
+					
+					<section class="tabs-wrapper">
+						
+						<div class="tabs-container" style=" width: 100%; ">
+							<input id="submit" type="button" class="submitBtn" value={% translate "Agregar Settings" %} onclick="abrirprefer()">
+							<div class="tabs-block" style=" width: 100%; ">
+								<div id="tabs-section" class="tabs" style=" width: 100%; ">
+									<ul class="tab-head">
+										<li>
+											<a href="#0"    class="tab-link"> <span class="material-icons tab-icon"></span> <span class="tab-label">{% translate "Agregar Preferencias" %}</span></a>
+											
+					  
+											
+										</li>
+										{%for item in modules%}
+										<li>
+											<a href="#{{item.id_tabla}}"    class="tab-link"> <span class="material-icons tab-icon"></span> <span class="tab-label">{{ item.desc_elemento }}</span></a>
+											
+											
+										</li>
+										
+											
+										 
+										{% endfor %}
+										
+									</ul>
+									{% for item in atri %}
+									<section id="{{item.fk_modulo_setting_id}}" class="tab-body entry-content">
+								
+										
+										{% for op in item.fk_modulo_setting|hasprefername%}
+										<h3 style="background: black; color:white; padding:10px; text-align: center; " >{{op.titulo_setting}}</h3>
+										
+										     {% for ops in op.idconfig_setting|hasprefernameatri%}
+											 <label>{% translate "Atributos" %}:</label>
+											 {{ops.fk_atributo_setting.desc_elemento}}<br>
+											 <label>{% translate "Tipo de dato" %}:</label>
+											 {{ops.fk_tipo_dato_setting.desc_elemento}}<br>
+											 <label>{% translate "Fecha activo" %}:</label>
+											 <input type="date" class="form-control" name="disponibleCourse" id="disponibleCourse" required
+                                             value="{{ops.fecha_activo|date:'Y-m-d'}}"><br><br>
+										<div class="form-row">
+										  <div class="form-group col-md-6"> 
+											<label>{% translate "Status" %}</label>
+											<label class="content-input">
+												<input type="checkbox" onchange="actualizar('stat{{ops.idconfig_atributo}}',{{ops.idconfig_atributo}},'status')"  name="stat{{ops.idconfig_atributo}}" id="stat{{ops.idconfig_atributo}}" {% if ops.status_setting ==  1 %}checked{% endif%}>
+												<i></i>
+											</label><br>
+											<label>{% translate "Permite borrar" %}</label>
+											<label class="content-input">
+												<input type="checkbox" onchange="actualizar('permi{{ops.idconfig_atributo}}',{{ops.idconfig_atributo}},'borrar')" name="permi{{ops.idconfig_atributo}}" id="permi{{ops.idconfig_atributo}}" {% if ops.permite_borrar ==  1 %}checked{% endif%}>
+												<i></i>
+											</label><br>
+											
+											<label>{% translate "Permite Rango" %}</label>
+											<label class="content-input">
+												<input type="checkbox"  name="rango{{ops.idconfig_atributo}}" id="rango{{ops.idconfig_atributo}}" onchange="toggletwo('rango{{ops.idconfig_atributo}}',{{ops.idconfig_atributo}})">
+												<i></i>
+											</label>
+										  </div>
+										  
+										  <div class="form-group col-md-6"> 
+											
+											 <label>{% translate "Valor setting" %}</label>
+											<input type="text" name="repeatstwo" class="form-control" id="repeatstwo{{ops.idconfig_atributo}}" onchange="actualizar('repeatstwo{{ops.idconfig_atributo}}',{{ops.idconfig_atributo}},'repeatstwo')"   placeholder="Enter a number"
+                                             value="{{ops.valor_setting}}">
+
+										  </div>
+										  
+										  <div class="form-group col-md-6">
+											<label for="max_points">{% translate "Rango Minimo" %}</label>
+											<input type="number" class="form-control"  name="min_pointstwo{{ops.idconfig_atributo}}" id="min_pointstwo{{ops.idconfig_atributo}}" value="{{ ops.rangovalor_setting|jsonrango }}" placeholder="Enter a number"  disabled>
+										</div>
+										<div class="form-group col-md-6">
+										 <label for="max_points">{% translate "Rango maximo" %}</label>
+										 <input type="number" class="form-control" name="max_pointstwo{{ops.idconfig_atributo}}" id="max_pointstwo{{ops.idconfig_atributo}}" value="{{ ops.rangovalor_setting|jsonrangotwo }}" placeholder="Enter a number" disabled>
+										 
+										</div>
+										
+										<button  type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip"  data-placement="top" title="Actualizar Rangos" id="edit" onclick="actualizar('edit{{ops.idconfig_atributo}}',{{ops.idconfig_atributo}},'edit')" disabled><i class='fa fa-refresh'></i></button>
+										
+									    </div>
+
+										<p style="background: blue; color:white; padding:10px; text-align: center; " ></p>
+										     {% endfor%}
+										{% endfor%}
+									</section>
+									{% endfor%}
+									<section id="0"   class="tab-body entry-content active ">
+										<div class="signupFrm">
+											<form action="" class="form">
+											  <h1 class="title">{% translate "Añadir Preferencias" %}</h1>
+										
+											  <label for="categoryProgram" class="col-form-label">{% translate "Titulo" %}</label>
+											  <div class="inputContainer">
+												
+												<input type="text" class="input" placeholder="a" id="titulo">
+												
+											  </div>
+											  <label for="categoryProgram" class="col-form-label">{% translate "Descripcion" %}</label>
+											  <div class="inputContainer">
+												<input type="text" class="input" placeholder="a" id="descripcion">
+											
+											  </div>
+										
+											  <div class="inputContainer">
+												<label for="categoryProgram" class="col-form-label">{% translate "Modulo" %}</label>
+												<select class="form-control" name="categoryProgram" id="categoryProgram">
+													<option value="">{% translate "Seleccione un modulo" %}</option>
+													{% for item in modules %}
+													
+													<option value={{item.id_tabla}} id="opProgram">{{item.desc_elemento}}</option>
+													
+													{% endfor%}
+												 </select>
+												
+											  </div>
+										
+											 
+										
+											  <input id="submitBtn" type="button" class="submitBtn" value="Guardar">
+											</form>
+										  </div>
+									</section>
+									
+									
+								
+									
+		
+		
+								</div>
+							</div>
+						</div>
+					</section>
+					
+				</div>
+				
+			
+				<div class="modal fade" id="modalhistoritopic" tabindex="-1" role="dialog">
+					<div class="modal-dialog  modal-lg" role="document" id="modalContenttopic">
+				 
+					</div>
+				 </div>
+				
+				 
+				
+							
+				</div>
+				
+			</div>
+		</div>	
+		<div class="modal fade" id="addNewModaltwo" tabindex="-1" role="dialog">
+			<div id="addNewModalContenttwo" class="modal-dialog  modal-lg" role="document">
+		
+			</div>
+		</div>
+		
+{% endblock content %}
+	
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+ <script>
+	
+	let editmode = false;
+	
+	( function( $ ) {
+		// Variables
+		const $tabLink = $( '#tabs-section .tab-link' );
+		const $tabBody = $( '#tabs-section .tab-body' );
+		let timerOpacity;
+	
+		// Toggle Class
+		const init = () => {
+			// Menu Click
+			$tabLink.off( 'click' ).on( 'click', function( e ) {
+				// Prevent Default
+				e.preventDefault();
+				e.stopPropagation();
+	            
+				// Clear Timers
+				window.clearTimeout( timerOpacity );
+	
+				// Toggle Class Logic
+				// Remove Active Classes
+				$tabLink.removeClass( 'active ' );
+				$tabBody.removeClass( 'active ' );
+				$tabBody.removeClass( 'active-content' );
+	
+				// Add Active Classes
+				$( this ).addClass( 'active' );
+				$( $( this ).attr( 'href' ) ).addClass( 'active' );
+	
+				// Opacity Transition Class
+				timerOpacity = setTimeout( () => {
+					$( $( this ).attr( 'href' ) ).addClass( 'active-content' );
+				}, 50 );
+			} );
+		};
+	
+		// Document Ready
+		$( function() {
+			init();
+		} );
+	}( jQuery ) );
+
+
+
+const abrirprefer  = () => {
+	editmode = false
+		//console.log(id)
+		fetch("{% url 'modalprefer'%}", {
+		...fetchObject,
+		body: JSON.stringify({
+			 method:"show",
+			 
+		  })
+			
+		})
+		 .then(async (res) => {
+			document.getElementById("addNewModalContenttwo").innerHTML = await res.text()
+		 })
+		 .then(() => {
+			$("#addNewModaltwo").modal("show")
+			const formActividad = document.getElementById("formActividad")
+			let rules = {
+				
+			  
+			   categoryPrograma :{
+				  required: true,
+				   
+			   },
+			   categoriasProcess :{
+				required: true,
+				 
+			 },
+			 entregaHomework :{
+				required: true,
+				 
+			 },
+			  set :{
+				required: true,
+				 
+			 },
+			 dato :{
+				required: true,
+				 
+			 },
+			 titleCourse :{
+				required: true,
+				 
+			 },
+			  
+			}
+			commonValidator = $("#formActividad").validate({
+			   rules,
+			   highlight: function (element) {
+				  $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+			   },
+			   success: function (element) {
+				  $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+			   },
+			});
+			formActividad.addEventListener("submit", (e) => {
+				
+				
+				if (!$("#formActividad").valid()) return
+				e.preventDefault()
+				setLoading()
+				click(formActividad, "{% url 'modalprefer' %}")
+				   .then(() => {
+					
+					stopLoading()
+					$("#addNewModaltwo").modal("hide")
+					location.reload() 
+					  
+					  
+					
+						
+						
+				   
+					  
+				   })
+				   
+				   
+			 })
+			 
+			
+		 })
+  
+	}
+	const updateModel = (url,method,data) => {
+        return fetch(url, {
+           ...fetchObject,
+           body: JSON.stringify({
+              method,
+              data,
+             
+           })
+        })
+    }
+       const click = (formElement, url) => {
+        const formData = new FormData(formElement);
+        const data = {}
+        for (var [key, value] of formData.entries()) {
+           data[key] = value
+        }
+       
+        if (editmode) {
+           return updateModel(url, "Update", data)
+              .then(async (res) => {
+                 const text = JSON.parse(await res.text())
+                 if (text.message == "error") alerta(5)
+                 else alerta(2)
+              })
+        
+            }else{
+           return updateModel(url, "Create", data)
+              .then(async (res) => {
+                 const text = JSON.parse(await res.text())
+                
+                 if (text.message == "error") alerta(5)
+                 else alerta(1)
+                
+              })
+            }
+        
+     }
+	 
+	 const formA = document.getElementById("submitBtn") 
+	 formA.addEventListener('click', ()=>{
+		setLoading()
+		$.ajax({
+			type: "POST",
+			url: "{% url 'saveprefer' %}",
+			data: {
+			  
+				'prefertitle':document.getElementById("titulo").value,
+				'preferdesr':document.getElementById("descripcion").value,
+				'prefermodulo':document.getElementById("categoryProgram").value,
+				'csrfmiddlewaretoken': '{{ csrf_token }}',
+	 
+			},
+			dataType: "json",
+			success: function (response) {
+			   console.log(response)
+			  
+			  document.getElementById("titulo").value=""
+			  document.getElementById("descripcion").value=""
+			  document.getElementById("categoryProgram").value=""
+			  stopLoading()
+			  
+			  location.reload() 
+			},
+			failure: function () {
+				swal("failure");
+			}
+			
+		}); 
+	 
+		
+		
+	 })
+	  function cambiar_comb() {
+    
+        const varia= document.getElementById("categoryPrograma").value;
+		
+        document.getElementById("categoriasProcess").innerHTML=" ";
+        const url= '/App/settings/combobox/?valor='+varia;
+        fetch(url)
+        .then( function(result) {
+            return result.text();
+        })
+        .then( function(result){
+            document.getElementById("categoriasProcess").innerHTML=result;    
+        });
+
+    } 
+	const toggle = () => {
+		
+		const toggle = document.getElementById("checkDuration")
+		const max=document.getElementById("min_points")
+		const min=document.getElementById("max_points")
+		if (toggle.checked){
+			max.disabled=false
+			min.disabled=false
+		}
+		else{
+
+			max.disabled=true
+			min.disabled=true
+		}
+	} 
+	const toggletwo = (id ,it) => {
+		
+		const toggle = document.getElementById(id)
+		const max=document.getElementById("min_pointstwo"+it)
+		const min=document.getElementById("max_pointstwo"+it)
+		const utton=document.getElementById("edit")
+		if (toggle.checked){
+			max.disabled=false
+			min.disabled=false
+			utton.disabled=false
+		}
+		else{
+
+			max.disabled=true
+			min.disabled=true
+			utton.disabled=true
+		}
+	} 
+	function actualizar(div,campo_bd,Tipo){
+		
+		var vslor=""
+		var update = ""
+        var mi=""
+		var ma=""
+		if (Tipo == "edit"){
+			
+			mi=document.getElementById("min_pointstwo"+campo_bd).value
+			ma=document.getElementById("max_pointstwo"+campo_bd).value
+			
+		}
+		else{
+		if (Tipo == 'repeatstwo'){
+			vslor=document.getElementById(div).value
+			update=vslor
+		}else{
+
+		
+		//alert(Tipo)
+		
+		vslor=document.getElementById(div).checked
+		
+		
+		if (vslor == true){
+			
+          update=1
+		}
+		else{
+			
+		  update=0
+		}
+		
+		}
+	}
+		//alert(vslor)
+        var value = $('#'+div).val();
+        var jqxhr = $.post( "/App/settings/upprefer/", {'tipo':Tipo,'rma':ma,'rmi':mi, 'campo_bd' : campo_bd, 'value' : update ,'csrfmiddlewaretoken': '{{ csrf_token }}' } );
+        jqxhr.done(function( data ) {
+          $("#alert").html(data);
+		  alerta(1)
+        });
+	
+      }
+	  
+</script> 
+
+{% endblock javascripts %}
