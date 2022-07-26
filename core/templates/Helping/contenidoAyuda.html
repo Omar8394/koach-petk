@@ -32,4 +32,10 @@
     </div>
     <div id="contentAyuda{{page.idtutorial}}" class="card-list-item-descripcion card-list-item-close"><strong>{% translate "Descripcion" %}:</strong> &nbsp;{{page.descripcion}}</div>
  </li>
+ {% empty %}
+ <li class="card-list-item">
+     <div class="card-list-item-inner">
+        <div class="card-list-item-title">{% translate "Sin contenido" %}</div>
+     </div>
+  </li>
  {% endfor %}

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-25 10:31-0400\n"
+"POT-Creation-Date: 2022-07-26 10:11-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,77 +36,86 @@ msgstr ""
 msgid "Nuevo"
 msgstr ""
 
+#: .\core\templates\Helping\ayuda.html:113
+#: .\core\templates\Helping\ayuda.html:118
+msgid "Buscar"
+msgstr ""
+
 #: .\core\templates\Helping\ayuda.html:115
+msgid "Limpiar"
+msgstr ""
+
+#: .\core\templates\Helping\ayuda.html:131
 msgid "Agregar nueva ayuda"
 msgstr ""
 
-#: .\core\templates\Helping\ayuda.html:218
+#: .\core\templates\Helping\ayuda.html:284
 msgid "Escriba su contenido aqui..."
 msgstr ""
 
-#: .\core\templates\Helping\ayuda.html:245
-#: .\core\templates\Helping\ayuda.html:253
-#: .\core\templates\Helping\ayuda.html:336
-#: .\core\templates\Helping\ayuda.html:377
+#: .\core\templates\Helping\ayuda.html:312
+#: .\core\templates\Helping\ayuda.html:320
+#: .\core\templates\Helping\ayuda.html:403
+#: .\core\templates\Helping\ayuda.html:444
 msgid "Alerta"
 msgstr ""
 
-#: .\core\templates\Helping\ayuda.html:245
+#: .\core\templates\Helping\ayuda.html:312
 msgid "Seleccione una imagen menor a 3Mb"
 msgstr ""
 
-#: .\core\templates\Helping\ayuda.html:253
+#: .\core\templates\Helping\ayuda.html:320
 msgid "Seleccione una imagen en formato png o jpeg"
 msgstr ""
 
-#: .\core\templates\Helping\ayuda.html:287
-#: .\core\templates\Helping\ayuda.html:401
+#: .\core\templates\Helping\ayuda.html:354
+#: .\core\templates\Helping\ayuda.html:468
 msgid "Error"
 msgstr ""
 
-#: .\core\templates\Helping\ayuda.html:287
-#: .\core\templates\Helping\ayuda.html:401
+#: .\core\templates\Helping\ayuda.html:354
+#: .\core\templates\Helping\ayuda.html:468
 msgid "Algo ha ocurrido al subir el archivo al servidor"
 msgstr ""
 
-#: .\core\templates\Helping\ayuda.html:330
-#: .\core\templates\Helping\ayuda.html:582
+#: .\core\templates\Helping\ayuda.html:397
+#: .\core\templates\Helping\ayuda.html:649
 msgid "Muy Bien!"
 msgstr ""
 
-#: .\core\templates\Helping\ayuda.html:330
-#: .\core\templates\Helping\ayuda.html:582
+#: .\core\templates\Helping\ayuda.html:397
+#: .\core\templates\Helping\ayuda.html:649
 msgid "Registro guardado"
 msgstr ""
 
-#: .\core\templates\Helping\ayuda.html:336
+#: .\core\templates\Helping\ayuda.html:403
 msgid "Debes agregar algun contenido..."
 msgstr ""
 
-#: .\core\templates\Helping\ayuda.html:377
+#: .\core\templates\Helping\ayuda.html:444
 msgid "Seleccione un documento Pdf"
 msgstr ""
 
-#: .\core\templates\Helping\ayuda.html:444
-#: .\core\templates\Helping\ayuda.html:478
+#: .\core\templates\Helping\ayuda.html:511
+#: .\core\templates\Helping\ayuda.html:545
 msgid "Atencion!"
 msgstr ""
 
-#: .\core\templates\Helping\ayuda.html:444
-#: .\core\templates\Helping\ayuda.html:478
+#: .\core\templates\Helping\ayuda.html:511
+#: .\core\templates\Helping\ayuda.html:545
 msgid "Desea eliminar este archivo"
 msgstr ""
 
-#: .\core\templates\Helping\ayuda.html:527
-#: .\core\templates\Helping\ayuda.html:589
+#: .\core\templates\Helping\ayuda.html:594
+#: .\core\templates\Helping\ayuda.html:656
 msgid "Alerta!"
 msgstr ""
 
-#: .\core\templates\Helping\ayuda.html:527
+#: .\core\templates\Helping\ayuda.html:594
 msgid "No hay paginas asignadas para esta ayuda"
 msgstr ""
 
-#: .\core\templates\Helping\ayuda.html:590
+#: .\core\templates\Helping\ayuda.html:657
 msgid "El titulo de esta ayuda ya existe, debes cambialo por otro"
 msgstr ""
 
@@ -135,6 +144,12 @@ msgstr ""
 #: .\core\templates\Helping\contenidoAyuda.html:33
 #: .\core\templates\Helping\modalAyuda.html:36
 msgid "Descripcion"
+msgstr ""
+
+#: .\core\templates\Helping\contenidoAyuda.html:38
+#: .\core\templates\Helping\modalCarrusel.html:38
+#: .\core\templates\Helping\modalHijosPagina.html:48
+msgid "Sin contenido"
 msgstr ""
 
 #: .\core\templates\Helping\modalAyuda.html:15
@@ -166,11 +181,6 @@ msgstr ""
 #: .\core\templates\Helping\modalAyuda.html:46
 #: .\core\templates\Helping\modalPagina.html:28
 msgid "Guardar"
-msgstr ""
-
-#: .\core\templates\Helping\modalCarrusel.html:38
-#: .\core\templates\Helping\modalHijosPagina.html:48
-msgid "Sin contenido"
 msgstr ""
 
 #: .\core\templates\Helping\modalCarrusel.html:46

@@ -148,6 +148,7 @@ def modalGuardarAyuda(request):
                 helping=tutoriales.objects.get(idtutorial=id)
 
             else: 
+
                 helping = tutoriales()
 
             helping.titulo=data['titulo']
@@ -160,6 +161,23 @@ def modalGuardarAyuda(request):
     helping = tutoriales.objects.all()
     html_template = (loader.get_template('Helping/contenidoAyuda.html'))
     return HttpResponse(html_template.render({'data': helping}, request))
+
+def modalBuscarAyuda(request): 
+
+    context = {}
+
+    if request.method == "POST":
+
+        if request.body:
+
+            body = json.load(request)
+            data = body['data']['txtSearch']
+            helping = tutoriales.objects.filter(titulo__icontains=data)
+            context = {'data': helping}
+
+    html_template = (loader.get_template('Helping/contenidoAyuda.html'))
+    return HttpResponse(html_template.render(context, request))
+
 
 def modalGuardarImagen(request): 
 

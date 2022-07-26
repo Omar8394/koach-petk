@@ -7,12 +7,17 @@
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}
 <style>
+
+
    img{
-      width: auto;
+      max-width: 100%;
+      height: auto;
    }
+
    .carousel-indicators>li.active{
       opacity: 100%;
    }
+
    .carousel-indicators>li{
       opacity: 25%;
    }
@@ -106,8 +111,24 @@
       <div class="page-category">
 
             <main class="card shadow mb-4">
+
+               <div class="card-header">
+                  <form class="form-group w-100 d-flex justify-content-end" id="formSearch">
+                     <div class="input-group">
+                        <input id="txtSearch" name="txtSearch" type="text" class="form-control" placeholder="{% translate 'Buscar' %}...">
+                        <div class="input-group-append">
+                           <span id="clearBtn" class="btn btn-danger" title="{% translate 'Limpiar' %}">
+                              <i class="fa fa-broom"></i>
+                           </span>
+                           <span id="searchBtn" class="btn btn-primary" title="{% translate 'Buscar' %}">
+                              <i class="fa fa-search"></i>
+                           </span>
+                        </div>
+                     </div>
+                  </form>
+               </div>
                
-               <section class="p-5">
+               <section class="card-body p-5">
 
                   <ul class="card-list">
                      <li class="card-list-item">
@@ -136,8 +157,8 @@
 </div>
 
 <!-- Modal nuevo carrusel -->
-<div class="modal fade p-0" style="background-color: rgba(0, 0, 0, 0.9);" data-backdrop="static" data-keyboard="false" id="addNewCarrusel" tabindex="-1" role="dialog">
-   <div class="modal-dialog modal-dialog-centered" style="justify-content: center;" role="document" id="addNewCarruselContenido">
+<div class="modal fade p-0" style="background-color: rgba(0, 0, 0, 0.9);" id="addNewCarrusel" tabindex="-1" role="dialog">
+   <div class="modal-dialog modal-dialog-centered px-3" style="justify-content: center; max-width: 100vw;" role="document" id="addNewCarruselContenido">
 
    </div>
 </div>
@@ -159,15 +180,8 @@
 
 <!-- Modal nueva evaluación -->
 <div class="modal fade" id="addNewTest" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" >
-   <div class="modal-dialog  modal-dialog-centered modal-lg" role="document" id="modalContentTest">
+   <div class="modal-dialog modal-dialog-centered modal-lg" role="document" id="modalContentTest">
 
-
-   </div>
-</div>
-
-<!-- Modal banco de recursos -->
-<div class="modal fade" id="bankModal" tabindex="-1" role="dialog">
-   <div class="modal-dialog  modal-dialog-centered" role="document" id="bankModalContent">
 
    </div>
 </div>
@@ -184,15 +198,72 @@
 
 <script>
 
-
-   $(document).ready(function () {
-
-
+   const cargarAyuda = () => {
+      
       fetch("{% url 'helping:modalGuardarAyuda' %}", {
          ...fetchObject
       }).then(async (res) => {
          
          document.getElementById("listaPaginas").innerHTML = await res.text()
+
+      })
+
+   }
+
+   const buscarAyuda = (data) => {
+      
+      fetch("{% url 'helping:modalBuscarAyuda' %}", {
+         ...fetchObject,
+         body: JSON.stringify({
+            data
+         })
+      }).then(async (res) => {
+         
+         document.getElementById("listaPaginas").innerHTML = await res.text()
+
+      })
+
+   }
+
+   $(document).ready(function () {
+
+      cargarAyuda()
+
+      const formSearch = document.getElementById('formSearch')
+      const clearBtn = document.getElementById('clearBtn')
+      const searchBtn = document.getElementById('searchBtn')
+      const searchInput = document.getElementById('txtSearch') 
+
+      formSearch.addEventListener("submit", (e) => {
+
+         e.preventDefault()
+         
+         const formData = new FormData(formSearch);
+         const data = Object.fromEntries(formData.entries())
+         buscarAyuda(data)
+         
+      })
+
+      clearBtn.addEventListener("click", (e) => {
+
+         if(searchInput.value){
+
+            cargarAyuda()
+            formSearch.reset()
+
+         }
+
+      })
+
+      searchBtn.addEventListener("click", (e) => {
+
+         if(searchInput.value){
+
+            const formData = new FormData(formSearch);
+            const data = Object.fromEntries(formData.entries())
+            buscarAyuda(data)
+
+         }
 
       })
 
@@ -235,7 +306,8 @@
 
                onImageUpload: async function(image){
                
-               const img = await image[0]
+               const data = await image[0]
+               const img = new File([data], data.name.replace(/[^a-zA-Z0-9. ]/g, ''), {type: data.type});
                let val = true;
 
                if((img['size'] / 1000) > 3000){
@@ -368,7 +440,7 @@
                   
                   pdfFile.addEventListener("change", (e) => {
                
-                     const pdf = pdfFile.files[0]
+                     const pdf = new File([pdfFile.files[0]], pdfFile.files[0].name.replace(/[^a-zA-Z0-9. ]/g, ''), {type: pdfFile.files[0].type});
                      let val = true;
 
                      if(pdf['type'] != 'application/pdf'){

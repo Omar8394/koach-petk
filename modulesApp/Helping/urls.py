@@ -11,6 +11,7 @@ urlpatterns = [
     path('nuevo/', views.nuevo, name="nuevo"),  
     path('modalAddAyuda', views.modalAddAyuda, name='modalAddAyuda'),
     path('modalGuardarAyuda', views.modalGuardarAyuda, name='modalGuardarAyuda'),
+    path('modalBuscarAyuda', views.modalBuscarAyuda, name='modalBuscarAyuda'),
     path('modalEliminarAyuda', views.modalEliminarAyuda, name='modalEliminarAyuda'),
     path('modalAddPagina', views.modalAddPagina, name='modalAddPagina'),
     path('modalPdf', views.modalPdf, name='modalPdf'),
