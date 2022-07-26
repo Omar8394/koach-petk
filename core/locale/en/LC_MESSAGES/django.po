@@ -20,11 +20,11 @@ msgstr ""
 
 #: .\core\settings.py:139
 msgid "Spanish"
-msgstr ""
+msgstr "Español"
 
 #: .\core\settings.py:140
 msgid "English"
-msgstr ""
+msgstr "Ingles"
 
 #: .\core\templates\index.html:386
 msgid "Informacion"
@@ -64,7 +64,7 @@ msgstr "Mission vision"
 
 #: .\core\templates\index.html:523
 msgid "Planes"
-msgstr ""
+msgstr "Planning"
 
 #: .\core\templates\index.html:528
 msgid "Ubicacion"
@@ -73,3 +73,13 @@ msgstr "Location"
 #: .\core\templates\index.html:545
 msgid "Bienvenidos a Koach Soluciones"
 msgstr "Welcome to Koach Soluciones"
+
+#~ msgid "URL Pdf"
+#~ msgstr "Pdf Url"
+
+#~ msgid "Agregar Pdf"
+#~ msgstr "Add new Pdf"
+
+#, python-format
+#~ msgid "%(editable)s"
+#~ msgstr "Add page"

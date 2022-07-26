@@ -1,4 +1,5 @@
 {% extends "layouts/base.html" %}
+{% load i18n %}
 {% load static %}
 
 {% block title %}{% endblock %}
@@ -7,32 +8,39 @@
 {% block stylesheets %}
 <style>
 
+
+   img{
+      max-width: 100%;
+      height: auto;
+   }
+
    .carousel-indicators>li.active{
       opacity: 100%;
    }
+
    .carousel-indicators>li{
       opacity: 25%;
    }
 
-   .form-control:valid{
+   .needs-validation.was-validated .form-control:valid{
       background-position: right calc(.375em + .1875rem) center;
       background-size: calc(.75em + .375rem) calc(.75em + .375rem);
       background-repeat: no-repeat;
       background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
    }
    
-   .form-control:invalid{
+   .needs-validation.was-validated .form-control:invalid{
       background-position: right calc(.375em + .1875rem) center;
       background-size: calc(.75em + .375rem) calc(.75em + .375rem);
       background-repeat: no-repeat;
       background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
    }
 
-   .custom-select:valid{
+   .needs-validation.was-validated .custom-select:valid{
       background:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") right .75rem center/8px 10px no-repeat,#fff url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e") center right 1.75rem/calc(.75em + .375rem) calc(.75em + .375rem) no-repeat;
    }
 
-   .custom-select:invalid{
+   .needs-validation.was-validated .custom-select:invalid{
       background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") right .75rem center/8px 10px no-repeat,#fff url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e") center right 1.75rem/calc(.75em + .375rem) calc(.75em + .375rem) no-repeat;
    }
 
@@ -78,7 +86,7 @@
    <div class="page-inner">
 
       <div class="page-header mb-4">
-         <h4 class="page-title">Ayudas</h4>
+         <h4 class="page-title">{% translate "Ayudas" %}</h4>
          <ul class="breadcrumbs">
             <li class="nav-home">
                <a href="{% url 'Dashboard' %}">
@@ -89,13 +97,13 @@
                <i class="flaticon-right-arrow"></i>
             </li>
             <li class="nav-item">
-               <span>Ayudas</span>
+               <span>{% translate "Ayudas" %}</span>
             </li>
             <li class="separator">
                <i class="flaticon-right-arrow"></i>
             </li>
             <li class="nav-item">
-               <a href="#">Nuevo</a>
+               <a href="#">{% translate "Nuevo" %}</a>
             </li>
          </ul>
       </div>
@@ -103,15 +111,31 @@
       <div class="page-category">
 
             <main class="card shadow mb-4">
+
+               <div class="card-header">
+                  <form class="form-group w-100 d-flex justify-content-end" id="formSearch">
+                     <div class="input-group">
+                        <input id="txtSearch" name="txtSearch" type="text" class="form-control" placeholder="{% translate 'Buscar' %}...">
+                        <div class="input-group-append">
+                           <span id="clearBtn" class="btn btn-danger" title="{% translate 'Limpiar' %}">
+                              <i class="fa fa-broom"></i>
+                           </span>
+                           <span id="searchBtn" class="btn btn-primary" title="{% translate 'Buscar' %}">
+                              <i class="fa fa-search"></i>
+                           </span>
+                        </div>
+                     </div>
+                  </form>
+               </div>
                
-               <section class="p-5">
+               <section class="card-body p-5">
 
                   <ul class="card-list">
                      <li class="card-list-item">
                         <div class="card-list-item-inner">
-                           <div class="card-list-item-title">Agregar nueva ayuda</div>
+                           <div class="card-list-item-title">{% translate "Agregar nueva ayuda" %}</div>
                            <div class="card-list-item-actions">
-                              <div onclick="openAddTopic()" class="btn btn-icon btn-success btn-round add-btn btn-card-lg">
+                              <div onclick="openAddAyuda()" class="btn btn-icon btn-success btn-round add-btn btn-card-lg">
                                  <i class="fas fa-plus"></i>
                               </div>
                            </div>
@@ -133,15 +157,15 @@
 </div>
 
 <!-- Modal nuevo carrusel -->
-<div class="modal fade p-0" style="background-color: rgba(0, 0, 0, 0.9);" data-backdrop="static" data-keyboard="false" id="addNewCarrusel" tabindex="-1" role="dialog">
-   <div class="modal-dialog modal-dialog-centered" style="justify-content: center;" role="document" id="addNewCarruselContenido">
+<div class="modal fade p-0" style="background-color: rgba(0, 0, 0, 0.9);" id="addNewCarrusel" tabindex="-1" role="dialog">
+   <div class="modal-dialog modal-dialog-centered px-3" style="justify-content: center; max-width: 100vw;" role="document" id="addNewCarruselContenido">
 
    </div>
 </div>
 
-<!-- Modal nuevo tópico -->
+<!-- Modal nuevo ayuda -->
 <div class="modal fade" id="addNewModal" tabindex="-1" role="dialog">
-   <div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="addNewModalContent">
+   <div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="addNewModalAyuda">
 
 
 
@@ -156,15 +180,15 @@
 
 <!-- Modal nueva evaluación -->
 <div class="modal fade" id="addNewTest" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" >
-   <div class="modal-dialog  modal-dialog-centered modal-lg" role="document" id="modalContentTest">
+   <div class="modal-dialog modal-dialog-centered modal-lg" role="document" id="modalContentTest">
 
 
    </div>
 </div>
 
-<!-- Modal banco de recursos -->
-<div class="modal fade" id="bankModal" tabindex="-1" role="dialog">
-   <div class="modal-dialog  modal-dialog-centered" role="document" id="bankModalContent">
+<!-- modal pdf -->
+<div class="modal note-modal" tabindex="-1" role="dialog" aria-label="Insert Pdf" style="padding-right: 17px;" id="pdfModal">
+   <div class="modal-dialog" role="document" id="pdfModalContent">
 
    </div>
 </div>
@@ -174,15 +198,72 @@
 
 <script>
 
-
-   $(document).ready(function () {
-
-
+   const cargarAyuda = () => {
+      
       fetch("{% url 'helping:modalGuardarAyuda' %}", {
          ...fetchObject
       }).then(async (res) => {
          
          document.getElementById("listaPaginas").innerHTML = await res.text()
+
+      })
+
+   }
+
+   const buscarAyuda = (data) => {
+      
+      fetch("{% url 'helping:modalBuscarAyuda' %}", {
+         ...fetchObject,
+         body: JSON.stringify({
+            data
+         })
+      }).then(async (res) => {
+         
+         document.getElementById("listaPaginas").innerHTML = await res.text()
+
+      })
+
+   }
+
+   $(document).ready(function () {
+
+      cargarAyuda()
+
+      const formSearch = document.getElementById('formSearch')
+      const clearBtn = document.getElementById('clearBtn')
+      const searchBtn = document.getElementById('searchBtn')
+      const searchInput = document.getElementById('txtSearch') 
+
+      formSearch.addEventListener("submit", (e) => {
+
+         e.preventDefault()
+         
+         const formData = new FormData(formSearch);
+         const data = Object.fromEntries(formData.entries())
+         buscarAyuda(data)
+         
+      })
+
+      clearBtn.addEventListener("click", (e) => {
+
+         if(searchInput.value){
+
+            cargarAyuda()
+            formSearch.reset()
+
+         }
+
+      })
+
+      searchBtn.addEventListener("click", (e) => {
+
+         if(searchInput.value){
+
+            const formData = new FormData(formSearch);
+            const data = Object.fromEntries(formData.entries())
+            buscarAyuda(data)
+
+         }
 
       })
 
@@ -205,8 +286,9 @@
          $(`#summernote`).summernote({
             dialogsInBody: true,
             height: 600,
-            placeholder: 'Escriba su contenido aqui...',
+            placeholder: "{% translate 'Escriba su contenido aqui...' %}",
             disableDragAndDrop: true,
+            disableResizeEditor: true,
             toolbar: [
                ['style', ['style']],
                ['font', ['bold', 'underline', 'clear']],
@@ -215,13 +297,42 @@
                ['para', ['ul', 'ol', 'paragraph']],
                ['table', ['table']],
                ['insert', ['picture']],
+               ['mybutton', ['hello']],
             ],
+            buttons: {
+               hello: HelloButton
+            },
             callbacks: {
-               onImageUpload: function(image){
-                  subirImagen(image[0])
+
+               onImageUpload: async function(image){
+               
+               const data = await image[0]
+               const img = new File([data], data.name.replace(/[^a-zA-Z0-9. ]/g, ''), {type: data.type});
+               let val = true;
+
+               if((img['size'] / 1000) > 3000){
+
+                  val = false;
+
+                  alertaMensajitos(5, "{% translate 'Alerta' %}", "{% translate 'Seleccione una imagen menor a 3Mb' %}")
+
+               }
+
+               if(img['type'] != 'image/jpeg' && img['type'] != 'image/png'){
+
+                  val = false;
+
+                  alertaMensajitos(5, "{% translate 'Alerta' %}", "{% translate 'Seleccione una imagen en formato png o jpeg' %}")
+
+               }
+
+               if(val)
+
+                  subirImagen(img)
+
                },
                onMediaDelete : function(target) {
-                  borrarImagen($(target[0]).attr('src'))
+                  // borrarImagen($(target[0]).attr('src'))
                },
             }
          });
@@ -238,7 +349,14 @@
             }).then(async (res) => {
 
                const img = await res.text()
-               $('#summernote').summernote("pasteHTML", img);
+
+               if (img)
+
+                  $('#summernote').summernote("pasteHTML", img);
+               
+               else
+
+                  alertaMensajitos(5,"{% translate 'Error' %}", "{% translate 'Algo ha ocurrido al subir el archivo al servidor' %}")
 
             })
          
@@ -275,14 +393,20 @@
                      fk
                   })
                }).then(async (res) => {
-                  
+
+                  if(document.getElementById("modalContentChoose"))
+
+                     document.getElementById("modalContentChoose").innerHTML = await res.text()
+
                   $("#addNewTest").modal("hide")
-                  alertaMensajitos(4,'Muy Bien!','Registro guardado')
+                  alertaMensajitos(4,"{% translate 'Muy Bien!' %}","{% translate 'Registro guardado' %}")
 
                })
 
             }else{
-               alertaMensajitos(5,'Alerta','Debes agregar algun contenido...')
+
+               alertaMensajitos(5,"{% translate 'Alerta' %}","{% translate 'Debes agregar algun contenido...' %}")
+
             }
             
          })
@@ -292,17 +416,83 @@
    }
   
 
-   const updateModel = (url, method, data, id) => {
-      return fetch(url, {
-         ...fetchObject,
-         body: JSON.stringify({
-            method,
-            data,
-            id,
-            padreActivity: selectedActivity
-         })
-      })
-   }
+
+   const HelloButton = function (context) {
+
+      const ui = $.summernote.ui;
+      // create button
+      const button = ui.button({
+         contents: '<i class="far fa-file-pdf"></i>',
+         tooltip: 'Pdf',
+         click: function () {
+         // invoke insertText method with 'hello' on editor module.
+            // context.invoke('editor.insertText', 'hello');
+            fetch("{% url 'helping:modalPdf'%}", {
+               ...fetchObject,
+            }).then(async (res) => {
+
+               const text = await res.text()
+
+               if(text){
+                     
+                  document.getElementById("pdfModalContent").innerHTML = text
+                  const pdfFile =document.getElementById("pdfFile")
+                  
+                  pdfFile.addEventListener("change", (e) => {
+               
+                     const pdf = new File([pdfFile.files[0]], pdfFile.files[0].name.replace(/[^a-zA-Z0-9. ]/g, ''), {type: pdfFile.files[0].type});
+                     let val = true;
+
+                     if(pdf['type'] != 'application/pdf'){
+
+                        val = false;
+                        alertaMensajitos(5, "{% translate 'Alerta' %}", "{% translate 'Seleccione un documento Pdf' %}")
+                        $("#pdfModal").modal("hide")
+
+                     }
+
+                     if(val){
+               
+                        data = new FormData();
+                        data.append("pdf", pdf);
+
+                        fetch("{% url 'helping:modalGuardarPdf' %}", {
+                           ...fetchObject,
+                           body:
+                              data
+                        }).then(async (res) => {
+
+                           const img = await res.text()
+
+                           if (img)
+
+                              $('#summernote').summernote("pasteHTML", img);
+                           
+                           else
+
+                              alertaMensajitos(5,"{% translate 'Error' %}", "{% translate 'Algo ha ocurrido al subir el archivo al servidor' %}")
+
+                        }).finally(() => {
+
+                           $("#pdfModal").modal("hide")
+
+                        });
+
+                     }
+
+                  })
+
+                  $("#pdfModal").modal("show")
+
+               }
+            })
+
+         }
+      });
+
+      return button.render();   // return button as jquery object
+      
+   } 
 
    const openAddActivity = (id) => {
 
@@ -321,9 +511,9 @@
    }
 
    
-   const openDeleteTopic = async (id) => {
+   const openDeleteAyuda = async (id) => {
 
-      const elimino = await alertaMensajitos(6, 'Atencion!', 'Desea eliminar este archivo')
+      const elimino = await alertaMensajitos(6, "{% translate 'Atencion!' %}", "{% translate 'Desea eliminar este archivo' %}")
 
       if (elimino) {
 
@@ -350,9 +540,14 @@
       }
    }
    
+   const showContent = (id) => {
+      let contenido = document.getElementById(`contentAyuda${id}`)
+      contenido.classList.toggle("card-list-item-close")
+   }
+
    const openDeleteHijos = async (fk, id) => {
 
-      const elimino = await alertaMensajitos(6, 'Atencion!', 'Desea eliminar este archivo')
+      const elimino = await alertaMensajitos(6, "{% translate 'Atencion!' %}", "{% translate 'Desea eliminar este archivo' %}")
 
       if (elimino) {
 
@@ -392,19 +587,23 @@
       }).then(async (res) => {
 
          const text = await res.text()
+
          if(text){
+
             document.getElementById("addNewCarruselContenido").innerHTML = text
             $('.carousel').carousel({interval: 0})
             $("#addNewCarrusel").modal("show")
+
          }else
-            alertaMensajitos(7, 'Alerta!', 'No hay paginas asignadas para esta ayuda')
+
+            alertaMensajitos(7, "{% translate 'Alerta!' %}", "{% translate 'No hay paginas asignadas para esta ayuda' %}")
          
 
       })
 
    }
 
-   const openAddTopic = (id = -1) => {
+   const openAddAyuda = (id = -1) => {
       
       fetch("{% url 'helping:modalAddAyuda'%}", {
          ...fetchObject,
@@ -412,34 +611,97 @@
             id
          })
       }).then(async (res) => {
-         document.getElementById("addNewModalContent").innerHTML = await res.text()
-      })
-         .then(() => {
+
+         document.getElementById("addNewModalAyuda").innerHTML = await res.text()
+
+      }).then(() => {
+
             $("#addNewModal").modal("show")
-            const formTopico = document.getElementById("formTopico")
+            const formAyuda = document.getElementById("formAyuda")
            
-            formTopico.addEventListener("submit", (e) => {
+            formAyuda.addEventListener("submit", (e) => {
 
                e.preventDefault()
                
-               const formData = new FormData(formTopico);
+               const formData = new FormData(formAyuda);
                const data = Object.fromEntries(formData.entries())
-               
-               fetch("{% url 'helping:modalGuardarAyuda' %}", {
-                  ...fetchObject,
-                  body: JSON.stringify({
-                     data,
-                     id
-                  })
-               }).then(async (res) => {
-                  
-                  document.getElementById("listaPaginas").innerHTML = await res.text()
-                  $("#addNewModal").modal("hide")
-                  alertaMensajitos(4, 'Muy Bien!', 'Registro guardado')
 
-               })
+               if(data.titulo && data.descripcion && data.tipo){
+
+                  const titulo = data.titulo
+
+                  fetch("{% url 'helping:validarTituloAyuda' %}", {
+                     ...fetchObject,
+                     body: JSON.stringify({
+                        titulo,
+                     })
+                  }).then(async (res) => {
+                     
+                     const resTitulo = await res.text()
+
+                     if(resTitulo){
+                              
+                        fetch("{% url 'helping:modalGuardarAyuda' %}", {
+                           ...fetchObject,
+                           body: JSON.stringify({
+                              data,
+                              id
+                           })
+                        }).then(async (res) => {
+                           
+                           document.getElementById("listaPaginas").innerHTML = await res.text()
+                           $("#addNewModal").modal("hide")
+                           alertaMensajitos(4, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}")
+
+                        })
+
+                     }else{
+
+                        swal({
+                           title: "{% translate 'Alerta!' %}",
+                           text: "{% translate 'El titulo de esta ayuda ya existe, debes cambialo por otro' %}",
+                           icon: 'error',
+                           buttons: {
+                              confirm: {
+                                 className: 'btn btn-danger'
+                              }
+                           },
+                        }).then(()=>{
+                           
+                           $('#descriptionTopic').focus()
+
+                        })
+
+                     }
+
+                  })
+
+
+               }else if(!formAyuda.classList.contains('needs-validation')){
+
+                  formAyuda.classList.add('needs-validation', 'was-validated')
+                  formAyuda.removeAttribute('novalidate');
+
+               }
+                  
             })
          })
+   }
+
+
+   const move = (fk, id, tipo) => {
+      
+      fetch("{% url 'helping:modalPaginaMover'%}", {
+         ...fetchObject,
+         body: JSON.stringify({
+            id,
+            fk,
+            tipo
+         })
+      }).then(async (res) => {
+         document.getElementById("modalContentChoose").innerHTML = await res.text()
+      })
+
    }
    
 </script>

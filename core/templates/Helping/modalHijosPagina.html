@@ -1,4 +1,5 @@
 
+{% load i18n %}
       <div class="modal-content">
         <div class="modal-header">
            <h5 class="modal-title">{% if data %}{{ data.titulo }}{% endif %}</h5>
@@ -14,19 +15,27 @@
                 {% for page in paginas %}
 
                 <li class="card-list-item">
-                    <div class="card-list-item-inner">
-                       <div class="card-list-item-title">{{ forloop.counter }}</div>
+                    <div class="card-list-item-inner {% if page.idpagina == orden.idpagina %}bg-primary{% endif %}">
+                       <div class="card-list-item-title">{{ page.ordenamiento }}{% if page.titulo %} - {{ page.titulo  | truncatechars:16}}{% endif %}</div>
                        <div class="card-list-item-actions">
                           <div class="btn-group" role="group">
                           
-                             <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip"
-                                data-placement="top" title="Editar" onclick="showChilds('{{data.idtutorial}}', '{{page.idpagina}}')">
-                                <i class="fas fa-edit"></i>
-                             </button>
-                             <button type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"
-                                data-placement="top" title="Eliminar" onclick="openDeleteHijos('{{data.idtutorial}}', '{{page.idpagina}}')">
-                                <i class="fas fa-trash-alt"></i>
-                             </button>
+                              <button type="button" class="btn btn-icon btn-sm btn-success ml-1" data-toggle="tooltip"
+                                 data-placement="top" title='{% translate "Subir" %}' onclick="move('{{data.idtutorial}}', '{{page.idpagina}}', 0)">
+                                 <i class="fa fa-arrow-up"></i>
+                              </button>
+                              <button type="button" class="btn btn-icon btn-sm btn-success ml-1" data-toggle="tooltip"
+                                 data-placement="top" title='{% translate "Bajar" %}' onclick="move('{{data.idtutorial}}', '{{page.idpagina}}', 1)">
+                                 <i class="fa fa-arrow-down"></i>
+                              </button>
+                              <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip"
+                                 data-placement="top" title='{% translate "Editar" %}' onclick="showChilds('{{data.idtutorial}}', '{{page.idpagina}}')">
+                                 <i class="fas fa-edit"></i>
+                              </button>
+                              <button type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"
+                                 data-placement="top" title='{% translate "Eliminar" %}' onclick="openDeleteHijos('{{data.idtutorial}}', '{{page.idpagina}}')">
+                                 <i class="fas fa-trash-alt"></i>
+                              </button>
 
                           </div>
                        </div>
@@ -36,7 +45,7 @@
                  {% empty %}
                  <li class="card-list-item">
                     <div class="card-list-item-inner">
-                        <div class="card-list-item-title">Sin contenido</div>
+                        <div class="card-list-item-title">{% translate "Sin contenido" %}</div>
                      </div>
                  </li>
                  {% endfor %}

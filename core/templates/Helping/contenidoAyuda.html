@@ -1,3 +1,4 @@
+{% load i18n %}
 {% for page in data%}
 <li class="card-list-item">
     <div class="card-list-item-inner">
@@ -5,29 +6,36 @@
        <div class="card-list-item-actions">
           <div class="btn-group" role="group">
           
-            <button type="button" class="btn btn-icon btn-sm btn-success" data-placement="top" title="Agragar pagina"
+            <button type="button" class="btn btn-icon btn-sm btn-success" data-placement="top" title='{% translate "Agragar pagina" %}'
             data-toggle="tooltip" data-target="tooltip" onclick="showChilds('{{page.idtutorial}}')">
                 <i class="fas fa-plus"></i>
             </button>
             <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip"
-            data-placement="top" title="Editar" onclick="openAddTopic('{{page.idtutorial}}')">
+            data-placement="top" title='{% translate "Editar" %}' onclick="openAddAyuda('{{page.idtutorial}}')">
                 <i class="fas fa-edit"></i>
             </button>
             <button type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"
-            data-placement="top" title="Eliminar" onclick="openDeleteTopic('{{page.idtutorial}}')">
+            data-placement="top" title='{% translate "Eliminar" %}' onclick="openDeleteAyuda('{{page.idtutorial}}')">
                 <i class="fas fa-trash-alt"></i>
             </button>
             <button type="button" class="btn btn-icon btn-sm btn-warning ml-1" data-toggle="tooltip"
-            data-placement="top" title="Acceder paginas" onclick="openAddActivity('{{page.idtutorial}}')">
+            data-placement="top" title='{% translate "Acceder paginas" %}' onclick="openAddActivity('{{page.idtutorial}}')">
                 <i class="fas fa-clipboard"></i>
             </button>
             
             <button type="button" class="btn btn-icon btn-sm btn-dark ml-1" data-toggle="tooltip"
-            data-placement="top" title="Mostrar paginas" onclick="openCarrusel('{{page.idtutorial}}')">
+            data-placement="top" title='{% translate "Mostrar paginas" %}' onclick="openCarrusel('{{page.idtutorial}}')">
                 <i class="fas fa-list-ol"></i>
             </button>
           </div>
        </div>
     </div>
+    <div id="contentAyuda{{page.idtutorial}}" class="card-list-item-descripcion card-list-item-close"><strong>{% translate "Descripcion" %}:</strong> &nbsp;{{page.descripcion}}</div>
  </li>
+ {% empty %}
+ <li class="card-list-item">
+     <div class="card-list-item-inner">
+        <div class="card-list-item-title">{% translate "Sin contenido" %}</div>
+     </div>
+  </li>
  {% endfor %}
