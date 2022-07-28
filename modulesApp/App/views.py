@@ -156,7 +156,7 @@ def configuracion(request):
     
     return render(request, "App/portalSettings.html")
 def preferencias(request):
-    modules=ConfTablasConfiguracion.objects.filter(fk_tabla_padre=2,mostrar_en_combos=1)
+    modules=ConfTablasConfiguracion.obtenerHijos("Modulos")
     atri=ConfSettings.objects.all()
     print(atri)
     context = {'modules':modules,'atri':atri}            
@@ -190,9 +190,9 @@ def getmodalprefer(request):
                 context={}
                 data = json.load(request) 
                 if data['method'] == 'show':
-                   modules=ConfTablasConfiguracion.objects.filter(fk_tabla_padre=2,mostrar_en_combos=1)
-                   dato=ConfTablasConfiguracion.objects.filter(fk_tabla_padre=19,mostrar_en_combos=1)
-                   set=ConfTablasConfiguracion.objects.filter(fk_tabla_padre=21,mostrar_en_combos=1)
+                   modules=ConfTablasConfiguracion.obtenerHijos("Modulos")
+                   dato=ConfTablasConfiguracion.obtenerHijos("Tipo_dato")
+                   set=ConfTablasConfiguracion.obtenerHijos("Atributo")
                    context = {'modules':modules,'dato':dato,'set':set} 
                    html_template = (loader.get_template('modalpreferen.html'))
                    return HttpResponse(html_template.render(context, request))
