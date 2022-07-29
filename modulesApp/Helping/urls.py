@@ -23,7 +23,9 @@ urlpatterns = [
     path('modalGuardarPdf', views.modalGuardarPdf, name='modalGuardarPdf'),
     path('modalEliminarImagen', views.modalEliminarImagen, name='modalEliminarImagen'),
     path('modalPaginaMover', views.modalPaginaMover, name='modalPaginaMover'),
+    path('Url/<int:id>', views.Url, name='Url'),
     
 
     path('validarTituloAyuda', views.validarTituloAyuda, name='validarTituloAyuda'),
+    path('copiarLInk', views.copiarLInk, name='copiarLInk'),
 ]

@@ -1,4 +1,5 @@
 from django.db import models
+from ..App.models import ConfTablasConfiguracion
     
 class tutoriales(models.Model):
     
@@ -6,7 +7,8 @@ class tutoriales(models.Model):
     titulo = models.CharField(max_length=15)
     descripcion = models.TextField()
     url = models.TextField()
-    tipo = models.SmallIntegerField()
+    tipo = models.ForeignKey(ConfTablasConfiguracion, on_delete=models.DO_NOTHING, default=None, null=True, related_name="tipo_ayuda")
+    modulo = models.ForeignKey(ConfTablasConfiguracion, on_delete=models.DO_NOTHING, default=None, null=True, related_name="modulo_ayuda")
     ordenamiento = models.SmallIntegerField()
 
     class Meta:

@@ -8,6 +8,18 @@
 {% block stylesheets %}
 <style>
 
+   @media(max-width: 800px){
+
+      .card-list-item-title {
+         font-size: 5vw;
+      }
+   }
+
+   .alert{
+
+      z-index: 9999999999!important;
+
+   }
 
    img{
       max-width: 100%;
@@ -97,13 +109,13 @@
                <i class="flaticon-right-arrow"></i>
             </li>
             <li class="nav-item">
-               <span>{% translate "Ayudas" %}</span>
+               <a href="{% url 'configuracion' %}"><span>{% translate "Configuracion" %}</span></a>
             </li>
             <li class="separator">
                <i class="flaticon-right-arrow"></i>
             </li>
             <li class="nav-item">
-               <a href="#">{% translate "Nuevo" %}</a>
+               <a href="#">{% translate "Ayudas" %}</a>
             </li>
          </ul>
       </div>
@@ -171,14 +183,14 @@
 
    </div>
 </div>
-<!-- Modal escoger actividad -->
+<!-- Modal lista paginas -->
 <div class="modal fade" id="addChooseActivities" tabindex="-1" role="dialog">
    <div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="modalContentChoose">
 
    </div>
 </div>
 
-<!-- Modal nueva evaluación -->
+<!-- Modal editar paginas -->
 <div class="modal fade" id="addNewTest" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" >
    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" id="modalContentTest">
 
@@ -198,13 +210,94 @@
 
 <script>
 
+   const makeMessage = (tipo = -1, titulo, cuerpo, icon = null)=>{
+
+      const state = tipo === 1 ? 'success' : tipo == 2 ? 'primary' : tipo == 3 ? 'warning' : tipo == 4 ? 'danger' : 'default';
+      const content = {};
+      content.message = cuerpo;
+      content.title = titulo;
+      
+      if (icon) {
+
+         content.icon = icon;
+
+      } else {
+
+         content.icon = 'fa fa-bell';
+
+      }
+      // content.url = 'index.html';
+      // content.target = '_blank';
+      
+      $.notify(content,{
+         type: state,
+         placement: {
+            from: 'top',
+            align: 'right'
+         },
+         time: 1000,
+         // delay: 0,
+      });
+
+   }
+
+   document.addEventListener('keydown', (event) => {
+
+      const keyValue = event.key;
+
+      if(keyValue === 'ArrowDown' || keyValue === 'ArrowUp'){
+
+         const dPrimary = $("#listaPaginasHijos div.bg-primary")
+
+         if(dPrimary.length > 0){
+            
+            const btnUp = $("#listaPaginasHijos .bg-primary button.moveUp")
+            const btnDown = $("#listaPaginasHijos .bg-primary button.moveDown")
+            if(keyValue === 'ArrowDown')btnDown.click()
+            if(keyValue === 'ArrowUp')btnUp.click()
+
+         }
+
+
+      }
+
+   }, false);
+
+   const copyLink = (id) => {
+
+      fetch("{% url 'helping:copiarLInk' %}", {
+         ...fetchObject,
+         body: JSON.stringify({
+            id
+         })
+      })
+      .then(res => res.text())
+      .then(text => {
+
+         if(text){
+               
+            navigator.clipboard.writeText(text);
+            makeMessage(1, "{% translate 'Notificacion' %}", "{% translate 'Url copiada' %}", 'fa fa-clipboard')
+
+         }else{
+            
+            makeMessage(4, "{% translate 'No se pudo copiar el url' %}", "{% translate 'No hay paginas asignadas para esta ayuda' %}", 'fa fa-exclamation-triangle')
+
+         }
+
+      })
+
+   }
+
    const cargarAyuda = () => {
       
       fetch("{% url 'helping:modalGuardarAyuda' %}", {
          ...fetchObject
-      }).then(async (res) => {
+      })
+      .then(res => res.text())
+      .then(text => {
          
-         document.getElementById("listaPaginas").innerHTML = await res.text()
+         document.getElementById("listaPaginas").innerHTML = text
 
       })
 
@@ -217,9 +310,11 @@
          body: JSON.stringify({
             data
          })
-      }).then(async (res) => {
+      })
+      .then(res => res.text())
+      .then(text => {
          
-         document.getElementById("listaPaginas").innerHTML = await res.text()
+         document.getElementById("listaPaginas").innerHTML = text
 
       })
 
@@ -271,17 +366,22 @@
 
    const showChilds = (fk, id = -1) => {
 
+
+
+
       fetch("{% url 'helping:modalAddPagina'%}", {
          ...fetchObject,
          body: JSON.stringify({
             id,
             fk
          })
-      }).then(async (res) => {
-         document.getElementById("modalContentTest").innerHTML = await res.text()
-      }).then(() => {
+      })
+      .then(res => res.text())
+      .then(text => {
 
+         document.getElementById("modalContentTest").innerHTML = text
          $("#addNewTest").modal("show")
+         $("#listaPaginasHijos>li>div.bg-primary").removeClass("bg-primary");
 
          $(`#summernote`).summernote({
             dialogsInBody: true,
@@ -334,8 +434,17 @@
                onMediaDelete : function(target) {
                   // borrarImagen($(target[0]).attr('src'))
                },
+               
+               onPaste: function (e) {
+
+                  var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+                  e.preventDefault();
+                  $('#summernote').summernote('pasteHTML', bufferText);
+
+               }
             }
          });
+
 
          const subirImagen = (file) =>{
                
@@ -346,9 +455,11 @@
                ...fetchObject,
                body:
                   data
-            }).then(async (res) => {
+            })
+            .then(res => res.text())
+            .then(text => {
 
-               const img = await res.text()
+               const img = text
 
                if (img)
 
@@ -362,18 +473,18 @@
          
          }
 
-         const borrarImagen = (file) =>{
+         // const borrarImagen = (file) =>{
 
-            fetch("{% url 'helping:modalEliminarImagen' %}", {
-               ...fetchObject,
-               body:JSON.stringify({
-                  file
-               })
-            }).then(async (res) => {
+         //    fetch("{% url 'helping:modalEliminarImagen' %}", {
+         //       ...fetchObject,
+         //       body:JSON.stringify({
+         //          file
+         //       })
+         //    }).then(async (res) => {
                
-            })
+         //    })
          
-         }
+         // }
 
          const formPaginas = document.getElementById("formPaginas")
          formPaginas.addEventListener("submit", (e) => {
@@ -392,22 +503,22 @@
                      id,
                      fk
                   })
-               }).then(async (res) => {
+               })
+               .then(res => res.text())
+               .then(text=>{
 
                   if(document.getElementById("modalContentChoose"))
 
-                     document.getElementById("modalContentChoose").innerHTML = await res.text()
+                     document.getElementById("modalContentChoose").innerHTML = text
 
                   $("#addNewTest").modal("hide")
-                  alertaMensajitos(4,"{% translate 'Muy Bien!' %}","{% translate 'Registro guardado' %}")
+                  makeMessage(1,"{% translate 'Muy Bien!' %}","{% translate 'Registro guardado' %}", "fa fa-check")
 
                })
 
-            }else{
+            }else
 
-               alertaMensajitos(5,"{% translate 'Alerta' %}","{% translate 'Debes agregar algun contenido...' %}")
-
-            }
+               makeMessage(4,"{% translate 'Alerta' %}","{% translate 'Debes agregar algun contenido...' %}")
             
          })
 
@@ -429,9 +540,9 @@
             // context.invoke('editor.insertText', 'hello');
             fetch("{% url 'helping:modalPdf'%}", {
                ...fetchObject,
-            }).then(async (res) => {
-
-               const text = await res.text()
+            })
+            .then(res => res.text())
+            .then(text => {
 
                if(text){
                      
@@ -460,19 +571,20 @@
                            ...fetchObject,
                            body:
                               data
-                        }).then(async (res) => {
+                        })
+                        .then(res => res.text())
+                        .then(text => {
 
-                           const img = await res.text()
+                           if (text)
 
-                           if (img)
-
-                              $('#summernote').summernote("pasteHTML", img);
+                              $('#summernote').summernote("pasteHTML", text);
                            
                            else
 
                               alertaMensajitos(5,"{% translate 'Error' %}", "{% translate 'Algo ha ocurrido al subir el archivo al servidor' %}")
 
-                        }).finally(() => {
+                        })
+                        .finally(() => {
 
                            $("#pdfModal").modal("hide")
 
@@ -485,6 +597,7 @@
                   $("#pdfModal").modal("show")
 
                }
+
             })
 
          }
@@ -496,18 +609,19 @@
 
    const openAddActivity = (id) => {
 
-      return fetch("{% url 'helping:modalHijosPagina'%}", {
+      fetch("{% url 'helping:modalHijosPagina'%}", {
          ...fetchObject,
          body: JSON.stringify({
             id
          })
       })
-         .then(async (res) => {
-            document.getElementById("modalContentChoose").innerHTML = await res.text()
-         })
-         .then(() => {
-            $("#addChooseActivities").modal("show")
-         })
+      .then(res => res.text())
+      .then(text => {
+
+         document.getElementById("modalContentChoose").innerHTML = text
+         $("#addChooseActivities").modal("show")
+
+      })
    }
 
    
@@ -523,21 +637,17 @@
                id
             })
          })
-            .then(async (res) => {
+         .then(res => res.text())
+         .then(text => {
+            
+            document.getElementById("listaPaginas").innerHTML = text
+            $("#addNewModal").modal("hide")
+            makeMessage(1, "{% translate 'Notificacion' %}", "{% translate 'Archivo eliminado satisfactoriamente' %}", 'fas fa-trash-alt')
 
-               
-               document.getElementById("listaPaginas").innerHTML = await res.text()
-                  
-               $("#addNewModal").modal("hide")
-               // const text = JSON.parse(await res.text())
-               // if (text.message == "error") alerta(5)
-               // else alerta(4)
-            })
-            // .then(() => {
-            //    renderContent()
-            // })
+         })
 
       }
+
    }
    
    const showContent = (id) => {
@@ -558,18 +668,13 @@
                fk
             })
          })
-            .then(async (res) => {
-
-               
-               document.getElementById("modalContentChoose").innerHTML = await res.text()
-                  
-               // const text = JSON.parse(await res.text())
-               // if (text.message == "error") alerta(5)
-               // else alerta(4)
-            })
-            // .then(() => {
-            //    renderContent()
-            // })
+         .then(res => res.text())
+         .then(text => {
+            
+            document.getElementById("modalContentChoose").innerHTML = text
+            makeMessage(1, "{% translate 'Notificacion' %}", "{% translate 'Archivo eliminado satisfactoriamente' %}", 'fas fa-trash-alt')
+            
+         })
 
       }
 
@@ -584,9 +689,9 @@
          body: JSON.stringify({
             id
          })
-      }).then(async (res) => {
-
-         const text = await res.text()
+      })
+      .then(res => res.text())
+      .then(text=>{
 
          if(text){
 
@@ -596,8 +701,7 @@
 
          }else
 
-            alertaMensajitos(7, "{% translate 'Alerta!' %}", "{% translate 'No hay paginas asignadas para esta ayuda' %}")
-         
+            makeMessage(4, "{% translate 'Alerta' %}!", "{% translate 'No hay paginas asignadas para esta ayuda' %}", 'fa fa-exclamation-triangle')
 
       })
 
@@ -610,97 +714,112 @@
          body: JSON.stringify({
             id
          })
-      }).then(async (res) => {
+      })
+      .then(res => res.text())
+      .then(text => {
 
-         document.getElementById("addNewModalAyuda").innerHTML = await res.text()
+         document.getElementById("addNewModalAyuda").innerHTML = text
+         $("#addNewModal").modal("show")
+         const formAyuda = document.getElementById("formAyuda")
+         
+         formAyuda.addEventListener("submit", (e) => {
 
-      }).then(() => {
+            e.preventDefault()
+            
+            const formData = new FormData(formAyuda);
+            const data = Object.fromEntries(formData.entries())
 
-            $("#addNewModal").modal("show")
-            const formAyuda = document.getElementById("formAyuda")
-           
-            formAyuda.addEventListener("submit", (e) => {
+            if(data.titulo && data.descripcion && data.tipo && data.modulo){
 
-               e.preventDefault()
-               
-               const formData = new FormData(formAyuda);
-               const data = Object.fromEntries(formData.entries())
+               const titulo = data.titulo
 
-               if(data.titulo && data.descripcion && data.tipo){
-
-                  const titulo = data.titulo
-
-                  fetch("{% url 'helping:validarTituloAyuda' %}", {
-                     ...fetchObject,
-                     body: JSON.stringify({
-                        titulo,
-                     })
-                  }).then(async (res) => {
-                     
-                     const resTitulo = await res.text()
-
-                     if(resTitulo){
-                              
-                        fetch("{% url 'helping:modalGuardarAyuda' %}", {
-                           ...fetchObject,
-                           body: JSON.stringify({
-                              data,
-                              id
-                           })
-                        }).then(async (res) => {
-                           
-                           document.getElementById("listaPaginas").innerHTML = await res.text()
-                           $("#addNewModal").modal("hide")
-                           alertaMensajitos(4, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}")
-
-                        })
-
-                     }else{
-
-                        swal({
-                           title: "{% translate 'Alerta!' %}",
-                           text: "{% translate 'El titulo de esta ayuda ya existe, debes cambialo por otro' %}",
-                           icon: 'error',
-                           buttons: {
-                              confirm: {
-                                 className: 'btn btn-danger'
-                              }
-                           },
-                        }).then(()=>{
-                           
-                           $('#descriptionTopic').focus()
-
-                        })
-
-                     }
-
+               fetch("{% url 'helping:validarTituloAyuda' %}", {
+                  ...fetchObject,
+                  body: JSON.stringify({
+                     titulo,
+                     id
                   })
+               })
+               .then(res => res.text())
+               .then(text => {
+
+                  if(text){
+                           
+                     fetch("{% url 'helping:modalGuardarAyuda' %}", {
+                        ...fetchObject,
+                        body: JSON.stringify({
+                           data,
+                           id
+                        })
+                     })
+                     .then(res => res.text())
+                     .then(text => {
+
+                        document.getElementById("listaPaginas").innerHTML = text
+                        $("#addNewModal").modal("hide")
+                        makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+
+                     })
+
+                  }else{
+
+                     swal({
+                        title: "{% translate 'Alerta!' %}",
+                        text: "{% translate 'El titulo de esta ayuda ya existe, debes cambialo por otro' %}",
+                        icon: 'error',
+                        buttons: {
+                           confirm: {
+                              className: 'btn btn-danger'
+                           }
+                        },
+                     }).then(()=>{
+                        
+                        $('#descriptionTopic').focus()
+
+                     })
+
+                  }
+
+               })
 
 
-               }else if(!formAyuda.classList.contains('needs-validation')){
+            }else {
 
-                  formAyuda.classList.add('needs-validation', 'was-validated')
-                  formAyuda.removeAttribute('novalidate');
+               formAyuda.classList.add('needs-validation', 'was-validated')
+               formAyuda.removeAttribute('novalidate');
 
-               }
-                  
-            })
+            }
+               
          })
+      })
    }
 
-
+   let movimiento = false
    const move = (fk, id, tipo) => {
-      
-      fetch("{% url 'helping:modalPaginaMover'%}", {
-         ...fetchObject,
-         body: JSON.stringify({
-            id,
-            fk,
-            tipo
+
+      if(!movimiento){
+
+         movimiento = true
+         fetch("{% url 'helping:modalPaginaMover'%}", {
+            ...fetchObject,
+            body: JSON.stringify({
+               id,
+               fk,
+               tipo
+            })
          })
-      }).then(async (res) => {
-         document.getElementById("modalContentChoose").innerHTML = await res.text()
-      })
+         .then(res => res.text())
+         .then(text => {
+            
+            document.getElementById("modalContentChoose").innerHTML = text
+            $('#listaPaginasHijos div.bg-primary').focus()
+
+         })
+         .finally(()=>{
+            movimiento = false
+         })
+
+      }
 
    }
    

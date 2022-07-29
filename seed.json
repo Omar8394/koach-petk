@@ -328,5 +328,80 @@
                 "datos_adicional":"",
                 "tipo_dato":0
               }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 23,
+              "fields": {
+                "desc_elemento": "Tipo de Ayuda",
+                "fk_tabla_padre_id": 1,
+                "tipo_elemento": 1,
+                "permite_cambios":1,
+                "valor_elemento":"Tipo_Ayuda",
+                "mostrar_en_combos":0,
+                "maneja_lista":1,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 24,
+              "fields": {
+                "desc_elemento": "Manuales",
+                "fk_tabla_padre_id": 23,
+                "tipo_elemento": 1,
+                "permite_cambios":1,
+                "valor_elemento":"TA_Manuales",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 25,
+              "fields": {
+                "desc_elemento": "Ayudas",
+                "fk_tabla_padre_id": 23,
+                "tipo_elemento": 1,
+                "permite_cambios":1,
+                "valor_elemento":"TA_Ayudas",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 26,
+              "fields": {
+                "desc_elemento": "Tutoriales",
+                "fk_tabla_padre_id": 23,
+                "tipo_elemento": 1,
+                "permite_cambios":1,
+                "valor_elemento":"TA_Tutoriales",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 27,
+              "fields": {
+                "desc_elemento": "Preguntas Frecuentes",
+                "fk_tabla_padre_id": 23,
+                "tipo_elemento": 1,
+                "permite_cambios":1,
+                "valor_elemento":"TA_Preguntas",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
         }
 ]
