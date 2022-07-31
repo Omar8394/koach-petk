@@ -22,7 +22,10 @@
             data-placement="top" title='{% translate "Acceder paginas" %}' onclick="openAddActivity('{{page.idtutorial}}')">
                 <i class="fas fa-clipboard"></i>
             </button>
-            
+            <button type="button" class="btn btn-icon btn-sm btn-dark ml-1" data-toggle="tooltip"
+            data-placement="top" title='{% translate "Copiar Url" %}' onclick="copyLink('{{page.idtutorial}}')">
+                <i class="fa fa-link"></i>
+            </button>
             <button type="button" class="btn btn-icon btn-sm btn-dark ml-1" data-toggle="tooltip"
             data-placement="top" title='{% translate "Mostrar paginas" %}' onclick="openCarrusel('{{page.idtutorial}}')">
                 <i class="fas fa-list-ol"></i>

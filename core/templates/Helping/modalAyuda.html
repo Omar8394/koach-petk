@@ -12,13 +12,34 @@
             <div class="modal-body">
                <div class="form-row">
                   <div class="form-group col-12">
+                     <label for="moduloAyuda" class="col-form-label">{% translate "Modulo" %}</label>
+                     <select class="custom-select" name="modulo" id="moduloAyuda" required>
+                        <option value="" disabled {% if not data %}selected{% endif %}>{% translate "Seleccione un modulo" %}</option>
+                        
+                        {% for ayuda in modulos %}
+
+                        <option value="{{ayuda.id_tabla}}" {% if data %}{% if data.modulo.id_tabla == ayuda.id_tabla %}selected{% endif %}{% endif %}>{{ayuda.desc_elemento}}</option>
+
+                        {% endfor %}
+
+                     </select>
+                     
+                     <div class="invalid-feedback">{% translate "Debes seleccionar un modulo" %}</div>
+                  </div>
+               </div>
+
+               <div class="form-row">
+                  <div class="form-group col-12">
                      <label for="padreTopic" class="col-form-label">{% translate "Tipo de Ayuda" %}</label>
                      <select class="custom-select" name="tipo" id="padreTopic" required>
-                        <option value="" disabled {% if not data %}selected{% endif %}>Tipo de ayuda</option>
-                        <option value="1" {% if data %}{% if data.tipo == 1 %}selected{% endif %}{% endif %}>Manuales</option>
-                        <option value="2" {% if data %}{% if data.tipo == 2 %}selected{% endif %}{% endif %}>Ayudas</option>
-                        <option value="3" {% if data %}{% if data.tipo == 3 %}selected{% endif %}{% endif %}>Tutoriales</option>
-                        <option value="4" {% if data %}{% if data.tipo == 4 %}selected{% endif %}{% endif %}>Preguntas Frecuentes</option>
+                        <option value="" disabled {% if not data %}selected{% endif %}>{% translate "Seleccione un tipo de ayuda" %}</option>
+                        
+                        {% for ayuda in tipoAyuda %}
+
+                        <option value="{{ayuda.id_tabla}}" {% if data %}{% if data.tipo.id_tabla == ayuda.id_tabla %}selected{% endif %}{% endif %}>{{ayuda.desc_elemento}}</option>
+
+                        {% endfor %}
+
                      </select>
                      
                      <div class="invalid-feedback">{% translate "Debes seleccionar una ayuda" %}</div>

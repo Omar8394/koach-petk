@@ -6,12 +6,21 @@ from django.template import loader
 from django.http import HttpResponse
 import json
 from django.db.models import Q
+from ..App.models import ConfTablasConfiguracion as configuraciones
+from django.http import Http404
+
 
 def nuevo(request): 
 
     return render(request,"Helping/ayuda.html", {}) 
-   
 
+def Url(request, id): 
+    try:
+        helping = tutoriales.objects.get(idtutorial=id)
+        paginas=paginasHelping.objects.filter(fk_tutorial__idtutorial=id)
+        return render(request,"Helping/contenidoUrl.html", {'paginas':paginas, 'data': helping})
+    except:
+        return HttpResponse("error")
    
 def modalAddPagina(request): 
 
@@ -128,8 +137,10 @@ def modalAddAyuda(request):
             if int(id) > 0:
 
                 helping=tutoriales.objects.get(idtutorial=id)
-                context = {'data': helping}
+                context['data'] = helping
     
+    context['tipoAyuda'] = configuraciones.obtenerHijos('Tipo_Ayuda')
+    context['modulos'] = configuraciones.obtenerHijos('Modulos')
     html_template = (loader.get_template('Helping/modalAyuda.html'))
     return HttpResponse(html_template.render(context, request))
 
@@ -154,7 +165,10 @@ def modalGuardarAyuda(request):
             helping.titulo=data['titulo']
             helping.descripcion=data['descripcion']
             helping.url=""
-            helping.tipo= int(data.get('tipo', 1))
+            tipoAyuda = configuraciones.objects.get(id_tabla=int(data.get('tipo', 1)))
+            modulo = configuraciones.objects.get(id_tabla=int(data.get('modulo', 1)))
+            helping.tipo= tipoAyuda
+            helping.modulo= modulo
             helping.ordenamiento = 0
             helping.save()
 
@@ -366,12 +380,32 @@ def validarTituloAyuda(request):
 
         if request.body:
 
-            titulo = json.load(request)['titulo']
-            helping = tutoriales.objects.filter(titulo=titulo)
+            body = json.load(request)
+            titulo = body['titulo']
+            id = int(body['id'])
+            helping = tutoriales.objects.filter(titulo=titulo).exclude(idtutorial=id)
 
             if not helping:
                 
                 return JsonResponse({'valido':'valido'})
+
+    return HttpResponse()
+
+def copiarLInk(request): 
+
+    if request.method == "POST":
+
+        if request.body:
+
+            body = json.load(request)
+            id = int(body['id'])
+            helping = tutoriales.objects.get(idtutorial=id)
+            paginas=paginasHelping.objects.filter(fk_tutorial=helping)
+
+            if paginas:
+
+                html_template = (loader.get_template('Helping/url.html'))
+                return HttpResponse(html_template.render({'data': helping}, request))
 
     return HttpResponse()
 
