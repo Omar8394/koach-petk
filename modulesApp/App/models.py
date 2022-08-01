@@ -65,7 +65,7 @@ class ConfSettings(models.Model):
 class ConfSettings_Atributo(models.Model):
     idconfig_atributo = models.SmallAutoField(primary_key=True)
     fk_setting_padre = models.ForeignKey(ConfSettings, on_delete=models.DO_NOTHING, db_column='fk_setting_padre')
-    fk_atributo_setting = models.ForeignKey(ConfTablasConfiguracion, on_delete=models.DO_NOTHING,related_name="atributo_setting", db_column='fk_atributo_setting')
+    Atributo = models.TextField(db_column='atributo', blank=True, null=True)
     fecha_activo = models.DateField(db_column='Fecha_activo', blank=True, null=True)  # Field name made lowercase.
     status_setting = models.IntegerField(db_column='Status_setting')  # Field name made lowercase.
     rangovalor_setting = models.TextField(db_column='RangoValor_setting', blank=True, null=True)  # Field name made lowercase.
