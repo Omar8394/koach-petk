@@ -355,7 +355,8 @@
 								<div id="tabs-section" class="tabs" style=" width: 100%; ">
 									<ul class="tab-head">
 										<li>
-											<a href="#0"    class="tab-link"> <span class="material-icons tab-icon"></span> <span class="tab-label">{% translate "Agregar Preferencias" %}</span></a>
+				
+											<a href="#0"    class="tab-link  "> <span class="material-icons tab-icon"></span> <span class="tab-label">{% translate "Agregar Preferencias" %}</span></a>
 											
 					  
 											
@@ -381,7 +382,7 @@
 										
 										     {% for ops in op.idconfig_setting|hasprefernameatri%}
 											 <label>{% translate "Atributos" %}:</label>
-											 {{ops.fk_atributo_setting.desc_elemento}}<br>
+											 {{ops.Atributo}}<br>
 											 <label>{% translate "Tipo de dato" %}:</label>
 											 {{ops.fk_tipo_dato_setting.desc_elemento}}<br>
 											 <label>{% translate "Fecha activo" %}:</label>
@@ -425,7 +426,7 @@
 										 
 										</div>
 										
-										<button  type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip"  data-placement="top" title="Actualizar Rangos" id="edit" onclick="actualizar('edit{{ops.idconfig_atributo}}',{{ops.idconfig_atributo}},'edit')" disabled><i class='fa fa-refresh'></i></button>
+										<button  type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip"  data-placement="top" title="Actualizar Rangos" id="edita{{ops.idconfig_atributo}}" onclick="actualizar('edit{{ops.idconfig_atributo}}',{{ops.idconfig_atributo}},'edit')" disabled><i class='fa fa-refresh'></i></button>
 										
 									    </div>
 
@@ -434,7 +435,7 @@
 										{% endfor%}
 									</section>
 									{% endfor%}
-									<section id="0"   class="tab-body entry-content active ">
+									<section id="0"   class="tab-body entry-content ">
 										<div class="signupFrm">
 											<form action="" class="form">
 											  <h1 class="title">{% translate "Añadir Preferencias" %}</h1>
@@ -471,8 +472,6 @@
 										  </div>
 									</section>
 									
-									
-								
 									
 		
 		
@@ -744,7 +743,7 @@ const abrirprefer  = () => {
 		const toggle = document.getElementById(id)
 		const max=document.getElementById("min_pointstwo"+it)
 		const min=document.getElementById("max_pointstwo"+it)
-		const utton=document.getElementById("edit")
+		const utton=document.getElementById("edita"+it)
 		if (toggle.checked){
 			max.disabled=false
 			min.disabled=false

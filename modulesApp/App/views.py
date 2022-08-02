@@ -216,7 +216,7 @@ def getmodalprefer(request):
                         else:
                             range=rango
                     guardaset=ConfSettings_Atributo()
-                    guardaset.fk_atributo_setting_id=data['data']['set']
+                    guardaset.Atributo=data['data']['set']
                     guardaset.fecha_activo=data['data']['entregaHomework']
                     guardaset.status_setting=1
                     guardaset.rangovalor_setting=json.dumps(rango)
