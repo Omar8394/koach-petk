@@ -3,9 +3,9 @@ from django.shortcuts import render,redirect,reverse
 # Create your views here.
 from django.views import View
 from .forms import LoginForm, SignUpForm
-from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth import login, logout, update_session_auth_hash
 from .models import User
-from .methods import es_correo_valido,change_password
+from .methods import es_correo_valido,change_password,get_status_user
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password, check_password
@@ -26,12 +26,13 @@ def login_view(request):
                 except Exception as e:
                      messages.error(request, "El usuario o correo no se encuentra asocido a ninguna cuenta.")   
                 password = form.cleaned_data.get("password")
-                user = authenticate(username=username, password=password)
-                if user is not None:
-                    login(request, user)
+                status_user = get_status_user(username, password)
+                if status_user['estado'] == "Active":
+                    print(status_user['mensaje'])
+                    login(request, status_user['user']) 
                     return redirect("Dashboard")
                 else:
-                    messages.error(request, "Usuario o contraseña invalidos")
+                    messages.error(request, status_user['estado'] +":"+ status_user['mensaje'])                           
              else:
                 messages.error(request, form.errors.as_text())              
          return render(request, "index.html",{"login_show":True})
