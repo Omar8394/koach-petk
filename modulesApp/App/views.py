@@ -154,7 +154,7 @@ def añadirFavoritos(request):
 
 def configuracion(request):
     
-    return render(request, "App/portalSettings.html")
+    return render(request, "configuraciones_generales.html")
 def preferencias(request):
     modules=ConfTablasConfiguracion.obtenerHijos("Modulos")
     atri=ConfSettings.objects.all()
@@ -216,7 +216,7 @@ def getmodalprefer(request):
                         else:
                             range=rango
                     guardaset=ConfSettings_Atributo()
-                    guardaset.fk_atributo_setting_id=data['data']['set']
+                    guardaset.Atributo=data['data']['set']
                     guardaset.fecha_activo=data['data']['entregaHomework']
                     guardaset.status_setting=1
                     guardaset.rangovalor_setting=json.dumps(rango)
@@ -280,3 +280,7 @@ def setprefer(request) :
     print(estructura)
     print(id)
     return JsonResponse({"message":"Perfect"})
+def generalsettings(request) :
+    context = {}            
+    html_template = loader.get_template( 'configuraciones_generales.html' )
+    return HttpResponse(html_template.render(context, request))
