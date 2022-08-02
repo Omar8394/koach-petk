@@ -30,14 +30,7 @@
       <label for="disponibleLesson">{% translate "Fecha" %}</label>
       <input type="date" class="form-control" name="entregaHomework" id="entregaHomework" >
       <label for="categoryProgram" class="col-form-label">{% translate "Configuracion" %}</label>
-      <select class="form-control" name="set" id="set">
-         <option value="">{% translate "Seleccione una opcion" %}</option>
-         {% for item in set %}
-         
-         <option value= {{item.id_tabla}} >{{item.desc_elemento}}</option>
-         
-         {% endfor%}
-      </select>
+      <input type="text" class="form-control" id="set" name="set" required>
       <label for="categoryProgram" class="col-form-label">{% translate "Tipo de dato" %}</label>
       <select class="form-control" name="dato" id="dato">
          <option value="">{% translate "Seleccione una opcion" %}</option>

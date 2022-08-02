@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.template import loader
-
+from .methods import create_mail, send_mail
 
 # Create your views here.
 
@@ -38,4 +38,13 @@ def showBoletin(request):
                 return HttpResponse(html_template.render(context, request))
 
 # endblock boletin-info
-    
+
+def emailTest(request):
+    context = {"titulo": "Account Registration Link", "user": "publico.nombre" + " " + "publico.apellido",
+                                "content": "Thank you for joining the " + str(
+                                    "settings.EMPRESA_NOMBRE") + " team, follow the link below to register  your account:",
+                                "enlace": "enlace", "enlaceTexto": "click here!", "empresa": "settings.EMPRESA_NOMBRE",
+                                "urlimage": "settings.EMPRESA_URL_LOGO"}
+    send_mail(create_mail("tadifred@gmail.com", "Account Registration Link", "base_email_template_pro.html",
+                                        context))
+    return context
