@@ -1,0 +1,5 @@
+{% for page in data%}
+<div class="contenidoHelp mb-4" onclick="openCarrusel('{{page.fk_tutorial}}')"><strong>{{page.fk_tutorial__titulo}}</strong></div>
+{% empty %}
+<div class="contenidoHelp"><strong>No hay ayudas asignadas para mostrar</strong></div>
+{% endfor %}

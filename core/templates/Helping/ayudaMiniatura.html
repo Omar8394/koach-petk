@@ -1,0 +1,43 @@
+{% load static %}
+
+<style>
+    
+    img{
+
+        max-width: 100%;
+        height: auto;
+
+    }
+
+    .carousel-indicators>li.active{
+
+        opacity: 100%;
+
+    }
+
+    .carousel-indicators>li{
+
+        opacity: 25%;
+
+    }
+
+</style>
+
+<div class="ayuda">
+    <img src="{% static 'assets/img/Help-and-Support-icon.png' %}" alt="Ayudas">
+    <div class="ayuda-contenido bg-light pb-4">
+       <div class="d-flex justify-content-center align-items-center">
+          <h4 class="m-0 py-1"><strong>Ayuda</strong><i class="fa fa-minus-square pl-2"></i></h4>
+       </div>
+       
+       <div class="container-fluid d-flex flex-column p-3"></div>
+    </div>
+</div>
+
+
+<!-- Modal nuevo carrusel -->
+<div class="modal fade p-0" style="background-color: rgba(0, 0, 0, 0.9);" id="carruselAyuda" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered px-3" style="justify-content: center; max-width: 100vw;" role="document" id="carruselAyudaContenido">
+ 
+    </div>
+</div>

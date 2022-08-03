@@ -7,8 +7,7 @@ from django.http import HttpResponse
 import json
 from django.db.models import Q
 from ..App.models import ConfTablasConfiguracion as configuraciones
-from django.http import Http404
-
+import time
 
 def nuevo(request): 
 
@@ -20,7 +19,7 @@ def Url(request, id):
         paginas=paginasHelping.objects.filter(fk_tutorial__idtutorial=id)
         return render(request,"Helping/contenidoUrl.html", {'paginas':paginas, 'data': helping})
     except:
-        return HttpResponse("error")
+        return render(request, "Helping/404error.html", {})
    
 def modalAddPagina(request): 
 
@@ -414,3 +413,15 @@ def modalPdf(request):
 
     html_template = (loader.get_template('Helping/modalPdf.html'))
     return HttpResponse(html_template.render({}, request))
+
+def contenidoAyudaMiniatura(request): 
+
+    context = {}
+
+    if request.method == "POST":
+
+        pagina = paginasHelping.objects.all().values('fk_tutorial', 'fk_tutorial__titulo').distinct().order_by('fk_tutorial__idtutorial')
+        context = {'data': pagina}
+
+    html_template = (loader.get_template('Helping/contenidoAyudaMiniatura.html'))
+    return HttpResponse(html_template.render(context, request))
