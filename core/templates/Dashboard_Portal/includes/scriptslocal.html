@@ -86,6 +86,47 @@
 					},
 				});
 		}
+		if (tipoAlerta === 3) {
+			return swal({
+				title: 'Delete?',
+				text: "You won't be able to revert this!",
+				icon: "warning",
+				buttons: {
+					confirm: {
+						text: 'Yes, delete it!',
+						className: 'btn btn-success'
+					},
+					cancel: {
+						visible: true,
+						className: 'btn btn-danger'
+					}
+				}
+			})
+		}
+		if (tipoAlerta === 4) {
+			swal({
+				title: 'Deleted!',
+				text: 'Register has been successfully deleted.',
+				icon: 'success',
+				buttons: {
+					confirm: {
+						className: 'btn btn-success'
+					}
+				}
+			});
+		}
+		if (tipoAlerta === 5) {
+			swal({
+				title: 'Error!',
+				text: 'An error has occurred.',
+				icon: 'error',
+				buttons: {
+					confirm: {
+						className: 'btn btn-danger'
+					}
+				}
+			});
+		}
 	}
 	function alertaMensajitos(tipoAlerta, tittle, mssg) {
 		if (tipoAlerta === 1) {

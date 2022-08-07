@@ -1,0 +1,251 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}{% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+	<div class="content">
+		<div class="page-inner">
+			<div class="page-header">
+				<h4 class="page-title">Pagina de inicio</h4>
+				<ul class="breadcrumbs">
+					<li class="nav-home">
+						<a href="{% url 'Dashboard' %}">
+							<i class="flaticon-home"></i>
+						</a>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<span>Configuracion</span>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<a href="#">Registro tablas</a>
+					</li>
+				</ul>
+			</div>
+			<div class="page-category">
+      <div class="card">        
+        <div class="row">
+         <div class="col-lg-4 col-xlg-3 col-md-5" > 
+            <div class="form-group col-12">
+                <div class="input-group">
+                   <input id="txtSearch" type="text" value="{%if query%}{{query}}{%endif%}" class="form-control" placeholder="Search for...">
+                   <div class="input-group-append">
+                      <span id="clearBtn" class="btn btn-danger">
+                         <i class="fa fa-broom"></i>
+                      </span>
+                      <span id="searchBtn" class="btn btn-primary">
+                         <i class="fa fa-search"></i>
+                      </span>
+                   </div>
+                </div>
+             </div>
+             <div class="card-body row">
+            <div id="renderList" class="col-md-12 is-loading">   
+                
+            </div>
+            
+         </div>
+          </div>
+          <div class="col-lg-8 col-xlg-9 col-md-7">
+            <div class="card">
+                <div class="card-header bg-dark2">
+                    <span class="h1 text-white d-flex justify-content-center">Detalles tablas</span>
+                </div>
+               </div>
+               <div id="renderContainer" class="col-md-12 mx-1 table-responsive">
+                  <h3 class="display-4">Select an element from list</h3>
+               </div>
+            </div>
+            
+                </div>
+                
+          </div>
+         </div>
+        
+        </div>
+        
+      		</div>
+            
+		</div>
+	</div>
+   <div class="modal fade" id="addNewTable" tabindex="-1" role="dialog" aria-hidden="true">
+      <div id="addNewSettingContent" class="modal-dialog  modal-dialog-centered" role="document">
+      </div>
+   </div>
+{% endblock content %}
+	
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+   
+    
+    
+    const renderContent = ()=>{
+        document.querySelector("#renderList").classList.add("is-loading")
+        fetch("{% url 'contentables'%}", {
+           ...fetchObject,
+           body: JSON.stringify({
+              query: ""
+              
+           })
+        })
+        .then(async(res)=>{
+           result = await res.text()
+           document.querySelector("#renderList").classList.remove("is-loading")
+           document.querySelector("#renderList").innerHTML = result
+        })
+    }
+    renderContent() 
+    const searchFor = (text) => {
+        let output = text.trim()
+        if (output.length > 20) return
+        renderContent()
+        
+    }
+    const searchBar = document.querySelector('#txtSearch')
+    const clearBtn = document.querySelector('#clearBtn')
+    const searchBtn = document.querySelector('#searchBtn')
+
+    clearBtn.addEventListener('click', () => {
+       searchBar.value = ""
+       query = ""
+       searchFor("")
+    })
+    searchBtn.addEventListener('click', () => {
+       query = searchBar.value
+       searchFor(searchBar.value)
+    })
+    searchBar.addEventListener('keypress', (e) => {
+       if (e.key === 'Enter') {
+         query = searchBar.value
+        searchFor(searchBar.value)
+       }
+    });
+    const rendertavs = (ids)=>{
+      document.querySelector("#renderContainer").classList.add("is-loading")
+      fetch("{% url 'verhijos'%}", {
+         ...fetchObject,
+         body: JSON.stringify({
+            query,
+            ids
+         })
+      })
+      .then(async(res)=>{
+         result = await res.text()
+         document.querySelector("#renderContainer").classList.remove("is-loading")
+         document.querySelector("#renderContainer").innerHTML = result
+      })
+  }
+  const verhijos = (id)=>{
+   let isd= id
+   query=""
+   rendertavs(isd)
+  }
+  const renderModal = (id) => {
+   let sode = id
+   return fetch("{% url 'modalAddSetting' %}", {
+      ...fetchObject,
+      body: JSON.stringify({
+         query,
+         sode
+      })
+   })
+      .then(async (res) => {
+         document.getElementById("addNewSettingContent").innerHTML = await res.text()
+      }).then(() => {
+         const formConfig = document.getElementById("formConfig")
+         formConfig.addEventListener("submit", (e) => {
+            e.preventDefault()
+            clickSave(sode)
+            renderContent()
+            
+         })
+      })
+}
+const openAddModal = (id) => {
+   renderModal(id).then(() => {
+   
+      $("#addNewTable").modal("show")
+   })
+}
+const clickSave = async(id) => {
+   setLoading()
+   const checkChangesCB = document.getElementById("checkChangesCB")
+   const checkShowCB = document.getElementById("checkShowCB")
+   const checkListsCB = document.getElementById("checkListsCB")
+   const descriptionConfig = document.getElementById("descriptionConfig")
+   const adiConfig = document.getElementById("adiConfig")
+   const codeConfig = document.getElementById("codeConfig")
+   const codefather= id
+   form = {
+      descripcion: descriptionConfig.value,
+      valorElemento: codeConfig.value,
+      valoradd: adiConfig.value,
+      father:codefather,
+      mostrarEnCombos: checkShowCB.checked,
+      permiteCambios: checkChangesCB.checked,
+      manejaLista: checkListsCB.checked
+     
+   }
+   
+   await createConfig(form)
+   
+   stopLoading()
+}
+const createConfig = (form) => {
+   return fetch("{% url 'modalAddSetting' %}", {
+      ...fetchObject,
+      body: JSON.stringify({
+         query:"save",
+         data: form
+      }),
+   })
+      .then(async (res) => {
+         let result = JSON.parse(await res.text())
+         if (result.message === "Error") {
+            alerta(5)
+         }
+         alerta(1)
+      })
+      .then(() => {
+        
+      })
+}
+
+
+const openDeleteProgram = async (id,padre) =>{
+   
+   const elimino = await alerta(3)
+ if(elimino){
+    fetch("{% url 'deletesetting' %}", {
+       ...fetchObject,
+       body: JSON.stringify({
+         query :"delete",
+        
+        id
+        
+     })
+    })
+    .then(async (res) => {
+       const text = JSON.parse(await res.text())
+       if (text.message == "error") alerta(5)
+       else alerta(4)
+    })
+    .then(()=>{
+       rendertavs(padre)
+       renderContent()
+    })
+ }
+}
+
+</script>
+{% endblock javascripts %}

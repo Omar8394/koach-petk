@@ -20,6 +20,12 @@ urlpatterns = [
     path('App/settings/saveprefer/', views.saveprefer, name='saveprefer'),
     path('App/settings/upprefer/', views.setprefer, name='updatepre'),
     path('App/settings/combobox/', views.combobox, name='combobox'),
+    path('App/settings/tables/', views.tablesettings, name='tables'),
+    path('App/settings/contentables/', views.getcontentablas, name='contentables'),
+    path('App/settings/verhijos/', views.gethijos, name='verhijos'),
+    path('App/settings/modalAddSetting/', views.getModalSetting, name="modalAddSetting"),
+    path('App/settings/deletesetting/', views.deletehijos, name="deletesetting"),
+
 
     #Security Settings
     
