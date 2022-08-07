@@ -24,6 +24,7 @@ urlpatterns = [
     path('modalEliminarImagen', views.modalEliminarImagen, name='modalEliminarImagen'),
     path('modalPaginaMover', views.modalPaginaMover, name='modalPaginaMover'),
     path('Url/<int:id>', views.Url, name='Url'),
+    path('contenidoAyudaMiniatura', views.contenidoAyudaMiniatura, name='contenidoAyudaMiniatura'),
     
 
     path('validarTituloAyuda', views.validarTituloAyuda, name='validarTituloAyuda'),
