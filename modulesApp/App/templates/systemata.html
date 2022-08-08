@@ -3,7 +3,20 @@
 {% block title %}{% endblock %} 
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+<style>
+   
+   div.scroll_vertical {
+      height: 300px;
+      width: 300px;
+      overflow: auto;
+      border: 1px solid #666;
+      background-color: #ccc;
+      padding: 8px;
+   }   
+    
+</style>
+{% endblock stylesheets %}
 
 {% block content %}
 
@@ -49,9 +62,11 @@
                 </div>
              </div>
              <div class="card-body row">
+            
             <div id="renderList" class="col-md-12 is-loading">   
                 
             </div>
+         
             
          </div>
           </div>
@@ -88,13 +103,13 @@
 <script>
    
     
-    
+    let query= ""
     const renderContent = ()=>{
         document.querySelector("#renderList").classList.add("is-loading")
         fetch("{% url 'contentables'%}", {
            ...fetchObject,
            body: JSON.stringify({
-              query: ""
+              query
               
            })
         })
@@ -122,6 +137,7 @@
     })
     searchBtn.addEventListener('click', () => {
        query = searchBar.value
+       
        searchFor(searchBar.value)
     })
     searchBar.addEventListener('keypress', (e) => {
@@ -221,7 +237,6 @@ const createConfig = (form) => {
       })
 }
 
-
 const openDeleteProgram = async (id,padre) =>{
    
    const elimino = await alerta(3)
@@ -246,6 +261,74 @@ const openDeleteProgram = async (id,padre) =>{
     })
  }
 }
+const openedit = (id,padre) => {
+   codigo=id
+      console.log(id)
+      fetch("{% url 'editsetting'%}", {
+      ...fetchObject,
+         body: JSON.stringify({
+           edit:"find",
+           id
+        })
+          
+      })
+       .then(async (res) => {
+          document.getElementById("addNewSettingContent").innerHTML = await res.text()
+       })
+       .then(() => {
+          $("#addNewTable").modal("show")
+          const formSave = document.getElementById("formConfig")
+          formSave.addEventListener("submit", (e) => {
+            e.preventDefault()
+            clickSavetwo(codigo)
+            rendertavs(padre)
+            })
+         }) 
 
+  }
+  const clickSavetwo = async(id) => {
+   setLoading()
+   const checkChangesCB = document.getElementById("checkChangesCB")
+   const checkShowCB = document.getElementById("checkShowCB")
+   const checkListsCB = document.getElementById("checkListsCB")
+   const descriptionConfig = document.getElementById("descriptionConfig")
+   const adiConfig = document.getElementById("adiConfig")
+   const codeConfig = document.getElementById("codeConfig")
+   const codefather= id
+   form = {
+      descripcion: descriptionConfig.value,
+      valorElemento: codeConfig.value,
+      valoradd: adiConfig.value,
+      father:codefather,
+      mostrarEnCombos: checkShowCB.checked,
+      permiteCambios: checkChangesCB.checked,
+      manejaLista: checkListsCB.checked
+     
+   }
+   
+   await createConfigtwo(form)
+   
+   stopLoading()
+} 
+const createConfigtwo = (form) => {
+   return fetch("{% url 'editsetting' %}", {
+      ...fetchObject,
+      body: JSON.stringify({
+         edit:"edit",
+         data: form
+      }),
+   })
+      .then(async (res) => {
+         let result = JSON.parse(await res.text())
+         if (result.message === "Error") {
+            alerta(5)
+         }
+         alerta(1)
+      })
+      .then(() => {
+        
+      })
+}
+ 
 </script>
 {% endblock javascripts %}

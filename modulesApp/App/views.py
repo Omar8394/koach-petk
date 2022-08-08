@@ -297,17 +297,9 @@ def getcontentablas(request):
                 print(data)
                 father=ConfTablasConfiguracion.obtenerHijos("padre")
                 if data["query"] == "":
-                   page = request.GET.get('page', 1)
-                   paginator = Paginator(father, 3)    #number means items per page
-
-                   try:
-                       sets = paginator.page(page)
-                   except PageNotAnInteger:
-                       sets = paginator.page(1)
-                   except EmptyPage:
-                       sets = paginator.page(paginator.num_pages)
+                   
                      
-                   context = {'sets': sets}  
+                   context = {'father':father}  
                    print(context)          
                    html_template = loader.get_template( 'tables.html' )
                    return HttpResponse(html_template.render(context, request)) 
@@ -348,6 +340,32 @@ def deletehijos(request):
                    delethijos=ConfTablasConfiguracion.objects.get(pk=data["id"])
                    delethijos.delete()
                    return JsonResponse({"message":"delete"})
+def edithijos(request):
+    if request.method == "POST":
+       if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            if request.body:
+                context={}
+                data = json.load(request)
+                print(data)
+                if data["edit"] == "find":
+                   editson=ConfTablasConfiguracion.objects.filter(id_tabla=data["id"])
+                   context = {'hijos':editson}            
+                   html_template = loader.get_template( 'modalAddSetting.html' )
+                   return HttpResponse(html_template.render(context, request))
+                elif data["edit"] == "edit":
+                     editar=ConfTablasConfiguracion.objects.get(pk=data['data']['father'])
+                     editar.desc_elemento=data['data']["descripcion"] 
+                     editar.tipo_elemento=1
+                     editar.permite_cambios=data['data']["permiteCambios"] 
+                     editar.valor_elemento=data['data']["valorElemento"] 
+                     editar.mostrar_en_combos=data['data']["mostrarEnCombos"] 
+                     editar.maneja_lista=data['data']["manejaLista"]
+                     editar.datos_adicional= data['data']["valoradd"]
+                     editar.tipo_dato=1
+                    
+                     editar.save()
+                     print(data) 
+                     return JsonResponse({"message":"ok"})
                
 def getModalSetting(request):
     if request.method == "POST":
@@ -360,7 +378,7 @@ def getModalSetting(request):
                 print(data)
                 if data["query"] == "":
                    #print(data)
-                   context = {"tables": ConfTablasConfiguracion.objects.all()}
+                   context = {"tables": ConfTablasConfiguracion.objects.all(),"add":True}
                    html_template = (loader.get_template('modalAddSetting.html'))
                    return HttpResponse(html_template.render(context, request))
                 elif data["query"] == "save":
