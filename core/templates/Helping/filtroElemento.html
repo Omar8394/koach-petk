@@ -1,0 +1,22 @@
+{% load i18n %}   
+{% if valor == 'Modulo' or valor == 'Tipo ayuda' %}
+    <select class="form-control" name="{{valor}}">
+
+        <option value="" disabled selected>Seleccione un {{valor}}</option>
+
+        {% for filtro in seleccion %}
+
+        <option value="{{filtro.id_tabla}}">{{filtro.desc_elemento}}</option>
+
+        {% endfor %}
+
+    </select> 
+{% endif %}
+{% if valor == 'Titulo' %}
+    <input type="text" class="form-control" placeholder="{{valor}}" name="{{valor}}" >
+{% endif %}
+    <div class="input-group-append">
+        <button class="btn btn-danger" type="button" id="button-addon2" onclick="eliminarFiltro(this)">
+            <i class="fas fa-trash-alt"></i>
+        </button>
+    </div>

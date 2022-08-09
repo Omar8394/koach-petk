@@ -1,0 +1,23 @@
+{% load i18n %}   
+<div class="input-group mb-3">
+    <select class="form-control filtro">
+
+        <option value="" disabled selected>{% translate "Seleccione un filtro" %}</option>
+
+        {% for filtro in data %}
+
+        <option value="{{filtro.nombre}}" data-tipo="{{filtro.tipo}}">{{filtro.nombre}}</option>
+
+        {% endfor %}
+
+    </select> 
+
+    <div class="input-group-append">
+
+        <button class="btn btn-danger" type="button" id="button-addon2" onclick="eliminarFiltro(this)">
+            <i class="fas fa-trash-alt"></i>
+        </button>
+
+    </div>
+
+</div>
