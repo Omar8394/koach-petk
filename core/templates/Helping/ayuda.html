@@ -96,8 +96,25 @@
 
       div.d-flex.justify-content-around > button > i{
 
-         margin-right: 0;
+         margin-right: 0!important;
 
+      }
+
+      #paginas > select{
+
+         margin-right: 0!important;
+
+      }
+
+      #paginas > ul{
+
+         flex-wrap: wrap;
+      }
+
+      #paginas {
+
+         flex-wrap: wrap;
+         justify-content: center;
       }
 
    }
@@ -218,11 +235,15 @@
                   <ul class="card-list" id="listaPaginas">
                   </ul>
                </section>
-               {% comment %}
-               <section class="card-footer" id="paginas">
+               <section class="card-footer d-flex align-items-center" id="paginas">
+                  <!-- <select class="form-control mr-5" id="inputGroupSelect04" aria-label="Example select with button addon">
+                     <option selected>Choose...</option>
+                     <option value="1">One</option>
+                     <option value="2">Two</option>
+                     <option value="3">Three</option>
+                  </select> -->
                   {% include 'Helping/paginas.html' with plan=plan %}   
                </section>
-               {% endcomment %}
             </main>
        
       </div>
@@ -276,10 +297,16 @@
 
    const eliminarFiltroAll = () => {
 
-      const formFiltro = document.querySelector('#formFiltro')
-      formFiltro.innerHTML = ""
-      const btnFiltro = document.querySelector('#btnFiltro')
-      btnFiltro.click()
+      if(!document.querySelector('.progress-bar')){
+
+         const formFiltro = document.querySelector('#formFiltro')
+         formFiltro.innerHTML = ""
+         const btnFiltro = document.querySelector('#btnFiltro')
+         btnFiltro.click()
+
+      }else
+
+         makeMessage(3,"{% translate 'Alerta' %}","{% translate 'Debes esperar a que el contenido termine de cargarse' %}")
 
    }
 
@@ -297,14 +324,13 @@
          let box = cbox[cbox.length-1]
 
          box.addEventListener('change', (e) => {
-
             setLoading()   
             fetch("{% url 'helping:filtroElemento' %}", {
                ...fetchObject,
                body: JSON.stringify({
 
                   valor: box.options[box.selectedIndex].value,
-                  tipo: box.options[box.selectedIndex].dataset.tipo
+                  tipo: box.options[box.selectedIndex].dataset.tipo,
 
                })
             })
@@ -346,7 +372,7 @@
 
    }
    
-   const buscarFiltro = () => {
+   const buscarFiltro = (pag = -1) => {
 
       if(!document.querySelector('.progress-bar')){
 
@@ -358,26 +384,20 @@
             
          })
 
-         const formFiltro = document.querySelector('#formFiltro')
-         const formData = new FormData(formFiltro);
-         const data = Object.fromEntries(formData.entries())
-         console.log(data)
-         setLoading()   
+         document.getElementById("listaPaginas").innerHTML = spinnerBar()
          fetch("{% url 'helping:filtrar' %}", {
             ...fetchObject,
             body: JSON.stringify({
-               data
+               filtro: getFormFiltro(),
+               numero: document.querySelector('#selectNumeracion').value,
+               pag: pag > 0 ? pag : document.querySelector('.page-item.active > a').dataset.number
             })
          })
-         .then(res => res.text())
+         .then(res => res.json())
          .then(text => {
             
-            if(text){
-
-               // box.parentNode.innerHTML = text
-               document.getElementById("listaPaginas").innerHTML = text
-
-            }
+               document.getElementById("listaPaginas").innerHTML = text['contenido']
+               document.querySelector("#paginas").innerHTML = text['pagina']
 
          })
          .catch((err)=>{
@@ -385,16 +405,30 @@
             makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
 
          })
-         .finally(() => {
-
-            stopLoading()
-
-         })
 
       }else
 
          makeMessage(3,"{% translate 'Alerta' %}","{% translate 'Debes esperar a que el contenido termine de cargarse' %}")
          
+   }
+
+
+   const getFormFiltro = () => {
+      
+      const formFiltro = document.querySelector('#formFiltro')
+      const formData = new FormData(formFiltro);
+      const data = Object.fromEntries(formData.entries())
+
+      Object.keys(data).forEach((key) => {
+
+         if(!data[key].trim())
+
+            delete data[key]
+
+      });
+
+      return data
+
    }
 
    ///////////////////////// 
@@ -456,39 +490,16 @@
 
       document.getElementById("listaPaginas").innerHTML = spinnerBar()
       fetch("{% url 'helping:modalGuardarAyuda' %}", {
-         ...fetchObject
-      })
-      // .then(res => res.json())
-      .then(res => res.text())
-      .then(text => {
-
-         // document.querySelector("#listaPaginas").innerHTML = text['contenido']
-         // document.querySelector("#paginas").innerHTML = text['pagina']
-         document.querySelector("#listaPaginas").innerHTML = text
-
-      })
-      .catch((err)=>{
-
-         makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
-         document.getElementById("listaPaginas").innerHTML = ""
-
-      })
-
-   }
-
-   const buscarAyuda = (data) => {
-
-      document.getElementById("listaPaginas").innerHTML = spinnerBar()
-      fetch("{% url 'helping:modalBuscarAyuda' %}", {
          ...fetchObject,
-         body: JSON.stringify({
-            data
-         })
+            body: JSON.stringify({
+               numero: document.querySelector('#selectNumeracion').value,
+            })
       })
-      .then(res => res.text())
+      .then(res => res.json())
       .then(text => {
-         
-         document.getElementById("listaPaginas").innerHTML = text
+
+         document.querySelector("#listaPaginas").innerHTML = text['contenido']
+         document.querySelector("#paginas").innerHTML = text['pagina']
 
       })
       .catch((err)=>{
@@ -499,6 +510,30 @@
       })
 
    }
+
+   // const buscarAyuda = (data) => {
+
+   //    document.getElementById("listaPaginas").innerHTML = spinnerBar()
+   //    fetch("{% url 'helping:modalBuscarAyuda' %}", {
+   //       ...fetchObject,
+   //       body: JSON.stringify({
+   //          data
+   //       })
+   //    })
+   //    .then(res => res.text())
+   //    .then(text => {
+         
+   //       document.getElementById("listaPaginas").innerHTML = text
+
+   //    })
+   //    .catch((err)=>{
+
+   //       makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+   //       document.getElementById("listaPaginas").innerHTML = ""
+
+   //    })
+
+   // }
 
    $(document).ready(function () {
 
@@ -625,9 +660,9 @@
                   subirImagen(img)
 
                },
-               onMediaDelete : function(target) {
-                  // borrarImagen($(target[0]).attr('src'))
-               },
+               // onMediaDelete : function(target) {
+               //    // borrarImagen($(target[0]).attr('src'))
+               // },
                
                onPaste: function (e) {
 
@@ -880,13 +915,17 @@
          fetch("{% url 'helping:modalEliminarAyuda'%}", {
             ...fetchObject,
             body: JSON.stringify({
-               id
+               id,
+               numero: document.querySelector('#selectNumeracion').value,
+               pag: document.querySelector('.page-item.active > a').dataset.number,
+               filtro: getFormFiltro(),
             })
          })
-         .then(res => res.text())
+         .then(res => res.json())
          .then(text => {
             
-            document.getElementById("listaPaginas").innerHTML = text
+            document.querySelector("#listaPaginas").innerHTML = text['contenido']
+            document.querySelector("#paginas").innerHTML = text['pagina']
             makeMessage(1, "{% translate 'Notificacion' %}", "{% translate 'Archivo eliminado satisfactoriamente' %}", 'fas fa-trash-alt')
 
          })
@@ -1013,13 +1052,17 @@
                         ...fetchObject,
                         body: JSON.stringify({
                            data,
-                           id
+                           id,
+                           numero: document.querySelector('#selectNumeracion').value,
+                           pag: document.querySelector('.page-item.active > a').dataset.number,
+                           filtro: getFormFiltro(),
                         })
                      })
-                     .then(res => res.text())
+                     .then(res => res.json())
                      .then(text => {
 
-                        document.getElementById("listaPaginas").innerHTML = text
+                        document.querySelector("#listaPaginas").innerHTML = text['contenido']
+                        document.querySelector("#paginas").innerHTML = text['pagina']
                         $("#addNewModal").modal("hide")
                         makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
 
@@ -1124,6 +1167,19 @@
       }
 
    }
-   
+
+   $(document).on('click','.page-link',(e) => {
+
+      e.preventDefault()
+      buscarFiltro(e.currentTarget.dataset.number)
+
+   })
+
+   $(document).on('change','#selectNumeracion',(e) => {
+
+      buscarFiltro()
+
+   })
+
 </script>
 {% endblock javascripts %}
