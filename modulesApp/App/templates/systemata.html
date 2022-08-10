@@ -79,6 +79,7 @@
                <div id="renderContainer" class="col-md-12 mx-1 table-responsive">
                   <h3 class="display-4">Select an element from list</h3>
                </div>
+               
             </div>
             
                 </div>
@@ -102,8 +103,10 @@
 {% block javascripts %}
 <script>
    
-    
+    let limit = 4
+    let page =""
     let query= ""
+    let limitad= 4
     const renderContent = ()=>{
         document.querySelector("#renderList").classList.add("is-loading")
         fetch("{% url 'contentables'%}", {
@@ -146,12 +149,14 @@
         searchFor(searchBar.value)
        }
     });
-    const rendertavs = (ids)=>{
+    const rendertavs = (ids,page,limit)=>{
       document.querySelector("#renderContainer").classList.add("is-loading")
       fetch("{% url 'verhijos'%}", {
          ...fetchObject,
          body: JSON.stringify({
             query,
+            page,
+            limit,
             ids
          })
       })
@@ -164,7 +169,7 @@
   const verhijos = (id)=>{
    let isd= id
    query=""
-   rendertavs(isd)
+   rendertavs(isd,page,limit)
   }
   const renderModal = (id) => {
    let sode = id
@@ -256,7 +261,7 @@ const openDeleteProgram = async (id,padre) =>{
        else alerta(4)
     })
     .then(()=>{
-       rendertavs(padre)
+       rendertavs(padre,page,limit)
        renderContent()
     })
  }
@@ -281,7 +286,7 @@ const openedit = (id,padre) => {
           formSave.addEventListener("submit", (e) => {
             e.preventDefault()
             clickSavetwo(codigo)
-            rendertavs(padre)
+            rendertavs(padre,page,limit)
             })
          }) 
 
@@ -329,6 +334,13 @@ const createConfigtwo = (form) => {
         
       })
 }
- 
+const goToTable =  async (Page,padre)  => {
+   const contenedorLista = document.getElementById("renderContainer")
+   
+   const resultado = await  rendertavs(padre,Page, limitad)
+      contenedorLista.innerHTML = resultado
+
+
+}
 </script>
 {% endblock javascripts %}

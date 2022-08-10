@@ -26,7 +26,7 @@ urlpatterns = [
     path('App/settings/modalAddSetting/', views.getModalSetting, name="modalAddSetting"),
     path('App/settings/deletesetting/', views.deletehijos, name="deletesetting"),
     path('App/settings/editsetting/', views.edithijos, name="editsetting"),
-
+    
 
     #Security Settings
     

@@ -14,7 +14,7 @@
         </thead>
        
         <tbody>  
-          {% for p in hijos %}  
+          {% for p in data %}  
                                     <tr> 
                                       
                                         <td>{{ p.desc_elemento }}</td> 
@@ -37,8 +37,52 @@
            {% endfor %}                     
         </tbody>  
 </table>
-
-
-  
-
-
+<div class="card-footer">
+<nav class="col-6 m-2" aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+       {% if data.has_previous %}
+       <li class="page-item">
+          <a class="page-link" onclick="goToTable(1,'{{padre}}')" href="#">&laquo; First</a>
+          
+       </li>
+       <li class="page-item">
+          
+          
+          <a class="page-link" href="#" onclick="goToTable('{{ data.previous_page_number }}','{{padre}}')"><i class="fas fa-arrow-left"></i></a>
+       </li>
+       {% endif %}
+       
+       {% if data.number|add:'-4' > 1 %}
+       <li class="page-item"><a class="page-link" onclick="goToTable(`{{ data.number|add:'-5' }}`,'{{padre}}')" href="#">&hellip;</a></li>
+       {% endif %}
+       
+       {% for i in data.paginator.page_range %}
+       {% if data.number == i %}
+       <li class="page-item active" aria-current="page">
+          <span class="page-link">
+             {{ i }}
+             <span class="sr-only">(current)</span>
+          </span>
+       </li>
+       {% elif i > data.number|add:'-5' and i < data.number|add:'5' %} <li class="page-item"><a
+          class="page-link" onclick="goToTable('{{i}}','{{padre}}')" href="#">{{ i }}</a></li>
+          {% endif %}
+          {% endfor %}
+          
+          {% if data.paginator.num_pages > data.number|add:'4' %}
+          <li class="page-item"><a class="page-link" onclick="goToTable(`{{ data.number|add:'5' }}`,'{{padre}}')" href="#">&hellip;</a></li>
+          {% endif %}
+ 
+          {% if data.has_next %}
+          <li class="page-item">
+             <a class="page-link" onclick="goToTable('{{ data.next_page_number }}','{{padre}}')" href="#"><i class="fas fa-arrow-right"></i></a>
+          </li>
+          <li class="page-item">
+             <a class="page-link" onclick="goToTable('{{ data.paginator.num_pages }}','{{padre}}')" href="#">Last &raquo;</a>
+          </li>
+          
+          {% endif %}
+       </ul>
+    </nav>
+ 
+</div>

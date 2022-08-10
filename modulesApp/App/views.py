@@ -2,7 +2,7 @@ import json, math
 
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
-
+import sys
 from ..App.models import ConfMisfavoritos,ConfSettings,ConfSettings_Atributo,ConfTablasConfiguracion
 from django.shortcuts import render
 from django.template.defaulttags import register
@@ -317,21 +317,31 @@ def getcontentablas(request):
 def gethijos(request):
     if request.method == "POST":
        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+          try: 
             if request.body:
                 context={}
                 data = json.load(request)
                 print(data)
-                
+                lista = []
                 if data["query"] == "":
                    hijos=ConfTablasConfiguracion.objects.filter(fk_tabla_padre=data["ids"])
-                   context = {'hijos':hijos}            
+                   
+                   paginator = Paginator(hijos, data["limit"])
+                   lista = paginator.get_page(data["page"])
+                   page = data["page"]
+                   limit = data["limit"]
+                   context = {"page": page,"limit": limit,'padre':data["ids"],'data':lista}            
                    html_template = loader.get_template( 'verhijos.html' )
                    return HttpResponse(html_template.render(context, request))
-               
+          except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)
+       
                 
 def deletehijos(request):
     if request.method == "POST":
        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        try:
             if request.body:
                 context={}
                 data = json.load(request)
@@ -340,9 +350,14 @@ def deletehijos(request):
                    delethijos=ConfTablasConfiguracion.objects.get(pk=data["id"])
                    delethijos.delete()
                    return JsonResponse({"message":"delete"})
+        except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)
+              
 def edithijos(request):
     if request.method == "POST":
        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+          try:
             if request.body:
                 context={}
                 data = json.load(request)
@@ -366,6 +381,10 @@ def edithijos(request):
                      editar.save()
                      print(data) 
                      return JsonResponse({"message":"ok"})
+          except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)
+              
                
 def getModalSetting(request):
     if request.method == "POST":
@@ -399,4 +418,3 @@ def getModalSetting(request):
           except Exception as e:
                print(e)
                return JsonResponse({"message":"error"}, status=500)
-         
