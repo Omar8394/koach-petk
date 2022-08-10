@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load static %}
 
 <!DOCTYPE html>
@@ -257,6 +258,7 @@
                   padding: 0.75rem;
                   word-wrap: break-word;
                   transition: all .2s;
+                  cursor: pointer;
 
                 }
 
@@ -372,7 +374,7 @@
 	            })
             // endblok
 
-            
+            //codigo para el boton de ayuda
             const btnHelp = document.querySelector('.ayuda > img')
             const cabeceraHelp = document.querySelector('.ayuda-contenido > :first-child')
             const cuerpoHelp = document.querySelector('.ayuda-contenido > :last-child')
@@ -399,9 +401,16 @@
                   cuerpoHelp.innerHTML = text
 
               })
+              .catch((err) => {
+                
+                makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+                cuerpoHelp.innerHTML = ""
+
+              })
 
             })
 
+            // endblock
         </script>
 
 
