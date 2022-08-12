@@ -11,6 +11,7 @@ urlpatterns = [
     # The home page
     # path('', views.index, name='home'),
     path('func_Planning/', views.func_Planning, name='func_Planning'),
+    path('render_fihas/', views.render_fihas, name='renderfihas'),
     #Calendar & index settings
     
 
