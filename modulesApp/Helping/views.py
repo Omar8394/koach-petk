@@ -1,13 +1,53 @@
 from django.shortcuts import render
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import helpingImageForm, helpingPdfForm
 from .models import helpingPdf, tutoriales, paginas as paginasHelping, helpingImage
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.http import HttpResponse
-import json
+import json, time, sys
 from django.db.models import Q
 from ..App.models import ConfTablasConfiguracion as configuraciones
-import time
+from django.template.loader import render_to_string
+
+filtro = [{'nombre': 'Titulo', 'tipo': 'text', 'query': 'titulo__icontains'}, {'nombre': 'Modulo', 'tipo': 'select', 'query' : 'modulo__id_tabla'}, {'nombre': 'Tipo ayuda', 'tipo': 'select', 'query' : 'tipo__id_tabla'}]
+
+def filtroLista(request): 
+
+    return render(request,"Helping/filtroLista.html", {'data': filtro})
+
+def filtroElemento(request): 
+
+    context = {}
+
+    if request.method == "POST":
+
+        if(request.body):
+            
+            body = json.load(request)
+            valor = body['valor']
+            tipo = body['tipo']
+            new_filt = list(filter(lambda val: val['nombre'] == valor, filtro))
+
+            if(len(new_filt) == 1):
+
+                context['valor'] = valor
+                context['tipo'] = tipo
+
+                if valor == 'Tipo ayuda':
+                    
+                    context['seleccion'] = configuraciones.obtenerHijos('Tipo_Ayuda')
+                    
+                if valor == 'Modulo':
+
+                    context['seleccion'] = configuraciones.obtenerHijos('Modulos')
+
+            else:
+
+                return HttpResponse()
+
+    html_template = (loader.get_template('Helping/filtroElemento.html'))
+    return HttpResponse(html_template.render(context, request))
 
 def nuevo(request): 
 
@@ -124,7 +164,7 @@ def modalAddCarruserl(request):
     return HttpResponse(html_template.render(context, request))
 
 def modalAddAyuda(request): 
-
+    
     context = {}
 
     if request.method == "POST":
@@ -150,30 +190,46 @@ def modalGuardarAyuda(request):
         if request.body:
 
             body = json.load(request)
-            data = body['data']
-            id = body['id']
+            data = body.get('data')
+            id = body.get('id')
+            numero = body.get('numero')
+            pag = body.get('pag')
+            filtro = body.get('filtro')
 
-            if id and int(id) > 0:
+            if data:
 
-                helping=tutoriales.objects.get(idtutorial=id)
+                if id and int(id) > 0:
 
-            else: 
+                    helping=tutoriales.objects.get(idtutorial=id)
 
-                helping = tutoriales()
+                else: 
 
-            helping.titulo=data['titulo']
-            helping.descripcion=data['descripcion']
-            helping.url=""
-            tipoAyuda = configuraciones.objects.get(id_tabla=int(data.get('tipo', 1)))
-            modulo = configuraciones.objects.get(id_tabla=int(data.get('modulo', 1)))
-            helping.tipo= tipoAyuda
-            helping.modulo= modulo
-            helping.ordenamiento = 0
-            helping.save()
+                    helping = tutoriales()
+
+                helping.titulo=data['titulo']
+                helping.descripcion=data['descripcion']
+                helping.url=""
+                tipoAyuda = configuraciones.objects.get(id_tabla=int(data.get('tipo', 1)))
+                modulo = configuraciones.objects.get(id_tabla=int(data.get('modulo', 1)))
+                helping.tipo= tipoAyuda
+                helping.modulo= modulo
+                helping.ordenamiento = 0
+                helping.save()
 
     helping = tutoriales.objects.all()
-    html_template = (loader.get_template('Helping/contenidoAyuda.html'))
-    return HttpResponse(html_template.render({'data': helping}, request))
+    query = addFiltros(filtro)
+    helping = helping.filter(query) if query else helping
+    
+    # html_template = (loader.get_template('Helping/contenidoAyuda.html'))
+    
+    pagina = render_to_string('Helping/paginas.html', {'data': paginacion(request, helping, numero, pag), 'numero': numero})
+    tabla = render_to_string('Helping/contenidoAyuda.html', {'data': paginacion(request, helping, numero, pag)})
+    return JsonResponse({
+        'pagina': pagina,
+        'contenido': tabla
+    })
+
+    # return HttpResponse(html_template.render({'data': helping}, request))
 
 def modalBuscarAyuda(request): 
 
@@ -191,6 +247,58 @@ def modalBuscarAyuda(request):
     html_template = (loader.get_template('Helping/contenidoAyuda.html'))
     return HttpResponse(html_template.render(context, request))
 
+def filtrar(request): 
+    # time.sleep(4)
+    context = {}
+
+    if request.method == "POST":
+
+        if request.body:
+
+            body = json.load(request)
+            filtro = body['filtro']
+            numero = body.get('numero')
+            pag = body.get('pag')
+            helping = tutoriales.objects.all()
+            query = addFiltros(filtro)
+            helping = helping.filter(query) if query else helping
+            context['data'] = paginacion(request, helping, numero, pag)
+
+    # html_template = (loader.get_template('Helping/contenidoAyuda.html'))
+    # return HttpResponse(html_template.render(context, request))
+
+    pagina = render_to_string('Helping/paginas.html', {'data': paginacion(request, helping, numero, pag), 'numero': numero})
+    tabla = render_to_string('Helping/contenidoAyuda.html', context)
+
+    return JsonResponse({
+        'pagina': pagina,
+        'contenido': tabla
+    })
+
+def addFiltros(data): 
+
+    query = None
+
+    if data: 
+
+        for f in filtro:
+
+            new_filt = dict(filter(lambda val: str(val[0]).__contains__(f['nombre']), data.items()))
+
+            if(new_filt):
+
+                queryOr = None
+
+                for item in new_filt.items():
+
+                    if item[1]:
+
+                        filter_query = Q(**{f['query']: item[1]})
+                        queryOr = filter_query if not queryOr else queryOr | filter_query
+                
+                query = queryOr if not query else query & queryOr
+
+    return query
 
 def modalGuardarImagen(request): 
 
@@ -287,15 +395,26 @@ def modalEliminarAyuda(request):
 
         if request.body:
 
-            id = json.load(request)['id']
+            body = json.load(request)
+            id = body.get('id')
+            numero = body.get('numero')
+            pag = body.get('pag')
+            filtro = body.get('filtro')
             helping=tutoriales.objects.get(idtutorial=id)
             helping.delete()
     # img_help =helpingImage.objects.get(id=33)
     # img_help.url.delete(save=True)
     # img_help.delete()
     helping = tutoriales.objects.all()
-    html_template = (loader.get_template('Helping/contenidoAyuda.html'))
-    return HttpResponse(html_template.render({'data': helping}, request))
+    query = addFiltros(filtro)
+    helping = helping.filter(query) if query else helping
+    
+    pagina = render_to_string('Helping/paginas.html', {'data': paginacion(request, helping, numero, pag), 'numero': numero})
+    tabla = render_to_string('Helping/contenidoAyuda.html', {'data': paginacion(request, helping, numero, pag)})
+    return JsonResponse({
+        'pagina': pagina,
+        'contenido': tabla
+    })
 
 
 def modalEliminarHijoPagina(request): 
@@ -425,3 +544,24 @@ def contenidoAyudaMiniatura(request):
 
     html_template = (loader.get_template('Helping/contenidoAyudaMiniatura.html'))
     return HttpResponse(html_template.render(context, request))
+
+    
+def paginacion(request, obj, range = 5, pag = 1):
+
+    # page = request.GET.get('page', 1) if request.GET else request.POST.get('page', 1)
+    page = pag
+    paginator = Paginator(obj, sys.maxsize if range and range == '0' else range if range else 5)
+
+    try:
+
+        pages = paginator.page(page)
+
+    except PageNotAnInteger:
+
+        pages = paginator.page(1)
+
+    except EmptyPage:
+
+        pages = paginator.page(paginator.num_pages)
+
+    return pages

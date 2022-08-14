@@ -1,11 +1,13 @@
-import json
+import json, math
 
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
-
+import sys
 from ..App.models import ConfMisfavoritos,ConfSettings,ConfSettings_Atributo,ConfTablasConfiguracion
 from django.shortcuts import render
 from django.template.defaulttags import register
+
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 # Create your views here.
 @register.filter
 def hasprefer(id):
@@ -280,7 +282,139 @@ def setprefer(request) :
     print(estructura)
     print(id)
     return JsonResponse({"message":"Perfect"})
-def generalsettings(request) :
+def tablesettings(request) :
+    
     context = {}            
-    html_template = loader.get_template( 'configuraciones_generales.html' )
+    html_template = loader.get_template( 'systemata.html' )
     return HttpResponse(html_template.render(context, request))
+def getcontentablas(request):
+    if request.method == "POST":
+       if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        try:
+            if request.body:
+                context={}
+                data = json.load(request)
+                print(data)
+                father=ConfTablasConfiguracion.obtenerHijos("padre")
+                if data["query"] == "":
+                   
+                     
+                   context = {'father':father}  
+                   print(context)          
+                   html_template = loader.get_template( 'tables.html' )
+                   return HttpResponse(html_template.render(context, request)) 
+                elif  data["query"] != "":  
+                      print(data)
+                      father = father.filter(desc_elemento__icontains=data["query"])
+                      context = {'father':father}            
+                      html_template = loader.get_template( 'tables.html' )
+                      return HttpResponse(html_template.render(context, request))
+        except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)
+   
+
+def gethijos(request):
+    if request.method == "POST":
+       if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+          try: 
+            if request.body:
+                context={}
+                data = json.load(request)
+                print(data)
+                lista = []
+                if data["query"] == "":
+                   hijos=ConfTablasConfiguracion.objects.filter(fk_tabla_padre=data["ids"])
+                   
+                   paginator = Paginator(hijos, data["limit"])
+                   lista = paginator.get_page(data["page"])
+                   page = data["page"]
+                   limit = data["limit"]
+                   context = {"page": page,"limit": limit,'padre':data["ids"],'data':lista}            
+                   html_template = loader.get_template( 'verhijos.html' )
+                   return HttpResponse(html_template.render(context, request))
+          except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)
+       
+                
+def deletehijos(request):
+    if request.method == "POST":
+       if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        try:
+            if request.body:
+                context={}
+                data = json.load(request)
+                print(data)
+                if data["query"] == "delete":
+                   delethijos=ConfTablasConfiguracion.objects.get(pk=data["id"])
+                   delethijos.delete()
+                   return JsonResponse({"message":"delete"})
+        except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)
+              
+def edithijos(request):
+    if request.method == "POST":
+       if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+          try:
+            if request.body:
+                context={}
+                data = json.load(request)
+                print(data)
+                if data["edit"] == "find":
+                   editson=ConfTablasConfiguracion.objects.filter(id_tabla=data["id"])
+                   context = {'hijos':editson}            
+                   html_template = loader.get_template( 'modalAddSetting.html' )
+                   return HttpResponse(html_template.render(context, request))
+                elif data["edit"] == "edit":
+                     editar=ConfTablasConfiguracion.objects.get(pk=data['data']['father'])
+                     editar.desc_elemento=data['data']["descripcion"] 
+                     editar.tipo_elemento=1
+                     editar.permite_cambios=data['data']["permiteCambios"] 
+                     editar.valor_elemento=data['data']["valorElemento"] 
+                     editar.mostrar_en_combos=data['data']["mostrarEnCombos"] 
+                     editar.maneja_lista=data['data']["manejaLista"]
+                     editar.datos_adicional= data['data']["valoradd"]
+                     editar.tipo_dato=1
+                    
+                     editar.save()
+                     print(data) 
+                     return JsonResponse({"message":"ok"})
+          except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)
+              
+               
+def getModalSetting(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+          try: 
+            if request.body:
+                context={}
+                data = json.load(request)
+               
+                print(data)
+                if data["query"] == "":
+                   #print(data)
+                   context = {"tables": ConfTablasConfiguracion.objects.all(),"add":True}
+                   html_template = (loader.get_template('modalAddSetting.html'))
+                   return HttpResponse(html_template.render(context, request))
+                elif data["query"] == "save":
+                    newConfig = ConfTablasConfiguracion()
+                    newConfig.desc_elemento=data['data']["descripcion"] 
+                    newConfig.tipo_elemento=1
+                    newConfig.permite_cambios=data['data']["permiteCambios"] 
+                    newConfig.valor_elemento=data['data']["valorElemento"] 
+                    newConfig.mostrar_en_combos=data['data']["mostrarEnCombos"] 
+                    newConfig.maneja_lista=data['data']["manejaLista"]
+                    newConfig.datos_adicional= data['data']["valoradd"]
+                    newConfig.tipo_dato=1
+                    newConfig.fk_tabla_padre_id=data['data']["father"]
+                    newConfig.save()
+                    #print(data)
+                    return JsonResponse({"message":"Perfect"})
+                
+          except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)

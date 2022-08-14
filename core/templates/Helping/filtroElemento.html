@@ -1,0 +1,25 @@
+{% load i18n %}   
+
+{% if valor == 'Modulo' or valor == 'Tipo ayuda' %}
+    <div class="selectgroup selectgroup-pills">
+    {% for filtro in seleccion %}
+        <label class="selectgroup-item">
+            <input type="checkbox" name="{{valor}}{{forloop.counter}}{% now 'isu' %}" value="{{filtro.id_tabla}}" class="selectgroup-input">
+            <span class="selectgroup-button">{{filtro.desc_elemento}}</span>
+        </label>
+    {% endfor %}
+        <label class="selectgroup-item">
+            <input type="checkbox" class="selectgroup-input" onclick="eliminarFiltro(this)">
+            <i class="fas fa-trash-alt selectgroup-button bg-danger text-light"></i>
+        </label>
+    </div>
+{% endif %}
+
+{% if valor == 'Titulo' %}
+    <input type="text" class="form-control" placeholder="{{valor}}" name="{{valor}}{% now 'isu' %}" >
+    <div class="input-group-append">
+        <button class="btn btn-danger" type="button" id="button-addon2" onclick="eliminarFiltro(this)">
+            <i class="fas fa-trash-alt"></i>
+        </button>
+    </div>
+{% endif %}

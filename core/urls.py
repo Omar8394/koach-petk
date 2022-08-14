@@ -29,7 +29,7 @@ urlpatterns = [
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     path("", include("modulesApp.App.urls")),
     path("", include("modulesApp.Comunication.urls")),
-    path("", include("modulesApp.Planning.urls")),
+    path("Planning/", include("modulesApp.Planning.urls", namespace="planning")),
     path("Helping/", include("modulesApp.Helping.urls", namespace="helping")),
     path("security/", include("modulesApp.Security.urls",namespace="security")),
     path("ckeditor/", include("ckeditor_uploader.urls")),

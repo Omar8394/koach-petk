@@ -1,0 +1,29 @@
+{% load i18n %}
+<div class="modal fade" id="modalFichas" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="modalFichasContenido">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{% translate "Fichas" %}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formFicha" novalidate>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-12">
+                        <label for="nombreFicha" class="col-form-label">{% translate "Nombre" %}</label>
+                        <input type="text" class="form-control" name="nombre" maxlength="15" id="nombreFicha" {% if data %}value = "{{ data.nombre_ficha }}"{% endif %} required>
+                        <div class="invalid-feedback">{% translate "Debes escribir un nombre para la ficha" %}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer color-footer-modal">
+                    <button type="button" class="btn btn-radius btn-naranja mr-auto" data-dismiss="modal"><i
+                        class="fas fa-arrow-left mr-2"></i>{% translate "Atras" %}</button>
+                    <button type="submit" class="btn btn-radius btn-azul">{% translate "Guardar" %}<i class="fas fa-save ml-2"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+ </div>

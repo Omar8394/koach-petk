@@ -1,0 +1,232 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+
+{% block title %}{% endblock %}
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+
+
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="content">
+    <div class="page-inner animated fadeInRight">
+        <div class="page-header">
+            <h4 class="page-title">Planificacion</h4>
+            <ul class="breadcrumbs">
+                <li class="nav-home">
+                    <a href="{% url 'home' %}">
+                        <i class="flaticon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="flaticon-right-arrow"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Crear Fichas</a>
+                </li>
+            </ul>
+        </div>
+        
+           
+        <div class="page-category">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h2>Agregar Fichas</h2>          
+                    <div class="form-group ">
+                        <div class="input-group justify-content-center ">
+                             <div class="input-group-append">
+                                <span id="clearBtn" class="btn btn-primary" onclick="modalFicha()">             
+                                    <i class="fas fa-plus"></i>
+                                </span>           
+                             <span id="searchBtn" class="btn btn-success">
+                             <i class="fa fa-search"></i>
+                             </span>                        
+                           </div>
+                        </div>
+                    </div>
+                </div>
+                   
+                </div>
+                <main class="card-body is-loading-lg">
+
+                </main>
+                
+            </div>
+        
+        </div>
+    
+    </div>
+
+</div>
+
+{% endblock content %}
+{% block javascripts %}
+<script>
+
+   $(document).ready(function () {
+
+        renderContent()
+
+    });
+
+    const renderContent = () => {
+
+        document.querySelector("main.card-body").innerHTML = spinnerBar()
+        fetch("{% url 'planning:renderfihas' %}", {
+            ...fetchObject,
+        })
+        .then(res => res.text())
+        .then(text => {
+
+            document.querySelector("main.card-body").innerHTML = text
+
+        })
+        .catch((err)=>{
+
+            makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+            document.querySelector("main.card-body").innerHTML = ''
+
+        })
+
+    }
+
+    const modalFicha = (id = -1) => {
+
+        fetch("{% url 'planning:modalFicha' %}", {
+            ...fetchObject,
+            body: JSON.stringify({
+                id,
+            })
+        })
+        .then(res => res.text())
+        .then(text => {
+
+            document.querySelector('.content').insertAdjacentHTML("afterend", text)
+
+            const formFicha = document.querySelector("#modalFichas form")
+            formFicha.addEventListener("submit", (e) => {
+
+                e.preventDefault()
+                
+                const formData = new FormData(formFicha);
+                const data = Object.fromEntries(formData.entries())
+
+                if(data.nombre){
+
+                    const nombre = data.nombre
+
+                    setLoading()
+                    fetch("{% url 'planning:validarNombreFicha' %}", {
+                        ...fetchObject,
+                        body: JSON.stringify({
+                            nombre,
+                            id
+                        })
+                    })
+                    .then(res => res.text())
+                    .then(text => {
+
+                        if(text){
+                            
+                            setLoading()
+                            fetch("{% url 'planning:guardarFicha' %}", {
+                                ...fetchObject,
+                                body: JSON.stringify({
+                                data,
+                                id,
+                                })
+                            })
+                            .then(res => res.text())
+                            .then(text => {
+
+                                document.querySelector("main.card-body").innerHTML = text
+                                $("#modalFichas").modal("hide")
+                                makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+
+                            }).finally(() => {
+
+                                stopLoading()
+
+                            })
+
+                        }else
+
+                            makeMessage(4, "{% translate 'Alerta!' %}", "{% translate 'El nombre de esta ficha ya existe, debes cambialo por otro' %}", 'fa fa-exclamation-triangle')
+
+                    })
+                    .catch((err) => {
+                        
+                        makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+                    })
+                    .finally(() => {
+
+                        stopLoading()
+
+                    })
+
+
+                }else {
+
+                    formFicha.classList.add('needs-validation', 'was-validated')
+                    formFicha.removeAttribute('novalidate');
+
+                }
+                
+            })
+
+            $('#modalFichas').modal('show')
+            $('#modalFichas').on('hidden.bs.modal', function (event) {
+
+                $('#modalFichas').remove()
+
+            })
+
+        })
+        .catch((err)=>{
+
+            makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+            document.querySelector("main.card-body").innerHTML = ''
+
+        })
+
+    }
+   
+
+    const eliminarFicha = async (id) => {
+
+        const elimino = await alertaMensajitos(6, "{% translate 'Atencion!' %}", "{% translate 'Desea eliminar este archivo' %}")
+
+        if (elimino) {
+
+            document.querySelector("main.card-body").innerHTML = spinnerBar()
+
+            fetch("{% url 'planning:eliminarFicha'%}", {
+                ...fetchObject,
+                body: JSON.stringify({
+                    id,
+                })
+            })
+            .then(res => res.text())
+            .then(text => {
+                
+                document.querySelector("main.card-body").innerHTML = text
+                makeMessage(1, "{% translate 'Notificacion' %}", "{% translate 'Archivo eliminado satisfactoriamente' %}", 'fas fa-trash-alt')
+
+            })
+            .catch((err) => {
+                
+                makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+                document.querySelector("main.card-body").innerHTML = ""
+
+            })
+
+        }
+
+    }
+
+</script> 
+    
+{% endblock javascripts %} 

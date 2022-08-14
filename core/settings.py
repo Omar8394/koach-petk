@@ -164,6 +164,7 @@ INSTALLED_APPS = [
     'modulesApp.Events_Success',
     'modulesApp.Security',
     'modulesApp.Helping',
+    'modulesApp.Planning',
 ]
 
 MIDDLEWARE = [

@@ -6,24 +6,20 @@ Copyright (c) 2019 - present AppSeed.us
 from django.urls import path, re_path
 from modulesApp.Planning import views
 
+app_name = "planning"
 urlpatterns = [
 
-    # The home page
-    # path('', views.index, name='home'),
     path('func_Planning/', views.func_Planning, name='func_Planning'),
-    #Calendar & index settings
+    path('render_fihas/', views.render_fihas, name='renderfihas'),
+    path('testfi/', views.testfi, name='testfi'),
+    path('guardarFicha/', views.guardarFicha, name='guardarFicha'),
+    path('eliminarFicha/', views.eliminarFicha, name='eliminarFicha'),
     
 
-    #Security Settings
-    
+    # modales    
+    path('modalFicha/', views.modalFicha, name='modalFicha'),
 
-    # Scales
-    
-
-    # notificacioines
-    
-    
-    # Matches any html file
-    
+    # metodos
+    path('validarNombreFicha/', views.validarNombreFicha, name='validarNombreFicha'),
 
 ]
