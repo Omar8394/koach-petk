@@ -2,6 +2,7 @@
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}
+	<link rel="stylesheet" href="/static/assets/css/swiper_bundle.css">
 	<style>
 		#gestor .card{
 			background-image: url('/static/assets/img/bg-card.jpg');
@@ -191,6 +192,86 @@
 
 		/* endblock */
 
+		/* codigo Css para el carusel swiper del boletin informativo  */
+
+		.swiperContainer  {
+        position: relative;
+        height: 100vh;
+		}
+
+		.swiper {
+			width: 100%;
+			height: 100%;
+		}
+
+		.swiper-slide {
+			text-align: center;
+			font-size: 18px;
+			background: #fff;
+
+			/* Center slide text vertically */
+			/* display: -webkit-box;
+			display: -ms-flexbox;
+			display: -webkit-flex;
+			display: flex;
+			-webkit-box-pack: center;
+			-ms-flex-pack: center;
+			-webkit-justify-content: center;
+			justify-content: center;
+			-webkit-box-align: center;
+			-ms-flex-align: center;
+			-webkit-align-items: center; */
+			align-items: center;
+		}
+
+		.swiper-slide .card img {
+			display: block;
+			/* width: 30%; */
+			/* height: 100%; */
+			object-fit: cover;
+		}
+
+		.grid-slide{
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			/* grid-auto-rows: minmax(100px, auto); */
+			/* align-items: stretch; */
+		}
+
+		.cont-title{
+			grid-column: 1/4;
+			padding-bottom: 20px;
+		}
+
+		.cont-title h1, .cont-title h2{
+			padding: 0;
+		}
+
+		.cont-texto{
+			grid-column: 2/4;
+		}
+		.contenedor-img{
+			width: 380px;
+			overflow-x: hidden;
+			/* position: absolute; */
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+			margin-top: -49px;
+			
+		}
+
+		.contenedor-img img{	
+			object-fit: contain;
+			
+		}
+
+		.grid-slide .cont-texto p{
+			text-align:justify;
+		}
+
+        /* endblock */
+
 	</style>
 {% endblock stylesheets %}
 
@@ -379,23 +460,24 @@
 			</section>
 			
 		</div>
-
-		<div class="modal fade" id="boletinModal" tabindex="-1" role="dialog" aria-hidden="true">
-			<div id="boletinModalContent" class="modal-dialog  modal-dialog-centered" role="document">
+		
+		<div class="modal fade" id="boletinModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+			<div id="boletinModalContent" class="modal-dialog  modal-dialog-centered" role="document" style=" max-width:80% ;">
 		
 			</div>
 		</div>
 
 	</div>
-
+	<!-- <script src="/static/assets/js/plugin/swiper_bundle.js"></script> -->
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
+
 {% block javascripts %}
 
 <script>
 
-	function showBoletin(){
+function showBoletin(){
 		fetch("{% url 'showBoletin'%}", {
         	...fetchObject,
         	body: JSON.stringify({
@@ -408,22 +490,19 @@
             document.getElementById("boletinModalContent").innerHTML = await res.text()
         })
         .then(() => {
+			const swiper = new Swiper(".mySwiper", {
+				navigation: {
+				nextEl: ".swiper-button-next",
+				prevEl: ".swiper-button-prev",
+				},
+			});
             $("#boletinModal").modal("show")
-            const formSave = document.getElementById("formSave")
-            formSave.addEventListener("submit", (e) => {
-               	
-				e.preventDefault()
-               	  	
-				
-                $("#boletinModal").modal("hide")
-                     	
             
-            })
         })
 	}
 
 
-	// showBoletin()
+	showBoletin()
 </script>
 
 {% endblock javascripts %}

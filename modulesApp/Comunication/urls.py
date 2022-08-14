@@ -10,9 +10,13 @@ urlpatterns = [
     
     # The home page
     path('Comunication/Boletin/createBoletin/', views.createBoletin, name='createBoletin'),
-    path('Comunication/Boletin/showBoletin/', views.showBoletin, name='showBoletin'), 
-    path('Comunication/Boletin/addBoletinModal/', views.addBoletinModal, name='addBoletinModal'),
-    path('Comunication/Boletin/addBoletinModal/', views.addBoletinModal, name='addBoletinModal'),
-    
+    path('homeViews/', views.HomeViews, name='homeviews'),
+    path('addboletin/', views.addboletin, name='addboletin'),
+     
+    path('Comunication/Boletin/acciones_boletin/', views.acciones_boletin, name='acciones_boletin'),
+    path('Comunication/Boletin/edit_boletin/<int:id>', views.edit_boletin, name='edit_boletin'),
+    path('Comunication/Boletin/edit_boletin_save/', views.edit_boletin_save, name='edit_boletin_save'),    
+    path('Comunication/Boletin/showBoletin/', views.showBoletin, name='showBoletin'),
+    # path('Comunication/Boletin/pruebaCarusel/', views.pruebaCarusel, name='pruebaCarusel'),
        
 ]
