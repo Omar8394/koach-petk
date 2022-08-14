@@ -1,6 +1,6 @@
 {% load i18n %}   
 <div class="input-group mb-3">
-    <select class="form-control filtro">
+    <select class="form-control" onchange="anadirFiltroHijo(this)">
 
         <option value="" disabled selected>{% translate "Seleccione un filtro" %}</option>
 

@@ -116,6 +116,14 @@
          flex-wrap: wrap;
          justify-content: center;
       }
+/* 
+      .input-group.mb-3{
+
+         transform: scale(0.775);
+         transform-origin: 0 0;
+         width: 125%;
+
+      } */
 
    }
 
@@ -320,43 +328,6 @@
       .then(text => {
 
          document.querySelector('#formFiltro').insertAdjacentHTML("beforeend", text)
-         let cbox = document.querySelectorAll('#formFiltro select.filtro')
-         let box = cbox[cbox.length-1]
-
-         box.addEventListener('change', (e) => {
-            setLoading()   
-            fetch("{% url 'helping:filtroElemento' %}", {
-               ...fetchObject,
-               body: JSON.stringify({
-
-                  valor: box.options[box.selectedIndex].value,
-                  tipo: box.options[box.selectedIndex].dataset.tipo,
-
-               })
-            })
-            .then(res => res.text())
-            .then(text => {
-               
-               if(text){
-
-                  box.parentNode.innerHTML = text
-
-               }
-
-            })
-            .catch((err)=>{
-
-               makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
-
-            })
-            .finally(() => {
-
-               stopLoading()
-
-            })
-
-
-         })
 
       })
       .catch((err)=>{
@@ -371,25 +342,62 @@
       })
 
    }
+
+   const anadirFiltroHijo = (e) => {
+
+      // const valor = e.options[e.selectedIndex].value
+      
+      // if(!document.querySelector(`input[name^=${valor}]`)){
+
+         setLoading() 
+         fetch("{% url 'helping:filtroElemento' %}", {
+            ...fetchObject,
+            body: JSON.stringify({
+
+               valor: e.options[e.selectedIndex].value,
+               tipo: e.options[e.selectedIndex].dataset.tipo,
+
+            })
+         })
+         .then(res => res.text())
+         .then(text => {
+            
+            if(text){
+
+               const parent = e.parentNode
+               parent.innerHTML = text
+               parent.querySelector(':first-child').focus()
+
+            }
+
+         })
+         .catch((err)=>{
+
+            makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+         })
+         .finally(() => {
+
+            stopLoading()
+
+         })
+
+      // }
+
+   }
    
    const buscarFiltro = (pag = -1) => {
 
       if(!document.querySelector('.progress-bar')){
 
-         let final = document.querySelectorAll('#formFiltro select:not(.filtro), #formFiltro input')
-
-         final.forEach((f, i)=>{
-
-            f.setAttribute('name', f.getAttribute('name')+i)
-            
-         })
+         localStorage.setItem("rango", document.querySelector('#selectNumeracion').value);
 
          document.getElementById("listaPaginas").innerHTML = spinnerBar()
          fetch("{% url 'helping:filtrar' %}", {
             ...fetchObject,
             body: JSON.stringify({
                filtro: getFormFiltro(),
-               numero: document.querySelector('#selectNumeracion').value,
+               numero: localStorage.getItem("rango"),
                pag: pag > 0 ? pag : document.querySelector('.page-item.active > a').dataset.number
             })
          })
@@ -492,7 +500,7 @@
       fetch("{% url 'helping:modalGuardarAyuda' %}", {
          ...fetchObject,
             body: JSON.stringify({
-               numero: document.querySelector('#selectNumeracion').value,
+               numero: localStorage.getItem("rango"),
             })
       })
       .then(res => res.json())
@@ -916,7 +924,7 @@
             ...fetchObject,
             body: JSON.stringify({
                id,
-               numero: document.querySelector('#selectNumeracion').value,
+               numero: localStorage.getItem("rango"),
                pag: document.querySelector('.page-item.active > a').dataset.number,
                filtro: getFormFiltro(),
             })
@@ -1053,7 +1061,7 @@
                         body: JSON.stringify({
                            data,
                            id,
-                           numero: document.querySelector('#selectNumeracion').value,
+                           numero: localStorage.getItem("rango"),
                            pag: document.querySelector('.page-item.active > a').dataset.number,
                            filtro: getFormFiltro(),
                         })
@@ -1172,12 +1180,6 @@
 
       e.preventDefault()
       buscarFiltro(e.currentTarget.dataset.number)
-
-   })
-
-   $(document).on('change','#selectNumeracion',(e) => {
-
-      buscarFiltro()
 
    })
 

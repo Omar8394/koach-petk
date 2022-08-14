@@ -1,4 +1,4 @@
-<select class="form-control mr-5" id="selectNumeracion">
+<select class="form-control mr-5" id="selectNumeracion" onchange="buscarFiltro()">
     <option value="5" {% if not numero or numero == '5' %}selected{% endif %}>5</option>
     <option value="10" {% if numero == '10' %}selected{% endif %}>10</option>
     <option value="25" {% if numero == '25' %}selected{% endif %}>25</option>
@@ -21,12 +21,12 @@
     {% if data.has_previous %}
     <li class="page-item">
         <!-- <a class="page-link" href="?page={{ data.previous_page_number }}">Previous</a> -->
-        <a class="page-link" href="?page={{ data.previous_page_number }}" title="Siguiente" data-number="{{ data.previous_page_number }}"><i class="fa fa-angle-left"></i></a>
+        <a class="page-link" href="?page={{ data.previous_page_number }}" title="Anterior" data-number="{{ data.previous_page_number }}"><i class="fa fa-angle-left"></i></a>
     </li>
     {% else %}
     <li class="page-item disabled">
         <!-- <a class="page-link" href="#">Previous</a> -->
-        <a class="page-link" href="#" title="Siguiente"><i class="fa fa-angle-left"></i></a>
+        <a class="page-link" href="#" title="Anterior"><i class="fa fa-angle-left"></i></a>
     </li>
     {% endif %}
     {% for i in data.paginator.page_range %}
@@ -43,12 +43,12 @@
     {% if data.has_next %}
         <li class="page-item">
             <!-- <a class="page-link" href="?page={{ data.next_page_number }}">Next</a> -->
-            <a class="page-link" href="?page={{ data.next_page_number }}" title="Anterior" data-number="{{ data.next_page_number }}"><i class="fa fa-angle-right"></i></a>
+            <a class="page-link" href="?page={{ data.next_page_number }}" title="Siguiente" data-number="{{ data.next_page_number }}"><i class="fa fa-angle-right"></i></a>
         </li>
     {% else %}
         <li class="page-item disabled">
             <!-- <a class="page-link" href="#">Next</a> -->
-            <a class="page-link" href="#" title="Anterior"><i class="fa fa-angle-right"></i></a>
+            <a class="page-link" href="#" title="Siguiente"><i class="fa fa-angle-right"></i></a>
         </li>
     {% endif %}
     {% if data.number == data.paginator.num_pages %}

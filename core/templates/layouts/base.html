@@ -247,7 +247,7 @@
                 .ayuda-contenido > .container-fluid{
 
                   overflow: auto;
-                  max-height: 100%;
+                  max-height: inherit;
 
                 }
 
@@ -273,6 +273,18 @@
                 .alert{
 
                     z-index: 9999999999!important;
+
+                }
+
+                .ayuda-contenido > .container-fluid::-webkit-scrollbar {
+
+                  width: 5px;
+
+                }
+
+                .ayuda-contenido > .container-fluid::-webkit-scrollbar-thumb {
+
+                  background: #418fde;
 
                 }
 
