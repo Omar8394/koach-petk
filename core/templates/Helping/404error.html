@@ -1,0 +1,87 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>404 Error</title>
+        <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@600;900&display=swap" rel="stylesheet"><!-- CSS only -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+        <style>
+            
+            body {
+            background-color: #95c2de;
+            }
+
+            .mainbox {
+                background-color: #95c2de;
+                margin: auto;
+                height: 600px;
+                width: 600px;
+                position: relative;
+                overflow-x: visible;
+            }
+
+            .err {
+                color: #ffffff;
+                font-family: 'Nunito Sans', sans-serif;
+                font-size: 11rem;
+                position:absolute;
+                left: 20%;
+                top: 8%;
+            }
+
+            .err1 {
+                position: absolute;
+                font-family: 'Nunito Sans', sans-serif;
+                font-size: 11rem;
+                left: 40%;
+                top: 8%;
+                color: #ffffff;
+            }
+
+            .err2 {
+                color: #ffffff;
+                font-family: 'Nunito Sans', sans-serif;
+                font-size: 11rem;
+                position:absolute;
+                left: 60%;
+                top: 8%;
+            }
+
+            .msg {
+                text-align: center;
+                font-family: 'Nunito Sans', sans-serif;
+                font-size: 1.6rem;
+                position:absolute;
+                left: 16%;
+                top: 45%;
+                width: 75%;
+            }
+
+            a {
+            text-decoration: none;
+            color: white;
+            }
+
+            a:hover {
+            text-decoration: underline;
+            }
+        </style>
+    </head>
+
+    <body>
+        
+        <div class="mainbox">
+            <div class="err">4</div>
+            <div class="err1">0</div>
+            <div class="err2">4</div>
+            <div class="msg">
+                {% translate "¿Tal vez esta página se movió? ¿Se ha eliminado? ¿Se fue a cuarentena? ¿Nunca existió en primer lugar?" %}<p>{% translate "Vamos al" %} <a href="{% url 'Dashboard' %}">dashboard</a> {% translate "e intentemolos desde alli" %}.</p>
+            </div>
+        </div>
+
+    </body>
+    
+</html>

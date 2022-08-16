@@ -1,0 +1,66 @@
+<select class="form-control mr-5" id="selectNumeracion" onchange="buscarFiltro()">
+    <option value="5" {% if not numero or numero == '5' %}selected{% endif %}>5</option>
+    <option value="10" {% if numero == '10' %}selected{% endif %}>10</option>
+    <option value="25" {% if numero == '25' %}selected{% endif %}>25</option>
+    <option value="50" {% if numero == '50' %}selected{% endif %}>50</option>
+    <option value="0" {% if numero == '0' %}selected{% endif %}>TODO</option>
+ </select>
+   <!-- <nav aria-label="..."> -->
+<ul class="pagination mb-0 justify-content-end">
+    {% if data.number == 1 %}
+        <li class="page-item disabled">
+            <!-- <a class="page-link" href="#">First</a> -->
+            <a class="page-link" href="#" title="Primero" data-number="1"><i class="fa fa-angle-double-left"></i></a>
+        </li>
+    {% else %}
+        <li class="page-item">
+            <!-- <a class="page-link" href="?page={{ 1 }}">First</a> -->
+            <a class="page-link" href="?page={{ 1 }}" title="Primero" data-number="1"><i class="fa fa-angle-double-left"></i></a>
+        </li>
+    {% endif %}
+    {% if data.has_previous %}
+    <li class="page-item">
+        <!-- <a class="page-link" href="?page={{ data.previous_page_number }}">Previous</a> -->
+        <a class="page-link" href="?page={{ data.previous_page_number }}" title="Anterior" data-number="{{ data.previous_page_number }}"><i class="fa fa-angle-left"></i></a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+        <!-- <a class="page-link" href="#">Previous</a> -->
+        <a class="page-link" href="#" title="Anterior"><i class="fa fa-angle-left"></i></a>
+    </li>
+    {% endif %}
+    {% for i in data.paginator.page_range %}
+        {% if data.number == i %}
+        <li class="page-item active">
+            <a class="page-link" href="?page={{ i }}" data-number="{{i}}">{{ i }}</a>
+        </li>
+        {% elif i > data.number|add:'-3' and i < data.number|add:'3' %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ i }}" data-number="{{i}}">{{ i }}</a>
+        </li>
+        {% endif %}
+    {% endfor %}
+    {% if data.has_next %}
+        <li class="page-item">
+            <!-- <a class="page-link" href="?page={{ data.next_page_number }}">Next</a> -->
+            <a class="page-link" href="?page={{ data.next_page_number }}" title="Siguiente" data-number="{{ data.next_page_number }}"><i class="fa fa-angle-right"></i></a>
+        </li>
+    {% else %}
+        <li class="page-item disabled">
+            <!-- <a class="page-link" href="#">Next</a> -->
+            <a class="page-link" href="#" title="Siguiente"><i class="fa fa-angle-right"></i></a>
+        </li>
+    {% endif %}
+    {% if data.number == data.paginator.num_pages %}
+        <li class="page-item disabled">
+            <!-- <a class="page-link" href="#">Last</a> -->
+            <a class="page-link" href="#" title="Ultimo"><i class="fa fa-angle-double-right"></i></a>
+        </li>
+    {% else %}
+        <li class="page-item">
+            <!-- <a class="page-link" href="?page={{ data.paginator.num_pages }}">Last</a> -->
+            <a class="page-link" href="?page={{ data.paginator.num_pages }}" data-number="{{ data.paginator.num_pages }}" title="Ultimo"><i class="fa fa-angle-double-right"></i></a>
+        </li>
+    {% endif %}
+</ul>
+    <!-- </nav> -->

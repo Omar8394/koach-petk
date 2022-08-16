@@ -1,0 +1,114 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}{% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<style>
+  #login{
+    display:flex;
+    justify-content: left;
+    align-items:left;
+    }
+    
+    h2{
+    padding: 10px;
+    
+    } 
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+	<div class="content">
+		<div class="page-inner animated fadeInRight">
+			<div class="page-header">
+				<h4 class="page-title">Configuraciones</h4>
+				<ul class="breadcrumbs">
+					<li class="nav-home">
+						<a href="{% url 'Dashboard' %}">
+							<i class="flaticon-home"></i>
+						</a>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<span>Configuracion</span>
+					</li>
+					
+					
+				</ul>
+			</div>
+			<div class="page-category">
+        		
+      <div class="card">
+        <div id="login">
+				<div class="form-group col-md-3 d-flex justify-content-center">
+          <div class="card" style="width: 20rem;">
+            <div class="card-header text-center" style="background-color: #252850 !important;color: white;">
+              <h3>Sistema de tablas</h3>
+            </div> 
+            <div class="card-footer d-flex justify-content-center">
+            <a href="{% url 'tables' %}" class="btn btn-icon btn-success btn-round add-btn btn-card-xl"><i class="fas fa-table"></i></a>	
+            </div>
+          </div>
+        </div>
+        <h2>Aqui se configuran las tablas utilizadas en el sistema se pueden incluir y modificar.</h2>
+        </div>
+        <div id="login">
+        <div class="form-group col-md-3 d-flex justify-content-center">
+          <div class="card" style="width: 20rem;">
+            <div class="card-header text-center" style="background-color: #252850 !important;color: white;">
+              <h3>Preferencias</h3>
+            </div> 
+            <div class="card-footer d-flex justify-content-center">
+										
+            <a href="{% url 'preferencias' %}" class="btn btn-icon btn-success btn-round add-btn btn-card-xl"><i class="fas fa-cog"></i></a>	
+            </div>
+          </div>
+        </div>
+        <h2>Aqui se configuran las preferencias del sistema.</h2>
+      </div>
+      <div id="login">
+        <div class="form-group col-md-3 d-flex justify-content-center">
+          <div class="card" style="width: 20rem;">
+            <div class="card-header text-center" style="background-color: #252850 !important;color: white;">
+              <h3>Registrar Ayudas</h3>
+            </div> 
+            <div class="card-footer d-flex justify-content-center">
+            <a href="{% url 'helping:nuevo' %}" class="btn btn-icon btn-success btn-round add-btn btn-card-xl"><i class="fas fa-question-circle"></i></a>	
+            </div>
+          </div>
+          
+        </div>
+        <h2>Registro de tutoriales y ayudas de usuario</h2>
+      </div> 
+      <div id="login">
+        <div class="form-group col-md-3 d-flex justify-content-center">
+          <div class="card" style="width: 20rem;">
+            <div class="card-header text-center" style="background-color: #252850 !important;color: white;">
+              <h3>Registrar Mensajes</h3>
+            </div> 
+            <div class="card-footer d-flex justify-content-center">
+            <a href="" class="btn btn-icon btn-success btn-round add-btn btn-card-xl"><i class="fas fa-envelope"></i></a>	
+            </div>
+          </div>
+        </div>
+        <h2>Registro de Mensajes del sistema</h2>
+      </div>
+        </div>
+		</div>
+	</div>
+</div>
+{% endblock content %}
+	
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+
+</script>
+{% endblock javascripts %}
+
+  
+      

@@ -24,8 +24,12 @@ urlpatterns = [
     path('modalEliminarImagen', views.modalEliminarImagen, name='modalEliminarImagen'),
     path('modalPaginaMover', views.modalPaginaMover, name='modalPaginaMover'),
     path('Url/<int:id>', views.Url, name='Url'),
+    path('contenidoAyudaMiniatura', views.contenidoAyudaMiniatura, name='contenidoAyudaMiniatura'),
+    path('filtrar', views.filtrar, name='filtrar'),
     
 
     path('validarTituloAyuda', views.validarTituloAyuda, name='validarTituloAyuda'),
     path('copiarLInk', views.copiarLInk, name='copiarLInk'),
+    path('filtroLista', views.filtroLista, name='filtroLista'),
+    path('filtroElemento', views.filtroElemento, name='filtroElemento'),
 ]

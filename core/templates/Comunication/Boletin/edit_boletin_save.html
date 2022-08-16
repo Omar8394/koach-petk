@@ -1,0 +1,160 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}{% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+ <style>
+	/* @media (max-width: 1000px) {
+		.django-ckeditor-widget #cke_id_contenido{
+			width: 500px;
+		}
+    } */
+
+	
+ </style>
+
+{% endblock stylesheets %}
+
+{% block content %}
+ 	
+	<div class="content">
+		<div class="page-inner">
+			<div class="page-header">
+				<h4 class="page-title">Crear Boletin</h4>
+				<ul class="breadcrumbs">
+					<li class="nav-home">
+						<a href="{% url 'Dashboard' %}">
+							<i class="flaticon-home"></i>
+						</a>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<span>Boletin Informativo</span>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<a href="#">Page 1</a>
+					</li>
+				</ul>
+			</div>
+			<div class="page-category">
+            <div class=" form-group ">
+				<div class=" container ">
+					<form id="form_edit" class="form" method="POST" action="{% url 'edit_boletin_save' %}">
+						{% csrf_token %}
+							
+							{% for item in data %}
+								{{form.media}}
+								{{form.as_p}}
+									
+
+								<div class="form-row">
+									<div class="form-group col-6">
+					
+										<tr>
+											<td>Fecha Inicial</td>
+											<td></td>
+											<td>
+												<input id="fecha_in" name="fecha_in" value="{{ item.fech_inicio }}" type="date" class="form-control"
+													required>
+											</td>
+										</tr>
+					
+									</div>
+									<div class="form-group col-6">
+					
+										<tr>
+											<td>Fecha Final</td>
+											<td></td>
+											<td>
+											<input id="fecha_out" name="fecha_out" value="{{ item.fech_fin }}" type="date" class="form-control"
+												required>
+											</td>
+										</tr>
+					
+									</div>
+								</div>
+		
+							
+		
+								<div class="d-block my-3">
+									<label for="" class="font-weight-bold mr-2">Activo:</label>
+									<div class="custom-control custom-radio">
+										<input id="activosi" name="status" type="radio" class="custom-control-input" value="1"  {% if item.status == 1 %}checked{% endif %}>
+										<label class="custom-control-label" for="activosi">Si</label>
+									</div>
+									
+									<div class="custom-control custom-radio">
+										<input id="vencidosi" name="status" type="radio" class="custom-control-input" value="0" {% if item.status == 0 %}checked{% endif %}>
+										<label class="custom-control-label" for="vencidosi">No</label>
+									</div>
+								
+								</div>
+						
+							
+						
+								<input type="text" class="form-control" name="idboletin" id="idboletin" value="{{id}}" hidden="true">
+								
+								<!-- <button type="button" class="btn btn-radius btn-naranja mr-auto" id="btn_prueba"><i
+									class="fas fa-arrow-left mr-2"></i>Back</button> -->
+						
+								<div class="modal-footer">
+									<button type="button" class="btn btn-radius btn-naranja mr-auto" id="btn_atras"><i
+											class="fas fa-arrow-left mr-2"></i>Back</button>
+									<button type="submit" class="btn btn-radius btn-azul">Save<i class="fas fa-save ml-2"></i></button>
+								</div>
+							{% endfor %}
+					
+					</form>
+				</div>
+            
+            </div>
+					
+  
+      		</div>
+		</div>
+	</div>
+
+{% endblock content %}
+	
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="/static/assets/js/ckeditor/ckeditor-init.js"></script>
+<script src="/static/assets/js/ckeditor/ckeditor.js"></script>
+<script>
+	window.addEventListener('load', inicio)
+
+	function inicio(){
+		let btn_atras = document.querySelector("#btn_atras")
+		let btn_prueba = document.querySelector("#id_path_recurso")
+		console.log(btn_prueba)
+		btn_prueba.addEventListener('click', ()=>{
+			alert("Cristo es mi salvador")
+		})
+		
+		// btn_prueba.addEventListener('click', ()=>{
+		// 	const formElement = document.getElementById("form_edit")
+		// 	const formData = new FormData(formElement);
+		// 	const data = {}
+		// 	for (var [key, value] of formData.entries()) {
+		// 		data[key] = value
+		// 	}
+		// 	console.log(data)
+		// })
+
+		btn_atras.addEventListener('click', ()=>{
+			
+			window.location.href = "{% url 'createBoletin' %}"
+		})
+	}
+	
+
+</script>
+
+
+{% endblock javascripts %}

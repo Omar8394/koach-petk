@@ -1,9 +1,14 @@
+
+{% load i18n %}
 <!--   Core JS Files   -->
 <script src="/static/assets/js/core/jquery.3.2.1.min.js"></script>
+
 <script src="/static/assets/js/core/popper.min.js"></script>
 <script src="/static/assets/js/core/bootstrap.min.js"></script>
 <script src="/static/assets/js/core/sortable.js"></script>
-
+<script src="/static/assets/js/core/sortable.js"></script>
+<script src="/static/assets/js/main.js"></script>
+<script src="/static/assets/js/jquery.steps.js"></script>
 <!-- jQuery UI -->
 <script src="/static/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
 <script src="/static/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
@@ -59,6 +64,13 @@
 <!-- TagInput -->
 <script src="/static/assets/js/bootstrap-tagsinput.js"></script>
 
+<!-- slider Carusel Swiper.js -->
+<script src="/static/assets/js/plugin/swiper_bundle.js"></script>
+
+<!-- CKeditor -->
+<script src="/static/assets/js/ckeditor/ckeditor-init.js"></script>
+<script src="/static/assets/js/ckeditor/ckeditor.js"></script>
+
 <script>
 	//con mensajitos
 	function setLoading() {
@@ -85,6 +97,47 @@
 						}
 					},
 				});
+		}
+		if (tipoAlerta === 3) {
+			return swal({
+				title: 'Delete?',
+				text: "You won't be able to revert this!",
+				icon: "warning",
+				buttons: {
+					confirm: {
+						text: 'Yes, delete it!',
+						className: 'btn btn-success'
+					},
+					cancel: {
+						visible: true,
+						className: 'btn btn-danger'
+					}
+				}
+			})
+		}
+		if (tipoAlerta === 4) {
+			swal({
+				title: 'Deleted!',
+				text: 'Register has been successfully deleted.',
+				icon: 'success',
+				buttons: {
+					confirm: {
+						className: 'btn btn-success'
+					}
+				}
+			});
+		}
+		if (tipoAlerta === 5) {
+			swal({
+				title: 'Error!',
+				text: 'An error has occurred.',
+				icon: 'error',
+				buttons: {
+					confirm: {
+						className: 'btn btn-danger'
+					}
+				}
+			});
 		}
 	}
 	function alertaMensajitos(tipoAlerta, tittle, mssg) {
@@ -214,4 +267,72 @@
 		method: 'POST',
 	}
     // end-function
+
+	
+	const spinnerBar = () =>`
+                     <div class="text-center">
+                        <h1>{% translate 'Cargando' %}...</h1>
+                        <div class="progress">
+                           <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                        </div>
+                     </div>`;
+					 
+   const makeMessage = (tipo = -1, titulo, cuerpo, icon = null)=>{
+
+		const state = tipo === 1 ? 'success' : tipo == 2 ? 'primary' : tipo == 3 ? 'warning' : tipo == 4 ? 'danger' : 'default';
+		const content = {};
+		content.message = cuerpo;
+		content.title = titulo;
+
+		if (icon) {
+
+		content.icon = icon;
+
+		} else {
+
+		content.icon = 'fa fa-bell';
+
+		}
+		// content.url = 'index.html';
+		// content.target = '_blank';
+
+		$.notify(content,{
+		type: state,
+		placement: {
+			from: 'top',
+			align: 'right'
+		},
+		time: 1000,
+		// delay: 0,
+		});
+
+	}
+
+	
+ 
+   const openCarrusel = (id = -1) => {
+      
+            // $("#addNewCarrusel").modal("show")
+      fetch("{% url 'helping:modalAddCarruserl'%}", {
+         ...fetchObject,
+         body: JSON.stringify({
+            id
+         })
+      })
+      .then(res => res.text())
+      .then(text => {
+
+         if(text){
+
+            document.getElementById("carruselAyudaContenido").innerHTML = text
+            $('.carousel').carousel({interval: 0})
+            $("#carruselAyuda").modal("show")
+
+         }else
+
+            makeMessage(4, "{% translate 'Alerta' %}!", "{% translate 'No hay paginas asignadas para esta ayuda' %}", 'fa fa-exclamation-triangle')
+
+      })
+
+   }
 </script>

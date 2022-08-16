@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load static %}
 
 <!DOCTYPE html>
@@ -57,7 +58,9 @@
             <link rel="stylesheet" href="/static/assets/css/dropzone.css">
             <link rel="stylesheet" href="/static/assets/css/bootstrap-tagsinput.css">
             <link rel="stylesheet" href="/static/assets/css/owl.theme.default.min.css">
-            
+            <link rel="stylesheet" href="/static/assets/css/style.css">
+            <link rel="stylesheet" href="/static/assets/css/material-design-iconic-font/css/material-design-iconic-font.min.css">
+            <link rel="stylesheet" href="/static/assets/css/jquery-ui.min.css">
             
             <!-- enb css-portalWeb -->
             <style>
@@ -182,6 +185,109 @@
 
 
 
+                .ayuda{
+
+                  width: 75px;
+                  max-height: 75px;
+                  position: fixed;
+                  bottom: 1rem;
+                  left: 1rem;
+                  z-index: 1000;
+                  border-radius: 100%;
+
+                }
+
+                @media (max-width: 500px) {
+
+                  .ayuda{
+
+                    width: 50px;
+                    height: 50px;
+                    
+                  }
+
+                }
+
+                .ayuda-contenido{
+
+                  width: 20rem;
+                  max-height: 500px;
+                  position: absolute;
+                  z-index: 1001;
+                  bottom: 0;
+                  opacity: 0;
+                  visibility: hidden;
+                  transition: all .5s ease-out;
+                  overflow: hidden;
+                  box-shadow: 0 0 10px #418fde;
+
+                }
+
+                @media(max-width: 800px){
+
+                  .ayuda-contenido{
+
+                    width: 100%;
+                    max-height: 300px;
+                    position: fixed;
+                    left: 0;
+                    bottom: 0;
+
+                  }
+
+                }
+
+                .ayuda-contenido > :first-child{
+
+                  background-color: #418fde;
+                  color: white;
+
+                }
+
+                .ayuda-contenido > .container-fluid{
+
+                  overflow: auto;
+                  max-height: inherit;
+
+                }
+
+                .contenidoHelp{
+
+                  border: 1px solid #418fde;
+                  color: #418fde;
+                  text-align: center;
+                  border-radius: 2rem;
+                  padding: 0.75rem;
+                  word-wrap: break-word;
+                  transition: all .2s;
+                  cursor: pointer;
+
+                }
+
+                .contenidoHelp:hover {
+
+                  background-color: #418fde33;
+
+                }
+
+                .alert{
+
+                    z-index: 9999999999!important;
+
+                }
+
+                .ayuda-contenido > .container-fluid::-webkit-scrollbar {
+
+                  width: 5px;
+
+                }
+
+                .ayuda-contenido > .container-fluid::-webkit-scrollbar-thumb {
+
+                  background: #418fde;
+
+                }
+
             </style>
 
             <!-- Specific Page CSS goes HERE  -->
@@ -205,13 +311,14 @@
                     
                 </div>
                 
+                {% include 'Helping/ayudaMiniatura.html' %}
 
             
             </div>
         </div>
 
         {% include 'Dashboard_Portal/includes/scriptslocal.html' %}
-          
+
         <!-- Specific Page JS goes HERE  -->
 		{% block javascripts %}
         {% endblock javascripts %}
@@ -281,8 +388,43 @@
 	            })
             // endblok
 
-            
+            //codigo para el boton de ayuda
+            const btnHelp = document.querySelector('.ayuda > img')
+            const cabeceraHelp = document.querySelector('.ayuda-contenido > :first-child')
+            const cuerpoHelp = document.querySelector('.ayuda-contenido > :last-child')
+            const divHelp = document.querySelector('.ayuda-contenido')
 
+            cabeceraHelp.addEventListener('click', (e) => {
+
+              divHelp.style.opacity = 0
+              divHelp.style.visibility = 'hidden'
+
+            })
+
+            btnHelp.addEventListener('click', (e) => {
+
+              divHelp.style.visibility = 'visible'
+              divHelp.style.opacity = 1
+              cuerpoHelp.innerHTML = spinnerBar()
+              fetch("{% url 'helping:contenidoAyudaMiniatura' %}", {
+                  ...fetchObject,
+              })
+              .then(res => res.text())
+              .then(text => {
+
+                  cuerpoHelp.innerHTML = text
+
+              })
+              .catch((err) => {
+                
+                makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+                cuerpoHelp.innerHTML = ""
+
+              })
+
+            })
+
+            // endblock
         </script>
 
 

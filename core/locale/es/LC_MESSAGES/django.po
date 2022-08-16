@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-29 12:45-0400\n"
+"POT-Creation-Date: 2022-07-30 08:52-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,6 +24,20 @@ msgstr ""
 
 #: .\core\settings.py:140
 msgid "English"
+msgstr ""
+
+#: .\core\templates\Helping\404error.html:80
+msgid ""
+"¿Tal vez esta página se movió? ¿Se ha eliminado? ¿Se fue a cuarentena? "
+"¿Nunca existió en primer lugar?"
+msgstr ""
+
+#: .\core\templates\Helping\404error.html:80
+msgid "Vamos al"
+msgstr ""
+
+#: .\core\templates\Helping\404error.html:80
+msgid "e intentemolos desde alli"
 msgstr ""
 
 #: .\core\templates\Helping\ayuda.html:101
@@ -174,18 +188,18 @@ msgid "Descripcion"
 msgstr ""
 
 #: .\core\templates\Helping\contenidoAyuda.html:41
-#: .\core\templates\Helping\contenidoUrl.html:94
+#: .\core\templates\Helping\contenidoUrl.html:100
 #: .\core\templates\Helping\modalCarrusel.html:38
 #: .\core\templates\Helping\modalHijosPagina.html:48
 msgid "Sin contenido"
 msgstr ""
 
-#: .\core\templates\Helping\contenidoUrl.html:102
+#: .\core\templates\Helping\contenidoUrl.html:108
 #: .\core\templates\Helping\modalCarrusel.html:46
 msgid "Anterior"
 msgstr ""
 
-#: .\core\templates\Helping\contenidoUrl.html:106
+#: .\core\templates\Helping\contenidoUrl.html:112
 #: .\core\templates\Helping\modalCarrusel.html:50
 msgid "Siguiente"
 msgstr ""
