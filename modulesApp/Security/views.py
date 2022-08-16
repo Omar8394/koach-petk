@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password, check_password
 from django.http.response import JsonResponse
-
+from modulesApp.App.models import ConfTablasConfiguracion
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -59,7 +59,8 @@ def changePassword(request):
         new_password = request.POST.get('password1')
         # verificar encriptacion
         if actual_password != new_password:
-            if check_password(actual_password, request.user.password):
+            status_user = get_status_user(request.user, actual_password)
+            if status_user['estado'] == "Active":
                 change_password(request, new_password)
                 response = {
                     'mensaje': 'Your password has been changed correctly',
@@ -74,10 +75,12 @@ def changePassword(request):
                 #                             fk_tipo_operacion=operacion, modulo=modulo, valor_dato=descripcion)
             else:
                 response = {
-                    'mensaje': 'the current password entered is incorrect, please verify your password and try again to change your password',
+                    'mensaje': status_user["mensaje"],
                     'tipo': 5,
-                    'titulo': 'Incorrect Password'
+                    'titulo': status_user["estado"]
                 }
+                if status_user["estado"] == "Account Blocked" or status_user["estado"] == "Account Suspended":
+                    logout(request)
         else:
             response = {
                 'mensaje': 'the password you want to change cannot be the same as the current password', 'tipo': 5,
@@ -89,9 +92,43 @@ def changePassword(request):
     
 @login_required(login_url="security/login/")
 def changeSecretQuestion(request):
-    pass
+    user = request.user
+    if request.method == 'POST':
+        respuesta = request.POST.get('respuesta')
+        id_pregunta = request.POST.get('cb_tipo_pregunta')
+        actual_password = request.POST.get('password')
+        # verificar encriptacion
+        status_user = get_status_user(request.user, actual_password)
+        if status_user['estado'] == "Active":
+            user.fk_pregunta_secreta_id = id_pregunta
+            user.respuesta_secreta = respuesta
+            user.save()
+            response = {
+                'mensaje': 'Your secret question has been changed correctly',
+                'tipo': 4,
+                'titulo': 'Secret question changed successfully',
+                'code': 'changed'
+            }
+            #operacion = TablasConfiguracion.objects.get(valor_elemento='change_secret_question')
+            #modulo = TablasConfiguracion.objects.get(valor_elemento='module_security')
+            #descripcion = "Not Adiccional data!!!"
+            #LogSeguridad.objects.create(fecha_transaccion=datetime.today(), fk_cta_usuario=request.user,
+                                        #fk_tipo_operacion=operacion, modulo=modulo, valor_dato=descripcion)
+        else:
+            response = {
+                    'mensaje': status_user["mensaje"],
+                    'tipo': 5,
+                    'titulo': status_user["estado"]
+                }
+            if status_user["estado"] == "Account Blocked" or status_user["estado"] == "Account Suspended":
+                    logout(request)
 
-
+        return JsonResponse(response)
+    elif request.method == 'GET':
+        tipo_pregunta = ConfTablasConfiguracion.obtenerHijos("pregSecreta")
+        context = {'preguntas': tipo_pregunta, 'pregunta_id': user.fk_pregunta_secreta_id,
+                   'respuesta': user.respuesta_secreta}
+        return render(request, "cambiarpregunta.html", context)
 
 @login_required(login_url="security/login/")
 def securitySettings(request):

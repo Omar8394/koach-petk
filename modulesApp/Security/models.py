@@ -16,3 +16,9 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
     
+class CodigoVerificacion(models.Model):
+    id_verificacion = models.AutoField(primary_key=True)
+    activation_key = models.TextField(blank=True)
+    key_expires = models.DateTimeField()
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    tipo_verificacion = models.ForeignKey(ConfTablasConfiguracion, on_delete=models.DO_NOTHING, related_name='tipo_verificacion')

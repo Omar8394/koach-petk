@@ -35,8 +35,10 @@
 									<td style="padding:0 0 36px 0;color:#153643;">
 										<h1 style="font-size:24px;margin:0 0 20px 0;font-family:Arial,sans-serif;">{{ titulo }}</h1>
 										<p style="margin:0 0 14px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">Hi! {{ user }}, {{ content }}</p>
+										{% if enlaceTexto %}
 										<p style="margin:0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;"><a href="{{ enlace}}" style="color:#ee4c50;text-decoration:underline;">{{ enlaceTexto }}</a></p>
-                                        {% if informacion %}
+                                        {% endif %}
+										{% if informacion %}
                                         <p style="font-size:18px;margin:0 0 20px 0;font-family:Arial,sans-serif;">{{ informacion }}</p>
                                         {% endif %}
                                         {% if empresa_contact %}

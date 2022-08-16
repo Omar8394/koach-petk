@@ -183,6 +183,15 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = os.environ.get("EMAIL_PORT")
 
+LAND_PAGE_MODE = os.environ.get("LAND_PAGE_MODE")
+CHURCH_MODE = os.environ.get("CHURCH_MODE")
+
+## configuracion empresa
+EMPRESA_NOMBRE = os.environ.get("EMPRESA_NOMBRE")
+EMPRESA_SRC_LOGO = os.environ.get("EMPRESA_SRC_LOGO")
+EMPRESA_SRC_HEADER = os.environ.get("EMPRESA_SRC_HEADER")
+
+
 
 MESSAGE_TAGS = {
         messages.DEBUG: 'alert-secondary',

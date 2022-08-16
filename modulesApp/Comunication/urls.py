@@ -13,6 +13,6 @@ urlpatterns = [
     path('Comunication/Boletin/showBoletin/', views.showBoletin, name='showBoletin'), 
     path('Comunication/Boletin/addBoletinModal/', views.addBoletinModal, name='addBoletinModal'),
     path('Comunication/Boletin/addBoletinModal/', views.addBoletinModal, name='addBoletinModal'),
-    
+    path('Comunication/Boletin/test/', views.emailTest, name='emailtest'),
        
 ]

@@ -403,5 +403,125 @@
                 "datos_adicional":"",
                 "tipo_dato":0
               }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 28,
+              "fields": {
+                "desc_elemento": "Tipo de Verificacion",
+                "fk_tabla_padre_id": 1,
+                "tipo_elemento": 1,
+                "permite_cambios":1,
+                "valor_elemento":"tipo_verificacion",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 29,
+              "fields": {
+                "desc_elemento": "Validar Cuenta",
+                "fk_tabla_padre_id": 28,
+                "tipo_elemento": 2,
+                "permite_cambios":1,
+                "valor_elemento":"tv_validar_cuenta",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 30,
+              "fields": {
+                "desc_elemento": "Recuperar Cuenta",
+                "fk_tabla_padre_id": 28,
+                "tipo_elemento": 2,
+                "permite_cambios":1,
+                "valor_elemento":"tv_recuperar_cuenta",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 31,
+              "fields": {
+                "desc_elemento": "Cambios en Cuenta",
+                "fk_tabla_padre_id": 28,
+                "tipo_elemento": 2,
+                "permite_cambios":1,
+                "valor_elemento":"tv_cambios_cuenta",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 32,
+          "fields": {
+            "desc_elemento": "Preguntas Secretas",
+            "fk_tabla_padre_id": 1,
+            "tipo_elemento": 1,
+            "permite_cambios":1,
+            "valor_elemento":"pregSecreta",
+            "mostrar_en_combos":1,
+            "maneja_lista":1,
+            "datos_adicional":"",
+            "tipo_dato":0  
+          }
+        },{
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 33,
+          "fields": {
+            "desc_elemento": "Cual es tu color Favorito?",
+            "fk_tabla_padre": 32,
+            "tipo_elemento": "0",
+            "permite_cambios": 1,
+            "valor_elemento": "question_color",
+            "mostrar_en_combos": 1,
+            "maneja_lista": 0,
+            "datos_adicional":"",
+            "tipo_dato":0
+          }
+        },{
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 34,
+          "fields": {
+            "desc_elemento": "Cual es el nombre de tu mascota?",
+            "fk_tabla_padre": 32,
+            "tipo_elemento": "0",
+            "permite_cambios": 1,
+            "valor_elemento": "question_pet",
+            "mostrar_en_combos": 1,
+            "maneja_lista": 0,
+            "datos_adicional":"",
+            "tipo_dato":0
+
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 35,
+          "fields": {
+            "desc_elemento": "Cual es tu comida favorita?",
+            "fk_tabla_padre": 32,
+            "tipo_elemento": "0",
+            "permite_cambios": 1,
+            "valor_elemento": "question_food",
+            "mostrar_en_combos": 1,
+            "maneja_lista": 0,
+            "datos_adicional":"",
+            "tipo_dato":0
+
+          }
         }
 ]
