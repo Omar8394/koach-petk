@@ -1,7 +1,6 @@
 from ast import Pass
 from dataclasses import field
 from pyexpat import model
-from tkinter import Widget
 from django import forms
 from .models import Boletin_Info
 

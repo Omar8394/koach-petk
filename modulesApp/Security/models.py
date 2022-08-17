@@ -6,7 +6,7 @@ class User(AbstractUser):
     fk_rol_usuario = models.ForeignKey(ConfTablasConfiguracion, on_delete=models.CASCADE,
                                        related_name='rol_usuario', null=True, default=None)
     fk_pregunta_secreta = models.ForeignKey(ConfTablasConfiguracion, on_delete=models.DO_NOTHING, related_name='pregunta', null=True, default=None)
-    intentos_fallidos = models.IntegerField(default=3)  # Field name made lowercase.
+    intentos_fallidos = models.IntegerField()  # Field name made lowercase.
     fecha_ult_cambio = models.DateField(blank=True, null=True)
     respuesta_secreta = models.TextField(blank=True, null=True)
     fk_status_cuenta = models.ForeignKey(ConfTablasConfiguracion, on_delete=models.DO_NOTHING, related_name='estado_cuenta', null=True)
