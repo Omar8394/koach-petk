@@ -1,0 +1,35 @@
+{% load i18n %}
+<div class="modal fade" id="modalListaBloque" style="background-color: rgba(0, 0, 0, 0.9);" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="modalListaBloqueContenido">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Bloques para {{ficha.nombre_ficha}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="max-height: fit-content!important;">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h2>Agregar bloques de contenido</h2>          
+                        <div class="form-group ">
+                            <div class="input-group justify-content-center ">
+                                <div class="input-group-append">
+                                    <span id="clearBtn" class="btn btn-primary" onclick="modalBloque('{{ficha.id_ficha}}')">             
+                                        <i class="fas fa-plus"></i>
+                                    </span>           
+                                    <span id="searchBtn" class="btn btn-success">
+                                        <i class="fa fa-search"></i>
+                                    </span>                        
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <section class="card-body is-loading-lg" id="listaBloques">
+                        {% include 'TabPersonal/carpPlanning/contenidoListaBloque.html' with data=data %}  
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>

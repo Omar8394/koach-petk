@@ -1,0 +1,71 @@
+{% load i18n %}
+<div class="modal fade" id="modalAtributos" style="background-color: rgba(0, 0, 0, 0.9);" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="modalAtributosContenido">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Atributos para {{bloque.descrip_bloque}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            
+            <form>
+                <div class="modal-body" style="max-height: fit-content!important;">
+                    <div class="card">
+                        <div class="card-header text-center">
+                            <h2>Agregar atributos</h2>          
+                            <div class="form-group ">
+                                <div class="input-group justify-content-center ">
+                                    <div class="input-group-append">
+                                        <span id="clearBtn" class="btn btn-primary" onclick="modalBloque('{{ficha.id_ficha}}')">             
+                                            <i class="fas fa-plus"></i>
+                                        </span>           
+                                        <span id="searchBtn" class="btn btn-success">
+                                            <i class="fa fa-search"></i>
+                                        </span>                        
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body is-loading-lg" id="contenidoAtributo">
+                            <div class="card" style="border-left: 5px solid royalblue;">     
+                                <div class="card-header p-0">
+                                    <button class="btn ml-auto mr-auto d-block p-0" style="width: 100%; cursor: move; background: none;"><i class="fas fa-grip-horizontal"></i></button>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-row">
+                                        <div class="form-group col-sm-6">
+                                            <label for="tituloPagina" class="col-form-label">{% translate "Titulo" %}</label>
+                                            <input type="text" class="form-control" name="titulo" id="tituloPagina" maxlength="50"
+                                                placeholder='{% translate "Escriba un titulo" %}' {% if pagina and pagina.titulo %}value="{{ pagina.titulo }}"{% endif %}>
+                                        </div>
+                                        <div class="form-group col-sm-6">
+                                            <label for="tituloPagina" class="col-form-label">{% translate "Titulo" %}</label>
+                                            <input type="text" class="form-control" name="titulo" id="tituloPagina" maxlength="50"
+                                                placeholder='{% translate "Escriba un titulo" %}' {% if pagina and pagina.titulo %}value="{{ pagina.titulo }}"{% endif %}>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-12">
+                                            <label for="tituloPagina" class="col-form-label">{% translate "Titulo" %}</label>
+                                            <input type="text" class="form-control" name="titulo" id="tituloPagina" maxlength="50"
+                                                placeholder='{% translate "Escriba un titulo" %}' {% if pagina and pagina.titulo %}value="{{ pagina.titulo }}"{% endif %}>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <button class="btn btn-icon btn-danger ml-auto d-block"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer color-footer-modal">
+                    <button type="button" class="btn btn-radius btn-naranja mr-auto" data-dismiss="modal">
+                    <i class="fas fa-arrow-left mr-2"></i>{% translate "Atras" %}</button>
+                    <button type="submit" class="btn btn-radius btn-azul">{% translate "Guardar" %}<i class="fas fa-save ml-2"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+ </div>

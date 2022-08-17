@@ -441,28 +441,6 @@
 
    ///////////////////////// 
 
-   document.addEventListener('keydown', (event) => {
-
-      const keyValue = event.key;
-
-      if(keyValue === 'ArrowDown' || keyValue === 'ArrowUp'){
-
-         const dPrimary = $("#listaPaginasHijos div.bg-primary")
-
-         if(dPrimary.length > 0){
-            
-            const btnUp = $("#listaPaginasHijos .bg-primary button.moveUp")
-            const btnDown = $("#listaPaginasHijos .bg-primary button.moveDown")
-            if(keyValue === 'ArrowDown')btnDown.click()
-            if(keyValue === 'ArrowUp')btnUp.click()
-
-         }
-
-
-      }
-
-   }, false);
-
    const copyLink = (id) => {
 
       fetch("{% url 'helping:copiarLInk' %}", {
@@ -519,30 +497,6 @@
 
    }
 
-   // const buscarAyuda = (data) => {
-
-   //    document.getElementById("listaPaginas").innerHTML = spinnerBar()
-   //    fetch("{% url 'helping:modalBuscarAyuda' %}", {
-   //       ...fetchObject,
-   //       body: JSON.stringify({
-   //          data
-   //       })
-   //    })
-   //    .then(res => res.text())
-   //    .then(text => {
-         
-   //       document.getElementById("listaPaginas").innerHTML = text
-
-   //    })
-   //    .catch((err)=>{
-
-   //       makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
-   //       document.getElementById("listaPaginas").innerHTML = ""
-
-   //    })
-
-   // }
-
    $(document).ready(function () {
 
       cargarAyuda()
@@ -554,54 +508,6 @@
          e.preventDefault()
 
       })
-
-      // const formSearch = document.getElementById('formSearch')
-      // const clearBtn = document.getElementById('clearBtn')
-      // const searchBtn = document.getElementById('searchBtn')
-      // const searchInput = document.getElementById('txtSearch')
-
-      // formSearch.addEventListener("submit", (e) => {
-
-      //    e.preventDefault()
-
-      //    if(searchInput.value && !document.querySelector('.progress-bar')){
-
-      //       const formData = new FormData(formSearch);
-      //       const data = Object.fromEntries(formData.entries())
-      //       buscarAyuda(data)
-
-      //    }else if(document.querySelector('.progress-bar'))
-
-      //       makeMessage(3,"{% translate 'Alerta' %}","{% translate 'Debes esperar a que el contenido termine de cargarse' %}")
-         
-      // })
-
-      // clearBtn.addEventListener("click", (e) => {
-
-      //    if(searchInput.value && !document.querySelector('.progress-bar')){
-
-      //       cargarAyuda()
-      //       formSearch.reset()
-
-      //    }else if(document.querySelector('.progress-bar'))
-
-      //       makeMessage(3,"{% translate 'Alerta' %}","{% translate 'Debes esperar a que el contenido termine de cargarse' %}")
-
-      // })
-
-      // searchBtn.addEventListener("click", (e) => {
-
-      //    if(searchInput.value && !document.querySelector('.progress-bar')){
-
-      //       const formData = new FormData(formSearch);
-      //       const data = Object.fromEntries(formData.entries())
-      //       buscarAyuda(data)
-
-      //    }else if(document.querySelector('.progress-bar'))
-
-      //       makeMessage(3,"{% translate 'Alerta' %}","{% translate 'Debes esperar a que el contenido termine de cargarse' %}")
-
-      // })
 
    });
 
@@ -749,9 +655,13 @@
                .then(res => res.text())
                .then(text => {
 
-                  if(document.getElementById("modalContentChoose"))
+                  if(document.getElementById("modalContentChoose")){
 
                      document.getElementById("modalContentChoose").innerHTML = text
+                     addSort(fk)
+
+                  }
+
 
                   $("#addNewTest").modal("hide")
                   makeMessage(1,"{% translate 'Muy Bien!' %}","{% translate 'Registro guardado' %}", "fa fa-check")
@@ -895,6 +805,7 @@
       .then(text => {
 
          document.getElementById("modalContentChoose").innerHTML = text
+         addSort(id)
          $("#addChooseActivities").modal("show")
 
       })
@@ -911,6 +822,19 @@
       
    }
 
+   const addSort = id => {
+
+      new Sortable(document.querySelector("#listaPaginasHijos"), {
+            handle: '.handle',
+            animation: 150,
+            onEnd: function (evt) {
+               let arreglo = []
+               evt.to.children.forEach(element => arreglo.push(element.dataset.move));
+               move(id, arreglo)
+            },
+         });
+
+   }
    
    const openDeleteAyuda = async (id) => {
 
@@ -971,6 +895,7 @@
          .then(text => {
             
             document.getElementById("modalContentChoose").innerHTML = text
+            addSort(fk)
             makeMessage(1, "{% translate 'Notificacion' %}", "{% translate 'Archivo eliminado satisfactoriamente' %}", 'fas fa-trash-alt')
             
          })
@@ -1138,41 +1063,35 @@
       })
    }
 
-   let movimiento = false
-   const move = (fk, id, tipo) => {
+   const move = (id, data) => {
 
-      if(!movimiento){
-
-         movimiento = true
-         setLoading()
-         fetch("{% url 'helping:modalPaginaMover'%}", {
-            ...fetchObject,
-            body: JSON.stringify({
-               id,
-               fk,
-               tipo
-            })
+      setLoading()
+      fetch("{% url 'helping:modalPaginaMover'%}", {
+         ...fetchObject,
+         body: JSON.stringify({
+            id,
+            data
          })
-         .then(res => res.text())
-         .then(text => {
-            
-            document.getElementById("modalContentChoose").innerHTML = text
-            $('#listaPaginasHijos div.bg-primary').focus()
+      })
+      .then(res => res.text())
+      .then(text => {
+         
+         document.getElementById("modalContentChoose").innerHTML = text
+         addSort(id)
+         // $('#listaPaginasHijos div.bg-primary').focus()
 
-         })
-         .catch((err) => {
-            
-            makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+      })
+      .catch((err) => {
+         
+         makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+         $("#addChooseActivities").modal("hide")
 
-         })
-         .finally(() => {
+      })
+      .finally(() => {
 
-            movimiento = false
-            stopLoading()
+         stopLoading()
 
-         })
-
-      }
+      })
 
    }
 

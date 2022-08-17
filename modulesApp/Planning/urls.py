@@ -14,10 +14,17 @@ urlpatterns = [
     path('testfi/', views.testfi, name='testfi'),
     path('guardarFicha/', views.guardarFicha, name='guardarFicha'),
     path('eliminarFicha/', views.eliminarFicha, name='eliminarFicha'),
+    path('moverFicha/', views.moverFicha, name='moverFicha'),
+    path('guardarBloque/', views.guardarBloque, name='guardarBloque'),
+    path('eliminarBloque/', views.eliminarBloque, name='eliminarBloque'),
+    path('moverBloque/', views.moverBloque, name='moverBloque'),
     
 
     # modales    
     path('modalFicha/', views.modalFicha, name='modalFicha'),
+    path('modalListaBloque/', views.modalListaBloque, name='modalListaBloque'),
+    path('modalBloque/', views.modalBloque, name='modalBloque'),
+    path('modalAtributo/', views.modalAtributo, name='modalAtributo'),
 
     # metodos
     path('validarNombreFicha/', views.validarNombreFicha, name='validarNombreFicha'),
