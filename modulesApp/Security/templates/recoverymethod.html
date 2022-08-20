@@ -1,0 +1,75 @@
+{% extends "index.html" %}
+
+{% block title %} Recovery Methods {% endblock title %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block main %}
+    {% if user_email %}
+        <script language="JavaScript">
+        function send_form(typeMethod){
+            document.getElementById("typeMethod").value=typeMethod;
+            if(typeMethod!==0){
+                document.forms.namedItem("recoveryform").submit()
+            }
+        }
+        </script>
+<div class="col-md-12 d-flex justify-content-center text-center">
+        <div class="card border border-dark" >
+            <div class="card-header bg-dark2">
+                <div class="card-title">
+
+                    {% if msg %}
+                        <span class="text-success">{{ msg | safe }}</span>
+                    {% else %}
+                    <span style="color: white">
+                        Por favor selecciona un metodo de recuperacion:
+                    </span>
+                    {% endif %}
+
+                </div>
+            </div>
+        <div class="card-body">
+            <form role="form" method="post" name="recoveryform">
+                {% csrf_token %}
+            <div class="card text-center border border-primary">
+  <div class="card-header bg-dark2">
+   <h3 class="h3 text-white">Enlace de Recuperacion</h3>
+  </div>
+  <div class="card-body">
+      <p class="card-text"><h5>Un enlace de recuperacion de cuenta sera enviado al correo ingresado {{ user_email }}</h5></p>
+      <button type="submit" onclick="send_form(1)" class="btn btn-primary">Send recovery link</button>
+  </div>
+  <div class="card-footer bg-dark2 text-muted text-white">
+    Ten encuenta que los enlaces tienen un periodo de expiracion
+  </div>
+</div>
+            <div class="card text-center border border-primary">
+  <div class="card-header bg-dark2">
+   <h3 class="h3 text-white">Respuesta a la pregunta Secreta</h3>
+  </div>
+  <div class="card-body">
+      <p class="card-text"><h5>Una de las preguntas secretas sera mostrada,<br> deberas ingresar la respuesta secreta a dicha pregunta.</h5></p>
+      <button type="submit" onclick="send_form(2)" class="btn btn-primary">Ir a las preguntas</button>
+  </div>
+  <div class="card-footer bg-dark2 text-muted text-white">
+    Las preguntas secretas deben ser establecidas con anterioridad en su cuenta.
+  </div>
+</div>
+                <input type="hidden" id="email" name="email" value="{{ user_email }}">
+                <input type="hidden" id="typeMethod" name="typeMethod" value="0">
+                </form>
+        </div>
+
+        </div>
+    </div>
+    {% else %}
+        <h5>No hay cuentas asociadas.</h5>
+    {% endif %}
+
+{% endblock %}

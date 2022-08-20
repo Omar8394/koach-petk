@@ -1,6 +1,6 @@
 from django.conf import settings
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordResetForm
 from django.contrib.auth import get_user_model
 
 class LoginForm(forms.Form):
@@ -18,5 +18,18 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = get_user_model()
         fields = ('username', 'email', 'password1', 'password2')
+        
+class ResetPasswordForm(PasswordResetForm):
+    email = forms.EmailField(
+        widget=forms.EmailInput(
+            attrs={
+                "placeholder": "Email",
+                "class": "form-control"
+            }
+        ))
+
+
+class RecoveryMethodForm(ResetPasswordForm):
+    typeMethod = forms.CharField(widget=forms.NumberInput)
 
 

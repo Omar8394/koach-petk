@@ -538,6 +538,7 @@
                 </div>
             </div>
             <div class="wrapper-body" id="wrapper">
+                {% block headerbody%}
                 <!-- header area -->
                 <header id="showcase" class="grid">
                     <div class="bg-image"></div>
@@ -552,9 +553,7 @@
                         <a href="#section-b" class="btn-portal"> Leer Mas </a>
                     </div>
                 </header>
-
                 <!-- Main Area -->
-
                 <main id="main" class="">
                     <!-- section A -->
                     <section id="section-a">
@@ -838,7 +837,6 @@
                     </section>
 
                 </main>
-
                 <!-- footer -->
                 <footer id="main-footer">
                     <div class="grid">
@@ -933,6 +931,7 @@
 
                 </footer>
                 <!-- endblock footer -->
+            {% endblock headerbody%}
             </div>
             
             <div class="modal fade" id="Modal-login" tabindex="-1" role="dialog" aria-hidden="true">

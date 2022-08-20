@@ -24,7 +24,7 @@
     </div>
     <div class="d-flex justify-content-between mt-4 ">
         {% block footerActionLinks %}
-        <a class="login-links" href="">{% translate "¿Olvido su Contraseña o su Cuenta esta bloqueada?" %}</a>
+        <a class="login-links" href="{% url 'security:forgot_password' %}">{% translate "¿Olvido su Contraseña o su Cuenta esta bloqueada?" %}</a>
         {% endblock footerActionLinks %}      
     </div>
 </form>
