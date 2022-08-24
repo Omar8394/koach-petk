@@ -1,0 +1,48 @@
+   
+<section >
+   <div class="form-group" id="groupDate">
+
+      <div class="row">
+          <div class="card col-6" style="background-color: #1a2035 !important; color: white;">
+           <div class="card-body">
+            <div class="section-header">
+               <h3 >Nuevo Programa</h3>
+               <div onclick="openAddProgram()" class="btn btn-icon btn-success btn-round add-btn btn-card-lg">
+                  <i class="fas fa-plus"></i>
+               </div>
+            </div> 
+            <div class="form-row">
+               <select class="form-control" name="categoryProgram" id="categoryProgram" onchange="cambiar_comb()" required >
+                  <option value="null">Seleccione una opcion</option>
+                  {% for item in categorias %}
+                  
+                  <option value={{item.id_tabla}} id="opProgram">{{item.desc_elemento}}</option>
+                  
+                  {% endfor%}
+               </select>
+           </div>
+           <div id="renderList" class="col-md-12">   
+            <h3 class="display-4">Elegir una categoria</h3>
+            
+           </div>
+         
+           </div>   
+             
+           
+          </div>
+          <div class="card col-6" style="background-color: #1a2035 !important; color: white;">
+            <div class="card-body">
+               <div id="renderpro" class="col-md-12">   
+                  <h3 class="display-4">Agregue un proceso</h3>
+                  
+                 </div>
+           </div>   
+           
+             
+         </div>
+      </div>
+
+  </div>
+</section>
+
+      		

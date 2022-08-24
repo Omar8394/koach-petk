@@ -1,0 +1,40 @@
+:root {
+	--clr-neutral-900: hsl(207, 19%, 9%);
+	--clr-neutral-100: hsl(0, 0%, 100%);
+	--clr-accent-400: hsl(147, 90%, 61%);
+}
+*,
+*::after,
+*::before {
+	box-sizing: border-box;
+}
+.tarjetas-new:focus-within {
+      transform: scale(1.04);
+   }
+.tarjetas-new {
+    color: var(--clr-neutral-100);
+    background: #1A2035;
+    height: 50px;
+    background-size: cover;
+    width: 35ch;
+    border-radius: 0.25rem;
+    box-shadow: 2px 2px 10px #000;
+    overflow: hidden;
+    transition: transform 500ms ease;
+ }
+ .tarjetas-new-title {
+    margin: 0;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    font-size: 2.5rem;
+ }
+ .tarjetas-new-content {
+    padding: 1.5rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(hsl(0 0% 0% / 0), hsl(0 0% 0% / 0.3) 75%, hsl(0 0% 0% / 1));
+    height: 100%;
+ }

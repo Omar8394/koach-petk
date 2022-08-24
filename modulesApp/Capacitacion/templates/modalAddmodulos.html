@@ -1,0 +1,53 @@
+<div class="modal-content">
+    <div class="modal-header">
+       <h5 class="modal-title">Modulos</h5>
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+       </button>
+    </div>
+    <form id="formPrograma" class="form">
+       <div class="modal-body">
+          
+          <div class="form-row">
+             <div class="form-group col-12">
+                <label for="descriptionProgram" class="col-form-label">Titulo</label>
+                <input type="text" class="form-control" name="descriptionProgram" id="descriptionProgram"
+                   placeholder="Enter a title" required
+                   value="{% if modelo %}{{ modelo.Titulo }}{% endif %}"
+                   >
+             </div>
+          </div>
+          <div class="form-row">
+             <div class="form-group col-12">
+                <label for="resumenProgram" class="col-form-label">Descripcion</label>
+                <textarea class="form-control" name="resumenProgram" id="resumenProgram"
+                   placeholder="Enter a description here">{% if modelo %}{{ modelo.descripcion}}{% endif%}</textarea>
+             </div>
+          </div>
+          <div class="form-row">
+             <div class="form-group col-12">
+                <label for="urlProgram" class="col-form-label">Codename</label>
+                <input type="text" class="form-control" name="urlProgram" id="urlProgram"
+                   placeholder="Enter a codename" required
+                   value="{% if modelo %}{{ modelo.url }}{% endif %}"
+                   >
+             </div>
+          </div>
+          <div class="form-row">
+             <div class="form-group col-12">
+                <label for="creditos" class="col-form-label">Creditos</label>
+                <input type="text" class="form-control" name="creditos" id="creditos"
+                   placeholder="#" required
+                   value="{% if modelo %}{{ modelo.peso_creditos }}{% endif %}"
+                   >
+             </div>
+          </div>
+       </div>
+       <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                class="fas fa-arrow-left mr-2"></i>Back</button>
+          <button type="submit" class="btn btn-primary">Save<i class="fas fa-save ml-2"></i></button>
+       </div>
+    </form>
+ </div>
+ 

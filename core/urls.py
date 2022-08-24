@@ -32,6 +32,7 @@ urlpatterns = [
     path("Planning/", include("modulesApp.Planning.urls", namespace="planning")),
     path("Helping/", include("modulesApp.Helping.urls", namespace="helping")),
     path("security/", include("modulesApp.Security.urls",namespace="security")),
+    path("capacitacion/", include("modulesApp.Capacitacion.urls")),
     path("ckeditor/", include("ckeditor_uploader.urls")),
     path('admin/', admin.site.urls),
     

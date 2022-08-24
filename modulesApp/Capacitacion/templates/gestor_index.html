@@ -1,0 +1,478 @@
+
+   {% extends "layouts/base.html" %}
+
+   {% block title %}{% endblock %}
+   <!-- Specific Page CSS goes HERE  -->
+   {% block stylesheets %}
+   <style>
+  
+</style>
+   {% endblock stylesheets %}
+   
+   {% block content %}
+   <div class="content">
+      <div class="page-inner animated fadeInRight">
+         <div class="page-header">
+            <h4 class="page-title">Academic</h4>
+            <ul class="breadcrumbs">
+               <li class="nav-home">
+                  <a href="{% url 'home' %}">
+                     <i class="flaticon-home"></i>
+                  </a>
+               </li>
+               <li class="separator">
+                  <i class="flaticon-right-arrow"></i>
+               </li>
+               <li class="nav-item">
+                  <a href="#">Academic</a>
+               </li>
+            </ul>
+         </div>
+         <div class="page-category">
+            <div class="card">
+            <div class="section-header">
+                  <h3 class="section-title">Nueva categoria</h3>
+                  <div onclick="openAddCategory()" class="btn btn-icon btn-success btn-round add-btn btn-card-lg">
+                     <i class="fas fa-plus"></i>
+                  </div>
+            </div> 
+              
+               <main class="card-body is-loading-lg">
+                  
+               </main>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="modal fade" id="addNewModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div id="addNewModalContent" class="modal-dialog  modal-dialog-centered" role="document">
+   
+      </div>
+   </div>
+   <div class="modal fade" id="addNewModale" tabindex="-1" role="dialog" aria-hidden="true">
+      <div id="addNewModalContente" class="modal-dialog  modal-dialog-centered" role="document">
+   
+      </div>
+   </div>
+   <div class="modal fade" id="addNewModales" tabindex="-1" role="dialog" aria-hidden="true">
+      <div id="addNewModalContentes" class="modal-dialog  modal-dialog-centered" role="document">
+   
+      </div>
+   </div>
+   {% endblock content %}
+   
+   {% block javascripts %}
+   <script>
+      let editmode = false
+      let savemode= false
+      let query = ""
+      let selectedId = ""
+      const renderContent = ()=>{
+         document.querySelector("main.card-body").classList.add("is-loading")
+         fetch("{% url 'contenido_programas'%}", {
+            ...fetchObject,
+            body: JSON.stringify({
+               query
+            })
+         })
+         .then(async(res)=>{
+            result = await res.text()
+            document.querySelector("main.card-body").classList.remove("is-loading")
+            document.querySelector("main.card-body").innerHTML = result
+         })
+      }
+      renderContent()
+     
+      const openAddCategory = () => {
+         fetch("{% url 'modaladdcategoria'%}", {
+            ...fetchObject,
+         })
+            .then(async (res) => {
+               document.getElementById("addNewModalContent").innerHTML = await res.text()
+            })
+            .then(() => {
+               $("#addNewModal").modal("show")
+               const formCategoria = document.getElementById("formCategoria")
+               commonValidator = $("#formCategoria").validate({
+                  highlight: function (element) {
+                     $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+                  },
+                  success: function (element) {
+                     $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+                  },
+               });
+               formCategoria.addEventListener("submit", (e) => {
+                  e.preventDefault()
+                  if($("#formCategoria").valid()){
+                     setLoading()
+                     clickSave(formCategoria, "{% url 'modaladdcategoria'%}")
+                        .then(() => {
+                           $("#addNewModal").modal("hide")
+                           stopLoading()
+                           renderContent()
+                        })
+                  }
+               })
+            })
+      }
+      const updateModel = (url, method, data, id) => {
+         return fetch(url, {
+            ...fetchObject,
+            body: JSON.stringify({
+               method,
+               data,
+               id
+            })
+         })
+      }
+      const clickSave = (formElement, url) => {
+         const formData = new FormData(formElement);
+         const data = {}
+
+         for (var [key, value] of formData.entries()) {
+            data[key] = value
+         }
+         if (editmode) {
+            return updateModel(url, "Update", data, idSeleted)
+               .then(async (res) => {
+                  const text = JSON.parse(await res.text())
+                  if (text.message == "error") alerta(5)
+                  else alerta(2)
+               })
+         }
+         else {
+            return updateModel(url, "Create", data, null)
+               .then(async (res) => {
+                  const text = JSON.parse(await res.text())
+                  if (text.message == "error") alerta(5)
+                  else alerta(1)
+               })
+         }
+        
+      }    
+      function cambiar_comb() { 
+         const varia= document.getElementById("categoryProgram").value;
+         rendertavs("find",varia)
+     }
+     const rendertavs = (tipo,pk)=>{
+      document.querySelector("#renderList").classList.add("is-loading")
+      fetch("{% url 'contenido_programas'%}", {
+         ...fetchObject,
+         body: JSON.stringify({
+            query:tipo,
+            id:pk
+
+           
+         })
+      })
+      .then(async(res)=>{
+         result = await res.text()
+         document.querySelector("#renderList").classList.remove("is-loading")
+         document.querySelector("#renderList").innerHTML = result
+      })
+  }
+  const openAddProgram = () => {
+   editmode = false
+   fetch("{% url 'modaladdprogram'%}", {
+      ...fetchObject,
+          
+   })
+      .then(async (res) => {
+         document.getElementById("addNewModalContente").innerHTML = await res.text()
+      })
+      .then(() => {
+         $("#addNewModale").modal("show")
+         const formPrograma = document.getElementById("formPrograma")
+         let rules = {
+            resumenProgram: {
+               required: true,
+               maxlength: 200,
+               minlength: 20
+            },
+            urlProgram: {
+               required: true,
+               maxlength: 15,
+               minlength: 3
+            },
+         }
+         commonValidator = $("#formPrograma").validate({
+            rules,
+            highlight: function (element) {
+               $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            },
+            success: function (element) {
+               $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+            },
+         });
+         formPrograma.addEventListener("submit", (e) => {
+            e.preventDefault()
+            if($("#formPrograma").valid()){
+               setLoading()
+               clickSave(formPrograma, "{% url 'modaladdprogram' %}")
+                  .then(() => {
+                     $("#addNewModale").modal("hide")
+                     stopLoading()
+                     renderContent()
+                  })
+
+            }
+         })
+      })
+}
+const openEditProgram = (id) =>{
+   editmode = true
+   idSeleted = id
+   fetch("{% url 'modaladdprogram'%}", {
+      ...fetchObject,
+      body: JSON.stringify({
+         method:"Editar",
+         id
+      })
+   })
+      .then(async (res) => {
+         document.getElementById("addNewModalContente").innerHTML = await res.text()
+      })
+      .then(() => {
+         $("#addNewModale").modal("show")
+         const formPrograma = document.getElementById("formPrograma")
+         let rules = {
+            resumenProgram: {
+               required: true,
+               maxlength: 200,
+               minlength: 20
+            },
+            urlProgram: {
+               required: true,
+               maxlength: 15,
+               minlength: 3
+            },
+         }
+         commonValidator = $("#formPrograma").validate({
+            rules,
+            highlight: function (element) {
+               $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            },
+            success: function (element) {
+               $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+            },
+         });
+         formPrograma.addEventListener("submit", (e) => {
+            e.preventDefault()
+            if ($("#formPrograma").valid()){
+               setLoading()
+               clickSave(formPrograma, "{% url 'modaladdprogram' %}")
+                  .then(() => {
+                     $("#addNewModale").modal("hide")
+                     stopLoading()
+                     renderContent()
+                  })
+            }
+         })
+      })
+}
+const openDeleteProgram = async (id) =>{
+   const elimino = await alerta(3)
+   if(elimino){
+      fetch("{% url 'modaladdprogram'%}", {
+         ...fetchObject,
+         body: JSON.stringify({
+            method: "Delete",
+            id
+         })
+      })
+      .then(async (res) => {
+         const text = JSON.parse(await res.text())
+         if (text.message == "error") alerta(5)
+         else alerta(4)
+      })
+      .then(()=>{
+         renderContent()
+      })
+   }
+}
+const renderproseso = (id)=>{
+   document.querySelector("#renderpro").classList.add("is-loading")
+   fetch("{% url 'addproceso'%}", {
+      ...fetchObject,
+      body: JSON.stringify({
+         query,
+         id
+      })
+   })
+   .then(async(res)=>{
+      result = await res.text()
+      document.querySelector("#renderpro").classList.remove("is-loading")
+      document.querySelector("#renderpro").innerHTML = result
+   })
+}
+const openAddProceso = (id) => {
+   editmode = false
+   idSeleted = id
+   fetch("{% url 'modaladdproceso'%}", {
+      ...fetchObject,
+      body: JSON.stringify({
+         method: "Add",
+         id
+         
+      })
+          
+   })
+      .then(async (res) => {
+         document.getElementById("addNewModalContentes").innerHTML = await res.text()
+      })
+      .then(() => {
+         $("#addNewModales").modal("show")
+         const formPrograma = document.getElementById("formPrograma")
+         let rules = {
+            resumenProgram: {
+               required: true,
+               maxlength: 200,
+               minlength: 20
+            },
+            urlProgram: {
+               required: true,
+               maxlength: 15,
+               minlength: 3
+            },
+         }
+         commonValidator = $("#formPrograma").validate({
+            rules,
+            highlight: function (element) {
+               $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            },
+            success: function (element) {
+               $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+            },
+         });
+         formPrograma.addEventListener("submit", (e) => {
+            e.preventDefault()
+            if($("#formPrograma").valid()){
+               setLoading()
+               clickSavetwo(formPrograma, "{% url 'modaladdproceso' %}")
+                  .then(() => {
+                     $("#addNewModales").modal("hide")
+                     renderproseso(idSeleted)
+                     stopLoading()
+                     
+                  })
+
+            }
+         })
+      })
+}
+const openDeleteProseso = async (id,padre) =>{
+   
+   const elimino = await alerta(3)
+   if(elimino){
+      fetch("{% url 'modaladdproceso'%}", {
+         ...fetchObject,
+         body: JSON.stringify({
+            method: "Delete",
+            id
+         })
+      })
+      .then(async (res) => {
+         const text = JSON.parse(await res.text())
+         if (text.message == "error") alerta(5)
+         else alerta(4)
+      })
+      .then(()=>{
+         renderproseso(padre)
+      })
+   }
+}
+const openEditProseso = (id,padre) =>{
+   editmode = true
+   idSeleted = id
+   fetch("{% url 'modaladdprogram'%}", {
+      ...fetchObject,
+      body: JSON.stringify({
+         method:"Editar",
+         id
+      })
+   })
+      .then(async (res) => {
+         document.getElementById("addNewModalContente").innerHTML = await res.text()
+      })
+      .then(() => {
+         $("#addNewModale").modal("show")
+         const formPrograma = document.getElementById("formPrograma")
+         let rules = {
+            resumenProgram: {
+               required: true,
+               maxlength: 200,
+               minlength: 20
+            },
+            urlProgram: {
+               required: true,
+               maxlength: 15,
+               minlength: 3
+            },
+         }
+         commonValidator = $("#formPrograma").validate({
+            rules,
+            highlight: function (element) {
+               $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            },
+            success: function (element) {
+               $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+            },
+         });
+         formPrograma.addEventListener("submit", (e) => {
+            e.preventDefault()
+            if ($("#formPrograma").valid()){
+               setLoading()
+               clickSave(formPrograma, "{% url 'modaladdprogram' %}")
+                  .then(() => {
+                     $("#addNewModale").modal("hide")
+                     stopLoading()
+                     renderproseso(padre)
+                  })
+            }
+         })
+      })
+}
+const updateModeltwo = (url, method, data, id) => {
+   return fetch(url, {
+      ...fetchObject,
+      body: JSON.stringify({
+         method,
+         data,
+         id
+      })
+   })
+}
+const clickSavetwo = (formElement, url) => {
+   const formData = new FormData(formElement);
+   const data = {}
+
+   for (var [key, value] of formData.entries()) {
+      data[key] = value
+   }
+   if (editmode) {
+      return updateModeltwo(url, "Update", data, idSeleted)
+         .then(async (res) => {
+            const text = JSON.parse(await res.text())
+            if (text.message == "error") alerta(5)
+            else alerta(2)
+         })
+   }
+   else {
+      return updateModeltwo(url, "Create", data, idSeleted)
+         .then(async (res) => {
+            const text = JSON.parse(await res.text())
+            if (text.message == "error") alerta(5)
+            else alerta(1)
+         })
+   }
+  
+}  
+const opengounits = (id) =>{
+   window.location.href = `{% url 'capacitaciontwo' %}?id=${id}`
+                
+}
+</script>
+	
+<!-- Specific Page JS goes HERE  -->
+
+{% endblock javascripts %}

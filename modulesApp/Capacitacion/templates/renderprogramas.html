@@ -1,0 +1,34 @@
+{% if title %} 
+<h3 class="display-4">Esta categoria no posee programas de formacion</h3>
+{% endif %}
+
+{% for item in programas %}
+<ul class="card-list">
+   <li class="card-list-item">
+      <div class="card-list-item-inner">
+         <div class="card-list-item-subtitle">{{item.Titulo}}</div>
+         
+         <div class="card-list-item-actions">
+         <div class="btn-group" role="group">
+         <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Edit"
+         onclick="openEditProgram('{{item.id_estructura}}')">
+         <i class="fas fa-edit"></i>
+         </button>
+         <button type="button" class="btn btn-icon btn-sm btn-warning ml-1" data-toggle="tooltip"
+         data-placement="top" title="ir" onclick="renderproseso('{{item.id_estructura}}')">
+         <i class="fas fa-door-open"></i>
+         </button>
+         <button type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip" data-placement="top"
+         title="Delete" onclick="openDeleteProgram('{{item.id_estructura}}')">
+         <i class="fas fa-trash-alt"></i>
+         </button>
+         <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Edit"
+         onclick="">
+         <i class="fas fa-plus"></i>
+         </button>
+         </div>
+        </div>
+      </div>
+   </li>
+</ul>
+{% endfor%}
