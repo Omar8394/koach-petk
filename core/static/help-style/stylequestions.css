@@ -28,13 +28,13 @@
     color: var(--clr-neutral-100);
     box-shadow: 2px 2px 10px #000;
     overflow: hidden;
-    transition: transform 500ms ease;
+    /* transition: transform 500ms ease; */
     
 }
-.categoria:hover,
+/* .categoria:hover,
 .categoria:focus-within{
     transform: scale(1.04);
- }
+ } */
  .boton{
     display: flex;
     justify-content: center;
@@ -55,7 +55,7 @@
     }
     .categoria {
         padding: 15px;
-        display: flex;
+        /* display: flex; */
         align-content: center;
         justify-content: center;
         border-radius: 10px;

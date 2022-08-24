@@ -1,0 +1,41 @@
+{% load i18n %}
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet"/>
+<div class="modal fade" id="modalAtributos" style="background-color: rgba(0, 0, 0, 0.9);" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="modalAtributosContenido">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Atributos para {{bloque.descrip_bloque}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            
+            <div class="card-header text-center p-0 d-flex flex-row justify-content-center align-items-center" style="position: sticky; top: 0; z-index: 1000; background-color: white;">
+                <h2 class="p-2">Agregar atributos</h2>          
+                <div class="form-group ">
+                    <div class="input-group justify-content-center ">
+                        <div class="input-group-append">
+                            <span id="addAtributo" class="btn btn-primary">             
+                                <i class="fas fa-plus"></i>
+                            </span>           
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form id="formAtributo">
+                <div class="modal-body" style="max-height: fit-content!important;">
+                    <div class="card">
+                        <div class="card-body is-loading-lg" id="contenidoAtributo">
+                        {% include 'TabPersonal/carpPlanning/contenidoAtributo.html' with data=data lista=lista %}  
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer color-footer-modal">
+                    <button type="button" class="btn btn-radius btn-naranja mr-auto" data-dismiss="modal">
+                    <i class="fas fa-arrow-left mr-2"></i>{% translate "Atras" %}</button>
+                    <button type="submit" class="btn btn-radius btn-azul">{% translate "Guardar" %}<i class="fas fa-save ml-2"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+ </div>

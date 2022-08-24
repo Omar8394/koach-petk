@@ -6,11 +6,13 @@
 <div class="card">
     <div class="categorias" id="categorias">
         {% for page in data%}
-        <div class="categoria activa">     
+        <div class="categoria activa" draggable="false" data-move="{{page.id_ficha}}">     
             <h3>{{page.nombre_ficha}}</h3>
             <div class="boton">
-                <a href="#" onclick="modalFicha('{{page.id_ficha}}')" class="button btn btn-primary"><i class="fas fa-edit"></i></a>
-                <a href="#" onclick="eliminarFicha('{{page.id_ficha}}')" class="button btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                <button onclick="modalListaBloque('{{page.id_ficha}}')" class="button btn btn-icon btn-success"><i class="fa fa-th-list"></i></button>
+                <button onclick="modalFicha('{{page.id_ficha}}')" class="button btn btn-icon btn-primary"><i class="fas fa-edit"></i></button>
+                <button onclick="eliminarFicha('{{page.id_ficha}}')" class="button btn btn-icon btn-danger"><i class="fas fa-trash-alt"></i></button>
+                <button class="button btn btn-icon btn-secondary handle" style="position: absolute; top: 0; right: 0;"><i class="fas fa-arrows-alt"></i></button>
             </div>
         </div>
         {% empty %}

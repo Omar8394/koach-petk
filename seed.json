@@ -523,5 +523,69 @@
             "tipo_dato":0
 
           }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 36,
+          "fields": {
+            "desc_elemento": "Estado de Usuario",
+            "fk_tabla_padre": 1,
+            "tipo_elemento": "0",
+            "permite_cambios": 1,
+            "valor_elemento": "status_user",
+            "mostrar_en_combos": 1,
+            "maneja_lista": 1,
+            "datos_adicional":"",
+            "tipo_dato":0
+
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 38,
+          "fields": {
+            "desc_elemento": "Su cuenta ha sido suspendida para mas informacion contacte al soporte.",
+            "fk_tabla_padre": 36,
+            "tipo_elemento": "0",
+            "permite_cambios": 1,
+            "valor_elemento": "user_account_suspended",
+            "mostrar_en_combos": 1,
+            "maneja_lista": 0,
+            "datos_adicional":"",
+            "tipo_dato":0
+
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 39,
+          "fields": {
+            "desc_elemento": "Su cuenta ha sido bloqueada por exceder el numero maximo de intentos de inicio de sesion. Intente recuperar su cuenta en la opcion de 'olvido de contrañsea o cuenta bloqueada'." ,
+            "fk_tabla_padre": 36,
+            "tipo_elemento": "0",
+            "permite_cambios": 1,
+            "valor_elemento": "user_account_blocked",
+            "mostrar_en_combos": 1,
+            "maneja_lista": 0,
+            "datos_adicional":"",
+            "tipo_dato":0
+
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 40,
+          "fields": {
+            "desc_elemento": "Logueado Correctamente" ,
+            "fk_tabla_padre": 36,
+            "tipo_elemento": "0",
+            "permite_cambios": 1,
+            "valor_elemento": "user_active",
+            "mostrar_en_combos": 1,
+            "maneja_lista": 0,
+            "datos_adicional":"",
+            "tipo_dato":0
+
+          }
         }
 ]

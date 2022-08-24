@@ -1,3 +1,4 @@
+from re import I
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import helpingImageForm, helpingPdfForm
@@ -455,40 +456,26 @@ def modalPaginaMover(request):
         if(request.body):
 
             body = json.load(request)
-            id = body['id']
-            fk = body['fk']
-            tipo = body['tipo']
+            id = body.get('id')
+            data = body.get('data')
             
-            helping=tutoriales.objects.get(idtutorial=fk)
+            helping=tutoriales.objects.get(idtutorial=id)
 
             if helping:
 
                 paginas=paginasHelping.objects.filter(fk_tutorial=helping)
 
-                if paginas and len(paginas) > 1:
+                i = 1
+                for d in data:
+                    
+                    pagina = paginas.get(idpagina=d)
+                    pagina.ordenamiento = i
+                    i = i + 1
+                    pagina.save()
+                
+                context['data'] = helping
+                context['paginas'] = paginas
 
-                    actual = paginas.get(idpagina=id)
-                    next = actual.ordenamiento - 1 if int(tipo) == 0 else actual.ordenamiento + 1
-                    update = paginas.filter(Q(ordenamiento=actual.ordenamiento)|Q(ordenamiento=next))
-
-                    if update and len(update) == 2:
-
-                        update[0].ordenamiento = actual.ordenamiento if int(tipo) == 0 else next
-                        update[0].save()
-                        update[1].ordenamiento = next if int(tipo) == 0 else actual.ordenamiento
-                        update[1].save()
-                        paginas=paginasHelping.objects.filter(fk_tutorial=helping)
-                        actual = paginas.get(idpagina=id)
-                        context = {'data': helping, 'paginas':paginas, 'orden': actual}
-
-                    else:
-
-                        context = {'data': helping, 'paginas':paginas}
-
-                else:
-
-                    context = {'data': helping, 'paginas':paginas}
- 
     html_template = (loader.get_template('Helping/modalHijosPagina.html'))
     return HttpResponse(html_template.render(context, request))
 
