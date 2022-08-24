@@ -1,15 +1,11 @@
-{% extends "index.html" %}
+{% extends "baseexternal.html" %}
 
 {% block title %} Recovery Methods {% endblock title %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
 
-{% block header %}
-
-{% endblock %}
-
-{% block main %}
+{% block content %}
     {% if user_email %}
         <script language="JavaScript">
         function send_form(typeMethod){
@@ -39,14 +35,16 @@
                 {% csrf_token %}
             <div class="card text-center border border-primary">
   <div class="card-header bg-dark2">
-   <h3 class="h3 text-white">Enlace de Recuperacion</h3>
+   <h3 class="h3 text-white">Codigo de Recuperacion</h3>
   </div>
   <div class="card-body">
-      <p class="card-text"><h5>Un enlace de recuperacion de cuenta sera enviado al correo ingresado {{ user_email }}</h5></p>
-      <button type="submit" onclick="send_form(1)" class="btn btn-primary">Send recovery link</button>
+      <p class="card-text"><h5>Un codigo de recuperacion de cuenta sera enviado al correo ingresado {{ user_email }}
+        deberas ingresarlo para recuperar tu cuenta.
+      </h5></p>
+      <button type="submit" onclick="send_form(1)" class="btn btn-primary">Enviar Codigo de Recuperacion</button>
   </div>
   <div class="card-footer bg-dark2 text-muted text-white">
-    Ten encuenta que los enlaces tienen un periodo de expiracion
+    Ten encuenta que los codigos tienen un periodo de expiracion
   </div>
 </div>
             <div class="card text-center border border-primary">

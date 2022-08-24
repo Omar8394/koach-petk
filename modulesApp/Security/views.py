@@ -2,15 +2,17 @@ from django.shortcuts import render,redirect,reverse
 
 # Create your views here.
 from django.views import View
-from .forms import LoginForm, SignUpForm, ResetPasswordForm, RecoveryMethodForm
+from .forms import LoginForm, SignUpForm, ResetPasswordForm, RecoveryMethodForm , RecoveryMethodQuestion
 from django.contrib.auth import login, logout, update_session_auth_hash
-from .models import User
-from .methods import es_correo_valido,change_password,get_status_user
+from .models import User, CodigoVerificacion
+from .methods import es_correo_valido,change_password,get_status_user, auth_user, is_user_exists, \
+    send_vefication_code_email, get_verification_code , change_password_link, verificarenlace
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password, check_password
 from django.http.response import JsonResponse
 from modulesApp.App.models import ConfTablasConfiguracion
+from core import settings
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -19,14 +21,7 @@ def login_view(request):
          if request.method == "POST":
              form = LoginForm(request.POST or None)
              if form.is_valid():          
-                username = form.cleaned_data.get("username")
-                try:
-                    if es_correo_valido(username):
-                        username = User.objects.filter(email=username)[0].username
-                except Exception as e:
-                     messages.error(request, "El usuario o correo no se encuentra asocido a ninguna cuenta.")   
-                password = form.cleaned_data.get("password")
-                status_user = get_status_user(username, password)
+                status_user = auth_user(form.cleaned_data.get("username"), form.cleaned_data.get("password"))
                 if status_user['estado'] == "Active":
                     print(status_user['mensaje'])
                     login(request, status_user['user']) 
@@ -59,7 +54,7 @@ def changePassword(request):
         new_password = request.POST.get('password1')
         # verificar encriptacion
         if actual_password != new_password:
-            status_user = get_status_user(request.user, actual_password)
+            status_user = auth_user(str(request.user), str(actual_password))
             if status_user['estado'] == "Active":
                 change_password(request, new_password)
                 response = {
@@ -98,7 +93,7 @@ def changeSecretQuestion(request):
         id_pregunta = request.POST.get('cb_tipo_pregunta')
         actual_password = request.POST.get('password')
         # verificar encriptacion
-        status_user = get_status_user(request.user, actual_password)
+        status_user = auth_user(str(request.user), str(actual_password))
         if status_user['estado'] == "Active":
             user.fk_pregunta_secreta_id = id_pregunta
             user.respuesta_secreta = respuesta
@@ -132,7 +127,6 @@ def changeSecretQuestion(request):
     
 def forgot_password(request):
     msg = None
-    success = False
     if request.user.is_authenticated:
         return redirect("/")
     else:
@@ -140,26 +134,19 @@ def forgot_password(request):
             request.session.flush()
             form = ResetPasswordForm(request.POST)
             if form.is_valid():
-                email = form.cleaned_data.get("email")
-                try:
-                    user = User.objects.filter(email__exact=email).first()
-                    ext_user = ExtensionUsuario.objects.get(user=user)
-                    if ext_user.CtaUsuario.fk_status_cuenta.desc_elemento == "suspended":
-                        msg = "Tu cuenta ha sido suspendida para mas informacion comunicate con el soporte."
-                        success = False
-                    else:
-                        request.session['user_email'] = user.email
-                        return redirect("/recoverymethod/")
-                except Exception as e:
-                    msg = "El correo ingresado no se encuentra vinculado con ninguna cuenta, o esta cuenta se encuentra bloqueada."
-                    success = False
+                email = form.cleaned_data.get("email") # or user valida ambos
+                status_user = get_status_user(email)
+                if status_user['estado'] != "Account Suspended" and status_user['estado'] != "Invalid Account":
+                    request.session['user_email'] = status_user['user'].email
+                    return redirect("security:recovery_method")
+                else:
+                    msg = status_user['mensaje']
             else:
                 msg = 'Form is not valid'
-                success = False
         else:
             form = ResetPasswordForm()
         return render(request, "passwordreset.html",
-                      {"form": form, "msg": msg, "success": success})
+                      {"form": form, "msg": msg})
 
 def recovery_method(request):
     context = None
@@ -171,42 +158,27 @@ def recovery_method(request):
                 context = {"user_email": request.session.get("user_email")}
                 request.session.flush()
             else:
-                pass
-                #return redirect("/passwordReset/")
+                return redirect("security:forgot_password")
         elif request.method == "POST":
             form = RecoveryMethodForm(request.POST or None)
             if form.is_valid():
                 typemethod = int(form.cleaned_data.get("typeMethod"))
                 user_email = form.cleaned_data.get("email")
                 if typemethod == 1:
-                    ext_user = ExtensionUsuario.objects.get(
-                        user__exact=User.objects.filter(email__exact=user_email).first())
-                    code = str(Methods.getVerificationLink(ext_user, user_email, 2))
-                    if code:
-                        enlace = request.get_raw_uri().split("//")[0] + "//" + \
-                                 request.get_host() + "/emailrecovery/" + code + "/"
-                        context = {"titulo": "Account Recovery Request", "user": ext_user.user.username,
-                                   "content": "We have received an account recovery request, to restore your account click on the following link: ",
-                                   "enlace": enlace, "enlaceTexto": "click here!", "empresa": settings.EMPRESA_NOMBRE,
-                                   "urlimage": settings.EMPRESA_URL_LOGO}
-                        send_mail(
-                            create_mail(user_email, "Account Recovery Request", "security/base_email_template_pro.html",
-                                        context))
-                        request.session.flush()
-                        information = {"mensaje": "Te hemos enviado un enlace de recuperacion de cuenta a tu correo electronico.",
-                                       "titulo": "Enlace de verificacion enviado", "urlimage": settings.EMPRESA_URL_LOGO,
+                    user = is_user_exists(user_email)
+                    tipo_operacion = ConfTablasConfiguracion.objects.filter(valor_elemento="tv_recuperar_cuenta")[0]
+                    send_vefication_code_email(user, "Account Recovery Code", None, tipo_operacion)
+                    request.session.flush()
+                    information = {"mensaje": "Te hemos enviado un enlace de recuperacion de cuenta a tu correo electronico.",
+                                       "titulo": "Enlace de verificacion enviado",
                                        "imagelocal": settings.EMPRESA_SRC_LOGO}
-                        return render(request, "security/information_view.html", information)
-                    else:
-                        print("codigo nulo")
+                    return render(request, "information_view.html", information)
 
                 elif typemethod == 2:
                     request.session['user_email'] = user_email
-                    return redirect("/recoverymethodquestion/")
-                    pass
+                    return redirect("security:recovery_method_question")
             else:
-                #return redirect("/passwordReset/")
-                pass
+                return redirect("security:forgot_password")
     return render(request, "recoverymethod.html", context)
 
 
@@ -214,47 +186,84 @@ def recovery_method_question(request):
     if request.user.is_authenticated:
         return redirect("/")
     else:
+        status_user = None
         if request.session.get("user_email"):
             email = request.session.get("user_email")
             context = {"user_email": email}
             request.session.flush()
-            try:
-                user = User.objects.filter(email__exact=email).first()
-                ext_user = ExtensionUsuario.objects.get(user=user)
-                if ext_user.CtaUsuario.fk_status_cuenta.desc_elemento == "suspended":
-                    raise Http404("Esta cuenta esta suspendida, por favor contacta al soporte.")
-                elif ext_user.CtaUsuario.respuesta_secreta is None:
-                    information = {"mensaje": "Este metodo de recuperacion no ha sido establecido en tu cuenta.",
-                                   "titulo": "Metodo no configurado", "urlimage": settings.EMPRESA_URL_LOGO,
-                                   "imagelocal": settings.EMPRESA_SRC_LOGO}
-                    return render(request, "security/information_view.html", information)
-                else:
-                    msg = None
-                    if request.method == "GET":
-                        request.session['user_email'] = email
-                    elif request.method == "POST":
-                        form = RecoveryMethodQuestion(request.POST or None)
-                        if form.is_valid():
-                            answer = form.cleaned_data.get("secrettext")
-                            if answer == ext_user.CtaUsuario.respuesta_secreta:
-                                code = str(Methods.getVerificationLink(ext_user, email, 1))
-                                if code:
-                                    return redirect("/emailrecovery/" + code + "/")
-                                else:
-                                    msg = "Error to generate code activaction"
+            status_user = get_status_user(email)
+            if status_user['estado'] == "Account Suspended" or status_user['estado'] == "Invalid Account":
+                information = {"mensaje": status_user['mensaje'],
+                                "titulo": status_user['estado'],
+                                "imagelocal": settings.EMPRESA_SRC_LOGO}
+                return render(request, "information_view.html", information)
+            elif status_user['user'].respuesta_secreta is None:
+                information = {"mensaje": "Este metodo de recuperacion no ha sido establecido en tu cuenta.",
+                                "titulo": "Metodo no configurado",
+                                "imagelocal": settings.EMPRESA_SRC_LOGO}
+                return render(request, "information_view.html", information)
+            else:
+                msg = None
+                if request.method == "GET":
+                    request.session['user_email'] = email
+                elif request.method == "POST":
+                    form = RecoveryMethodQuestion(request.POST or None)
+                    if form.is_valid():
+                        answer = form.cleaned_data.get("secrettext")
+                        if answer == status_user['user'].respuesta_secreta:
+                            tipo_operacion = ConfTablasConfiguracion.objects.filter(valor_elemento="tv_recuperar_cuenta")[0]
+                            code = str(get_verification_code(status_user['user'],3,tipo_operacion))
+                            if code:
+                                return redirect("security/account_recovery/")
                             else:
-                                msg = "La respuesta secreta es incorrecta por favor intenta de nuevo."
+                                msg = "Error to generate code activaction"
                         else:
-                            msg = "form invalid please fill all fields"
-                    context = {"question": ext_user.CtaUsuario.fk_pregunta_secreta.desc_elemento, "msg": msg,
-                               "empresa": settings.EMPRESA_NOMBRE, "urlimage": settings.EMPRESA_URL_LOGO,
-                               "imagelocal": settings.EMPRESA_SRC_LOGO}
-                    return render(request, "security/questionrecovery.html", context)
-
-            except User.DoesNotExist:
-                raise Http404("El correo ingresado no esta asociado a ninguna cuenta, o esta cuenta se encuentra suspendida")
+                            msg = "La respuesta secreta es incorrecta por favor intenta de nuevo."
+                    else:
+                        msg = "form invalid please fill all fields"
+                context = {"question": status_user['user'].fk_pregunta_secreta.desc_elemento, "msg": msg,
+                            "empresa": settings.EMPRESA_NOMBRE,
+                            "imagelocal": settings.EMPRESA_SRC_LOGO}
+                return render(request, "questionrecovery.html", context)
         else:
-            return redirect("/passwordReset/")
+            return redirect("security:forgot_password")
+        
+def account_recovery(request, activation_key):
+    try:
+        cambio_clave = "Solicitud de Recuperacion de Cuenta"
+        boton_submit = "Recuperar Cuenta"
+        if request.session.get("cambio_clave"):
+            boton_submit = "Cambiar Contraseña"
+            cambio_clave = "Tu Contraseña ha Caducado!"
+        enlace = CodigoVerificacion.objects.get(activation_key=activation_key)
+        if enlace.usuario.fk_status_cuenta.valor_elemento != "user_account_suspended":
+            if verificarenlace(enlace.key_expires):
+                print("enlace valido", activation_key)
+                context = {"user": enlace.usuario.user.username,
+                           "imagelocal": settings.EMPRESA_SRC_LOGO, "cambioclave": cambio_clave, "botonsubmit": boton_submit}
+                if request.method == "POST":
+                    form = RecoveryMethodEmail(request.POST or None)
+                    if form.is_valid():
+                        print("form is valid and key link is valid")
+                        change_password_link(enlace, form.cleaned_data['password1'])
+                        '''operacion = TablasConfiguracion.objects.get(valor_elemento='recovery_account_email')
+                        modulo = TablasConfiguracion.objects.get(valor_elemento='module_security')
+                        descripcion = "Activation key " + activation_key
+                        LogSeguridad.objects.create(fecha_transaccion=datetime.today(),
+                                                    fk_cta_usuario=enlace.usuario.user,
+                                                    fk_tipo_operacion=operacion, modulo=modulo, valor_dato=descripcion)'''
+                        messages.success(request, "Your credentials have been changed correctly, try to login")
+                        return redirect("security:login")
+                    else:
+                        print(form)
+                        print("invalid form")
+            else:
+                raise Http404("This link has expired please request another link")
+        else:
+            raise Http404("This account is locked, please contact support")
+    except EnlaceVerificacion.DoesNotExist:
+        raise Http404("This verification link is invalid or has expired")
+    return render(request, "emailrecovery.html", context)
 
 @login_required(login_url="security/login/")
 def securitySettings(request):

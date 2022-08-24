@@ -5,7 +5,7 @@ from django.conf import settings
 
 class ConfTablasConfiguracion(models.Model):
     id_tabla = models.SmallAutoField(primary_key=True)
-    desc_elemento = models.CharField(max_length=70, blank=True, null=True)
+    desc_elemento = models.CharField(max_length=350, blank=True, null=True)
     fk_tabla_padre = models.ForeignKey('self', on_delete=models.DO_NOTHING, db_column='fk_tabla_padre')
     tipo_elemento = models.CharField(max_length=1, blank=True, null=True)
     permite_cambios = models.IntegerField()

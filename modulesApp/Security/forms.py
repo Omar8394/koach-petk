@@ -20,10 +20,10 @@ class SignUpForm(UserCreationForm):
         fields = ('username', 'email', 'password1', 'password2')
         
 class ResetPasswordForm(PasswordResetForm):
-    email = forms.EmailField(
-        widget=forms.EmailInput(
+    email = forms.CharField(
+        widget=forms.TextInput(
             attrs={
-                "placeholder": "Email",
+                "placeholder": "Email o Usuario",
                 "class": "form-control"
             }
         ))
@@ -31,5 +31,13 @@ class ResetPasswordForm(PasswordResetForm):
 
 class RecoveryMethodForm(ResetPasswordForm):
     typeMethod = forms.CharField(widget=forms.NumberInput)
+    
+class RecoveryMethodEmail(forms.Form):
+    password1 = forms.CharField()
+    password2 = forms.CharField()
+
+
+class RecoveryMethodQuestion(forms.Form):
+    secrettext = forms.CharField()
 
 
