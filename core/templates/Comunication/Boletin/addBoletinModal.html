@@ -1,0 +1,73 @@
+<div class="modal-content">
+    <div class="modal-header">
+       <h5 class="modal-title">Boletin Informativo</h5>
+       <button type="button" class="close mostrar" id="btn-modal-close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+     </button>
+    </div>
+    <form id="formSave" class="form">
+ 
+        <div class="modal-body">
+ 
+            <div class="form-row">
+            
+                <div class="form-group col-12">
+                    <label for="descriptionProgram" class="col-form-label">Name</label>
+                    <input type="text" class="form-control" placeholder=" " value=" " disabled >
+                </div>
+            
+            </div>
+ 
+            <div class="form-row">
+                <div class="form-group col-12">
+                    <label for="descriptionProgram" class="col-form-label">Courso</label>
+                    <input type="text" class="form-control" placeholder=" " value="" disabled>
+                </div>
+            
+            </div>
+ 
+            <div class="form-row">
+                <div class="form-group col-12">
+                    <label for="resumenProgram" class="col-form-label">Comments</label>
+                    <textarea class="form-control" name="resumenprofessors" id="resumenprofessors"
+                    placeholder="Enter a comentary here"></textarea>
+                </div>
+            </div>
+
+
+ 
+          <!-- <div class="form-row">
+             <div class="form-group col-12">
+ 
+                <tr>
+                   <td>Authorized Date</td>
+                   <td></td>
+                   <td>
+                      <input id="fechaAutorizado" name="fechaAutorizado" value=" " type="date" class="form-control"
+                         required>
+                   </td>
+                </tr>
+ 
+             </div>
+          </div> -->
+
+ 
+        </div>
+
+        <!-- <input type="number" class="form-control" name="situacion" id="situacion" value="{{ item3.id_tabla }}" hidden="true">
+
+        <input type="text" class="form-control" name="idpublic" id="idpublic" value="{{ p.idpublico }}" hidden="true">
+
+
+        <input type="text" class="form-control" name="idcourso" id="idcourso" value=""hidden="true"> -->
+       
+ 
+       <div class="modal-footer color-footer-modal">
+          <button type="button" class="btn btn-radius btn-naranja mr-auto" data-dismiss="modal"><i
+                class="fas fa-arrow-left mr-2"></i>Back</button>
+          <button type="submit" class="btn btn-radius btn-azul">Save<i class="fas fa-save ml-2"></i></button>
+       </div>
+ 
+ 
+    </form>
+</div>
