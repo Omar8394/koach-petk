@@ -383,6 +383,7 @@
             $('#modalBloques').on('hidden.bs.modal', function (event) {
 
                 $('#modalBloques').remove()
+                $('body').addClass('modal-open')
 
             })
 
@@ -482,7 +483,7 @@
 
     }
 
-    const modalAtributos = (e, id = -1, idBloque = -1) => {
+    const modalAtributos = (id = -1, idBloque = -1) => {
 
         setLoading()
         fetch("{% url 'planning:modalAtributo' %}", {
@@ -496,11 +497,49 @@
         .then(text => {
 
             document.querySelector('#carruselAyuda').insertAdjacentHTML("beforebegin", text)
+            atributoSort(idBloque)
+            const addAtributo = document.querySelector("#addAtributo")
+            addAtributo.addEventListener("click", (e) => {
+
+                setLoading()
+                fetch("{% url 'planning:guardarAtributo' %}", {
+                    ...fetchObject,
+                    body: JSON.stringify({
+                    idBloque
+                    })
+                })
+                .then(res => res.text())
+                .then(text => {
+
+                    document.querySelector("#contenidoAtributo").insertAdjacentHTML('beforeend', text)
+                    // atributoSort(idBloque)
+                })
+                .catch((err)=>{
+
+                    makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+                })
+                .finally(() => {
+
+                    stopLoading()
+
+                })
+                
+            })
+
+            
+            const formAtributo = document.querySelector("#formAtributo")
+            formAtributo.addEventListener("submit", (e) => {
+
+                e.preventDefault()
+
+            })
 
             $('#modalAtributos').modal('show')
             $('#modalAtributos').on('hidden.bs.modal', function (event) {
 
                 $('#modalAtributos').remove()
+                $('body').addClass('modal-open')
 
             })
 
@@ -517,6 +556,133 @@
         })
 
     }
+
+    const eliminarAtributo = async (e, idAtributo) => {
+        
+        const elimino = await alertaMensajitos(6, "{% translate 'Atencion!' %}", "{% translate 'Desea eliminar este archivo' %}")
+  
+        if (elimino) {
+
+            setLoading()
+            fetch("{% url 'planning:eliminarAtributo'%}", {
+                ...fetchObject,
+                body: JSON.stringify({
+                    idAtributo,
+                })
+            })
+            .then(res => res.text())
+            .then(text => {
+                
+                e.parentNode.parentNode.remove()
+
+            })
+            .catch((err) => {
+                
+                makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+            })
+            .finally(() => {
+
+                stopLoading()
+
+            })
+
+        }
+
+    }
+
+    const atributoSort = (id) => {
+
+        new Sortable(document.querySelector("#contenidoAtributo"), {
+            handle: '.handle',
+            animation: 150,
+            onEnd: function (evt) {
+                let arreglo = []
+                evt.to.children.forEach(element => arreglo.push(element.dataset.move));
+                moveAtributo(id, arreglo)
+            },
+        });
+
+    }
+    
+    const moveAtributo = (id, data) => {
+
+        setLoading()
+        fetch("{% url 'planning:moverAtributo'%}", {
+        ...fetchObject,
+        body: JSON.stringify({
+            id,
+            data
+        })
+        })
+        .then(res => res.text())
+        .then(text => {
+
+            document.querySelector("#contenidoAtributo").innerHTML = text
+            atributoSort(id)
+
+        })
+        .catch((err) => {
+
+            makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+            $('#modalAtributos').modal('hide')
+
+        })
+        .finally(() => {
+
+            stopLoading()
+
+        })
+
+    }
+
+    const agregarLista = (e) => {
+
+        setLoading()
+        fetch("{% url 'planning:atributoLista'%}", {
+        ...fetchObject,
+        body: JSON.stringify({
+            value: e.value,
+        })
+        })
+        .then(res => res.text())
+        .then(text => {
+
+            e.parentNode.parentNode.nextElementSibling.innerHTML = text
+
+        })
+        .catch((err) => {
+
+            makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+            $('#modalAtributos').modal('hide')
+
+        })
+        .finally(() => {
+
+            stopLoading()
+
+        })
+
+    }
+
+    const eliminarLista = (e) => {
+
+        if(e.parentNode.parentNode.parentNode.children.length > 2)
+
+            e.parentNode.parentNode.remove()
+
+    }
+
+    $(document).on('keypress','.agregar-lista',(e) => {
+
+        if(e.keyCode == 13){
+            
+            const clone = e.currentTarget.parentNode.cloneNode(true)
+            e.currentTarget.parentNode.insertAdjacentHTML('afterend', clone.outerHTML)
+
+        }
+
+    });
 
 </script> 
     

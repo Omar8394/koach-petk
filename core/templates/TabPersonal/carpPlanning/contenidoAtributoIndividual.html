@@ -1,0 +1,35 @@
+{% load i18n %}
+<div class="card" style="border-left: 5px solid royalblue; box-shadow: 2px 6px 15px 0 rgb(69 65 78 / 62%);" data-move="{{page.id_atribxfichaxbloq}}">     
+    <div class="card-header p-0 d-flex">
+        <button type="button" class="btn ml-auto mr-auto d-block p-0 handle" style="width: 100%; cursor: move; background: none;"><i class="fas fa-grip-horizontal"></i></button>
+        <button type="button" onclick="eliminarAtributo(this, '{{page.id_atribxfichaxbloq}}')" class="btn p-0 d-block" style="background: none;"><i class="fas fa-window-close"></i></button>
+    </div>
+    <div class="card-body">
+        <div class="form-row">
+            <div class="form-group col-sm-6">
+                <label for="tituloAtributo{{page.id_atribxfichaxbloq}}" class="col-form-label">{% translate "Formule su pregunta" %}</label>
+                <input type="text" class="form-control" name="titulo" id="tituloAtributo{{page.id_atribxfichaxbloq}}" maxlength="50"
+                    placeholder='{% translate "Pregunta" %}' value="{{page.id_atribxfichaxbloq}}">
+            </div>
+            <div class="form-group col-sm-6">
+                <label for="tipoAtributo{{page.id_atribxfichaxbloq}}" class="col-form-label">{% translate "Tipo de pregunta" %}</label>
+                <select class="custom-select" name="Tipo" id="tipoAtributo{{page.id_atribxfichaxbloq}}" style="font-family: 'Arial', 'FontAwesome'" onchange="agregarLista(this)">
+                   <option value="" disabled selected>{% translate "Seleccione un tipo de pregunta" %}</option>
+                   {% for dato in lista %}
+                   <option value="{{dato.id_tabla}}">{{dato.datos_adicional | safe}} {{dato.desc_elemento}}</option>
+                   {% endfor %} 
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <!-- <div class="form-group col-12">
+                <label for="contenidoAtributo" class="col-form-label">{% translate "Titulo" %}</label>
+                <input type="text" class="form-control" name="titulo" id="contenidoAtributo" maxlength="50"
+                    placeholder='{% translate "Escriba un titulo" %}' {% if pagina and pagina.titulo %}value="{{ pagina.titulo }}"{% endif %}>
+            </div> -->
+        </div>
+    </div>
+    <!-- <div class="card-footer">
+        <button type="button" onclick="eliminarAtributo(this, '{{page.id_atribxfichaxbloq}}')" class="btn btn-icon btn-danger ml-auto d-block"><i class="fas fa-trash-alt"></i></button>
+    </div> -->
+</div>

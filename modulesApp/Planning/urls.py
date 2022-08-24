@@ -18,6 +18,10 @@ urlpatterns = [
     path('guardarBloque/', views.guardarBloque, name='guardarBloque'),
     path('eliminarBloque/', views.eliminarBloque, name='eliminarBloque'),
     path('moverBloque/', views.moverBloque, name='moverBloque'),
+    path('guardarAtributo/', views.guardarAtributo, name='guardarAtributo'),
+    path('eliminarAtributo/', views.eliminarAtributo, name='eliminarAtributo'),
+    path('moverAtributo/', views.moverAtributo, name='moverAtributo'),
+    path('atributoLista/', views.atributoLista, name='atributoLista'),
     
 
     # modales    

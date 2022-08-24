@@ -1,7 +1,9 @@
+from distutils.log import error
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
 import time, json
 from .models import fichas, fichas_bloques, atributosxfichaxbloque
+from ..App.models import ConfTablasConfiguracion as configuraciones
 
 # Create your views here.
 
@@ -285,17 +287,131 @@ def modalAtributo(request):
 
             body = json.load(request)
             idBloque = int(body.get('idBloque'))
-
+            
             try:
 
                 bloque = fichas_bloques.objects.get(id_bloquexficha=idBloque)
                 context['bloque'] = bloque
+                lista = configuraciones.obtenerHijos('Tipo_Atributo')
+                context['lista'] = lista
+                context['data'] = atributosxfichaxbloque.objects.filter(fk_ficha_bloque__id_bloquexficha=idBloque)
                 # bloques = fichas_bloques.objects.filter(fk_idficha__id_ficha=id)
                 # context['data'] = bloques
 
             except:
-                
+
                 pass
             
     html_template = loader.get_template( 'TabPersonal/carpPlanning/modalAtributos.html' )
     return HttpResponse(html_template.render(context, request))
+
+def guardarAtributo(request): 
+
+    context = {}
+
+    if request.method == "POST":
+
+        if request.body:
+
+            body = json.load(request)
+            data = body.get('data')
+            idBloque = body.get('idBloque')
+            idAtributo = body.get('idAtributo')
+
+
+            if idAtributo and int(idAtributo) > 0:
+
+                atributo = atributosxfichaxbloque.objects.get(id_atribxfichaxbloq=idAtributo)
+
+            else: 
+
+                atributo = atributosxfichaxbloque()
+
+            if data:
+
+                atributo.nombre_atrib = data.get('nombre') 
+                atributo.fk_tipodato = data.get('nombre') 
+
+            if not idAtributo:
+
+                atributo.orden_presentacion = len(atributosxfichaxbloque.objects.filter(fk_ficha_bloque__id_bloquexficha=idBloque)) + 1
+
+            bloque = fichas_bloques.objects.get(id_bloquexficha=idBloque)
+            atributo.fk_ficha_bloque = bloque
+            atributo.save()
+            context['page'] = atributo
+            lista = configuraciones.obtenerHijos('Tipo_Atributo')
+            context['lista'] = lista
+
+    html_template = loader.get_template( 'TabPersonal/carpPlanning/contenidoAtributoIndividual.html' )
+    return HttpResponse(html_template.render(context, request))
+
+    
+def eliminarAtributo(request): 
+    context = {}
+
+    if request.method == "POST":
+
+        if request.body:
+
+            body = json.load(request)
+            idAtributo = body.get('idAtributo')
+            atributo = atributosxfichaxbloque.objects.get(id_atribxfichaxbloq=idAtributo)
+            atributo.delete()
+
+    return HttpResponse('ok')
+    
+def moverAtributo(request): 
+
+    context = {}
+
+    if request.method == "POST":
+
+        if(request.body):
+
+            body = json.load(request)
+            id = body.get('id')
+            data = body.get('data')
+            atributos = atributosxfichaxbloque.objects.filter(fk_ficha_bloque__id_bloquexficha=id)
+
+            if atributos:
+
+                i = 1
+                for d in data:
+
+                    atributo = atributos.get(id_atribxfichaxbloq=d)
+                    atributo.orden_presentacion = i
+                    i = i + 1
+                    atributo.save()
+                
+            context['data'] = atributosxfichaxbloque.objects.filter(fk_ficha_bloque__id_bloquexficha=id)
+            lista = configuraciones.obtenerHijos('Tipo_Atributo')
+            context['lista'] = lista
+
+    html_template = loader.get_template( 'TabPersonal/carpPlanning/contenidoAtributo.html' )
+    return HttpResponse(html_template.render(context, request))
+
+       
+def atributoLista(request): 
+
+    context = {}
+
+    if request.method == "POST":
+
+        if(request.body):
+
+            body = json.load(request)
+            value = body.get('value')
+            lista = configuraciones.objects.get(id_tabla=value)
+
+            if lista.valor_elemento == 'Tipo_Atributo_Rango' or lista.valor_elemento == 'Tipo_Atributo_Texto' or lista.valor_elemento == 'Tipo_Atributo_Texto_Largo' or lista.valor_elemento == 'Tipo_Atributo_Fecha':
+
+                return HttpResponse()
+
+            elif lista.valor_elemento == 'Tipo_Atributo_Seleccion' or lista.valor_elemento == 'Tipo_Atributo_Lista' or lista.valor_elemento == 'Tipo_Atributo_Seleccion_Multiple':
+
+                context['lista'] = lista
+                html_template = loader.get_template( 'TabPersonal/carpPlanning/contenidoListaAtributo.html' )
+                return HttpResponse(html_template.render(context, request))
+
+    return HttpResponse()
