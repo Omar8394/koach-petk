@@ -100,11 +100,12 @@ def verificarenlace(key_expires):
     return datetime.strftime(key_expires, formato) >= datetime.now().strftime(formato)
 
 def change_password_link(enlace, password):
-    enlace.user.set_password(password)
+    enlace.usuario.set_password(password)
     enlace.save()
+    restablecer_cuenta(enlace.usuario)
     enlace.delete()
     # validar las claves anteriores
-    restabler_cuenta(enlace.user)
+    
     
 def send_vefication_code_email(user,asunto,contenido,tipo):
     code = get_verification_code(user, 3, tipo)

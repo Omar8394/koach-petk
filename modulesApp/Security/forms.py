@@ -32,6 +32,7 @@ class ResetPasswordForm(PasswordResetForm):
 class RecoveryMethodForm(ResetPasswordForm):
     typeMethod = forms.CharField(widget=forms.NumberInput)
     
+    
 class RecoveryMethodEmail(forms.Form):
     password1 = forms.CharField()
     password2 = forms.CharField()
@@ -39,5 +40,6 @@ class RecoveryMethodEmail(forms.Form):
 
 class RecoveryMethodQuestion(forms.Form):
     secrettext = forms.CharField()
+
 
 

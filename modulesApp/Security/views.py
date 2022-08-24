@@ -1,8 +1,9 @@
-from django.shortcuts import render,redirect,reverse
+from django.shortcuts import render,redirect,reverse, HttpResponseRedirect
 
 # Create your views here.
 from django.views import View
-from .forms import LoginForm, SignUpForm, ResetPasswordForm, RecoveryMethodForm , RecoveryMethodQuestion
+from .forms import LoginForm, SignUpForm, ResetPasswordForm, RecoveryMethodForm , RecoveryMethodQuestion, \
+    RecoveryMethodEmail
 from django.contrib.auth import login, logout, update_session_auth_hash
 from .models import User, CodigoVerificacion
 from .methods import es_correo_valido,change_password,get_status_user, auth_user, is_user_exists, \
@@ -13,6 +14,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.http.response import JsonResponse
 from modulesApp.App.models import ConfTablasConfiguracion
 from core import settings
+from django.http import Http404
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -214,7 +216,7 @@ def recovery_method_question(request):
                             tipo_operacion = ConfTablasConfiguracion.objects.filter(valor_elemento="tv_recuperar_cuenta")[0]
                             code = str(get_verification_code(status_user['user'],3,tipo_operacion))
                             if code:
-                                return redirect("security/account_recovery/")
+                                return redirect('security:account_recovery',activation_key=str(code))
                             else:
                                 msg = "Error to generate code activaction"
                         else:
@@ -239,7 +241,7 @@ def account_recovery(request, activation_key):
         if enlace.usuario.fk_status_cuenta.valor_elemento != "user_account_suspended":
             if verificarenlace(enlace.key_expires):
                 print("enlace valido", activation_key)
-                context = {"user": enlace.usuario.user.username,
+                context = {"user": enlace.usuario.username,
                            "imagelocal": settings.EMPRESA_SRC_LOGO, "cambioclave": cambio_clave, "botonsubmit": boton_submit}
                 if request.method == "POST":
                     form = RecoveryMethodEmail(request.POST or None)
@@ -261,7 +263,7 @@ def account_recovery(request, activation_key):
                 raise Http404("This link has expired please request another link")
         else:
             raise Http404("This account is locked, please contact support")
-    except EnlaceVerificacion.DoesNotExist:
+    except CodigoVerificacion.DoesNotExist:
         raise Http404("This verification link is invalid or has expired")
     return render(request, "emailrecovery.html", context)
 
