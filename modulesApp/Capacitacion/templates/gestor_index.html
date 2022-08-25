@@ -153,6 +153,7 @@
       function cambiar_comb() { 
          const varia= document.getElementById("categoryProgram").value;
          rendertavs("find",varia)
+         document.querySelector("#renderpro").innerHTML = "<h3 class=display-4>Agregue un proceso</h3>"
      }
      const rendertavs = (tipo,pk)=>{
       document.querySelector("#renderList").classList.add("is-loading")
