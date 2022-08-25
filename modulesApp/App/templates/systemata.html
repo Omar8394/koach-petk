@@ -342,52 +342,6 @@ const goToTable =  async (Page,padre)  => {
 
 
 }
-const openAddProgram = () => {
-      editmode = false
-      fetch("{% url 'modalAddPrograma'%}", {
-         ...fetchObject,
-      })
-         .then(async (res) => {
-            document.getElementById("addNewModalContent").innerHTML = await res.text()
-         })
-         .then(() => {
-            $("#addNewModal").modal("show")
-            const formPrograma = document.getElementById("formPrograma")
-            let rules = {
-               resumenProgram: {
-                  required: true,
-                  maxlength: 200,
-                  minlength: 20
-               },
-               urlProgram: {
-                  required: true,
-                  maxlength: 15,
-                  minlength: 3
-               },
-            }
-            commonValidator = $("#formPrograma").validate({
-               rules,
-               highlight: function (element) {
-                  $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-               },
-               success: function (element) {
-                  $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
-               },
-            });
-            formPrograma.addEventListener("submit", (e) => {
-               e.preventDefault()
-               if($("#formPrograma").valid()){
-                  setLoading()
-                  clickSave(formPrograma, "{% url 'modalAddPrograma' %}")
-                     .then(() => {
-                        $("#addNewModal").modal("hide")
-                        stopLoading()
-                        renderContent()
-                     })
 
-               }
-            })
-         })
-   }
 </script>
 {% endblock javascripts %}
