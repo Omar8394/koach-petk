@@ -8,15 +8,15 @@
         <div class="form-row">
             <div class="form-group col-sm-6">
                 <label for="tituloAtributo{{page.id_atribxfichaxbloq}}" class="col-form-label">{% translate "Formule su pregunta" %}</label>
-                <input type="text" class="form-control" name="titulo" id="tituloAtributo{{page.id_atribxfichaxbloq}}" maxlength="50"
-                    placeholder='{% translate "Pregunta" %}' value="{{page.id_atribxfichaxbloq}}">
+                <input type="text" class="form-control" name="titulo{{page.id_atribxfichaxbloq}}" id="tituloAtributo{{page.id_atribxfichaxbloq}}" maxlength="50"
+                    placeholder='{% translate "Pregunta" %}' value="{{page.nombre_atrib}}">
             </div>
             <div class="form-group col-sm-6">
                 <label for="tipoAtributo{{page.id_atribxfichaxbloq}}" class="col-form-label">{% translate "Tipo de pregunta" %}</label>
-                <select class="custom-select" name="Tipo" id="tipoAtributo{{page.id_atribxfichaxbloq}}" style="font-family: 'Arial', 'FontAwesome'" onchange="agregarLista(this)">
-                   <option value="" disabled selected>{% translate "Seleccione un tipo de pregunta" %}</option>
+                <select class="custom-select" name="Tipo{{page.id_atribxfichaxbloq}}" id="tipoAtributo{{page.id_atribxfichaxbloq}}" style="font-family: 'Arial', 'FontAwesome'" onchange="agregarLista(this, '{{page.id_atribxfichaxbloq}}')">
+                   <option value="" disabled {% if not page.fk_tipodato %}selected{% endif %}>{% translate "Seleccione un tipo de pregunta" %}</option>
                    {% for dato in lista %}
-                   <option value="{{dato.id_tabla}}">{{dato.datos_adicional | safe}} {{dato.desc_elemento}}</option>
+                   <option value="{{dato.id_tabla}}" {% if page.fk_tipodato == dato %}selected{% endif %}>{{dato.datos_adicional | safe}} {{dato.desc_elemento}}</option>
                    {% endfor %} 
                 </select>
             </div>
@@ -27,6 +27,9 @@
                 <input type="text" class="form-control" name="titulo" id="contenidoAtributo" maxlength="50"
                     placeholder='{% translate "Escriba un titulo" %}' {% if pagina and pagina.titulo %}value="{{ pagina.titulo }}"{% endif %}>
             </div> -->
+            {% if page.listaValores %}
+            {% include 'TabPersonal/carpPlanning/contenidoListaAtributo.html' with page=page.listaValores|tosJson padre=page.id_atribxfichaxbloq%}  
+            {% endif %}
         </div>
     </div>
     <!-- <div class="card-footer">

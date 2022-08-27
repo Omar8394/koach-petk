@@ -532,6 +532,35 @@
             formAtributo.addEventListener("submit", (e) => {
 
                 e.preventDefault()
+                const formData = new FormData(formAtributo);
+                const data = Object.fromEntries(formData.entries())
+
+                setLoading()
+                fetch("{% url 'planning:guardarAtributo' %}", {
+                    ...fetchObject,
+                    body: JSON.stringify({
+                    data,
+                    idBloque
+                    })
+                })
+                .then(res => res.text())
+                .then(text => {
+                    
+                    // makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registros guardados' %}", "fa fa-check")
+                    // $('#modalAtributos').modal('hide')
+                    // console.log('guardado')
+
+                })
+                .catch((err)=>{
+
+                    makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+                })
+                .finally(() => {
+
+                    stopLoading()
+
+                })
 
             })
 
@@ -636,13 +665,14 @@
 
     }
 
-    const agregarLista = (e) => {
+    const agregarLista = (e, padre) => {
 
         setLoading()
         fetch("{% url 'planning:atributoLista'%}", {
         ...fetchObject,
         body: JSON.stringify({
             value: e.value,
+            padre
         })
         })
         .then(res => res.text())
@@ -677,7 +707,10 @@
 
         if(e.keyCode == 13){
             
-            const clone = e.currentTarget.parentNode.cloneNode(true)
+            let clone = e.currentTarget.parentNode.cloneNode(true)
+            let input = clone.querySelector('input')
+            input.setAttribute('name', `lista${input.dataset.p}_${Date.now()}`);
+            input.setAttribute('value', '');
             e.currentTarget.parentNode.insertAdjacentHTML('afterend', clone.outerHTML)
 
         }

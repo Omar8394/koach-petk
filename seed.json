@@ -587,5 +587,132 @@
             "tipo_dato":0
 
           }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 41,
+          "fields": {
+            "desc_elemento": "Tipo de Atributo",
+            "fk_tabla_padre": 1,
+            "tipo_elemento": "1",
+            "permite_cambios": 1,
+            "valor_elemento": "Tipo_Atributo",
+            "mostrar_en_combos": 0,
+            "maneja_lista": 1,
+            "datos_adicional":"",
+            "tipo_dato":0
+
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 42,
+          "fields": {
+            "desc_elemento": "Texto",
+            "fk_tabla_padre": 41,
+            "tipo_elemento": "1",
+            "permite_cambios": 1,
+            "valor_elemento": "Tipo_Atributo_Texto",
+            "mostrar_en_combos": 1,
+            "maneja_lista": 0,
+            "datos_adicional":"&#xf068;",
+            "tipo_dato":0
+
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 43,
+          "fields": {
+            "desc_elemento": "Texto Largo",
+            "fk_tabla_padre": 41,
+            "tipo_elemento": "1",
+            "permite_cambios": 1,
+            "valor_elemento": "Tipo_Atributo_Texto_Largo",
+            "mostrar_en_combos": 1,
+            "maneja_lista": 0,
+            "datos_adicional":"&#xf0c9;",
+            "tipo_dato":0
+
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 44,
+          "fields": {
+            "desc_elemento": "Lista",
+            "fk_tabla_padre": 41,
+            "tipo_elemento": "1",
+            "permite_cambios": 1,
+            "valor_elemento": "Tipo_Atributo_Lista",
+            "mostrar_en_combos": 1,
+            "maneja_lista": 0,
+            "datos_adicional":"&#xf13a;",
+            "tipo_dato":0
+
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 45,
+          "fields": {
+            "desc_elemento": "Seleccion",
+            "fk_tabla_padre": 41,
+            "tipo_elemento": "1",
+            "permite_cambios": 1,
+            "valor_elemento": "Tipo_Atributo_Seleccion",
+            "mostrar_en_combos": 1,
+            "maneja_lista": 0,
+            "datos_adicional":"&#xf10c;",
+            "tipo_dato":0
+
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 46,
+          "fields": {
+            "desc_elemento": "Seleccion Multiple",
+            "fk_tabla_padre": 41,
+            "tipo_elemento": "1",
+            "permite_cambios": 1,
+            "valor_elemento": "Tipo_Atributo_Seleccion_Multiple",
+            "mostrar_en_combos": 1,
+            "maneja_lista": 0,
+            "datos_adicional":"&#xf046;",
+            "tipo_dato":0
+
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 47,
+          "fields": {
+            "desc_elemento": "Fecha",
+            "fk_tabla_padre": 41,
+            "tipo_elemento": "1",
+            "permite_cambios": 1,
+            "valor_elemento": "Tipo_Atributo_Fecha",
+            "mostrar_en_combos": 1,
+            "maneja_lista": 0,
+            "datos_adicional":"&#xf274;",
+            "tipo_dato":0
+
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 48,
+          "fields": {
+            "desc_elemento": "Rango",
+            "fk_tabla_padre": 41,
+            "tipo_elemento": "1",
+            "permite_cambios": 1,
+            "valor_elemento": "Tipo_Atributo_Rango",
+            "mostrar_en_combos": 1,
+            "maneja_lista": 0,
+            "datos_adicional":"&#xf162;",
+            "tipo_dato":0
+          }
         }
 ]
