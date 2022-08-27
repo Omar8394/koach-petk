@@ -61,12 +61,16 @@
     let savemode= false
     let query = ""
     let selectedId = ""
-    const renderContent = ()=>{
+    let limit = 4
+    let page =""
+    const renderContent = (id,page,limit)=>{
          document.querySelector("main.card-body").classList.add("is-loading")
          fetch("{% url 'contenido_unidades'%}", {
             ...fetchObject,
             body: JSON.stringify({
                query,
+               page,
+               limit,
                pk:id
             })
          })
@@ -76,7 +80,7 @@
             document.querySelector("main.card-body").innerHTML = result
          })
       }
-      renderContent()
+      renderContent(id,page,limit)
 const openAddModulos = (id) => {
         idSeleted=id
         editmode = false
@@ -119,7 +123,7 @@ const openAddModulos = (id) => {
                        .then(() => {
                           $("#addNewModale").modal("hide")
                           stopLoading()
-                          renderContent()
+                          renderContent(id,page,limit)
                        })
      
                  }
@@ -161,7 +165,7 @@ const openAddModulos = (id) => {
         }
        
      }
-     const openEditmodulo = (id) =>{
+     const openEditmodulo = (id,pages,padre) =>{
       editmode = true
       idSeleted = id
       fetch("{% url 'modaladdmodulos'%}", {
@@ -206,14 +210,14 @@ const openAddModulos = (id) => {
                      .then(() => {
                         $("#addNewModale").modal("hide")
                         stopLoading()
-                        renderContent()
+                        renderContent(padre,pages,limit)
                      })
                }
             })
          })
    } 
-   const openDeletemodulo = async (id) =>{
-   
+   const openDeletemodulo = async (id,page,padre) =>{
+      
       const elimino = await alerta(3)
       if(elimino){
          fetch("{% url 'modaladdmodulos'%}", {
@@ -229,17 +233,19 @@ const openAddModulos = (id) => {
             else alerta(4)
          })
          .then(()=>{
-            renderContent()
+            renderContent(padre,page,limit)
          })
       }
    } 
-   const rendercurso = (id)=>{
+   const rendercurso = (id,page,limit)=>{
       document.querySelector("#renderpro").classList.add("is-loading")
       fetch("{% url 'contenido_cursos'%}", {
          ...fetchObject,
          body: JSON.stringify({
             query,
-            id
+            id,
+            page,
+            limit
          })
       })
       .then(async(res)=>{
@@ -290,14 +296,14 @@ const openAddModulos = (id) => {
                      .then(() => {
                         $("#addNewModales").modal("hide")
                         stopLoading()
-                        rendercurso(idSeleted)
+                        rendercurso(idSeleted,page,limit)
                      })
    
                }
             })
          })
    }  
-   const openDeletecursos = async (id,padre) =>{
+   const openDeletecursos = async (id,padre,page) =>{
    
       const elimino = await alerta(3)
       if(elimino){
@@ -314,11 +320,11 @@ const openAddModulos = (id) => {
             else alerta(4)
          })
          .then(()=>{
-            rendercurso(padre)
+            rendercurso(padre,page,limit)
          })
       }
    } 
-   const openEditcursos = (id,padre) =>{
+   const openEditcursos = (id,padre,pages) =>{
       editmode = true
       idSeleted = id
       fetch("{% url 'modaladdcursos'%}", {
@@ -363,12 +369,28 @@ const openAddModulos = (id) => {
                      .then(() => {
                         $("#addNewModale").modal("hide")
                         stopLoading()
-                        rendercurso(padre)
+                        rendercurso(padre,pages,limit)
                      })
                }
             })
          })
-   }       
+   } 
+   const goToTable =  async (Page,padre)  => {
+      const contenedorLista = document.getElementById("renderList")
+      
+      const resultado = await  renderContent(padre,Page,limit)
+         contenedorLista.innerHTML = resultado
+   
+   
+   }
+   const goToTables =  async (Page,padre)  => {
+      const contenedorLista = document.getElementById("renderpro")
+      
+      const resultado = await  rendercurso(padre,Page,limit)
+         contenedorLista.innerHTML = resultado
+   
+   
+   }      
 </script>	
 <!-- Specific Page JS goes HERE  -->
 {% endblock javascripts %}

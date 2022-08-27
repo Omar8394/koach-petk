@@ -67,6 +67,8 @@
       let savemode= false
       let query = ""
       let selectedId = ""
+      let limit = 4
+      let page =""
       const renderContent = ()=>{
          document.querySelector("main.card-body").classList.add("is-loading")
          fetch("{% url 'contenido_programas'%}", {
@@ -152,15 +154,17 @@
       }    
       function cambiar_comb() { 
          const varia= document.getElementById("categoryProgram").value;
-         rendertavs("find",varia)
+         rendertavs("find",varia,page,limit)
          document.querySelector("#renderpro").innerHTML = "<h3 class=display-4>Agregue un proceso</h3>"
      }
-     const rendertavs = (tipo,pk)=>{
+     const rendertavs = (tipo,pk,page,limit)=>{
       document.querySelector("#renderList").classList.add("is-loading")
       fetch("{% url 'contenido_programas'%}", {
          ...fetchObject,
          body: JSON.stringify({
             query:tipo,
+            page,
+            limit,
             id:pk
 
            
@@ -291,13 +295,15 @@ const openDeleteProgram = async (id) =>{
       })
    }
 }
-const renderproseso = (id)=>{
+const renderproseso = (id,page,limit)=>{
    document.querySelector("#renderpro").classList.add("is-loading")
    fetch("{% url 'addproceso'%}", {
       ...fetchObject,
       body: JSON.stringify({
          query,
-         id
+         id,
+         page,
+         limit
       })
    })
    .then(async(res)=>{
@@ -306,7 +312,7 @@ const renderproseso = (id)=>{
       document.querySelector("#renderpro").innerHTML = result
    })
 }
-const openAddProceso = (id) => {
+const openAddProceso = (id,pages) => {
    editmode = false
    idSeleted = id
    fetch("{% url 'modaladdproceso'%}", {
@@ -352,7 +358,7 @@ const openAddProceso = (id) => {
                clickSavetwo(formPrograma, "{% url 'modaladdproceso' %}")
                   .then(() => {
                      $("#addNewModales").modal("hide")
-                     renderproseso(idSeleted)
+                     renderproseso(idSeleted,pages,limit)
                      stopLoading()
                      
                   })
@@ -361,7 +367,7 @@ const openAddProceso = (id) => {
          })
       })
 }
-const openDeleteProseso = async (id,padre) =>{
+const openDeleteProseso = async (id,padre,pages) =>{
    
    const elimino = await alerta(3)
    if(elimino){
@@ -378,11 +384,11 @@ const openDeleteProseso = async (id,padre) =>{
          else alerta(4)
       })
       .then(()=>{
-         renderproseso(padre)
+         renderproseso(padre,pages,limit)
       })
    }
 }
-const openEditProseso = (id,padre) =>{
+const openEditProseso = (id,padre,pages) =>{
    editmode = true
    idSeleted = id
    fetch("{% url 'modaladdprogram'%}", {
@@ -427,7 +433,7 @@ const openEditProseso = (id,padre) =>{
                   .then(() => {
                      $("#addNewModale").modal("hide")
                      stopLoading()
-                     renderproseso(padre)
+                     renderproseso(padre,pages,limit)
                   })
             }
          })
@@ -471,6 +477,22 @@ const clickSavetwo = (formElement, url) => {
 const opengounits = (id) =>{
    window.location.href = `{% url 'capacitaciontwo' %}?id=${id}`
                 
+}
+const goToTable =  async (Page,padre)  => {
+   const contenedorLista = document.getElementById("renderList")
+   
+   const resultado = await  rendertavs("find",padre,Page,limit)
+      contenedorLista.innerHTML = resultado
+
+
+}
+const goToTables =  async (Page,padre)  => {
+   const contenedorLista = document.getElementById("renderpro")
+   
+   const resultado = await  renderproseso(padre,Page,limit)
+      contenedorLista.innerHTML = resultado
+
+
 }
 </script>
 	

@@ -6,6 +6,7 @@ from ..App.models import ConfTablasConfiguracion
 from ..Capacitacion.models import Estructuraprograma
 import time, json
 from decimal import Decimal
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 # Create your views here.
 
 def index(request):
@@ -29,7 +30,9 @@ def getcontentprogrmas(request):
             if request.body:
                 context={}
                 data = json.load(request)
+                print(data)
                 title=False
+                lista = []
                 if data["query"] == "":
                    categorias=ConfTablasConfiguracion.obtenerHijos("Categoria")     
                    context = {'categorias':categorias}             
@@ -39,7 +42,11 @@ def getcontentprogrmas(request):
                    print(data)
                    programas=Estructuraprograma.objects.filter(valor_elemento='Program',fk_categoria_id=data['id'])
                    if programas.exists():
-                      context = {'programas':programas} 
+                      paginator = Paginator(programas, data["limit"])
+                      lista = paginator.get_page(data["page"])
+                      page = data["page"]
+                      limit = data["limit"]
+                      context = {"page": page,"limit": limit,'programas':programas,'data':lista,'padre':data["id"]} 
                       print(context)            
                       html_template = loader.get_template( 'renderprogramas.html' )
                       return HttpResponse(html_template.render(context, request))
@@ -131,12 +138,17 @@ def Addproceso(request):
             if request.body:    
                 data = json.load(request)
                 print(data)
+                lista=[]
                 if data['query'] == "":
                    procesos=Estructuraprograma.objects.filter(fk_estructura_padre_id=data['id'],valor_elemento="Process")
-                  
+                   print(data)
                    if procesos.exists():
-                      context = {'procesos':procesos,'padre':data['id']}
-                      print(context)
+                      paginator = Paginator(procesos, data["limit"])
+                      lista = paginator.get_page(data["page"])
+                      page = data["page"]
+                      limit = data["limit"]
+                      context = {"page": page,"limit": limit,'procesos':procesos,'padre':data['id'],'data':lista}
+                      #print(context)
                       html_template = (loader.get_template('renderizadopro.html'))
                       return HttpResponse(html_template.render(context, request))
                    else:
@@ -209,10 +221,15 @@ def getcontentunits(request):
                 title=False
                 data = json.load(request)
                 print(data)
+                lista=[]
                 if data["query"] == "":
                    units=Estructuraprograma.objects.filter(fk_estructura_padre_id=data['pk'],valor_elemento="Module")
                    if units.exists(): 
-                      context = {'units':units,'pk':data['pk']}             
+                      paginator = Paginator(units, data["limit"])
+                      lista = paginator.get_page(data["page"])
+                      page = data["page"]
+                      limit = data["limit"]
+                      context = {"page": page,"limit": limit,'units':units,'pk':data['pk'],'padre':data['pk'],'data':lista}             
                       html_template = loader.get_template( 'contenidounidades.html' )
                       return HttpResponse(html_template.render(context, request))
                    else:
@@ -274,10 +291,15 @@ def getcontentcursos(request):
                 title=False
                 data = json.load(request)
                 print(data)
+                lista=[]
                 if data["query"] == "":
                    cursos=Estructuraprograma.objects.filter(fk_estructura_padre_id=data['id'],valor_elemento="Courses")
-                   if cursos.exists(): 
-                      context = {'cursos':cursos,'pk':data['id']}             
+                   if cursos.exists():
+                      paginator = Paginator(cursos, data["limit"])
+                      lista = paginator.get_page(data["page"])
+                      page = data["page"]
+                      limit = data["limit"] 
+                      context = {"page": page,"limit": limit,'cursos':cursos,'pk':data['id'],'padre':data['id'],'data':lista}             
                       html_template = loader.get_template( 'renderizarcursos.html' )
                       return HttpResponse(html_template.render(context, request))
                    else:
