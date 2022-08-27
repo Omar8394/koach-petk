@@ -26,7 +26,7 @@ class fichas_bloques(models.Model):
 class atributosxfichaxbloque(models.Model):
     
     id_atribxfichaxbloq = models.AutoField(primary_key=True)
-    nombre_atrib = models.CharField(max_length=50, null=True, default=None)
+    nombre_atrib = models.CharField(max_length=50, null=True, default="")
     fk_ficha_bloque = models.ForeignKey(fichas_bloques, on_delete=models.CASCADE, default=None, null=True)
     fk_tipodato = models.ForeignKey(ConfTablasConfiguracion, on_delete=models.DO_NOTHING, default=None, null=True)
     fk_atribxfichaxbloq_padre = models.ForeignKey('self', on_delete=models.CASCADE, db_column='fk_tabla_padre', default=None, null=True)

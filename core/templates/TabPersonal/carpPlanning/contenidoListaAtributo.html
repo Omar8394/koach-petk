@@ -2,13 +2,24 @@
 <div class="form-group col-12">
 
     <label class="col-form-label">{% translate "Opciones" %}</label>
+    {% for x, y in page %}
     <div class="input-group mb-3">
-        <input type="text" class="form-control agregar-lista" placeholder='{% translate "Escriba una descripcion para la opcion, presione enter para agregar una nueva" %}' {% if pagina and pagina.titulo %}value="{{ pagina.titulo }}"{% endif %}>
+        <input type="text" class="form-control agregar-lista" data-p="{{padre}}" name="lista{{padre}}_{{forloop.counter}}{% now 'isu' %}" placeholder='{% translate "Escriba una descripcion para la opcion, presione enter para agregar una nueva" %}' value="{{ y }}">
         <div class="input-group-append">
             <button class="btn btn-danger" type="button" id="button-addon2" onclick="eliminarLista(this)">
                 <i class="fas fa-trash-alt"></i>
             </button>
         </div>
     </div>
+    {% empty %}
+    <div class="input-group mb-3">
+        <input type="text" class="form-control agregar-lista" data-p="{{padre}}" name="lista{{padre}}_{% now 'isu' %}" placeholder='{% translate "Escriba una descripcion para la opcion, presione enter para agregar una nueva" %}'>
+        <div class="input-group-append">
+            <button class="btn btn-danger" type="button" id="button-addon2" onclick="eliminarLista(this)">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        </div>
+    </div>
+    {% endfor %} 
     
 </div>

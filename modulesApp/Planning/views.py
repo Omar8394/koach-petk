@@ -1,11 +1,16 @@
 from distutils.log import error
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
-import time, json
+import time, json, re
 from .models import fichas, fichas_bloques, atributosxfichaxbloque
 from ..App.models import ConfTablasConfiguracion as configuraciones
+from django.template.defaulttags import register
 
 # Create your views here.
+
+@register.filter
+def tosJson(value):
+    return json.loads(value).items()
 
 def func_Planning(request): 
     context = {}
@@ -294,7 +299,9 @@ def modalAtributo(request):
                 context['bloque'] = bloque
                 lista = configuraciones.obtenerHijos('Tipo_Atributo')
                 context['lista'] = lista
-                context['data'] = atributosxfichaxbloque.objects.filter(fk_ficha_bloque__id_bloquexficha=idBloque)
+                atributos = atributosxfichaxbloque.objects.filter(fk_ficha_bloque__id_bloquexficha=idBloque)
+                context['data'] = atributos
+
                 # bloques = fichas_bloques.objects.filter(fk_idficha__id_ficha=id)
                 # context['data'] = bloques
 
@@ -319,30 +326,84 @@ def guardarAtributo(request):
             idAtributo = body.get('idAtributo')
 
 
-            if idAtributo and int(idAtributo) > 0:
-
-                atributo = atributosxfichaxbloque.objects.get(id_atribxfichaxbloq=idAtributo)
-
-            else: 
-
-                atributo = atributosxfichaxbloque()
-
             if data:
 
-                atributo.nombre_atrib = data.get('nombre') 
-                atributo.fk_tipodato = data.get('nombre') 
+                atributos = atributosxfichaxbloque.objects.filter(fk_ficha_bloque__id_bloquexficha=idBloque)
 
-            if not idAtributo:
+                for atributo in atributos:
 
-                atributo.orden_presentacion = len(atributosxfichaxbloque.objects.filter(fk_ficha_bloque__id_bloquexficha=idBloque)) + 1
+                    atributo.listaValores = None
+                    atributo.save()
 
-            bloque = fichas_bloques.objects.get(id_bloquexficha=idBloque)
-            atributo.fk_ficha_bloque = bloque
-            atributo.save()
-            context['page'] = atributo
-            lista = configuraciones.obtenerHijos('Tipo_Atributo')
-            context['lista'] = lista
+                for x, y in data.items():
+                    # if(y):
+                        # print(x)
+                        try:
 
+                            id = re.search("[0-9]+", x).group()
+                            tipo = re.search("[a-zA-Z]*", x).group()
+                            atributo = atributos.get(id_atribxfichaxbloq=id)
+                            # print(tipo, id)
+
+                            if tipo == 'Tipo':
+
+                                lista = configuraciones.obtenerHijos('Tipo_Atributo')
+                                tipoAtributo = lista.get(id_tabla=y)
+
+                                if tipoAtributo:
+
+                                    atributo.fk_tipodato = tipoAtributo
+
+                                    if tipoAtributo.valor_elemento == 'Tipo_Atributo_Rango' or tipoAtributo.valor_elemento == 'Tipo_Atributo_Texto' or tipoAtributo.valor_elemento == 'Tipo_Atributo_Texto_Largo' or tipoAtributo.valor_elemento == 'Tipo_Atributo_Fecha':
+                                    
+                                        atributo.listaValores = None
+                                        atributo.rangos = None
+                                
+                                else:
+
+                                    atributo.listaValores = None
+                                    atributo.rangos = None
+
+                            elif tipo == 'titulo':
+
+                                atributo.nombre_atrib = y
+
+                            elif tipo == 'lista':
+
+                                jsonList = json.loads(atributo.listaValores) if atributo.listaValores else {}
+                                jsonList.update({len(jsonList) + 1: y})
+                                atributo.listaValores = json.dumps(jsonList)
+
+                            atributo.save()
+
+                        except: 
+
+                            print('error')
+
+                return HttpResponse('ok')
+            
+            else:
+
+                if idAtributo and int(idAtributo) > 0:
+
+                    atributo = atributosxfichaxbloque.objects.get(id_atribxfichaxbloq=idAtributo)
+
+                else: 
+
+                    atributo = atributosxfichaxbloque()
+
+
+                if not idAtributo:
+
+                    atributo.orden_presentacion = len(atributosxfichaxbloque.objects.filter(fk_ficha_bloque__id_bloquexficha=idBloque)) + 1
+
+                bloque = fichas_bloques.objects.get(id_bloquexficha=idBloque)
+                atributo.fk_ficha_bloque = bloque
+                atributo.save()
+                context['page'] = atributo
+                lista = configuraciones.obtenerHijos('Tipo_Atributo')
+                context['lista'] = lista
+            
     html_template = loader.get_template( 'TabPersonal/carpPlanning/contenidoAtributoIndividual.html' )
     return HttpResponse(html_template.render(context, request))
 
@@ -402,6 +463,7 @@ def atributoLista(request):
 
             body = json.load(request)
             value = body.get('value')
+            padre = body.get('padre')
             lista = configuraciones.objects.get(id_tabla=value)
 
             if lista.valor_elemento == 'Tipo_Atributo_Rango' or lista.valor_elemento == 'Tipo_Atributo_Texto' or lista.valor_elemento == 'Tipo_Atributo_Texto_Largo' or lista.valor_elemento == 'Tipo_Atributo_Fecha':
@@ -411,6 +473,7 @@ def atributoLista(request):
             elif lista.valor_elemento == 'Tipo_Atributo_Seleccion' or lista.valor_elemento == 'Tipo_Atributo_Lista' or lista.valor_elemento == 'Tipo_Atributo_Seleccion_Multiple':
 
                 context['lista'] = lista
+                context['padre'] = atributosxfichaxbloque.objects.get(id_atribxfichaxbloq=padre).id_atribxfichaxbloq
                 html_template = loader.get_template( 'TabPersonal/carpPlanning/contenidoListaAtributo.html' )
                 return HttpResponse(html_template.render(context, request))
 
