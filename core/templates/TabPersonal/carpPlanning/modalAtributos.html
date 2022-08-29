@@ -1,6 +1,6 @@
 {% load i18n %}
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet"/>
-<div class="modal fade" id="modalAtributos" style="background-color: rgba(0, 0, 0, 0.9);" tabindex="-1" role="dialog" data-backdrop="static">
+<div class="modal fade" id="modalAtributos" style="background-color: rgba(0, 0, 0, 0.9);" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="modalAtributosContenido">
         <div class="modal-content">
             <div class="modal-header">
@@ -31,9 +31,8 @@
                     </div>
                 </div>
                 <div class="modal-footer color-footer-modal">
-                    <button type="button" class="btn btn-radius btn-naranja mr-auto" data-dismiss="modal">
-                    <i class="fas fa-arrow-left mr-2"></i>{% translate "Atras" %}</button>
-                    <button type="submit" class="btn btn-radius btn-azul">{% translate "Guardar" %}<i class="fas fa-save ml-2"></i></button>
+                    <button type="button" class="btn btn-radius btn-azul ml-auto" data-dismiss="modal">
+                    <i class="fas fa-save mr-2"></i>{% translate "guardar" %}</button>
                 </div>
             </form>
         </div>

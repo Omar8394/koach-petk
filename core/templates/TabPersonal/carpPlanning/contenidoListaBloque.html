@@ -3,10 +3,11 @@
 <div class="categoria activa mb-4" draggable="false" data-move="{{page.id_bloquexficha}}">     
     <h3>{{page.descrip_bloque}}</h3>
     <div class="boton">
-        <button onclick="modalAtributos('{{ficha.id_ficha}}', '{{page.id_bloquexficha}}')" class="button btn-icon btn btn-success"><i class="la flaticon-list"></i></button>
-        <button onclick="modalBloque('{{ficha.id_ficha}}', '{{page.id_bloquexficha}}')" class="button btn btn-icon btn-primary"><i class="fas fa-edit"></i></button>
-        <button onclick="eliminarBloque('{{ficha.id_ficha}}', '{{page.id_bloquexficha}}')" class="button btn btn-icon btn-danger"><i class="fas fa-trash-alt"></i></button>
-        <button class="button btn btn-icon btn-secondary handle" style="position: absolute; top: 0; right: 0;"><i class="fas fa-arrows-alt"></i></button>
+        <button onclick="modalAtributos('{{ficha.id_ficha}}', '{{page.id_bloquexficha}}')" class="button btn-icon btn btn-success" title="Agregar atributos"><i class="la flaticon-list"></i></button>
+        <button onclick="modalBloque('{{ficha.id_ficha}}', '{{page.id_bloquexficha}}')" class="button btn btn-icon btn-primary" title="Editar"><i class="fas fa-edit"></i></button>
+        <button onclick="eliminarBloque('{{ficha.id_ficha}}', '{{page.id_bloquexficha}}')" class="button btn btn-icon btn-danger" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+        <a target="_blank" href="/Planning/previsualizarBloque/{{ficha.id_ficha}}/{{page.id_bloquexficha}}" class="button btn btn-icon btn-secondary" style="display: flex; justify-content: center; align-items: center;"><i class="fas fa-eye"></i></a>
+        <button class="button btn btn-icon btn-secondary handle" style="position: absolute; top: 0; right: 0;" title="Mover"><i class="fas fa-arrows-alt"></i></button>
     </div>
 </div>
 {% empty %}

@@ -702,21 +702,6 @@
         },
         {
           "model": "App.ConfTablasConfiguracion",
-          "pk": 49,
-          "fields": {
-            "desc_elemento": "Categoria",
-            "fk_tabla_padre_id": 1,
-            "tipo_elemento": 1,
-            "permite_cambios":1,
-            "valor_elemento":"Categoria",
-            "mostrar_en_combos":0,
-            "maneja_lista":1,
-            "datos_adicional":"",
-            "tipo_dato":0
-          }
-        },
-        {
-          "model": "App.ConfTablasConfiguracion",
           "pk": 48,
           "fields": {
             "desc_elemento": "Rango",
@@ -727,6 +712,21 @@
             "mostrar_en_combos": 1,
             "maneja_lista": 0,
             "datos_adicional":"&#xf162;",
+            "tipo_dato":0
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 49,
+          "fields": {
+            "desc_elemento": "Categoria",
+            "fk_tabla_padre_id": 1,
+            "tipo_elemento": 1,
+            "permite_cambios":1,
+            "valor_elemento":"Categoria",
+            "mostrar_en_combos":0,
+            "maneja_lista":1,
+            "datos_adicional":"",
             "tipo_dato":0
           }
         }
