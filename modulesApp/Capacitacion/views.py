@@ -34,7 +34,8 @@ def getcontentprogrmas(request):
                 title=False
                 lista = []
                 if data["query"] == "":
-                   categorias=ConfTablasConfiguracion.obtenerHijos("Categoria")     
+                   categorias=ConfTablasConfiguracion.obtenerHijos("Categoria") 
+                   print(categorias)    
                    context = {'categorias':categorias}             
                    html_template = loader.get_template( 'Contenido_programas.html' )
                    return HttpResponse(html_template.render(context, request))
