@@ -1,116 +1,117 @@
-<section >
-    <div class="form-group" id="groupDate">
- 
-       <div class="row">
-           <div class="card col-6" style="background-color: #1a2035 !important; color: white;">
-            <div class="card-body">
-             <div class="section-header">
-                <h3 >Nuevo Modulo</h3>
-                <div onclick="openAddModulos('{{pk}}')" class="btn btn-icon btn-success btn-round add-btn btn-card-lg">
-                   <i class="fas fa-plus"></i>
-                </div>
-             </div> 
-             
-            <div id="renderList" class="col-md-12">   
-               {% if title %} 
-               <h3 class="display-4">Aun no ha agregado modulos a este proceso</h3>
-               {% endif %}
-               {% for item in data %}
-               <ul class="card-list">
-                  <li class="card-list-item">
-                     <div class="card-list-item-inner">
-                        <div class="card-list-item-subtitle">{{item.Titulo}}</div>
-                       
-                        <div class="card-list-item-actions">
-                        <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Edit"
-                        onclick="openEditmodulo('{{item.id_estructura}}','{{page}}','{{padre}}')">
-                        <i class="fas fa-edit"></i>
-                        </button>
-                        <button type="button" class="btn btn-icon btn-sm btn-warning ml-1" data-toggle="tooltip"
-                        data-placement="top" title="Ir" onclick="rendercurso('{{item.id_estructura}}','',4)">
-                        <i class="fas fa-door-open"></i>
-                        </button>
-                        <button type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip" data-placement="top"
-                        title="Delete" onclick="openDeletemodulo('{{item.id_estructura}}','{{page}}','{{item.fk_estructura_padre_id}}')">
-                        <i class="fas fa-trash-alt"></i>
-                        </button>
-                        <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Edit"
-                        onclick="">
-                        <i class="fas fa-plus"></i>
-                        </button>
-                        </div>
-                       </div>
+
+ <section >
+   <div class="form-group" id="groupDate">
+
+      <div class="row">
+          <div class="card col-6" style="background-color: #1a2035 !important; color: white;">
+           <div class="card-body">
+            <div class="section-header">
+               <h3 >Nuevo Modulo</h3>
+               <div onclick="openAddModulos('{{pk}}')" class="btn btn-icon btn-success btn-round add-btn btn-card-lg">
+                  <i class="fas fa-plus"></i>
+               </div>
+            </div>  
+            
+           <div id="renderList" class="col-md-12">   
+            {% if title %} 
+            <h3 class="display-4">Aun no ha agregado modulos a este proceso</h3>
+            {% endif %}
+            {% for item in data %}
+            <ul class="card-list">
+               <li class="card-list-item">
+                  <div class="card-list-item-inner">
+                     <div class="card-list-item-subtitle">{{item.Titulo}}</div>
+                    
+                     <div class="card-list-item-actions">
+                     <div class="btn-group" role="group">
+                     <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Edit"
+                     onclick="openEditmodulo('{{item.id_estructura}}','{{page}}','{{padre}}')">
+                     <i class="fas fa-edit"></i>
+                     </button>
+                     <button type="button" class="btn btn-icon btn-sm btn-warning ml-1" data-toggle="tooltip"
+                     data-placement="top" title="Ir" onclick="rendercurso('{{item.id_estructura}}','',4)">
+                     <i class="fas fa-door-open"></i>
+                     </button>
+                     <button type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip" data-placement="top"
+                     title="Delete" onclick="openDeletemodulo('{{item.id_estructura}}','{{page}}','{{item.fk_estructura_padre_id}}')">
+                     <i class="fas fa-trash-alt"></i>
+                     </button>
+                     <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Edit"
+                     onclick="">
+                     <i class="fas fa-plus"></i>
+                     </button>
                      </div>
-                  </li>
-               </ul>
-               {% endfor%}
-               <div class="card-footer">
-                  <nav class="col-6 m-2" aria-label="Page navigation example">
-                      <ul class="pagination justify-content-end">
-                         {% if data.has_previous %}
-                         <li class="page-item">
-                            <a class="page-link" onclick="goToTable(1,'{{padre}}')" href="#">First</a>
-                            
-                         </li>
-                         <li class="page-item">
-                            
-                            
-                            <a class="page-link" href="#" onclick="goToTable('{{ data.previous_page_number }}','{{padre}}')"><i class="fas fa-arrow-left"></i></a>
-                         </li>
-                         {% endif %}
-                         
-                         {% if data.number|add:'-4' > 1 %}
-                         <li class="page-item"><a class="page-link" onclick="goToTable(`{{ data.number|add:'-5' }}`,'{{padre}}')" href="#">&hellip;</a></li>
-                         {% endif %}
-                         
-                         {% for i in data.paginator.page_range %}
-                         {% if data.number == i %}
-                         <li class="page-item active" aria-current="page">
-                            <span class="page-link">
-                               {{ i }}
-                               <span class="sr-only">(current)</span>
-                            </span>
-                         </li>
-                         {% elif i > data.number|add:'-5' and i < data.number|add:'5' %} <li class="page-item"><a
-                            class="page-link" onclick="goToTable('{{i}}','{{padre}}')" href="#">{{ i }}</a></li>
-                            {% endif %}
-                            {% endfor %}
-                            
-                            {% if data.paginator.num_pages > data.number|add:'4' %}
-                            <li class="page-item"><a class="page-link" onclick="goToTable(`{{ data.number|add:'5' }}`,'{{padre}}')" href="#">&hellip;</a></li>
-                            {% endif %}
-                   
-                            {% if data.has_next %}
-                            <li class="page-item">
-                               <a class="page-link" onclick="goToTable('{{ data.next_page_number }}','{{padre}}')" href="#"><i class="fas fa-arrow-right"></i></a>
-                            </li>
-                            <li class="page-item">
-                               <a class="page-link" onclick="goToTable('{{ data.paginator.num_pages }}','{{padre}}')" href="#">Last</a>
-                            </li>
-                            
-                            {% endif %}
-                         </ul>
-                      </nav>
-                   
+                    </div>
                   </div>
-            </div>
-          
-            </div>   
-              
-            
+               </li>
+            </ul>
+            {% endfor%}
+            <div class="card-footer">
+               <nav class="col-6 m-2" aria-label="Page navigation example">
+                   <ul class="pagination justify-content-end">
+                      {% if data.has_previous %}
+                      <li class="page-item">
+                         <a class="page-link" onclick="goToTable(1,'{{padre}}')" href="#">First</a>
+                         
+                      </li>
+                      <li class="page-item">
+                         
+                         
+                         <a class="page-link" href="#" onclick="goToTable('{{ data.previous_page_number }}','{{padre}}')"><i class="fas fa-arrow-left"></i></a>
+                      </li>
+                      {% endif %}
+                      
+                      {% if data.number|add:'-4' > 1 %}
+                      <li class="page-item"><a class="page-link" onclick="goToTable(`{{ data.number|add:'-5' }}`,'{{padre}}')" href="#">&hellip;</a></li>
+                      {% endif %}
+                      
+                      {% for i in data.paginator.page_range %}
+                      {% if data.number == i %}
+                      <li class="page-item active" aria-current="page">
+                         <span class="page-link">
+                            {{ i }}
+                            <span class="sr-only">(current)</span>
+                         </span>
+                      </li>
+                      {% elif i > data.number|add:'-5' and i < data.number|add:'5' %} <li class="page-item"><a
+                         class="page-link" onclick="goToTable('{{i}}','{{padre}}')" href="#">{{ i }}</a></li>
+                         {% endif %}
+                         {% endfor %}
+                         
+                         {% if data.paginator.num_pages > data.number|add:'4' %}
+                         <li class="page-item"><a class="page-link" onclick="goToTable(`{{ data.number|add:'5' }}`,'{{padre}}')" href="#">&hellip;</a></li>
+                         {% endif %}
+                
+                         {% if data.has_next %}
+                         <li class="page-item">
+                            <a class="page-link" onclick="goToTable('{{ data.next_page_number }}','{{padre}}')" href="#"><i class="fas fa-arrow-right"></i></a>
+                         </li>
+                         <li class="page-item">
+                            <a class="page-link" onclick="goToTable('{{ data.paginator.num_pages }}','{{padre}}')" href="#">Last</a>
+                         </li>
+                         
+                         {% endif %}
+                      </ul>
+                   </nav>
+                
+               </div>
            </div>
-           <div class="card col-6" style="background-color: #1a2035 !important; color: white;">
-             <div class="card-body">
-                <div id="renderpro" class="col-md-12">   
-                   <h3 class="display-4">Agregue un curso</h3>
-                   
-                  </div>
-            </div>   
-            
-              
+         
+           </div>   
+             
+           
           </div>
-       </div>
- 
-   </div>
- </section>
+          <div class="card col-6" style="background-color: #1a2035 !important; color: white;">
+            <div class="card-body">
+               <div id="renderpro" class="col-md-12">   
+                  <h3 class="display-4">Agregue un Curso</h3>
+                  
+                 </div>
+           </div>   
+           
+             
+         </div>
+      </div>
+
+  </div>
+</section>
