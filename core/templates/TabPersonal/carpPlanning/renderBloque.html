@@ -1,0 +1,85 @@
+{% load i18n %}
+{% if atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Texto' %}
+<div class="form-row mt-5">
+    <div class="form-holder" style="width: 100%;">
+        <label class="form-row-inner" style="width: 100%;">
+            <input type="text" class="form-control" id="first_name" name="first_name" required>
+            <span class="label">{{atributo.nombre_atrib}}</span>
+        </label>
+    </div>
+</div>
+{% elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Texto_Largo' %}
+<div class="form-group">
+    <label for="comment" style="color: white!important;">{{atributo.nombre_atrib}}</label>
+    <textarea class="form-control" id="comment" rows="5">
+    </textarea>
+</div>
+{% elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Lista' %}
+<div class="form-row">
+    <div class="form-holder form-holder-2">
+        <label for="room" class="special-label-1" style="color: white!important;">{{atributo.nombre_atrib}}</label>
+        <select name="room" id="room" class="form-control">
+            <option value="" disabled selected>{% translate "Seleccione una opcion" %}</option>
+            {% if atributo.listaValores %}
+            {% for x, y in atributo.listaValores|tosJson %}
+            <option value="{{ y }}">{{ y }}</option>
+            {% endfor %}
+            {% endif %}
+        </select>
+        <span class="select-btn">
+            <i class="zmdi zmdi-chevron-down"></i>
+        </span>
+    </div>
+</div>
+{% elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Seleccion' %}
+<div class="form-check py-0" >
+    <label style="color: white!important;">{{atributo.nombre_atrib}}</label><br>
+    {% if atributo.listaValores %}
+    {% for x, y in atributo.listaValores|tosJson %}
+    <label class="form-radio-label">
+        <input class="form-radio-input" type="radio" name="optionsRadios" value="{{ y }}">
+        <span class="form-radio-sign" style="color: white!important;">{{ y }}</span>
+    </label>
+    {% endfor %}
+    {% endif %}
+</div>
+{% elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Seleccion_Multiple' %}
+<div class="form-group py-0">
+    <label class="form-label" style="color: white!important;">{{atributo.nombre_atrib}}</label><br>
+    <div class="selectgroup selectgroup-pills">
+        <label class="selectgroup-item">
+            <input type="checkbox" name="value" value="HTML" class="selectgroup-input">
+            <span class="selectgroup-button" style="color: white;">HTML</span>
+        </label>
+        {% if atributo.listaValores %}
+        {% for x, y in atributo.listaValores|tosJson %}
+        <label class="selectgroup-item">
+            <input type="checkbox" name="value" value="{{ y }}" class="selectgroup-input">
+            <span class="selectgroup-button" style="color: white;">{{ y }}</span>
+        </label>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Fecha' %}
+<div class="form-group form-floating-label">
+    <label for="inputFloatingLabel" style="color: white!important;">{{atributo.nombre_atrib}}</label>
+    <input id="inputFloatingLabel" type="date" class="form-control input-border-bottom" required="" style="color: white!important;">
+</div>
+{% elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Rango' %}
+<label for="day" class="special-label-1 mb-4" style="color: white!important;">{{atributo.nombre_atrib}}</label>
+<div class="form-row">
+    <div class="form-holder">
+        <label class="form-row-inner">
+            <input type="text" class="form-control" id="first_name" name="first_name" required>
+            <span class="label">Minimo</span>
+        </label>
+    </div>
+    <div class="form-holder">
+        <label class="form-row-inner">
+            <input type="text" class="form-control" id="last_name" name="last_name" required>
+            <span class="label">Maximo</span>
+        </label>
+    </div>
+</div>
+{% endif %}

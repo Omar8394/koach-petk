@@ -5,6 +5,7 @@ import time, json, re
 from .models import fichas, fichas_bloques, atributosxfichaxbloque
 from ..App.models import ConfTablasConfiguracion as configuraciones
 from django.template.defaulttags import register
+from django.shortcuts import render
 
 # Create your views here.
 
@@ -250,7 +251,24 @@ def eliminarBloque(request):
     html_template = loader.get_template( 'TabPersonal/carpPlanning/contenidoListaBloque.html' )
     return HttpResponse(html_template.render(context, request))
 
-    
+def previsualizarBloque(request, idFicha, id): 
+
+    try:
+
+        context = {}
+        ficha = fichas.objects.get(id_ficha=idFicha)
+        context['ficha'] = ficha
+        bloque = fichas_bloques.objects.get(id_bloquexficha=id)
+        context['bloque'] = bloque
+        atributos = atributosxfichaxbloque.objects.filter(fk_ficha_bloque=bloque)
+        context['atributos'] = atributos
+        html_template = loader.get_template( 'TabPersonal/carpPlanning/previsualizarBloque.html' )
+        return HttpResponse(html_template.render(context, request))
+
+    except:
+
+        return render(request, "Helping/404error.html", {})
+
 def moverBloque(request): 
 
     context = {}
@@ -328,58 +346,7 @@ def guardarAtributo(request):
 
             if data:
 
-                atributos = atributosxfichaxbloque.objects.filter(fk_ficha_bloque__id_bloquexficha=idBloque)
-
-                for atributo in atributos:
-
-                    atributo.listaValores = None
-                    atributo.save()
-
-                for x, y in data.items():
-                    # if(y):
-                        # print(x)
-                        try:
-
-                            id = re.search("[0-9]+", x).group()
-                            tipo = re.search("[a-zA-Z]*", x).group()
-                            atributo = atributos.get(id_atribxfichaxbloq=id)
-                            # print(tipo, id)
-
-                            if tipo == 'Tipo':
-
-                                lista = configuraciones.obtenerHijos('Tipo_Atributo')
-                                tipoAtributo = lista.get(id_tabla=y)
-
-                                if tipoAtributo:
-
-                                    atributo.fk_tipodato = tipoAtributo
-
-                                    if tipoAtributo.valor_elemento == 'Tipo_Atributo_Rango' or tipoAtributo.valor_elemento == 'Tipo_Atributo_Texto' or tipoAtributo.valor_elemento == 'Tipo_Atributo_Texto_Largo' or tipoAtributo.valor_elemento == 'Tipo_Atributo_Fecha':
-                                    
-                                        atributo.listaValores = None
-                                        atributo.rangos = None
-                                
-                                else:
-
-                                    atributo.listaValores = None
-                                    atributo.rangos = None
-
-                            elif tipo == 'titulo':
-
-                                atributo.nombre_atrib = y
-
-                            elif tipo == 'lista':
-
-                                jsonList = json.loads(atributo.listaValores) if atributo.listaValores else {}
-                                jsonList.update({len(jsonList) + 1: y})
-                                atributo.listaValores = json.dumps(jsonList)
-
-                            atributo.save()
-
-                        except: 
-
-                            print('error')
-
+                guardarAtributos(idBloque, data)
                 return HttpResponse('ok')
             
             else:
@@ -407,6 +374,60 @@ def guardarAtributo(request):
     html_template = loader.get_template( 'TabPersonal/carpPlanning/contenidoAtributoIndividual.html' )
     return HttpResponse(html_template.render(context, request))
 
+def guardarAtributos(idBloque, data):
+
+    if data:
+
+        atributos = atributosxfichaxbloque.objects.filter(fk_ficha_bloque__id_bloquexficha=idBloque)
+
+        for atributo in atributos:
+
+            atributo.listaValores = None
+            atributo.save()
+
+        for x, y in data.items():
+            # if(y):
+                # print(x)
+                try:
+
+                    id = re.search("[0-9]+", x).group()
+                    tipo = re.search("[a-zA-Z]*", x).group()
+                    atributo = atributos.get(id_atribxfichaxbloq=id)
+
+                    if tipo == 'Tipo':
+
+                        lista = configuraciones.obtenerHijos('Tipo_Atributo')
+                        tipoAtributo = lista.get(id_tabla=y)
+
+                        if tipoAtributo:
+
+                            atributo.fk_tipodato = tipoAtributo
+
+                            if tipoAtributo.valor_elemento == 'Tipo_Atributo_Rango' or tipoAtributo.valor_elemento == 'Tipo_Atributo_Texto' or tipoAtributo.valor_elemento == 'Tipo_Atributo_Texto_Largo' or tipoAtributo.valor_elemento == 'Tipo_Atributo_Fecha':
+                            
+                                atributo.listaValores = None
+                                atributo.rangos = None
+                        
+                        else:
+
+                            atributo.listaValores = None
+                            atributo.rangos = None
+
+                    elif tipo == 'titulo':
+
+                        atributo.nombre_atrib = y
+
+                    elif tipo == 'lista':
+
+                        jsonList = json.loads(atributo.listaValores) if atributo.listaValores else {}
+                        jsonList.update({len(jsonList) + 1: y})
+                        atributo.listaValores = json.dumps(jsonList)
+
+                    atributo.save()
+
+                except: 
+
+                    print('error')
     
 def eliminarAtributo(request): 
     context = {}
@@ -433,7 +454,9 @@ def moverAtributo(request):
             body = json.load(request)
             id = body.get('id')
             data = body.get('data')
+            dataForm = body.get('dataForm')
             atributos = atributosxfichaxbloque.objects.filter(fk_ficha_bloque__id_bloquexficha=id)
+            guardarAtributos(id, dataForm)
 
             if atributos:
 

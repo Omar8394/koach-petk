@@ -22,17 +22,9 @@
             </div>
         </div>
         <div class="form-row">
-            <!-- <div class="form-group col-12">
-                <label for="contenidoAtributo" class="col-form-label">{% translate "Titulo" %}</label>
-                <input type="text" class="form-control" name="titulo" id="contenidoAtributo" maxlength="50"
-                    placeholder='{% translate "Escriba un titulo" %}' {% if pagina and pagina.titulo %}value="{{ pagina.titulo }}"{% endif %}>
-            </div> -->
             {% if page.listaValores %}
             {% include 'TabPersonal/carpPlanning/contenidoListaAtributo.html' with page=page.listaValores|tosJson padre=page.id_atribxfichaxbloq%}  
             {% endif %}
         </div>
     </div>
-    <!-- <div class="card-footer">
-        <button type="button" onclick="eliminarAtributo(this, '{{page.id_atribxfichaxbloq}}')" class="btn btn-icon btn-danger ml-auto d-block"><i class="fas fa-trash-alt"></i></button>
-    </div> -->
 </div>
