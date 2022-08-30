@@ -235,7 +235,7 @@ def getcontentunits(request):
                       return HttpResponse(html_template.render(context, request))
                    else:
                       title=True
-                      context = {'title':title}             
+                      context = {'title':title,'pk':data['pk']}             
                       html_template = loader.get_template( 'contenidounidades.html' )
                       return HttpResponse(html_template.render(context, request)) 
         except Exception as e:
