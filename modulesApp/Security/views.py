@@ -7,7 +7,7 @@ from .forms import LoginForm, SignUpForm, ResetPasswordForm, RecoveryMethodForm 
 from django.contrib.auth import login, logout, update_session_auth_hash
 from .models import User, CodigoVerificacion
 from .methods import es_correo_valido,change_password,get_status_user, auth_user, is_user_exists, \
-    send_vefication_code_email, get_verification_code , change_password_link, verificarenlace
+    send_vefication_code_email, get_verification_code , verificarenlace
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password, check_password
@@ -24,10 +24,18 @@ def login_view(request):
              form = LoginForm(request.POST or None)
              if form.is_valid():          
                 status_user = auth_user(form.cleaned_data.get("username"), form.cleaned_data.get("password"))
-                if status_user['estado'] == "Active":
+                if status_user['estado'] == "Active" or status_user['estado'] == "Active unverified":
                     print(status_user['mensaje'])
                     login(request, status_user['user']) 
                     return redirect("Dashboard")
+                if status_user['estado'] == "Password expired":
+                    tipo_operacion = ConfTablasConfiguracion.objects.filter(valor_elemento="tv_cambio_clave")[0]
+                    code = str(get_verification_code(status_user['user'],3,tipo_operacion))
+                    if code:
+                        request.session['cambio_clave'] = True
+                        return redirect('security:account_recovery',activation_key=str(code))
+                    else:
+                        messages.error(request, "Error to generate code activaction")
                 else:
                     messages.error(request, status_user['estado'] +":"+ status_user['mensaje'])                           
              else:
@@ -57,8 +65,9 @@ def changePassword(request):
         # verificar encriptacion
         if actual_password != new_password:
             status_user = auth_user(str(request.user), str(actual_password))
-            if status_user['estado'] == "Active":
-                change_password(request, new_password)
+            if status_user['estado'] == "Active" or status_user['estado'] == "Active unverified"\
+                or status_user['estado'] == "Password expired":
+                change_password(request,status_user['user'], new_password)
                 response = {
                     'mensaje': 'Your password has been changed correctly',
                     'tipo': 4,
@@ -96,7 +105,8 @@ def changeSecretQuestion(request):
         actual_password = request.POST.get('password')
         # verificar encriptacion
         status_user = auth_user(str(request.user), str(actual_password))
-        if status_user['estado'] == "Active":
+        if status_user['estado'] == "Active" or status_user['estado'] == "Active unverified"\
+            or status_user['estado'] == "Password expired":
             user.fk_pregunta_secreta_id = id_pregunta
             user.respuesta_secreta = respuesta
             user.save()
@@ -239,7 +249,7 @@ def account_recovery(request, activation_key):
             cambio_clave = "Tu Contraseña ha Caducado!"
         enlace = CodigoVerificacion.objects.get(activation_key=activation_key)
         if enlace.usuario.fk_status_cuenta.valor_elemento != "user_account_suspended":
-            if verificarenlace(enlace.key_expires):
+            if verificarenlace(enlace.activation_key):
                 print("enlace valido", activation_key)
                 context = {"user": enlace.usuario.username,
                            "imagelocal": settings.EMPRESA_SRC_LOGO, "cambioclave": cambio_clave, "botonsubmit": boton_submit}
@@ -247,7 +257,7 @@ def account_recovery(request, activation_key):
                     form = RecoveryMethodEmail(request.POST or None)
                     if form.is_valid():
                         print("form is valid and key link is valid")
-                        change_password_link(enlace, form.cleaned_data['password1'])
+                        change_password(None, enlace.usuario, form.cleaned_data['password1'],enlace)
                         '''operacion = TablasConfiguracion.objects.get(valor_elemento='recovery_account_email')
                         modulo = TablasConfiguracion.objects.get(valor_elemento='module_security')
                         descripcion = "Activation key " + activation_key
@@ -257,7 +267,6 @@ def account_recovery(request, activation_key):
                         messages.success(request, "Your credentials have been changed correctly, try to login")
                         return redirect("security:login")
                     else:
-                        print(form)
                         print("invalid form")
             else:
                 raise Http404("This link has expired please request another link")
