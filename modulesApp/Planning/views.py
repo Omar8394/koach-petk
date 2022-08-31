@@ -11,19 +11,81 @@ from django.shortcuts import render
 
 @register.filter
 def tosJson(value):
-    return json.loads(value).items()
+
+    lista = json.loads(value)
+    lista = {k: v for k, v in lista.items() if v}
+    return lista.items()
 
 def func_Planning(request): 
+
     context = {}
     html_template = loader.get_template( 'TabPersonal/carpPlanning/crear_ficha.html' )
     return HttpResponse(html_template.render(context, request))
 
 def render_fihas(request): 
+    
     context = {}
-    ficha = fichas.objects.all()
-    context['data'] = ficha
-    html_template = loader.get_template( 'TabPersonal/renderfihas.html' )
-    return HttpResponse(html_template.render(context, request))
+
+    if request.method == "POST":
+
+        if(request.body):
+
+            body = json.load(request)
+            tipo = body.get('tipo')
+
+            if tipo:
+
+                context['tipo'] = tipo
+                ficha = fichas.objects.all()
+                res = fichas.objects.all()
+
+                for f in ficha:
+
+                    bloques = fichas_bloques.objects.filter(fk_idficha=f)
+                    atributos = atributosxfichaxbloque.objects.filter(fk_ficha_bloque__fk_idficha=f)
+
+                    if bloques and atributos:
+
+                        borrar = True
+
+                        for atributo in atributos:
+
+                            if atributo.nombre_atrib and str(atributo.nombre_atrib).strip() and atributo.fk_tipodato:
+
+                                if atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Seleccion' or atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Lista' or atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Seleccion_Multiple':
+
+                                    if atributo.listaValores:
+
+                                        lista = json.loads(atributo.listaValores)
+                                        lista = {k: v for k, v in lista.items() if v}
+
+                                        if lista:
+                                            
+                                            borrar = False
+                                            break
+
+                                else:
+                                    
+                                    borrar = False
+                                    break
+
+                        if borrar:
+
+                            res = res.exclude(id_ficha=f.id_ficha)
+
+
+                    else:
+
+                        res = res.exclude(id_ficha=f.id_ficha)
+
+                context['data'] = res
+                html_template = loader.get_template( 'TabPersonal/renderfihas.html' )
+                return HttpResponse(html_template.render(context, request))
+
+        ficha = fichas.objects.all()
+        context['data'] = ficha
+        html_template = loader.get_template( 'TabPersonal/renderfihas.html' )
+        return HttpResponse(html_template.render(context, request))
 
 def testfi(request): 
     context = {}
@@ -119,6 +181,24 @@ def eliminarFicha(request):
     context['data'] = fichas.objects.all()
     html_template = loader.get_template( 'TabPersonal/renderfihas.html' )
     return HttpResponse(html_template.render(context, request))
+
+def previsualizarFicha(request, idFicha): 
+
+    try:
+
+        context = {}
+        ficha = fichas.objects.get(id_ficha=idFicha)
+        context['ficha'] = ficha
+        bloque = fichas_bloques.objects.filter(fk_idficha=ficha)
+        context['bloques'] = bloque
+        atributos = atributosxfichaxbloque.objects.filter(fk_ficha_bloque__fk_idficha=ficha)
+        context['atributos'] = atributos
+        html_template = loader.get_template('TabPersonal/carpPlanning/previsualizarFicha.html')
+        return HttpResponse(html_template.render(context, request))
+
+    except:
+
+        return render(request, "Helping/404error.html", {})
 
     
 def moverFicha(request): 
@@ -501,3 +581,61 @@ def atributoLista(request):
                 return HttpResponse(html_template.render(context, request))
 
     return HttpResponse()
+
+    
+
+def fichaPersonal(request, idFicha): 
+    
+    # try:
+
+        context = {}
+        ficha = fichas.objects.get(id_ficha=idFicha)
+        bloques = fichas_bloques.objects.filter(fk_idficha=ficha)
+        atributos = atributosxfichaxbloque.objects.filter(fk_ficha_bloque__fk_idficha=ficha)
+
+        for bloque in bloques:
+
+            atributo = atributos.filter(fk_ficha_bloque=bloque)
+
+            if not atributo:
+
+                bloques = bloques.exclude(id_bloquexficha=bloque.id_bloquexficha)
+
+        for atributo in atributos:
+
+            if atributo.nombre_atrib and str(atributo.nombre_atrib).strip() and atributo.fk_tipodato:
+
+                if atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Seleccion' or atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Lista' or atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Seleccion_Multiple':
+
+                    if atributo.listaValores:
+
+                        lista = json.loads(atributo.listaValores)
+                        lista = {k: v for k, v in lista.items() if v}
+
+                        if not lista:
+
+                            atributos = atributos.exclude(id_atribxfichaxbloq=atributo.id_atribxfichaxbloq)
+
+                    else:
+
+                        atributos = atributos.exclude(id_atribxfichaxbloq=atributo.id_atribxfichaxbloq)
+
+            else:
+
+                atributos = atributos.exclude(id_atribxfichaxbloq=atributo.id_atribxfichaxbloq)
+
+        context['ficha'] = ficha
+        context['bloques'] = bloques
+        context['atributos'] = atributos
+        html_template = loader.get_template('TabPersonal/carpPlanning/fichaPersonal.html')
+        return HttpResponse(html_template.render(context, request))
+
+    # except:
+
+    #     return render(request, "Helping/404error.html", {})
+
+def mostrarFicha(request): 
+    
+    context = {}
+    html_template = loader.get_template( 'TabPersonal/carpPlanning/mostrarFichas.html' )
+    return HttpResponse(html_template.render(context, request))

@@ -1,0 +1,27 @@
+{% load i18n %}
+{% include 'TabPersonal/carpPlanning/previsualizarFicha.html' with ficha=ficha bloques=bloques atributos=atributos %}  
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+$(document).on('click', 'a[href="#finish"]', (e) => {
+	// const formPrev = document.querySelector("#form-register")
+	// const formData = new FormData(formPrev);
+	// const data = Object.fromEntries(formData.entries())
+	// console.log(data)
+    // makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Tus datos han sido guardados' %}", "fa fa-check")
+    
+//     $('form').on('click', '.required_group', function() {
+//   $('input.required_group').prop('required', $('input.required_group:checked').length === 0);
+// });
+// <form>
+//   <input type="checkbox" name="whatever" value="1" required class="required_group" />
+//   <input type="checkbox" name="whatever" value="2" required class="required_group" />
+//   <input type="checkbox" name="whatever" value="3" required class="required_group" />
+//   <input type="checkbox" name="whatever" value="4" required class="required_group" />
+//   <input type="submit" name="submit" />
+// </form>
+
+    $('input[type="submit"]').click()
+})
+</script>
+{% endblock javascripts %}

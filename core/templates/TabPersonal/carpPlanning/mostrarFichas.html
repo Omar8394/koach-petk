@@ -1,0 +1,705 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+
+{% block title %}{% endblock %}
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+
+
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="content">
+    <div class="page-inner animated fadeInRight">
+        <div class="page-header">
+            <h4 class="page-title">Planificacion</h4>
+            <ul class="breadcrumbs">
+                <li class="nav-home">
+                    <a href="{% url 'home' %}">
+                        <i class="flaticon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="flaticon-right-arrow"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Fichas personales</a>
+                </li>
+            </ul>
+        </div>
+        
+           
+        <div class="page-category" id="pageMain">
+            <div class="card">
+                <main class="card-body is-loading-lg">
+
+                </main>
+                
+            </div>
+        
+        </div>
+    
+    </div>
+
+</div>
+
+{% endblock content %}
+{% block javascripts %}
+<script>
+
+   $(document).ready(function () {
+
+        renderContent()
+
+    });
+
+    const renderContent = () => {
+
+        document.querySelector("main.card-body").innerHTML = spinnerBar()
+        fetch("{% url 'planning:renderfihas' %}", {
+            ...fetchObject,
+            body: JSON.stringify({
+                tipo:1,
+            })
+        })
+        .then(res => res.text())
+        .then(text => {
+
+            document.querySelector("main.card-body").innerHTML = text
+            fichaSort()
+
+        })
+        .catch((err)=>{
+
+            makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+            document.querySelector("main.card-body").innerHTML = ''
+
+        })
+
+    }
+
+    const modalFicha = (id = -1) => {
+
+        setLoading()
+        fetch("{% url 'planning:modalFicha' %}", {
+            ...fetchObject,
+            body: JSON.stringify({
+                id,
+            })
+        })
+        .then(res => res.text())
+        .then(text => {
+
+            document.querySelector('#carruselAyuda').insertAdjacentHTML("beforebegin", text)
+
+            const formFicha = document.querySelector("#modalFichas form")
+            formFicha.addEventListener("submit", (e) => {
+
+                e.preventDefault()
+                
+                const formData = new FormData(formFicha);
+                const data = Object.fromEntries(formData.entries())
+
+                if(data.nombre){
+
+                    const nombre = data.nombre
+
+                    setLoading()
+                    fetch("{% url 'planning:validarNombreFicha' %}", {
+                        ...fetchObject,
+                        body: JSON.stringify({
+                            nombre,
+                            id
+                        })
+                    })
+                    .then(res => res.text())
+                    .then(text => {
+
+                        if(text){
+                            
+                            setLoading()
+                            fetch("{% url 'planning:guardarFicha' %}", {
+                                ...fetchObject,
+                                body: JSON.stringify({
+                                data,
+                                id,
+                                })
+                            })
+                            .then(res => res.text())
+                            .then(text => {
+
+                                document.querySelector("main.card-body").innerHTML = text
+                                fichaSort()
+                                $("#modalFichas").modal("hide")
+                                makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+
+                            })
+                            .catch((err) => {
+                                
+                                makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+                            })
+                            .finally(() => {
+
+                                stopLoading()
+
+                            })
+
+                        }else
+
+                            makeMessage(4, "{% translate 'Alerta!' %}", "{% translate 'El nombre de esta ficha ya existe, debes cambialo por otro' %}", 'fa fa-exclamation-triangle')
+
+                    })
+                    .catch((err) => {
+                        
+                        makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+                    })
+                    .finally(() => {
+
+                        stopLoading()
+
+                    })
+
+
+                }else {
+
+                    formFicha.classList.add('needs-validation', 'was-validated')
+                    formFicha.removeAttribute('novalidate');
+
+                }
+                
+            })
+
+            $('#modalFichas').modal('show')
+            $('#modalFichas').on('hidden.bs.modal', function (event) {
+
+                $('#modalFichas').remove()
+
+            })
+
+        })
+        .catch((err) => {
+
+            makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+        })
+        .finally(() => {
+
+            stopLoading()
+
+        })
+
+    }
+
+    const eliminarFicha = async (id) => {
+
+        const elimino = await alertaMensajitos(6, "{% translate 'Atencion!' %}", "{% translate 'Desea eliminar este archivo' %}")
+
+        if (elimino) {
+
+            document.querySelector("main.card-body").innerHTML = spinnerBar()
+
+            fetch("{% url 'planning:eliminarFicha'%}", {
+                ...fetchObject,
+                body: JSON.stringify({
+                    id,
+                })
+            })
+            .then(res => res.text())
+            .then(text => {
+                
+                document.querySelector("main.card-body").innerHTML = text
+                fichaSort()
+                makeMessage(1, "{% translate 'Notificacion' %}", "{% translate 'Archivo eliminado satisfactoriamente' %}", 'fas fa-trash-alt')
+
+            })
+            .catch((err) => {
+                
+                makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+                document.querySelector("main.card-body").innerHTML = ""
+
+            })
+
+        }
+
+    }
+
+    const fichaSort = () => {
+
+        new Sortable(document.querySelector("#categorias"), {
+            handle: '.handle',
+            animation: 150,
+            onEnd: function (evt) {
+                let arreglo = []
+                evt.to.children.forEach(element => arreglo.push(element.dataset.move));
+                moveFicha(arreglo)
+            },
+        });
+
+    }
+
+    const moveFicha = (data) => {
+
+        setLoading()
+        fetch("{% url 'planning:moverFicha'%}", {
+        ...fetchObject,
+        body: JSON.stringify({
+            data
+        })
+        })
+        .then(res => res.text())
+        .then(text => {
+        
+            document.querySelector("main.card-body").innerHTML = text
+            fichaSort()
+
+        })
+        .catch((err) => {
+        
+            makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+            renderContent()
+
+        })
+        .finally(() => {
+
+            stopLoading()
+
+        })
+
+    }
+
+    const modalListaBloque = (id = -1) => {
+
+        setLoading()
+        fetch("{% url 'planning:modalListaBloque' %}", {
+            ...fetchObject,
+            body: JSON.stringify({
+                id,
+            })
+        })
+        .then(res => res.text())
+        .then(text => {
+
+            document.querySelector('#carruselAyuda').insertAdjacentHTML("beforebegin", text)
+            bloqueSort(id)
+            $('#modalListaBloque').modal('show')
+            $('#modalListaBloque').on('hidden.bs.modal', function (event) {
+
+                $('#modalListaBloque').remove()
+
+            })
+
+        })
+        .catch((err)=>{
+
+            makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+        })
+        .finally(()=>{
+
+            stopLoading()
+
+        })
+
+    }
+
+    const modalBloque = (id = -1, idBloque = -1) => {
+
+        setLoading()
+        fetch("{% url 'planning:modalBloque' %}", {
+            ...fetchObject,
+            body: JSON.stringify({
+                idBloque,
+            })
+        })
+        .then(res => res.text())
+        .then(text => {
+
+            document.querySelector('#carruselAyuda').insertAdjacentHTML("beforebegin", text)
+
+            const formBloque = document.querySelector("#modalBloques form")
+            formBloque.addEventListener("submit", (e) => {
+
+                e.preventDefault()
+                
+                const formData = new FormData(formBloque);
+                const data = Object.fromEntries(formData.entries())
+
+                if(data.descripcion){
+
+                    setLoading()
+                    fetch("{% url 'planning:guardarBloque' %}", {
+                        ...fetchObject,
+                        body: JSON.stringify({
+                        data,
+                        id,
+                        idBloque
+                        })
+                    })
+                    .then(res => res.text())
+                    .then(text => {
+
+                        document.querySelector("#modalListaBloque section.card-body").innerHTML = text
+                        bloqueSort()
+                        $("#modalBloques").modal("hide")
+                        makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+
+                    })
+                    .catch((err)=>{
+
+                        makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+                    })
+                    .finally(() => {
+
+                        stopLoading()
+
+                    })
+
+                }else {
+
+                    formBloque.classList.add('needs-validation', 'was-validated')
+                    formBloque.removeAttribute('novalidate');
+
+                }
+                
+            })
+
+            $('#modalBloques').modal('show')
+            $('#modalBloques').on('hidden.bs.modal', function (event) {
+
+                $('#modalBloques').remove()
+                $('body').addClass('modal-open')
+
+            })
+
+        })
+        .catch((err) => {
+
+            makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+        })
+        .finally(() => {
+
+            stopLoading()
+
+        })
+
+    }
+
+    const eliminarBloque = async (id, idBloque) => {
+
+        const elimino = await alertaMensajitos(6, "{% translate 'Atencion!' %}", "{% translate 'Desea eliminar este archivo' %}")
+
+        if (elimino) {
+
+            setLoading()
+            fetch("{% url 'planning:eliminarBloque'%}", {
+                ...fetchObject,
+                body: JSON.stringify({
+                    id,
+                    idBloque,
+                })
+            })
+            .then(res => res.text())
+            .then(text => {
+                
+                document.querySelector("#modalListaBloque section.card-body").innerHTML = text
+                bloqueSort(id)
+                makeMessage(1, "{% translate 'Notificacion' %}", "{% translate 'Archivo eliminado satisfactoriamente' %}", 'fas fa-trash-alt')
+
+            })
+            .catch((err) => {
+                
+                makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+            })
+            .finally(() => {
+
+                stopLoading()
+
+            })
+
+        }
+
+    }
+
+    const bloqueSort = (id) => {
+
+        new Sortable(document.querySelector("#listaBloques"), {
+            handle: '.handle',
+            animation: 150,
+            onEnd: function (evt) {
+                let arreglo = []
+                evt.to.children.forEach(element => arreglo.push(element.dataset.move));
+                moveBloque(id, arreglo)
+            },
+        });
+
+    }
+
+    const moveBloque = (id, data) => {
+
+        setLoading()
+        fetch("{% url 'planning:moverBloque'%}", {
+        ...fetchObject,
+        body: JSON.stringify({
+            id,
+            data,
+        })
+        })
+        .then(res => res.text())
+        .then(text => {
+
+            document.querySelector("#listaBloques").innerHTML = text
+            fichaSort()
+
+        })
+        .catch((err) => {
+
+            makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+            $('#modalListaBloque').modal('hide')
+
+        })
+        .finally(() => {
+
+            stopLoading()
+
+        })
+
+    }
+
+    const modalAtributos = (id = -1, idBloque = -1) => {
+
+        setLoading()
+        fetch("{% url 'planning:modalAtributo' %}", {
+            ...fetchObject,
+            body: JSON.stringify({
+                id,
+                idBloque
+            })
+        })
+        .then(res => res.text())
+        .then(text => {
+
+            document.querySelector('#carruselAyuda').insertAdjacentHTML("beforebegin", text)
+            atributoSort(idBloque)
+            const addAtributo = document.querySelector("#addAtributo")
+            addAtributo.addEventListener("click", (e) => {
+
+                setLoading()
+                fetch("{% url 'planning:guardarAtributo' %}", {
+                    ...fetchObject,
+                    body: JSON.stringify({
+                    idBloque
+                    })
+                })
+                .then(res => res.text())
+                .then(text => {
+
+                    document.querySelector("#contenidoAtributo").insertAdjacentHTML('beforeend', text)
+                    // atributoSort(idBloque)
+                })
+                .catch((err)=>{
+
+                    makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+                })
+                .finally(() => {
+
+                    stopLoading()
+
+                })
+                
+            })
+
+            const formAtributo = document.querySelector("#formAtributo")
+            formAtributo.addEventListener("submit", (e) => {
+
+                e.preventDefault()
+
+            })
+
+            $('#modalAtributos').modal('show')
+            $('#modalAtributos').on('hidden.bs.modal', function (event) {
+
+                const formData = new FormData(formAtributo);
+                const data = Object.fromEntries(formData.entries())
+
+                setLoading()
+                fetch("{% url 'planning:guardarAtributo' %}", {
+                    ...fetchObject,
+                    body: JSON.stringify({
+                    data,
+                    idBloque
+                    })
+                })
+                .then(res => res.text())
+                .then(text => {
+
+                })
+                .finally(() => {
+
+                    $('#modalAtributos').remove()
+                    $('body').addClass('modal-open')
+                    stopLoading()
+
+                })
+
+            })
+
+        })
+        .catch((err)=>{
+
+            makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+        })
+        .finally(()=>{
+
+            stopLoading()
+
+        })
+
+    }
+
+    const eliminarAtributo = async (e, idAtributo) => {
+        
+        const elimino = await alertaMensajitos(6, "{% translate 'Atencion!' %}", "{% translate 'Desea eliminar este archivo' %}")
+  
+        if (elimino) {
+
+            setLoading()
+            fetch("{% url 'planning:eliminarAtributo'%}", {
+                ...fetchObject,
+                body: JSON.stringify({
+                    idAtributo,
+                })
+            })
+            .then(res => res.text())
+            .then(text => {
+                
+                e.parentNode.parentNode.remove()
+
+            })
+            .catch((err) => {
+                
+                makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+            })
+            .finally(() => {
+
+                stopLoading()
+
+            })
+
+        }
+
+    }
+
+    const atributoSort = (id) => {
+
+        new Sortable(document.querySelector("#contenidoAtributo"), {
+            handle: '.handle',
+            animation: 150,
+            onEnd: function (evt) {
+                let arreglo = []
+                evt.to.children.forEach(element => arreglo.push(element.dataset.move));
+                moveAtributo(id, arreglo)
+            },
+        });
+
+    }
+    
+    const moveAtributo = (id, data) => {
+
+        const formAtributo = document.querySelector("#formAtributo")
+        const formData = new FormData(formAtributo);
+        const dataForm = Object.fromEntries(formData.entries())
+
+        setLoading()
+        fetch("{% url 'planning:moverAtributo'%}", {
+        ...fetchObject,
+        body: JSON.stringify({
+            id,
+            data,
+            dataForm
+        })
+        })
+        .then(res => res.text())
+        .then(text => {
+
+            document.querySelector("#contenidoAtributo").innerHTML = text
+            atributoSort(id)
+
+        })
+        .catch((err) => {
+
+            makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+            $('#modalAtributos').modal('hide')
+
+        })
+        .finally(() => {
+
+            stopLoading()
+
+        })
+
+    }
+
+    const agregarLista = (e, padre) => {
+
+        setLoading()
+        fetch("{% url 'planning:atributoLista'%}", {
+        ...fetchObject,
+        body: JSON.stringify({
+            value: e.value,
+            padre
+        })
+        })
+        .then(res => res.text())
+        .then(text => {
+
+            e.parentNode.parentNode.nextElementSibling.innerHTML = text
+
+        })
+        .catch((err) => {
+
+            makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+            $('#modalAtributos').modal('hide')
+
+        })
+        .finally(() => {
+
+            stopLoading()
+
+        })
+
+    }
+
+    const eliminarLista = (e) => {
+
+        if(e.parentNode.parentNode.parentNode.children.length > 2)
+
+            e.parentNode.parentNode.remove()
+
+    }
+
+    $(document).on('keypress','.agregar-lista',(e) => {
+
+        if(e.keyCode == 13){
+            
+            let clone = e.currentTarget.parentNode.cloneNode(true)
+            let input = clone.querySelector('input')
+            input.setAttribute('name', `lista${input.dataset.p}_${Date.now()}`);
+            input.setAttribute('value', '');
+            e.currentTarget.parentNode.insertAdjacentHTML('afterend', clone.outerHTML)
+
+        }
+
+    });
+
+</script> 
+    
+{% endblock javascripts %} 
