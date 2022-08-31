@@ -729,5 +729,98 @@
             "datos_adicional":"",
             "tipo_dato":0
           }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 50,
+          "fields": {
+            "desc_elemento": "Ritmo",
+            "fk_tabla_padre_id": 1,
+            "tipo_elemento": 1,
+            "permite_cambios":1,
+            "valor_elemento":"Ritmo_Capacitacion",
+            "mostrar_en_combos":0,
+            "maneja_lista":1,
+            "datos_adicional":"",
+            "tipo_dato":0
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk":51 ,
+          "fields": {
+            "desc_elemento": "Diario",
+            "fk_tabla_padre_id": 50,
+            "tipo_elemento": 1,
+            "permite_cambios":1,
+            "valor_elemento":"Diario_ritmo",
+            "mostrar_en_combos":1,
+            "maneja_lista":0,
+            "datos_adicional":"",
+            "tipo_dato":0
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk":52 ,
+          "fields": {
+            "desc_elemento": "Semanal",
+            "fk_tabla_padre_id": 50,
+            "tipo_elemento": 1,
+            "permite_cambios":1,
+            "valor_elemento":"Semanal_ritmo",
+            "mostrar_en_combos":1,
+            "maneja_lista":0,
+            "datos_adicional":"",
+            "tipo_dato":0
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk":53 ,
+          "fields": {
+            "desc_elemento": "Quincenal",
+            "fk_tabla_padre_id": 50,
+            "tipo_elemento": 1,
+            "permite_cambios":1,
+            "valor_elemento":"Quincenal_ritmo",
+            "mostrar_en_combos":1,
+            "maneja_lista":0,
+            "datos_adicional":"",
+            "tipo_dato":0
+          }
         }
+        ,
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk":54 ,
+          "fields": {
+            "desc_elemento": "Mensual",
+            "fk_tabla_padre_id": 50,
+            "tipo_elemento": 1,
+            "permite_cambios":1,
+            "valor_elemento":"Mensual_ritmo",
+            "mostrar_en_combos":1,
+            "maneja_lista":0,
+            "datos_adicional":"",
+            "tipo_dato":0
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk":55,
+          "fields": {
+            "desc_elemento": "Trimestral",
+            "fk_tabla_padre_id": 50,
+            "tipo_elemento": 1,
+            "permite_cambios":1,
+            "valor_elemento":"Trimestral_ritmo",
+            "mostrar_en_combos":1,
+            "maneja_lista":0,
+            "datos_adicional":"",
+            "tipo_dato":0
+          }
+        }
+
+
 ]
