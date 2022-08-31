@@ -1,5 +1,5 @@
 from django.db import models
-from ..App.models import ConfTablasConfiguracion
+from ..App.models import ConfTablasConfiguracion, AppPublico
  
 class fichas(models.Model):
     
@@ -38,3 +38,10 @@ class atributosxfichaxbloque(models.Model):
     class Meta:
 
         ordering = ['orden_presentacion']
+
+class public_fichas_datos(models.Model):
+    
+    id_publicFichasDatos = models.AutoField(primary_key=True)
+    id_public  = models.ForeignKey(AppPublico, on_delete=models.DO_NOTHING, default=None, null=True)
+    id_atributo_fichaBloque = models.ForeignKey(atributosxfichaxbloque, on_delete=models.DO_NOTHING, default=None, null=True)
+    valor = models.TextField(null=True, default=None)

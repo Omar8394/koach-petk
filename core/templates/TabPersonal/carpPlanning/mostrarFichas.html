@@ -24,7 +24,7 @@
                     <i class="flaticon-right-arrow"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="#">Crear Fichas</a>
+                    <a href="#">Fichas personales</a>
                 </li>
             </ul>
         </div>
@@ -32,21 +32,6 @@
            
         <div class="page-category" id="pageMain">
             <div class="card">
-                <div class="card-header text-center">
-                    <h2>Agregar Fichas</h2>          
-                    <div class="form-group ">
-                        <div class="input-group justify-content-center ">
-                             <div class="input-group-append">
-                                <span id="clearBtn" class="btn btn-primary" onclick="modalFicha()">             
-                                    <i class="fas fa-plus"></i>
-                                </span>           
-                                <span id="searchBtn" class="btn btn-success">
-                                    <i class="fa fa-search"></i>
-                                </span>                        
-                           </div>
-                        </div>
-                    </div>
-                </div>
                 <main class="card-body is-loading-lg">
 
                 </main>
@@ -74,6 +59,9 @@
         document.querySelector("main.card-body").innerHTML = spinnerBar()
         fetch("{% url 'planning:renderfihas' %}", {
             ...fetchObject,
+            body: JSON.stringify({
+                tipo:1,
+            })
         })
         .then(res => res.text())
         .then(text => {

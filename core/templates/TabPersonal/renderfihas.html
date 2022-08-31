@@ -9,10 +9,15 @@
         <div class="categoria activa" draggable="false" data-move="{{page.id_ficha}}">     
             <h3>{{page.nombre_ficha}}</h3>
             <div class="boton">
+                {% if tipo %}
+                <a target="_blank" href="/Planning/fichaPersonal/{{page.id_ficha}}/" class="button btn btn-icon btn-success" style="display: flex; justify-content: center; align-items: center;"><i class="fas fa-pencil-alt"></i></a>
+                {% else %} 
                 <button onclick="modalListaBloque('{{page.id_ficha}}')" class="button btn btn-icon btn-success"><i class="fa fa-th-list"></i></button>
                 <button onclick="modalFicha('{{page.id_ficha}}')" class="button btn btn-icon btn-primary"><i class="fas fa-edit"></i></button>
                 <button onclick="eliminarFicha('{{page.id_ficha}}')" class="button btn btn-icon btn-danger"><i class="fas fa-trash-alt"></i></button>
+                <a target="_blank" href="/Planning/previsualizarBloque/{{page.id_ficha}}/" class="button btn btn-icon btn-secondary" style="display: flex; justify-content: center; align-items: center;"><i class="fas fa-eye"></i></a>
                 <button class="button btn btn-icon btn-secondary handle" style="position: absolute; top: 0; right: 0;"><i class="fas fa-arrows-alt"></i></button>
+                {% endif %}
             </div>
         </div>
         {% empty %}

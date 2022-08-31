@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from ..App.models import ConfTablasConfiguracion
-from ..Capacitacion.models import Estructuraprograma
+from ..Capacitacion.models import Estructuraprograma,capacitacion_componentesXestructura,Capacitacion_componentesFormacion
 import time, json
 from decimal import Decimal
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -34,7 +34,8 @@ def getcontentprogrmas(request):
                 title=False
                 lista = []
                 if data["query"] == "":
-                   categorias=ConfTablasConfiguracion.obtenerHijos("Categoria")     
+                   categorias=ConfTablasConfiguracion.obtenerHijos("Categoria") 
+                   print(categorias)    
                    context = {'categorias':categorias}             
                    html_template = loader.get_template( 'Contenido_programas.html' )
                    return HttpResponse(html_template.render(context, request))
@@ -234,7 +235,7 @@ def getcontentunits(request):
                       return HttpResponse(html_template.render(context, request))
                    else:
                       title=True
-                      context = {'title':title}             
+                      context = {'title':title,'pk':data['pk']}             
                       html_template = loader.get_template( 'contenidounidades.html' )
                       return HttpResponse(html_template.render(context, request)) 
         except Exception as e:
@@ -333,14 +334,12 @@ def modalAddcursos(request):
                 elif data['method'] == "Create":
                    proAdd=Estructuraprograma.objects.get(pk=data['id']).fk_categoria_id
                    print(proAdd)
-                   cursos=Estructuraprograma()
-                   cursos.fk_estructura_padre_id=data['id']
-                   cursos.fk_categoria_id=proAdd
-                cursos.valor_elemento="Courses"
+                   cursos=Capacitacion_componentesFormacion()
+                cursos.codigo_componente="Components"
                 cursos.descripcion=data['data']['resumenProgram']    
                 cursos.url=data['data']['urlProgram']         
-                cursos.Titulo=data['data']['descriptionProgram']
-                cursos.peso_creditos=Decimal(data['data']['creditos'].replace(',','.'))
+                cursos.titulo=data['data']['descriptionProgram']
+                cursos.creditos_peso=Decimal(data['data']['creditos'].replace(',','.'))
                 cursos.save()
                 return JsonResponse({"message":"ok"})
                 

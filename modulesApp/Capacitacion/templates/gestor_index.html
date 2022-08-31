@@ -1,6 +1,6 @@
 
    {% extends "layouts/base.html" %}
-
+   {% load i18n %}
    {% block title %}{% endblock %}
    <!-- Specific Page CSS goes HERE  -->
    {% block stylesheets %}
@@ -138,16 +138,18 @@
             return updateModel(url, "Update", data, idSeleted)
                .then(async (res) => {
                   const text = JSON.parse(await res.text())
-                  if (text.message == "error") alerta(5)
-                  else alerta(2)
+                  if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+                  else  makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+
                })
          }
          else {
             return updateModel(url, "Create", data, null)
                .then(async (res) => {
                   const text = JSON.parse(await res.text())
-                  if (text.message == "error") alerta(5)
-                  else alerta(1)
+                  if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+                  else  makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+
                })
          }
         
@@ -287,8 +289,9 @@ const openDeleteProgram = async (id) =>{
       })
       .then(async (res) => {
          const text = JSON.parse(await res.text())
-         if (text.message == "error") alerta(5)
-         else alerta(4)
+         if (text.message == "error")  makeMessage(4, "{% translate 'Notificacion' %}", "{% translate 'un error ha occurrido y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+         else makeMessage(1, "{% translate 'Notificacion' %}", "{% translate 'Archivo eliminado satisfactoriamente' %}", 'fas fa-trash-alt')
       })
       .then(()=>{
          renderContent()
@@ -380,8 +383,8 @@ const openDeleteProseso = async (id,padre,pages) =>{
       })
       .then(async (res) => {
          const text = JSON.parse(await res.text())
-         if (text.message == "error") alerta(5)
-         else alerta(4)
+         if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+         else makeMessage(1, "{% translate 'Notificacion' %}", "{% translate 'Archivo eliminado satisfactoriamente' %}", 'fas fa-trash-alt')
       })
       .then(()=>{
          renderproseso(padre,pages,limit)
@@ -460,16 +463,18 @@ const clickSavetwo = (formElement, url) => {
       return updateModeltwo(url, "Update", data, idSeleted)
          .then(async (res) => {
             const text = JSON.parse(await res.text())
-            if (text.message == "error") alerta(5)
-            else alerta(2)
+            if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+            else  makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+
          })
    }
    else {
       return updateModeltwo(url, "Create", data, idSeleted)
          .then(async (res) => {
             const text = JSON.parse(await res.text())
-            if (text.message == "error") alerta(5)
-            else alerta(1)
+            if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+            else  makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+
          })
    }
   

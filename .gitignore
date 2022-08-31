@@ -1,6 +1,7 @@
 ./.idea
 .env
 /env
+/venv
 __pycache__*
 0*.py
 .idea
