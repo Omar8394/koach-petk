@@ -17,6 +17,7 @@ urlpatterns = [
     path('moverFicha/', views.moverFicha, name='moverFicha'),
     path('mostrarFicha/', views.mostrarFicha, name='mostrarFicha'),
     path('fichaPersonal/<int:idFicha>/', views.fichaPersonal, name='fichaPersonal'),
+    path('guardarFichaPersonal/', views.guardarFichaPersonal, name='guardarFichaPersonal'),
     path('guardarBloque/', views.guardarBloque, name='guardarBloque'),
     path('eliminarBloque/', views.eliminarBloque, name='eliminarBloque'),
     path('previsualizarBloque/<int:idFicha>/', views.previsualizarFicha),

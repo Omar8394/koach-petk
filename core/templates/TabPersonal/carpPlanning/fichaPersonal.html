@@ -3,25 +3,77 @@
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 <script>
-$(document).on('click', 'a[href="#finish"]', (e) => {
-	// const formPrev = document.querySelector("#form-register")
-	// const formData = new FormData(formPrev);
-	// const data = Object.fromEntries(formData.entries())
-	// console.log(data)
-    // makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Tus datos han sido guardados' %}", "fa fa-check")
-    
-//     $('form').on('click', '.required_group', function() {
-//   $('input.required_group').prop('required', $('input.required_group:checked').length === 0);
-// });
-// <form>
-//   <input type="checkbox" name="whatever" value="1" required class="required_group" />
-//   <input type="checkbox" name="whatever" value="2" required class="required_group" />
-//   <input type="checkbox" name="whatever" value="3" required class="required_group" />
-//   <input type="checkbox" name="whatever" value="4" required class="required_group" />
-//   <input type="submit" name="submit" />
-// </form>
 
-    $('input[type="submit"]').click()
+$(document).on('click', 'a[href="#finish"]', (e) => {
+
+	doSubmit()
+
 })
+
+$(document).on('keypress', 'input, select', (e) => {
+
+	let keycode = (e.keyCode ? e.keyCode : e.which);
+	
+	if(keycode == '13'){
+
+		doSubmit()
+		return false
+
+	}
+
+})
+
+const doSubmit = () => {
+
+	let group = $('.selectgroup.selectgroup-pills')
+
+	if(group)
+
+		$.each(group, function(i, val) {
+
+			$(`#${val.id} input[type="checkbox"]`).prop('required', $(`#${val.id} input[type="checkbox"]:checked`).length === 0);
+
+		});
+		
+	$('section.body').css('display', 'block')
+	$('input[type="submit"]').click()
+
+}
+
+$(document).on('submit', 'form', (e) => {
+
+	e.preventDefault()
+	const formPrev = document.querySelector("#form-register")
+	const formData = new FormData(formPrev);
+	const data = Object.fromEntries(formData.entries())
+	console.log(data)
+	
+	setLoading()
+	fetch("{% url 'planning:guardarFichaPersonal'%}", {
+	...fetchObject,
+	body: JSON.stringify({
+		data,
+	})
+	})
+	.then(res => res.text())
+	.then(text => {
+
+		makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Tus datos han sido guardados' %}", "fa fa-check")
+
+	})
+	.catch((err) => {
+
+		makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+	})
+	.finally(() => {
+
+		stopLoading()
+
+	})
+
+
+})
+
 </script>
 {% endblock javascripts %}

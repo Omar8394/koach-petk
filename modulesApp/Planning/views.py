@@ -2,8 +2,8 @@ from distutils.log import error
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
 import time, json, re
-from .models import fichas, fichas_bloques, atributosxfichaxbloque
-from ..App.models import ConfTablasConfiguracion as configuraciones
+from .models import fichas, fichas_bloques, atributosxfichaxbloque, public_fichas_datos
+from ..App.models import AppPublico, ConfTablasConfiguracion as configuraciones
 from django.template.defaulttags import register
 from django.shortcuts import render
 
@@ -157,8 +157,11 @@ def guardarFicha(request):
 
                 ficha.nombre_ficha = data.get('nombre')
                 ficha.mostrar = 1
+                
                 if not int(id) > 0:
+
                     ficha.ordenamiento = len(fichas.objects.all()) + 1
+
                 ficha.save()
 
     context['data'] = fichas.objects.all()
@@ -500,7 +503,7 @@ def guardarAtributos(idBloque, data):
                     elif tipo == 'lista':
 
                         jsonList = json.loads(atributo.listaValores) if atributo.listaValores else {}
-                        jsonList.update({len(jsonList) + 1: y})
+                        jsonList.update({y: y})
                         atributo.listaValores = json.dumps(jsonList)
 
                     atributo.save()
@@ -582,11 +585,32 @@ def atributoLista(request):
 
     return HttpResponse()
 
+def mostrarFicha(request): 
     
+    context = {}
+
+    try:
+
+        publico = AppPublico.objects.get(user_id=request.user)
+
+    except:
+
+        context['error'] = 'error'
+
+    html_template = loader.get_template( 'TabPersonal/carpPlanning/mostrarFichas.html' )
+    return HttpResponse(html_template.render(context, request))    
 
 def fichaPersonal(request, idFicha): 
+
+    try:
+
+        publico = AppPublico.objects.get(user_id=request.user)
+
+    except:
+
+        return render(request, "Helping/404error.html", {})
     
-    # try:
+    try:
 
         context = {}
         ficha = fichas.objects.get(id_ficha=idFicha)
@@ -630,12 +654,64 @@ def fichaPersonal(request, idFicha):
         html_template = loader.get_template('TabPersonal/carpPlanning/fichaPersonal.html')
         return HttpResponse(html_template.render(context, request))
 
-    # except:
+    except:
 
-    #     return render(request, "Helping/404error.html", {})
+        return render(request, "Helping/404error.html", {})
 
-def mostrarFicha(request): 
-    
+def guardarFichaPersonal(request): 
+
     context = {}
-    html_template = loader.get_template( 'TabPersonal/carpPlanning/mostrarFichas.html' )
-    return HttpResponse(html_template.render(context, request))
+
+    if request.method == "POST":
+
+        if request.body:
+
+            body = json.load(request)
+            data = body.get('data')
+            publico = AppPublico.objects.get(user_id=request.user)
+
+            if data:
+
+                primeros = []
+
+                for x, y in data.items():
+
+                    if y:
+
+
+                        id = re.search("[0-9]+", x).group()
+                        atributo = atributosxfichaxbloque.objects.get(id_atribxfichaxbloq=id)
+                            
+                        try:
+                        
+                            guardar = public_fichas_datos.objects.get(id_public=publico, id_atributo_fichaBloque=atributo)
+
+                        except:
+                            
+                            guardar = public_fichas_datos()
+
+                        guardar.id_public = publico
+                        guardar.id_atributo_fichaBloque = atributo
+
+                        if atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Seleccion_Multiple' or atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Rango':
+
+                            if not id in primeros:
+
+                                guardar.valor = json.dumps({y:y})
+                                primeros.append(id)
+
+                            else:
+
+                                temp = json.loads(guardar.valor)
+                                temp.update({y: y})
+                                guardar.valor = json.dumps(temp)
+
+                        else:
+
+                            guardar.valor = y
+
+                        guardar.save()
+
+                return HttpResponse('ok')
+            
+    return HttpResponse('ok')
