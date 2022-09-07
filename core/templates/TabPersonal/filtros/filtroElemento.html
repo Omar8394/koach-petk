@@ -1,0 +1,38 @@
+{% load i18n %}   
+{% if atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Texto' or atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Texto_Largo' %}
+<input type="text" class="form-control" placeholder="{{atributo.nombre_atrib}}" name="{{atributo.id_atribxfichaxbloq}}_{% now 'isu' %}">
+<div class="input-group-append">
+    <button class="btn btn-danger" type="button" onclick="eliminarFiltro(this)">
+        <i class="fas fa-trash-alt"></i>
+    </button>
+</div>
+{% elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Lista' or atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Seleccion' or atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Seleccion_Multiple' %}
+<div class="selectgroup selectgroup-pills">
+    {% for x, y in atributo.listaValores|tosJson %}
+    <label class="selectgroup-item">
+        <input type="checkbox" name="{{atributo.id_atribxfichaxbloq}}_{{forloop.counter}}{% now 'isu' %}" value="{{y}}" class="selectgroup-input">
+        <span class="selectgroup-button">{{y}}</span>
+    </label>
+    {% endfor %}
+    <label class="selectgroup-item">
+        <input type="checkbox" class="selectgroup-input" onclick="eliminarFiltro(this)">
+        <i class="fas fa-trash-alt selectgroup-button bg-danger text-light"></i>
+    </label>
+</div>
+{% elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Fecha' %}
+<input type="date" class="form-control" name="{{atributo.id_atribxfichaxbloq}}_1{% now 'isu' %}" >
+<input type="date" class="form-control" name="{{atributo.id_atribxfichaxbloq}}_2{% now 'isu' %}" >
+<div class="input-group-append">
+    <button class="btn btn-danger" type="button" onclick="eliminarFiltro(this)">
+        <i class="fas fa-trash-alt"></i>
+    </button>
+</div>
+{% elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Rango' %}
+<input type="number" class="form-control" name="{{atributo.id_atribxfichaxbloq}}_1{% now 'isu' %}" min="1" placeholder="Min">
+<input type="number" class="form-control" name="{{atributo.id_atribxfichaxbloq}}_2{% now 'isu' %}" min="1" placeholder="Max">
+<div class="input-group-append">
+    <button class="btn btn-danger" type="button" onclick="eliminarFiltro(this)">
+        <i class="fas fa-trash-alt"></i>
+    </button>
+</div>
+{% endif %}

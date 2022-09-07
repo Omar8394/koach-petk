@@ -75,6 +75,7 @@ body {
     padding-left: 0;
     margin-top: 0;
     width: 100%;
+    flex-wrap: wrap;
 }
 .form-register .steps li,
 .form-register .steps li.current {
@@ -89,8 +90,10 @@ body {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     position: relative;
-    width: 33.33%;
-    margin-right: 20px;
+    /* width: 33.33%;
+    margin-right: 20px; */
+    width: 20%;
+    margin-right: 1px;
     background: #fff;
 }
 .form-register .steps li:last-child {
@@ -143,10 +146,12 @@ body {
     -webkit-transform: translate(-50%, -50%);
 }
 .form-register .steps li.current a .step-icon,
-.form-register .steps li.current a:active .step-icon,
+.form-register .steps li.current a:active .step-icon{
+	background: #55e8d5;
+}
 .form-register .steps li.done a .step-icon,
 .form-register .steps li.done a:active .step-icon {
-	background: #55e8d5;
+	background: #ccc;
 }
 .form-register .steps li a .step-text {
 	color: #333;
@@ -154,6 +159,8 @@ body {
 	font-weight: 400;
 	padding-top: 18px;
 	padding-left: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .form-register .content {
 	padding:  0 50px;
@@ -236,11 +243,11 @@ body {
     width: 100%;
     padding: 11.5px 20px;
     border: none;
-    appearance: unset;
+    /* appearance: unset;
     -moz-appearance: unset;
     -webkit-appearance: unset;
     -o-appearance: unset;
-    -ms-appearance: unset;
+    -ms-appearance: unset; */
     outline: none;
     -moz-outline: none;
     -webkit-outline: none;
@@ -278,7 +285,7 @@ input::-ms-input-placeholder { /* Microsoft Edge */
    color: #fff;
 }
 .inner .form-row .form-holder select {
-    background: #fff url('../images/wizard_v6_icon.png') no-repeat scroll;
+    background: #fff url('../img/wizard_v6_icon.png') no-repeat scroll;
     background-position: right 16px center;
     z-index: 1;
     cursor: pointer;
@@ -390,7 +397,7 @@ input::-ms-input-placeholder { /* Microsoft Edge */
 .actions ul li {
 	padding: 0;
     border: none;
-    display: inline-flex;
+    display: inline-flex!important;
     height: 45px;
     width: 150px;
     justify-content: center;

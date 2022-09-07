@@ -820,7 +820,52 @@
             "datos_adicional":"",
             "tipo_dato":0
           }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 56,
+          "fields": {
+            "desc_elemento": "Logueado Correctamente, cuenta no verificada" ,
+            "fk_tabla_padre": 36,
+            "tipo_elemento": "0",
+            "permite_cambios": 1,
+            "valor_elemento": "user_active_unverified",
+            "mostrar_en_combos": 1,
+            "maneja_lista": 0,
+            "datos_adicional":"",
+            "tipo_dato":0
+
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 57,
+          "fields": {
+            "desc_elemento": "Credenciales Vencidas, por seguridad debe cambiar sus claves de acceso." ,
+            "fk_tabla_padre": 36,
+            "tipo_elemento": "0",
+            "permite_cambios": 1,
+            "valor_elemento": "user_password_expired",
+            "mostrar_en_combos": 1,
+            "maneja_lista": 0,
+            "datos_adicional":"",
+            "tipo_dato":0
+
+          }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 58,
+              "fields": {
+                "desc_elemento": "Credenciales vencidas",
+                "fk_tabla_padre_id": 28,
+                "tipo_elemento": 2,
+                "permite_cambios":1,
+                "valor_elemento":"tv_cambio_clave",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
         }
-
-
 ]

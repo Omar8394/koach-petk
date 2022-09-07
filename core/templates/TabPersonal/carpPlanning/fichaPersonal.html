@@ -1,0 +1,95 @@
+{% load i18n %}
+{% include 'TabPersonal/carpPlanning/previsualizarFicha.html' with ficha=ficha bloques=bloques atributos=atributos respuestas=respuestas noEditar=noEditar %}  
+
+{% block javascripts %}
+<script>
+
+$(document).ready(function () {
+
+	if('{{noEditar}}')
+
+		$('a[href="#finish"]').parent().remove()
+
+});
+
+$(document).on('click', 'a[href="#finish"]', (e) => {
+
+	doSubmit()
+
+})
+
+$(document).on('keypress', 'input, select', (e) => {
+
+	let keycode = (e.keyCode ? e.keyCode : e.which);
+	
+	if(keycode == '13'){
+
+		doSubmit()
+		return false
+
+	}
+
+})
+
+const doSubmit = () => {
+
+	let group = $('.selectgroup.selectgroup-pills')
+
+	if(group)
+
+		$.each(group, function(i, val) {
+
+			$(`#${val.id} input[type="checkbox"]`).prop('required', $(`#${val.id} input[type="checkbox"]:checked`).length === 0);
+
+		});
+		
+	$('section.body').css('display', 'block')
+
+	if($('input[type="submit"]'))
+
+		$('input[type="submit"]').click()
+
+}
+
+$(document).on('submit', 'form', (e) => {
+
+	e.preventDefault()
+	const formPrev = document.querySelector("#form-register")
+	const formData = new FormData(formPrev);
+	const data = Object.fromEntries(formData.entries())
+	
+	setLoading()
+	fetch("{% url 'planning:guardarFichaPersonal'%}", {
+	...fetchObject,
+	body: JSON.stringify({
+		data,
+	})
+	})
+	.then(res => res.text())
+	.then(text => {
+
+		makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Tus datos han sido guardados' %}", "fa fa-check")
+
+	})
+	.catch((err) => {
+
+		makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+	})
+	.finally(() => {
+
+		stopLoading()
+
+	})
+
+
+})
+
+const mover = (e) => {
+
+	e.setAttribute('title', e.value)
+	e.setAttribute('data-original-title', e.value)
+}
+
+</script>
+{% endblock javascripts %}

@@ -1,0 +1,86 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+
+{% block title %}{% endblock %}
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="content">
+    <div class="page-inner animated fadeInRight">
+        <div class="page-header">
+            <h4 class="page-title">Planificacion</h4>
+            <ul class="breadcrumbs">
+                <li class="nav-home">
+                    <a href="{% url 'home' %}">
+                        <i class="flaticon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="flaticon-right-arrow"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Fichas personales</a>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="page-category" id="pageMain">
+            <div class="card">
+                <main class="card-body is-loading-lg">
+
+                </main>
+                
+            </div>
+        
+        </div>
+    
+    </div>
+
+</div>
+
+{% endblock content %}
+{% block javascripts %}
+<script>
+
+   $(document).ready(function () {
+        
+        if(!'{{error}}')
+
+            renderContent()
+
+        else
+
+            document.querySelector("main.card-body").innerHTML = `<h1>Debes resgistrar tus datos de publico para poder acceder a los formularios</h1>`
+
+    });
+
+    const renderContent = () => {
+
+        document.querySelector("main.card-body").innerHTML = spinnerBar()
+        fetch("{% url 'planning:renderfihas' %}", {
+            ...fetchObject,
+            body: JSON.stringify({
+                tipo:1,
+            })
+        })
+        .then(res => res.text())
+        .then(text => {
+
+            document.querySelector("main.card-body").innerHTML = text
+
+        })
+        .catch((err)=>{
+
+            makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+            document.querySelector("main.card-body").innerHTML = ''
+
+        })
+
+    }
+
+</script> 
+    
+{% endblock javascripts %} 
