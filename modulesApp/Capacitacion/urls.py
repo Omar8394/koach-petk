@@ -21,6 +21,8 @@ urlpatterns = [
     path('modaladdproceso/', views.modalAddproceso, name='modaladdproceso'),
     path('modaladdmodulos/', views.modalAddmodulos, name='modaladdmodulos'),
     path('modaladdcursos/', views.modalAddcursos, name='modaladdcursos'),
+    path('relation/', views.relation_componente, name='relation'),
+    path('update_estrutura/', views.update_estrutura, name='update_estrutura'),
     #Security Settings
     
 

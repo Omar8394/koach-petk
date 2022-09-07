@@ -344,6 +344,15 @@ const openAddProceso = (id,pages) => {
                maxlength: 15,
                minlength: 3
             },
+            descriptionProgram: {
+               required: true,
+               maxlength: 15,
+               minlength: 3
+            },
+            creditos: {
+               required: true
+              
+            },
          }
          commonValidator = $("#formPrograma").validate({
             rules,
@@ -498,6 +507,10 @@ const goToTables =  async (Page,padre)  => {
       contenedorLista.innerHTML = resultado
 
 
+}
+const opengorelation = (id) =>{
+   window.location.href = `{% url 'relation' %}?id=${id}`
+                
 }
 </script>
 	

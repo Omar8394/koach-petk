@@ -26,7 +26,10 @@ class Capacitacion_componentesFormacion(models.Model):
     Condicion=models.IntegerField(blank=True, null=True)
     ritmo=models.IntegerField(blank=True, null=True)
     tipo_ritmo=models.ForeignKey(ConfTablasConfiguracion, on_delete=models.DO_NOTHING, default=None, null=True)
-    tiene_certificad= models.BooleanField()
+    tiene_certificad= models.BooleanField(null=True)
+    def __str__(self):
+        return self.titulo
+
 class capacitacion_componentesXestructura(models.Model):
     id_componenteXestructura=models.SmallAutoField(primary_key=True)
     fk_componetesformacion=models.ForeignKey(Capacitacion_componentesFormacion, on_delete=models.DO_NOTHING, default=None, null=True)

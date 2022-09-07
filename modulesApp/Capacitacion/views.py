@@ -7,8 +7,15 @@ from ..Capacitacion.models import Estructuraprograma,capacitacion_componentesXes
 import time, json
 from decimal import Decimal
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.template.defaulttags import register
 # Create your views here.
-
+@register.filter
+def hashijos(id):
+    lista=[]
+    has=capacitacion_componentesXestructura.objects.filter(fk_estructuraprogramas_id=id)
+    
+    print(has)
+    return has
 def index(request):
     
     # user = request.user.extensionusuario
@@ -294,7 +301,7 @@ def getcontentcursos(request):
                 print(data)
                 lista=[]
                 if data["query"] == "":
-                   cursos=Estructuraprograma.objects.filter(fk_estructura_padre_id=data['id'],valor_elemento="Courses")
+                   cursos=capacitacion_componentesXestructura.objects.filter(fk_estructuraprogramas_id=data['id'])
                    if cursos.exists():
                       paginator = Paginator(cursos, data["limit"])
                       lista = paginator.get_page(data["page"])
@@ -320,32 +327,91 @@ def modalAddcursos(request):
                 data = json.load(request)
                 print(data)
                 if data['method'] == "Editar":
-                    modelo = Estructuraprograma.objects.get(pk=data["id"])    
-                    categorias = ConfTablasConfiguracion.obtenerHijos(valor="Categoria")
+                    modelo = Capacitacion_componentesFormacion.objects.get(pk=data["id"])    
+                    categorias = ConfTablasConfiguracion.obtenerHijos(valor="Ritmo_Capacitacion")
                     context = {"categorias": categorias, "modelo": modelo}
                     html_template = (loader.get_template('modaladdcursos.html'))
                     return HttpResponse(html_template.render(context, request))
                 elif data["method"] == "Delete":
-                    cursos = Estructuraprograma.objects.get(pk=data["id"])
+                    rel=capacitacion_componentesXestructura.objects.get(fk_estructuraprogramas_id=data["padre"],fk_componetesformacion=data["id"])
+                    rel.delete()
+                    cursos = Capacitacion_componentesFormacion.objects.get(pk=data["id"])   
                     cursos.delete()
                     return JsonResponse({"message":"Deleted"}) 
                 elif data["method"] == "Update":
-                     cursos = Estructuraprograma.objects.get(pk=data["id"])
-                elif data['method'] == "Create":
-                   proAdd=Estructuraprograma.objects.get(pk=data['id']).fk_categoria_id
-                   print(proAdd)
-                   cursos=Capacitacion_componentesFormacion()
-                cursos.codigo_componente="Components"
-                cursos.descripcion=data['data']['resumenProgram']    
-                cursos.url=data['data']['urlProgram']         
-                cursos.titulo=data['data']['descriptionProgram']
-                cursos.creditos_peso=Decimal(data['data']['creditos'].replace(',','.'))
-                cursos.save()
-                return JsonResponse({"message":"ok"})
+                   cursos = Capacitacion_componentesFormacion.objects.get(pk=data["id"])
+                   cursos.descripcion=data['data']['resumenProgram']    
+                   cursos.url=data['data']['urlProgram']         
+                   cursos.titulo=data['data']['descriptionProgram']
+                   cursos.creditos_peso=Decimal(data['data']['creditos'].replace(',','.'))
+                   cursos.Fecha_activo=data['data']['disponibleCourse']
+                   cursos.Condicion=data['data']['Condicion']
+                   cursos.tipo_ritmo_id=data['data']['categoryProgram']
+                   cursos.ritmo=data['data']['Ritmo']
+                   if 'checkDurationCB' in data['data']:
+                      cursos.status_componente=1
+                   else:
+                      cursos.status_componente=0
+                   if 'checkDurationC' in data['data']:
+                      cursos.tiene_certificad=1
+                   else:
+                      cursos.tiene_certificad=0
                 
-            context = {}             
+                   cursos.save()
+                elif data['method'] == "Create":
+                  
+                   cursos=Capacitacion_componentesFormacion()
+                   relacion=capacitacion_componentesXestructura() 
+                   relacion.fk_estructuraprogramas_id=data['id']
+                  
+                   cursos.codigo_componente="Components"
+                   cursos.descripcion=data['data']['resumenProgram']    
+                   cursos.url=data['data']['urlProgram']         
+                   cursos.titulo=data['data']['descriptionProgram']
+                   cursos.creditos_peso=Decimal(data['data']['creditos'].replace(',','.'))
+                   cursos.Fecha_activo=data['data']['disponibleCourse']
+                   cursos.Condicion=data['data']['Condicion']
+                   cursos.tipo_ritmo_id=data['data']['categoryProgram']
+                   cursos.ritmo=data['data']['Ritmo']
+                   if 'checkDurationCB' in data['data']:
+                      cursos.status_componente=1
+                   else:
+                      cursos.status_componente=0
+                   if 'checkDurationC' in data['data']:
+                      cursos.tiene_certificad=1
+                   else:
+                      cursos.tiene_certificad=0
+                
+                   cursos.save()
+                   relacion.fk_componetesformacion=cursos
+                   relacion.save()
+                   
+               
+                
+                return JsonResponse({"message":"ok"})
+            categorias = ConfTablasConfiguracion.obtenerHijos(valor="Ritmo_Capacitacion")  
+            context = {"categorias": categorias}             
             html_template = loader.get_template( 'modaladdcursos.html' )
             return HttpResponse(html_template.render(context, request)) 
         except Exception as e:
                print(e)
                return JsonResponse({"message":"error"}, status=500)
+def relation_componente(request):
+    id=request.GET.get('id')
+    Estructura=Estructuraprograma.objects.all()
+   
+    context = {"Estructura":Estructura,"id":id}
+    
+    html_template = (loader.get_template('relation_componente.html'))
+    
+    return HttpResponse(html_template.render(context, request))
+def update_estrutura(request) :  
+    estructura=request.POST.get('estructura') 
+    id=request.POST.get('id')
+    componente=capacitacion_componentesXestructura()
+    componente.fk_estructuraprogramas_id=estructura
+    componente.fk_componetesformacion_id=id
+    componente.save()
+    return JsonResponse({"message":"ok"})
+    
+   
