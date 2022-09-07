@@ -1,8 +1,16 @@
 {% load i18n %}
-{% include 'TabPersonal/carpPlanning/previsualizarFicha.html' with ficha=ficha bloques=bloques atributos=atributos %}  
-<!-- Specific Page JS goes HERE  -->
+{% include 'TabPersonal/carpPlanning/previsualizarFicha.html' with ficha=ficha bloques=bloques atributos=atributos respuestas=respuestas noEditar=noEditar %}  
+
 {% block javascripts %}
 <script>
+
+$(document).ready(function () {
+
+	if('{{noEditar}}')
+
+		$('a[href="#finish"]').parent().remove()
+
+});
 
 $(document).on('click', 'a[href="#finish"]', (e) => {
 
@@ -36,7 +44,10 @@ const doSubmit = () => {
 		});
 		
 	$('section.body').css('display', 'block')
-	$('input[type="submit"]').click()
+
+	if($('input[type="submit"]'))
+
+		$('input[type="submit"]').click()
 
 }
 
@@ -46,7 +57,6 @@ $(document).on('submit', 'form', (e) => {
 	const formPrev = document.querySelector("#form-register")
 	const formData = new FormData(formPrev);
 	const data = Object.fromEntries(formData.entries())
-	console.log(data)
 	
 	setLoading()
 	fetch("{% url 'planning:guardarFichaPersonal'%}", {
@@ -74,6 +84,12 @@ $(document).on('submit', 'form', (e) => {
 
 
 })
+
+const mover = (e) => {
+
+	e.setAttribute('title', e.value)
+	e.setAttribute('data-original-title', e.value)
+}
 
 </script>
 {% endblock javascripts %}

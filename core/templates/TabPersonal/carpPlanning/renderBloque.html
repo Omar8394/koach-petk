@@ -3,7 +3,7 @@
 <div class="form-row mt-5">
     <div class="form-holder" style="width: 100%;">
         <label class="form-row-inner" style="width: 100%;">
-            <input type="text" class="form-control" name="{{atributo.id_atribxfichaxbloq}}" required>
+            <input type="text" class="form-control" name="{{atributo.id_atribxfichaxbloq}}" required {% if respuesta %}value="{{respuesta.valor}}"{% endif %}>
             <span class="label">{{atributo.nombre_atrib}}</span>
         </label>
     </div>
@@ -11,18 +11,17 @@
 {% elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Texto_Largo' %}
 <div class="form-group">
     <label for="comment" style="color: white!important;">{{atributo.nombre_atrib}}</label>
-    <textarea class="form-control" rows="5" name="{{atributo.id_atribxfichaxbloq}}" required>
-    </textarea>
+    <textarea class="form-control" rows="5" name="{{atributo.id_atribxfichaxbloq}}" required>{% if respuesta %}{{respuesta.valor}}{% endif %}</textarea>
 </div>
 {% elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Lista' %}
 <div class="form-row">
     <div class="form-holder form-holder-2">
         <label for="room" class="special-label-1" style="color: white!important;">{{atributo.nombre_atrib}}</label>
         <select class="form-control" name="{{atributo.id_atribxfichaxbloq}}" required>
-            <option value="" disabled selected>{% translate "Seleccione una opcion" %}</option>
+            <option value="" disabled {% if not respuesta %}selected{% endif %}>{% translate "Seleccione una opcion" %}</option>
             {% if atributo.listaValores %}
             {% for x, y in atributo.listaValores|tosJson %}
-            <option value="{{ y }}">{{ y }}</option>
+            <option value="{{ y }}" {% if respuesta.valor == y %}selected{% endif %}>{{ y }}</option>
             {% endfor %}
             {% endif %}
         </select>
@@ -37,7 +36,7 @@
     {% if atributo.listaValores %}
     {% for x, y in atributo.listaValores|tosJson %}
     <label class="form-radio-label">
-        <input class="form-radio-input" type="radio" value="{{ y }}" name="{{atributo.id_atribxfichaxbloq}}" required>
+        <input class="form-radio-input" type="radio" value="{{ y }}" name="{{atributo.id_atribxfichaxbloq}}" required {% if respuesta.valor == y %}checked{% endif %}>
         <span class="form-radio-sign" style="color: white!important;">{{ y }}</span>
     </label>
     {% endfor %}
@@ -50,7 +49,7 @@
         {% if atributo.listaValores %}
         {% for x, y in atributo.listaValores|tosJson %}
         <label class="selectgroup-item">
-            <input type="checkbox" value="{{ y }}" class="selectgroup-input" name="{{atributo.id_atribxfichaxbloq}}_{{forloop.counter}}" required>
+            <input type="checkbox" value="{{ y }}" class="selectgroup-input" name="{{atributo.id_atribxfichaxbloq}}_{{forloop.counter}}" required {% if respuesta and y in respuesta.valor|tosJsonKeys %}checked{% endif %}>
             <span class="selectgroup-button" style="color: white;">{{ y }}</span>
         </label>
         {% endfor %}
@@ -60,22 +59,11 @@
 {% elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Fecha' %}
 <div class="form-group form-floating-label">
     <label for="inputFloatingLabel" style="color: white!important;">{{atributo.nombre_atrib}}</label>
-    <input type="date" class="form-control input-border-bottom" style="color: white!important;" name="{{atributo.id_atribxfichaxbloq}}" required>
+    <input type="date" class="form-control input-border-bottom" style="color: white!important;" name="{{atributo.id_atribxfichaxbloq}}" required {% if respuesta %}value="{{respuesta.valor}}"{% endif %}>
 </div>
 {% elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Rango' %}
 <label for="day" class="special-label-1 mb-4" style="color: white!important;">{{atributo.nombre_atrib}}</label>
-<div class="form-row">
-    <div class="form-holder">
-        <label class="form-row-inner">
-            <input type="number" class="form-control" name="{{atributo.id_atribxfichaxbloq}}_1" min="1" required>
-            <span class="label">Minimo</span>
-        </label>
-    </div>
-    <div class="form-holder">
-        <label class="form-row-inner">
-            <input type="number" class="form-control" name="{{atributo.id_atribxfichaxbloq}}_2" min="1" required>
-            <span class="label">Maximo</span>
-        </label>
-    </div>
+<div class="form-group">
+    <input type="range" class="form-control-range px-0 mx-0" name="{{atributo.id_atribxfichaxbloq}}" min="{{atributo.min}}" max="{{atributo.max}}" id="formControlRange" onchange="mover(this)" {% if respuesta %}value="{{respuesta.valor}}"{% endif %} required>
 </div>
 {% endif %}

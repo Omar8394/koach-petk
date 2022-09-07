@@ -6,7 +6,7 @@
     <div class="input-group mb-3">
         <input type="text" class="form-control agregar-lista" data-p="{{padre}}" name="lista{{padre}}_{{forloop.counter}}{% now 'isu' %}" placeholder='{% translate "Escriba una descripcion para la opcion, presione enter para agregar una nueva" %}' value="{{ y }}">
         <div class="input-group-append">
-            <button class="btn btn-danger" type="button" id="button-addon2" onclick="eliminarLista(this)">
+            <button class="btn btn-danger" type="button" onclick="eliminarLista(this)">
                 <i class="fas fa-trash-alt"></i>
             </button>
         </div>
@@ -15,7 +15,7 @@
     <div class="input-group mb-3">
         <input type="text" class="form-control agregar-lista" data-p="{{padre}}" name="lista{{padre}}_{% now 'isu' %}" placeholder='{% translate "Escriba una descripcion para la opcion, presione enter para agregar una nueva" %}'>
         <div class="input-group-append">
-            <button class="btn btn-danger" type="button" id="button-addon2" onclick="eliminarLista(this)">
+            <button class="btn btn-danger" type="button" onclick="eliminarLista(this)">
                 <i class="fas fa-trash-alt"></i>
             </button>
         </div>

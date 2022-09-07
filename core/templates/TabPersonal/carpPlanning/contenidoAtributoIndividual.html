@@ -24,8 +24,10 @@
             </div>
         </div>
         <div class="form-row">
-            {% if page.listaValores %}
+            {% if page.listaValores and not page.fk_tipodato.valor_elemento == 'Tipo_Atributo_Rango' %}
             {% include 'TabPersonal/carpPlanning/contenidoListaAtributo.html' with page=page.listaValores|tosJson padre=page.id_atribxfichaxbloq%}  
+            {% elif page.fk_tipodato.valor_elemento == 'Tipo_Atributo_Rango' %}
+            {% include 'TabPersonal/carpPlanning/contenidoListaRango.html' with padre=page.id_atribxfichaxbloq min=page.min max=page.max %}  
             {% endif %}
         </div>
     </div>

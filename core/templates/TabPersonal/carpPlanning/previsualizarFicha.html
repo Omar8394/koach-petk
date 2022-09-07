@@ -67,13 +67,15 @@
 										</div>
 										{% for atributo in atributos%}
 										{% if atributo.fk_ficha_bloque == bloque %}
-										{% include 'TabPersonal/carpPlanning/renderBloque.html' with atributo=atributo %}  
+										{% include 'TabPersonal/carpPlanning/renderBloque.html' with atributo=atributo respuesta=respuestas|respuesta:atributo %}  
 										{% endif %}
 										{% endfor %} 
 									</div>
 								</section>
 								{% endfor %}
+								{% if not noEditar %}
 								<input type="submit" value="submit" hidden>
+								{% endif %}
 							</div>
 						</form>
 					</div>
@@ -87,11 +89,4 @@
 {% endblock content %}
 
 {% block javascripts %}
-<script>
-	$(document).ready(() => {
-			
-		$('textarea').text("")
-
-	})
-</script>
 {% endblock javascripts %}

@@ -31,7 +31,8 @@ class atributosxfichaxbloque(models.Model):
     fk_tipodato = models.ForeignKey(ConfTablasConfiguracion, on_delete=models.DO_NOTHING, default=None, null=True)
     fk_atribxfichaxbloq_padre = models.ForeignKey('self', on_delete=models.CASCADE, db_column='fk_tabla_padre', default=None, null=True)
     listaValores = models.TextField(null=True, default=None)
-    rangos = models.TextField(null=True, default=None)
+    min = models.IntegerField(default=0)
+    max = models.IntegerField(default=0)
     status = models.SmallIntegerField(default=1)
     orden_presentacion = models.SmallIntegerField(default=0)
 
@@ -42,6 +43,6 @@ class atributosxfichaxbloque(models.Model):
 class public_fichas_datos(models.Model):
     
     id_publicFichasDatos = models.AutoField(primary_key=True)
-    id_public  = models.ForeignKey(AppPublico, on_delete=models.DO_NOTHING, default=None, null=True)
+    id_public = models.ForeignKey(AppPublico, on_delete=models.DO_NOTHING, default=None, null=True)
     id_atributo_fichaBloque = models.ForeignKey(atributosxfichaxbloque, on_delete=models.DO_NOTHING, default=None, null=True)
     valor = models.TextField(null=True, default=None)

@@ -243,11 +243,11 @@ body {
     width: 100%;
     padding: 11.5px 20px;
     border: none;
-    appearance: unset;
+    /* appearance: unset;
     -moz-appearance: unset;
     -webkit-appearance: unset;
     -o-appearance: unset;
-    -ms-appearance: unset;
+    -ms-appearance: unset; */
     outline: none;
     -moz-outline: none;
     -webkit-outline: none;

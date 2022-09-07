@@ -1,0 +1,371 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% block title %}{% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<style>
+
+   @media(max-width: 800px){
+      .card-list-item-title {
+         font-size: 5vw;
+      }
+   }
+
+   .btn-radius{
+   border: 3px solid rgba(100, 100, 100, 0.1);
+   border-radius: 3rem;
+   color: #fff;
+   cursor: pointer;
+   padding: 10px;
+   width: 130px;
+   transition: 0.6s;
+   }
+   .btn-azul{
+   background: none;
+   background-size: 300%;
+   background-image: linear-gradient(to left, #00B7DA, #161569, #00B7DA);
+   }
+   .btn-mora{
+   background: none;
+   background-size: 300%;
+   background-image: linear-gradient(to left, #A950A1, #2D3A54, #A950A1);
+   }
+   .btn-rosa{
+   background: none;
+   background-size: 300%;
+   background-image: linear-gradient(to left, #ffcae3, #ff499d, #ffcae3);
+   }
+   .btn-naranja{
+   background: none;
+   background-size: 300%;
+   background-image: linear-gradient(to left, #ff5733, #b81b57, #ff5733);
+   }
+   .btn-radius:hover{
+   background-position: right;
+   }
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+
+		-webkit-appearance: none;
+		margin: 0;
+
+	}
+
+	input[type=number] {
+
+		-moz-appearance: textfield;
+
+	}
+
+   @media(max-width: 400px){
+
+      #collapseCardSearch {
+
+         padding-left: 0!important;
+         padding-right: 0!important;
+
+      }
+
+      div.d-flex.justify-content-around > button > strong{
+
+         display: none;
+
+      }
+
+      div.d-flex.justify-content-around > button > i{
+
+         margin-right: 0!important;
+
+      }
+
+      #paginas > select{
+
+         margin-right: 0!important;
+
+      }
+
+      #paginas > ul{
+
+         flex-wrap: wrap;
+
+      }
+
+      #paginas {
+
+         flex-wrap: wrap;
+         justify-content: center;
+
+      }
+
+   }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+   <div class="content">
+      <div class="page-inner">
+         <div class="page-header mb-3">
+            <h4 class="page-title">Pagina de inicio</h4>
+            <ul class="breadcrumbs">
+               <li class="nav-home">
+                  <a href="{% url 'Dashboard' %}">
+                     <i class="flaticon-home"></i>
+                  </a>
+               </li>
+               <li class="separator">
+                  <i class="flaticon-right-arrow"></i>
+               </li>
+               <li class="nav-item">
+                  <span>Planificacion</span>
+               </li>
+               <li class="separator">
+                  <i class="flaticon-right-arrow"></i>
+               </li>
+               <li class="nav-item">
+                  <a href="#">Tabla de registros</a>
+               </li>
+            </ul>
+         </div>
+
+         <div class="page-category">
+
+            <main class="card shadow mb-4">
+               <section class="card-header">
+                  <a href="#collapseCardSearch" class="d-block d-flex align-items-center justify-content-between collapsed px-5" data-toggle="collapse" style="text-decoration:none" role="button" aria-expanded="false" aria-controls="collapseCardExample">
+                     <h3 class="m-0 font-weight-bold text-dark"> <i class="fa fa-search mr-1" style="color:rgb(0, 119, 255);"></i>Buscar...</h3>
+                     <i class="fa fa-angle-down fa-2x" style="color:rgb(0, 119, 255);"></i>
+                  </a>
+                  <div class="collapse px-5" id="collapseCardSearch">
+                     <form class="form-group" id="formFiltro"></form>
+                     <div class="d-flex justify-content-around">
+                        <button class="btn btn-success" type="button" onclick="anadirFiltro()"><i class="fas fa-plus mr-1"></i><strong>{% translate 'Agregar' %}</strong></button>
+                        <button class="btn btn-primary" id="btnFiltro" type="button" onclick="buscarFiltro()"><i class="fa fa-search mr-1"></i><strong>{% translate 'Buscar' %}</strong></button>
+                        <button class="btn btn-danger" type="button" onclick="eliminarFiltroAll()"><i class="fa fa-eraser mr-1"></i><strong>{% translate 'Limpiar' %}</strong></button>
+                     </div>
+                  </div>
+               </section>
+               <section class="card-body">
+                  <div id="renderContainer" class="col-md-12 mx-1 table-responsive"></div>
+               </section>
+               {% comment %}
+               <section class="card-footer d-flex align-items-center" id="paginas">
+                  {% include 'Helping/paginas.html' with plan=plan %}   
+               </section>
+               {% endcomment %} 
+            </main>
+         </div>
+      </div>
+   </div>
+{% endblock content %}
+	
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+
+   $(document).ready(function () {
+
+      renderContent()
+
+   });
+
+   const renderContent = () => {
+
+      document.querySelector("#renderContainer").innerHTML = spinnerBar()
+      fetch("{% url 'planning:renderTablas' %}", {
+         ...fetchObject,
+      })
+      .then(res => res.text())
+      .then(text => {
+
+         document.querySelector("#renderContainer").innerHTML = text
+
+      })
+      .catch((err)=>{
+
+         makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+         document.querySelector("#renderContainer").innerHTML = ''
+
+      })
+
+   }
+
+
+   
+   // metodos para los filtros
+   const eliminarFiltro = (e) => {
+
+      const nodo = e.parentNode.parentNode
+      nodo.parentNode.removeChild(nodo);
+
+   }
+
+   const eliminarFiltroAll = () => {
+
+      if(!document.querySelector('.progress-bar')){
+
+         const formFiltro = document.querySelector('#formFiltro')
+         formFiltro.innerHTML = ""
+         const btnFiltro = document.querySelector('#btnFiltro')
+         btnFiltro.click()
+
+      }else
+
+         makeMessage(3,"{% translate 'Alerta' %}","{% translate 'Debes esperar a que el contenido termine de cargarse' %}")
+
+   }
+
+   const anadirFiltro = () => {
+
+      setLoading()   
+      fetch("{% url 'planning:filtroLista' %}", {
+         ...fetchObject,
+      })
+      .then(res => res.text())
+      .then(text => {
+
+         document.querySelector('#formFiltro').insertAdjacentHTML("beforeend", text)
+
+      })
+      .catch((err)=>{
+
+         makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+      })
+      .finally(() => {
+
+         stopLoading()
+
+      })
+
+   }
+
+   const anadirFiltroAtributo = (e) => {
+
+      setLoading() 
+      fetch("{% url 'planning:filtroAtributo' %}", {
+         ...fetchObject,
+         body: JSON.stringify({
+
+            id: e.options[e.selectedIndex].value,
+
+         })
+      })
+      .then(res => res.text())
+      .then(text => {
+         
+         if(text){
+            
+            e.innerHTML = text
+            e.setAttribute("onchange", "anadirFiltroHijo(this)");
+
+         }
+
+      })
+      .catch((err)=>{
+
+         makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+      })
+      .finally(() => {
+
+         stopLoading()
+
+      })
+
+   }
+   
+   const anadirFiltroHijo = (e) => {
+
+      setLoading() 
+      fetch("{% url 'planning:filtroElemento' %}", {
+         ...fetchObject,
+         body: JSON.stringify({
+
+            id: e.options[e.selectedIndex].value,
+
+         })
+      })
+      .then(res => res.text())
+      .then(text => {
+         
+         if(text){
+
+            const parent = e.parentNode
+            parent.innerHTML = text
+            parent.querySelector(':first-child').focus()
+
+         }
+
+      })
+      .catch((err)=>{
+
+         makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+      })
+      .finally(() => {
+
+         stopLoading()
+
+      })
+
+   }
+   
+   const buscarFiltro = (pag = -1) => {
+
+      console.log(getFormFiltro())
+      if(!document.querySelector('.progress-bar')){
+
+         // localStorage.setItem("rango", document.querySelector('#selectNumeracion').value);
+
+         document.querySelector("#renderContainer").innerHTML = spinnerBar()
+         fetch("{% url 'planning:filtrar' %}", {
+            ...fetchObject,
+            body: JSON.stringify({
+               filtro: getFormFiltro(),
+               // numero: localStorage.getItem("rango"),
+               // pag: pag > 0 ? pag : document.querySelector('.page-item.active > a').dataset.number
+            })
+         })
+         .then(res => res.json())
+         .then(text => {
+            
+               document.querySelector("#renderContainer").innerHTML = text['contenido']
+               // document.querySelector("#paginas").innerHTML = text['pagina']
+
+         })
+         .catch((err)=>{
+
+            makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+         })
+
+      }else
+
+         makeMessage(3,"{% translate 'Alerta' %}","{% translate 'Debes esperar a que el contenido termine de cargarse' %}")
+         
+   }
+
+   const getFormFiltro = () => {
+      
+      const formFiltro = document.querySelector('#formFiltro')
+      const formData = new FormData(formFiltro);
+      const data = Object.fromEntries(formData.entries())
+
+      Object.keys(data).forEach((key) => {
+
+         if(!data[key].trim())
+
+            delete data[key]
+
+      });
+
+      return data
+
+   }
+
+   ///////////////////////// 
+
+</script>
+{% endblock javascripts %}
