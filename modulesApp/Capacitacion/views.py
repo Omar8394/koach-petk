@@ -399,8 +399,8 @@ def modalAddcursos(request):
 def relation_componente(request):
     id=request.GET.get('id')
     Estructura=Estructuraprograma.objects.all()
-   
-    context = {"Estructura":Estructura,"id":id}
+    componentes=capacitacion_componentesXestructura.objects.filter(fk_estructuraprogramas_id=id)
+    context = {"Estructura":Estructura,"id":id ,"componentes":componentes}
     
     html_template = (loader.get_template('relation_componente.html'))
     
@@ -408,10 +408,38 @@ def relation_componente(request):
 def update_estrutura(request) :  
     estructura=request.POST.get('estructura') 
     id=request.POST.get('id')
-    componente=capacitacion_componentesXestructura()
-    componente.fk_estructuraprogramas_id=estructura
-    componente.fk_componetesformacion_id=id
-    componente.save()
-    return JsonResponse({"message":"ok"})
-    
+    notsave=capacitacion_componentesXestructura.objects.filter(fk_estructuraprogramas_id=estructura,fk_componetesformacion_id=id)
+    if notsave.exists():
+       return JsonResponse({"message":"no"})
+    else:
+       componente=capacitacion_componentesXestructura()
+       componente.fk_estructuraprogramas_id=estructura
+       componente.fk_componetesformacion_id=id
+       componente.save()
+       return JsonResponse({"message":"ok"})
+def getcomponentsxestructura(request):
+    if request.method == "POST":
+       if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        
+        try:
+            if request.body:
+                context={}
+                title=False
+                data = json.load(request)
+                print(data)
+                title=False
+                if data["query"] == "": 
+                   componentes=capacitacion_componentesXestructura.objects.filter(fk_estructuraprogramas_id=data["id"])
+                   if componentes.exists():
+                      context = {"componentes":componentes}
+                      html_template = (loader.get_template('rendercompxestructura.html')) 
+                      return HttpResponse(html_template.render(context, request))
+                   else:
+                      title=True
+                      context = {"title":title}
+                      html_template = (loader.get_template('rendercompxestructura.html')) 
+                      return HttpResponse(html_template.render(context, request))
+        except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500) 
    

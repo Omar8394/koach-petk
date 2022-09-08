@@ -40,8 +40,9 @@
                             
                          </div> 
                         <div class="card-body m-0 p-0" >
+
                            <ul id="resultado">
-                           
+                              
                            </ul>
                   </div>
                 </div>
@@ -61,18 +62,6 @@
                                       
                                       <div class="card-list-item-actions">
                                       <div class="btn-group" role="group">
-                                      <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Edit"
-                                      onclick="openEditProgram('{{item.id_estructura}}')">
-                                      <i class="fas fa-edit"></i>
-                                      </button>
-                                      <button id="ir" type="button" class="btn btn-icon btn-sm btn-warning ml-1" data-toggle="tooltip"
-                                      data-placement="top" title="ir">
-                                      <i class="fas fa-door-open"></i>
-                                      </button>
-                                      <button type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip" data-placement="top"
-                                      title="Delete" onclick="openDeleteProgram('{{item.id_estructura}}')">
-                                      <i class="fas fa-trash-alt"></i>
-                                      </button>
                                       <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Edit"
                                       onclick="showContent('{{item.id_estructura}}')">
                                       <i class="fas fa-plus"></i>
@@ -94,17 +83,10 @@
                                  <div class="card-list-item-actions">
                                  <div class="btn-group" role="group">         
                                  <a class="btn btn-icon btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="copiar" id="copiar"
-                                 onclick="javascript:clonarNodos('{{activity.id_componenteXestructura}}','{{id}}')" >
+                                 onclick="ajax_up('{{activity.id_componenteXestructura}}','{{id}}')" >
                                  <i class="fas fa-copy mt-2"></i>
                                  </a>
-                                 <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Edit" id="Edit"
-                                 onclick="openEditProgram('{{item.id_estructura}}')">
-                                 <i class="fas fa-edit"></i>
-                                 </button> 
-                                 <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Eliminar" id="Eliminar"
-                                 onclick="showContent('{{item.id_estructura}}')">
-                                 <i class="fas fa-trash"></i>
-                                 </button> 
+                                 
                               </div>
                              </div>
                             </li> 
@@ -141,21 +123,26 @@
 {% endblock content %}
 {% block javascripts %}
 <script>
- 
-var orden=1;
-function clonarNodos(id,estructura)
-{
-  ajax_up(id,estructura) 
-  var id=document.getElementById("pos"+id);
-  
-  var nuevos=id.cloneNode(true);
-  console.log(nuevos.id)
-  nuevos.style.id='pos'+orden;
-  orden++;
-  id=document.getElementById("resultado");
-  id.appendChild(nuevos);
-  
-}
+   let ids={{id}}
+   let query = ""
+   const renderContent = (id)=>{
+      document.querySelector("#resultado").classList.add("is-loading")
+      fetch("{% url 'componentsxestructura'%}", {
+         ...fetchObject,
+         body: JSON.stringify({
+            query,
+            id
+         })
+      })
+      .then(async(res)=>{
+         result = await res.text()
+         document.querySelector("#resultado").classList.remove("is-loading")
+         document.querySelector("#resultado").innerHTML = result
+      })
+   }
+   renderContent(ids) 
+
+
 const ajax_up=(id,estructura)=>{
 $.ajax({
    type: "POST",
@@ -169,9 +156,16 @@ $.ajax({
    },
    dataType: "json",
    success: function (response) {
-      if(response.message === "ok") { 
+      if(response.message == "ok") { 
          makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro copiado y guardado satisfactoriamente' %}", "fa fa-check")
-     } 
+         
+         renderContent(estructura)
+      }
+       else{
+      makeMessage(4, "{% translate 'Alerta' %}!", "{% translate 'ya esta estructura posee este compónente' %}", 'fa fa-exclamation-triangle')
+
+       }
+   
    },
    failure: function () {
        swal("failure");
@@ -183,6 +177,7 @@ const showContent = (id) => {
     let contenido = document.getElementById(`childsTopic${id}`)
     contenido.classList.toggle("card-list-item-close")
  }
+ 
 </script>	
 <!-- Specific Page JS goes HERE  -->
 {% endblock javascripts %}

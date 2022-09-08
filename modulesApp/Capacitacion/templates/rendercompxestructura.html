@@ -1,0 +1,17 @@
+{% if title %} 
+<h3 class="display-4">Esta estructura no posee Componentes</h3>
+{% endif %}
+{% for activity in componentes %}
+<li class="card-list-item-content deg-primary"> 
+   <div class="card-list-item-icon">
+      <i class="fas fa-pencil-ruler"></i>
+   </div>
+   <div class="card-list-item-subtitle">{{activity.fk_componetesformacion}}</div>         
+   <div class="card-list-item-actions">
+   <div class="btn-group" role="group">         
+  
+   
+</div>
+</div>
+</li> 
+{% endfor %}

@@ -23,6 +23,7 @@ urlpatterns = [
     path('modaladdcursos/', views.modalAddcursos, name='modaladdcursos'),
     path('relation/', views.relation_componente, name='relation'),
     path('update_estrutura/', views.update_estrutura, name='update_estrutura'),
+    path('componentsxestructura/', views.getcomponentsxestructura, name='componentsxestructura'),
     #Security Settings
     
 
