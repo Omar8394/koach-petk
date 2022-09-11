@@ -189,7 +189,7 @@
       })
       .then(() => {
          $("#addNewModale").modal("show")
-         const formPrograma = document.getElementById("formPrograma")
+         const formPrograma = document.getElementById("formProgramas")
          let rules = {
             resumenProgram: {
                required: true,
@@ -202,7 +202,7 @@
                minlength: 3
             },
          }
-         commonValidator = $("#formPrograma").validate({
+         commonValidator = $("#formProgramas").validate({
             rules,
             highlight: function (element) {
                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
@@ -213,7 +213,7 @@
          });
          formPrograma.addEventListener("submit", (e) => {
             e.preventDefault()
-            if($("#formPrograma").valid()){
+            if($("#formProgramas").valid()){
                setLoading()
                clickSave(formPrograma, "{% url 'modaladdprogram' %}")
                   .then(() => {
@@ -241,7 +241,7 @@ const openEditProgram = (id) =>{
       })
       .then(() => {
          $("#addNewModale").modal("show")
-         const formPrograma = document.getElementById("formPrograma")
+         const formPrograma = document.getElementById("formProgramas")
          let rules = {
             resumenProgram: {
                required: true,
@@ -254,7 +254,7 @@ const openEditProgram = (id) =>{
                minlength: 3
             },
          }
-         commonValidator = $("#formPrograma").validate({
+         commonValidator = $("#formProgramas").validate({
             rules,
             highlight: function (element) {
                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
@@ -265,7 +265,7 @@ const openEditProgram = (id) =>{
          });
          formPrograma.addEventListener("submit", (e) => {
             e.preventDefault()
-            if ($("#formPrograma").valid()){
+            if ($("#formProgramas").valid()){
                setLoading()
                clickSave(formPrograma, "{% url 'modaladdprogram' %}")
                   .then(() => {
@@ -332,7 +332,7 @@ const openAddProceso = (id,pages) => {
       })
       .then(() => {
          $("#addNewModales").modal("show")
-         const formPrograma = document.getElementById("formPrograma")
+         const formPrograma = document.getElementById("formProgramatwo")
          let rules = {
             resumenProgram: {
                required: true,
@@ -354,7 +354,7 @@ const openAddProceso = (id,pages) => {
               
             },
          }
-         commonValidator = $("#formPrograma").validate({
+         commonValidator = $("#formProgramatwo").validate({
             rules,
             highlight: function (element) {
                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
@@ -365,7 +365,7 @@ const openAddProceso = (id,pages) => {
          });
          formPrograma.addEventListener("submit", (e) => {
             e.preventDefault()
-            if($("#formPrograma").valid()){
+            if($("#formProgramatwo").valid()){
                setLoading()
                clickSavetwo(formPrograma, "{% url 'modaladdproceso' %}")
                   .then(() => {
@@ -415,7 +415,7 @@ const openEditProseso = (id,padre,pages) =>{
       })
       .then(() => {
          $("#addNewModale").modal("show")
-         const formPrograma = document.getElementById("formPrograma")
+         const formPrograma = document.getElementById("formProgramatwo")
          let rules = {
             resumenProgram: {
                required: true,
@@ -428,7 +428,7 @@ const openEditProseso = (id,padre,pages) =>{
                minlength: 3
             },
          }
-         commonValidator = $("#formPrograma").validate({
+         commonValidator = $("#formProgramatwo").validate({
             rules,
             highlight: function (element) {
                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
@@ -439,7 +439,7 @@ const openEditProseso = (id,padre,pages) =>{
          });
          formPrograma.addEventListener("submit", (e) => {
             e.preventDefault()
-            if ($("#formPrograma").valid()){
+            if ($("#formProgramatwo").valid()){
                setLoading()
                clickSave(formPrograma, "{% url 'modaladdprogram' %}")
                   .then(() => {

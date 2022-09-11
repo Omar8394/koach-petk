@@ -34,3 +34,28 @@ class capacitacion_componentesXestructura(models.Model):
     id_componenteXestructura=models.SmallAutoField(primary_key=True)
     fk_componetesformacion=models.ForeignKey(Capacitacion_componentesFormacion, on_delete=models.DO_NOTHING, default=None, null=True)
     fk_estructuraprogramas=models.ForeignKey(Estructuraprograma, on_delete=models.DO_NOTHING, default=None, null=True)
+class capacitacion_ComponentesActividades(models.Model):
+    id_componenteActividades=models.SmallAutoField(primary_key=True)
+    fk_componenteformacion=models.ForeignKey(Capacitacion_componentesFormacion,on_delete=models.DO_NOTHING, default=None, null=True)
+    titulo=models.TextField(null=True)
+    descripcion=models.TextField()
+    fk_tipocomponente=models.ForeignKey(ConfTablasConfiguracion, on_delete=models.DO_NOTHING,related_name="tipo_componente")
+    fecha_disponibilidad=models.DateField(blank=True, null=True)
+    fk_statuscomponente=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name="fk_status")
+    url=models.TextField(blank=True, null=True)
+    orden_presentacion =models.SmallIntegerField(null=True)
+    valor_elemento=models.TextField(blank=True, null=True)
+    peso_creditos=models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    def __str__(self):
+        return self.titulo
+class capacitacion_Actividad_leccion(models.Model):		
+      id_actividadleccion=models.SmallAutoField(primary_key=True)
+      fk_componenteActividad=models.ForeignKey(capacitacion_ComponentesActividades, on_delete=models.DO_NOTHING, default=None, null=True)
+      titulo=models.TextField(null=True)
+      descripcion=models.TextField()
+      url= models.TextField(blank=True, null=True)
+      orden_presentacion=models.SmallIntegerField(null=True)
+      peso_creditos=models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+      valor_elemento=models.TextField(blank=True, null=True)
+      fecha_disponibilidad=models.DateField(blank=True, null=True)
+      fk_statusleccion=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name="fk_status_le")

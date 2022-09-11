@@ -8,6 +8,7 @@ import time, json
 from decimal import Decimal
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.template.defaulttags import register
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 @register.filter
 def hashijos(id):
@@ -16,6 +17,7 @@ def hashijos(id):
     
     print(has)
     return has
+@login_required(login_url="/security/login/")
 def index(request):
     
     # user = request.user.extensionusuario
@@ -210,7 +212,8 @@ def modalAddproceso(request):
                    
         except Exception as e:
                print(e)
-               return JsonResponse({"message":"error"}, status=500) 
+               return JsonResponse({"message":"error"}, status=500)
+@login_required(login_url="/security/login/") 
 def indextwo(request):
     id=request.GET.get('id')
    
@@ -396,11 +399,13 @@ def modalAddcursos(request):
         except Exception as e:
                print(e)
                return JsonResponse({"message":"error"}, status=500)
+@login_required(login_url="/security/login/")
 def relation_componente(request):
     id=request.GET.get('id')
     Estructura=Estructuraprograma.objects.all()
+    dest=Estructuraprograma.objects.get(pk=id).Titulo
     componentes=capacitacion_componentesXestructura.objects.filter(fk_estructuraprogramas_id=id)
-    context = {"Estructura":Estructura,"id":id ,"componentes":componentes}
+    context = {"Estructura":Estructura,"dest":dest,"id":id ,"componentes":componentes}
     
     html_template = (loader.get_template('relation_componente.html'))
     
@@ -436,7 +441,8 @@ def getcomponentsxestructura(request):
                       return HttpResponse(html_template.render(context, request))
                    else:
                       title=True
-                      context = {"title":title}
+                      context = {"title":title
+                                 }
                       html_template = (loader.get_template('rendercompxestructura.html')) 
                       return HttpResponse(html_template.render(context, request))
         except Exception as e:
