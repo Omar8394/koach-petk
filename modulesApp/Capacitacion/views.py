@@ -448,4 +448,8 @@ def getcomponentsxestructura(request):
         except Exception as e:
                print(e)
                return JsonResponse({"message":"error"}, status=500) 
+def createactividades(request):  
+    context = {}
+    html_template = (loader.get_template('createactividades.html'))
+    return HttpResponse(html_template.render(context, request))
    

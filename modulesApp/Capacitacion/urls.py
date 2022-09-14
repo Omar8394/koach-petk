@@ -24,6 +24,7 @@ urlpatterns = [
     path('relation/', views.relation_componente, name='relation'),
     path('update_estrutura/', views.update_estrutura, name='update_estrutura'),
     path('componentsxestructura/', views.getcomponentsxestructura, name='componentsxestructura'),
+    path('createactividades/', views.createactividades, name='createactividades'),
     #Security Settings
     
 
