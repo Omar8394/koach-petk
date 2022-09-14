@@ -165,6 +165,7 @@ INSTALLED_APPS = [
     'modulesApp.Security',
     'modulesApp.Helping',
     'modulesApp.Planning',
+    'modulesApp.Payments',
 ]
 
 MIDDLEWARE = [
