@@ -943,5 +943,127 @@
                         "datos_adicional":"",
                         "tipo_dato":0
                       }
-                    }
+                },
+
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk": 64,
+                  "fields": {
+                    "desc_elemento": "Concepto Pagos",
+                    "fk_tabla_padre": 1,
+                    "tipo_elemento": "1",
+                    "permite_cambios": 0,
+                    "valor_elemento": "concepto_pgs",
+                    "mostrar_en_combos": 0,
+                    "maneja_lista": 1,
+                    "datos_adicional":"&#xf162;",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk": 65,
+                  "fields": {
+                    "desc_elemento": "Diesmos",
+                    "fk_tabla_padre": 64,
+                    "tipo_elemento": "1",
+                    "permite_cambios": 1,
+                    "valor_elemento": "diesmos_pgs",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"&#xf162;",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk": 66,
+                  "fields": {
+                    "desc_elemento": "Ofrndas",
+                    "fk_tabla_padre": 64,
+                    "tipo_elemento": "1",
+                    "permite_cambios": 1,
+                    "valor_elemento": "ofrendas_pgs",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"&#xf162;",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk": 67,
+                  "fields": {
+                    "desc_elemento": "Apadrinamiento",
+                    "fk_tabla_padre": 64,
+                    "tipo_elemento": "1",
+                    "permite_cambios": 1,
+                    "valor_elemento": "apadnmto_pgs",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"&#xf162;",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk": 68,
+                  "fields": {
+                    "desc_elemento": "Metodos de Pago",
+                    "fk_tabla_padre": 1,
+                    "tipo_elemento": "1",
+                    "permite_cambios": 0,
+                    "valor_elemento": "method_pgs",
+                    "mostrar_en_combos": 0,
+                    "maneja_lista": 1,
+                    "datos_adicional":"&#xf162;",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk": 69,
+                  "fields": {
+                    "desc_elemento": "PayPal",
+                    "fk_tabla_padre": 68,
+                    "tipo_elemento": "1",
+                    "permite_cambios": 1,
+                    "valor_elemento": "paypal_pgs",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"&#xf162;",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk": 70,
+                  "fields": {
+                    "desc_elemento": "Tarjeta de Credito",
+                    "fk_tabla_padre": 68,
+                    "tipo_elemento": "1",
+                    "permite_cambios": 1,
+                    "valor_elemento": "trj_cdto_pgs",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"&#xf162;",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk": 71,
+                  "fields": {
+                    "desc_elemento": "Transferencia",
+                    "fk_tabla_padre": 68,
+                    "tipo_elemento": "1",
+                    "permite_cambios": 1,
+                    "valor_elemento": "transf_pgs",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"&#xf162;",
+                    "tipo_dato":0
+                  }
+                }
+
 ]
