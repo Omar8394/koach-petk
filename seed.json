@@ -714,5 +714,234 @@
             "datos_adicional":"&#xf162;",
             "tipo_dato":0
           }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 49,
+          "fields": {
+            "desc_elemento": "Categoria",
+            "fk_tabla_padre_id": 1,
+            "tipo_elemento": 1,
+            "permite_cambios":1,
+            "valor_elemento":"Categoria",
+            "mostrar_en_combos":0,
+            "maneja_lista":1,
+            "datos_adicional":"",
+            "tipo_dato":0
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 50,
+          "fields": {
+            "desc_elemento": "Ritmo",
+            "fk_tabla_padre_id": 1,
+            "tipo_elemento": 1,
+            "permite_cambios":1,
+            "valor_elemento":"Ritmo_Capacitacion",
+            "mostrar_en_combos":0,
+            "maneja_lista":1,
+            "datos_adicional":"",
+            "tipo_dato":0
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk":51 ,
+          "fields": {
+            "desc_elemento": "Diario",
+            "fk_tabla_padre_id": 50,
+            "tipo_elemento": 1,
+            "permite_cambios":1,
+            "valor_elemento":"Diario_ritmo",
+            "mostrar_en_combos":1,
+            "maneja_lista":0,
+            "datos_adicional":"",
+            "tipo_dato":0
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk":52 ,
+          "fields": {
+            "desc_elemento": "Semanal",
+            "fk_tabla_padre_id": 50,
+            "tipo_elemento": 1,
+            "permite_cambios":1,
+            "valor_elemento":"Semanal_ritmo",
+            "mostrar_en_combos":1,
+            "maneja_lista":0,
+            "datos_adicional":"",
+            "tipo_dato":0
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk":53 ,
+          "fields": {
+            "desc_elemento": "Quincenal",
+            "fk_tabla_padre_id": 50,
+            "tipo_elemento": 1,
+            "permite_cambios":1,
+            "valor_elemento":"Quincenal_ritmo",
+            "mostrar_en_combos":1,
+            "maneja_lista":0,
+            "datos_adicional":"",
+            "tipo_dato":0
+          }
         }
+        ,
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk":54 ,
+          "fields": {
+            "desc_elemento": "Mensual",
+            "fk_tabla_padre_id": 50,
+            "tipo_elemento": 1,
+            "permite_cambios":1,
+            "valor_elemento":"Mensual_ritmo",
+            "mostrar_en_combos":1,
+            "maneja_lista":0,
+            "datos_adicional":"",
+            "tipo_dato":0
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk":55,
+          "fields": {
+            "desc_elemento": "Trimestral",
+            "fk_tabla_padre_id": 50,
+            "tipo_elemento": 1,
+            "permite_cambios":1,
+            "valor_elemento":"Trimestral_ritmo",
+            "mostrar_en_combos":1,
+            "maneja_lista":0,
+            "datos_adicional":"",
+            "tipo_dato":0
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 56,
+          "fields": {
+            "desc_elemento": "Logueado Correctamente, cuenta no verificada" ,
+            "fk_tabla_padre": 36,
+            "tipo_elemento": "0",
+            "permite_cambios": 1,
+            "valor_elemento": "user_active_unverified",
+            "mostrar_en_combos": 1,
+            "maneja_lista": 0,
+            "datos_adicional":"",
+            "tipo_dato":0
+
+          }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 57,
+          "fields": {
+            "desc_elemento": "Credenciales Vencidas, por seguridad debe cambiar sus claves de acceso." ,
+            "fk_tabla_padre": 36,
+            "tipo_elemento": "0",
+            "permite_cambios": 1,
+            "valor_elemento": "user_password_expired",
+            "mostrar_en_combos": 1,
+            "maneja_lista": 0,
+            "datos_adicional":"",
+            "tipo_dato":0
+
+          }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 58,
+              "fields": {
+                "desc_elemento": "Credenciales vencidas",
+                "fk_tabla_padre_id": 28,
+                "tipo_elemento": 2,
+                "permite_cambios":1,
+                "valor_elemento":"tv_cambio_clave",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+          "model": "App.ConfTablasConfiguracion",
+          "pk": 59,
+          "fields": {
+            "desc_elemento": "Status",
+            "fk_tabla_padre": 1,
+            "tipo_elemento": "1",
+            "permite_cambios": 1,
+            "valor_elemento": "Status_global",
+            "mostrar_en_combos": 0,
+            "maneja_lista": 1,
+            "datos_adicional":"",
+            "tipo_dato":0
+
+          }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk": 60,
+              "fields": {
+                "desc_elemento": "Activo",
+                "fk_tabla_padre_id": 59,
+                "tipo_elemento": 2,
+                "permite_cambios":1,
+                "valor_elemento":"Status_activo",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+        },
+        {
+            "model": "App.ConfTablasConfiguracion",
+              "pk":61 ,
+              "fields": {
+                "desc_elemento": "Inactivo",
+                "fk_tabla_padre_id": 59,
+                "tipo_elemento": 2,
+                "permite_cambios":1,
+                "valor_elemento":"Status_inactivo",
+                "mostrar_en_combos":1,
+                "maneja_lista":0,
+                "datos_adicional":"",
+                "tipo_dato":0
+              }
+            },
+            {
+                "model": "App.ConfTablasConfiguracion",
+                  "pk":62 ,
+                  "fields": {
+                    "desc_elemento": "Suspendido",
+                    "fk_tabla_padre_id": 59,
+                    "tipo_elemento": 2,
+                    "permite_cambios":1,
+                    "valor_elemento":"Status_suspendido",
+                    "mostrar_en_combos":1,
+                    "maneja_lista":0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                    "model": "App.ConfTablasConfiguracion",
+                      "pk":63 ,
+                      "fields": {
+                        "desc_elemento": "Desincorporado",
+                        "fk_tabla_padre_id": 59,
+                        "tipo_elemento": 2,
+                        "permite_cambios":1,
+                        "valor_elemento":"Status_desincorporado",
+                        "mostrar_en_combos":1,
+                        "maneja_lista":0,
+                        "datos_adicional":"",
+                        "tipo_dato":0
+                      }
+                    }
 ]
