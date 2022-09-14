@@ -59,3 +59,16 @@ class capacitacion_Actividad_leccion(models.Model):
       valor_elemento=models.TextField(blank=True, null=True)
       fecha_disponibilidad=models.DateField(blank=True, null=True)
       fk_statusleccion=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name="fk_status_le")
+class capacitacion_LeccionPaginas(models.Model):
+      id_leccionPaginas=models.SmallAutoField(primary_key=True)
+      fk_actividadLeccion=models.ForeignKey(capacitacion_Actividad_leccion, on_delete=models.DO_NOTHING, default=None, null=True)
+      titulo=models.TextField(null=True)
+      contenido=models.TextField(null=True)
+      orden_presentacion=models.SmallIntegerField(null=True)
+      fk_statusPagina=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name="fk_status_pa")
+      fk_tipoContenido=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name="tipo_contenido")
+      id_recursos=models.TextField(null=True)
+class capacitacion_Recursos(models.Model):
+      id_recurso=models.SmallAutoField(primary_key=True)
+      fk_tipoRecurso=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name="tipo_recurso")
+      path_rutas=models.TextField(null=True)

@@ -434,7 +434,12 @@ const openAddModulos = (id) => {
    const opengorelation = (id) =>{
       window.location.href = `{% url 'relation' %}?id=${id}`
                    
+   }
+   const openaddactividades = (id) =>{
+      window.location.href = `{% url 'createactividades' %}?id=${id}`
+                   
    } 
+   
 </script>	
 <!-- Specific Page JS goes HERE  -->
 {% endblock javascripts %}
