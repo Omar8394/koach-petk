@@ -1,22 +1,22 @@
 <div class="section-header">
-    <h3 >Nuevo Curso</h3>
+    <h3 >Nuevo Componente</h3>
     <div onclick="openAddcursos('{{pk}}')" class="btn btn-icon btn-success btn-round add-btn btn-card-lg">
        <i class="fas fa-plus"></i>
     </div>
  </div>
  {% if title %} 
- <h3 class="display-4">Aun no ha agregado cursos a este modulo</h3>
+ <h3 class="display-4">Aun no ha agregado componentes a este modulo</h3>
  {% endif %}
  {% for item in data %}
  <ul class="card-list">
     <li class="card-list-item">
        <div class="card-list-item-inner">
-          <div class="card-list-item-subtitle">{{item.Titulo}}</div>
+          <div class="card-list-item-subtitle">{{item.fk_componetesformacion}}</div>
          
           <div class="card-list-item-actions">
           <div class="btn-group" role="group">
           <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Edit"
-          onclick="openEditcursos('{{item.id_estructura}}','{{item.fk_estructura_padre_id}}','{{page}}')">
+          onclick="openEditcursos('{{item.fk_componetesformacion.pk}}','{{item.fk_estructuraprogramas_id}}','{{page}}')">
           <i class="fas fa-edit"></i>
           </button>
           <button type="button" class="btn btn-icon btn-sm btn-warning ml-1" data-toggle="tooltip"
@@ -24,7 +24,7 @@
           <i class="fas fa-door-open"></i>
           </button>
           <button type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip" data-placement="top"
-          title="Delete" onclick="openDeletecursos('{{item.id_estructura}}','{{item.fk_estructura_padre_id}}','{{page}}')">
+          title="Delete" onclick="openDeletecursos('{{item.fk_componetesformacion.pk}}','{{item.fk_estructuraprogramas_id}}','{{page}}')">
           <i class="fas fa-trash-alt"></i>
           </button>
           <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Edit"

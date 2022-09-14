@@ -1,0 +1,8 @@
+{% load i18n %}
+<div class="form-group col-12">
+    <label class="col-form-label">{% translate "Opciones" %}</label>
+    <div class="input-group mb-3">
+        <input type="number" class="form-control" data-p="{{padre}}" name="rango{{padre}}_1{% now 'isu' %}" placeholder='{% translate "Minimo" %}' value="{{min}}">
+        <input type="number" class="form-control" data-p="{{padre}}" name="rango{{padre}}_2{% now 'isu' %}" placeholder='{% translate "Maximo" %}' value="{{max}}">
+    </div>
+</div>

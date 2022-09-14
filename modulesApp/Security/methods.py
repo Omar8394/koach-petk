@@ -11,18 +11,22 @@ def es_correo_valido(correo):
     expresion_regular = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"
     return re.match(expresion_regular, correo) is not None
 
-def change_password(request, password):
-    usuario = request.user
-    usuario.set_password(password)
-    update_session_auth_hash(request, usuario)
-    usuario.fecha_ult_cambio = datetime.today()
-    usuario.intentos_fallidos = 0
-    usuario.save(update_fields=['password','fecha_ult_cambio','intentos_fallidos'])
+def change_password(request, user, password, enlace = False):
+    user.set_password(password)
+    if request is not None:
+        update_session_auth_hash(request, user)
+    user.fecha_ult_cambio = datetime.today()
+    user.save(update_fields=['password','fecha_ult_cambio','intentos_fallidos'])
+    restablecer_cuenta(user)
+    if enlace:
+        limpiar_enlaces(enlace)
+        enlace.delete()
 
-def restablecer_cuenta(user):
+def restablecer_cuenta(user, active = False):
     user.is_active = True
     user.intentos_fallidos = 0
-    user.fk_status_cuenta = ConfTablasConfiguracion.objects.filter(valor_elemento="user_active")[0]
+    if active:
+        user.fk_status_cuenta = ConfTablasConfiguracion.objects.filter(valor_elemento="user_active")[0]
     user.save()
 
 def intentos_fallidos(user):
@@ -37,7 +41,25 @@ def intentos_fallidos(user):
         user.fk_status_cuenta = ConfTablasConfiguracion.objects.filter(valor_elemento="user_account_suspended")[0]
         user.save()
         
-        
+
+def operaciones_dias_fecha(fechabase, cantidad, operacion):
+    formato = "%Y-%m-%d"
+    fechabase = datetime.strptime(fechabase, formato)
+    if operacion:  # true suma
+        fechabase = fechabase + timedelta(days=cantidad)
+    else:  # false resta
+        fechabase = fechabase - timedelta(days=cantidad)
+    return fechabase.strftime(formato)
+
+def exp_clave(user):
+    formato = "%Y-%m-%d"
+    if datetime.today().strftime(formato) >= operaciones_dias_fecha(str(user.fecha_ult_cambio), user.dias_cambio, True):
+        user.fk_status_cuenta = ConfTablasConfiguracion.objects.filter(valor_elemento="user_password_expired")[0]
+        return True
+    return False
+    
+def get_status_description(status):
+    return str(status.replace("user", "").replace("_", " ").lstrip().capitalize())
 
 def get_status_user(cuenta):
     status_user = {} 
@@ -46,17 +68,16 @@ def get_status_user(cuenta):
         status_user['estado'] = "Invalid Account"
         status_user['mensaje'] = "El Usuario o correo proporcionados no estan asociados a ninguna cuenta."
     else:
-        status_user['estado'] = str(user.fk_status_cuenta.valor_elemento).\
-        replace("user", "").replace("_", " ").lstrip().capitalize()
+        exp_clave(user)
+        status_user['estado'] = get_status_description(user.fk_status_cuenta.valor_elemento)
         status_user['mensaje'] = str(user.fk_status_cuenta.desc_elemento)
     status_user['user'] = user      
     return status_user
 
 def auth_user(cuenta, password):
     status_user = get_status_user(cuenta)
-    print("cuenta ",cuenta)
-    print(status_user)
-    if status_user['estado'] == "Active":
+    if status_user['estado'] == "Active" or status_user['estado'] == "Active unverified"\
+        or status_user['estado'] == "Password expired":
         user_aux = authenticate(username=status_user['user'].username, password=password)
         if user_aux is None:
             intentos_fallidos(status_user['user'])
@@ -95,17 +116,27 @@ def get_verification_code(user,expirationtime,tipo):
         print("error al generar el codigo de verificacion", e)
         return None
     
-def verificarenlace(key_expires):
-    formato = "%Y-%m-%d %H:%M:%S"
-    return datetime.strftime(key_expires, formato) >= datetime.now().strftime(formato)
-
-def change_password_link(enlace, password):
-    enlace.usuario.set_password(password)
-    enlace.save()
-    restablecer_cuenta(enlace.usuario)
-    enlace.delete()
-    # validar las claves anteriores
+def verificarenlace(activation_key):
+    try:
+        formato = "%Y-%m-%d %H:%M:%S"
+        enlace = CodigoVerificacion.objects.get(activation_key=activation_key)
+        limpiar_enlaces(enlace)
+        return datetime.strftime(enlace.key_expires, formato) >= datetime.now().strftime(formato)
+    except Exception as e:
+        return None
     
+def limpiar_enlaces(enlace):
+    try:
+        enlaces_viejos = CodigoVerificacion.objects.filter(usuario=enlace.usuario, tipo_verificacion=enlace.tipo_verificacion)
+        for x in enlaces_viejos:
+            if x!=enlace:
+                x.delete()
+    except Exception as e:
+        print("error al borrar enlaces", e)
+    
+    
+   
+ 
     
 def send_vefication_code_email(user,asunto,contenido,tipo):
     code = get_verification_code(user, 3, tipo)

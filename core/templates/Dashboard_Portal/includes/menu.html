@@ -34,7 +34,11 @@
                 <ul class="dropdown-menu mt-2" aria-labelledby="planificacionDropdown">
                     <div class="div-caret"></div>
                     <li>
-                        <a class="dropdown-item mt-2" href="{% url 'planning:func_Planning' %}"><i class="fas fa-user-circle mr-1"></i> Perfil</a>
+                        <a class="dropdown-item mt-2" href="{% url 'planning:mostrarFicha' %}"><i class="fas fa-user-circle mr-1"></i>Perfil</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'planning:func_Planning' %}"><i class="fas fa-cog mr-1"></i>Configuracion</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'planning:listaPerfiles' %}"><i class="fas fa-table mr-1"></i>Registros</a>
                         <!-- no borrar le da un margin-bottom -->
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item mb-2" href="{% url 'createBoletin' %}"><i class="fas fa-door-open mr-1"></i> Create Boletin </a>
@@ -109,10 +113,10 @@
                 <ul class="dropdown-menu mt-2" aria-labelledby="capacitacion2Dropdown">
                     <div class="div-caret"></div>
                     <li>
-                        <a class="dropdown-item mt-2" href="#"><i class="fas fa-user-circle mr-1"></i> Formas de Pago</a>
+                        <a class="dropdown-item mt-2" href="{% url 'payments'%}"><i class="fas fa-user-circle mr-1"></i> Formas Pago1</a>
                         
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#"><i class='fas fa-paper-plane fa-lg mr-1'></i> Pagos USD</a>
+                        <a class="dropdown-item" href="#"><i class='fas fa-paper-plane fa-lg mr-1'></i> Formas Pago1</a>
                         
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item mb-2" href="{% url 'home' %}"><i class="fas fa-door-open mr-1"></i> Otras Opciones </a>

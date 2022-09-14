@@ -1,11 +1,9 @@
 {% extends "layouts/base.html" %}
-
+{% load i18n %}
 {% block title %}{% endblock %}
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}
-<style>
 
-</style>
 {% endblock stylesheets %}
 
 {% block content %}
@@ -28,13 +26,13 @@
          </ul>
       </div>
       <div class="page-category">
-         <div class="card">
+         
         
            
             <main class="card-body is-loading-lg">
                
             </main>
-         </div>
+         
       </div>
    </div>
 </div>
@@ -151,16 +149,20 @@ const openAddModulos = (id) => {
            return updateModel(url, "Update", data, idSeleted)
               .then(async (res) => {
                  const text = JSON.parse(await res.text())
-                 if (text.message == "error") alerta(5)
-                 else alerta(2)
+                 if (text.message == "error")  makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+                 else  makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+
               })
         }
         else {
            return updateModel(url, "Create", data, idSeleted)
               .then(async (res) => {
                  const text = JSON.parse(await res.text())
-                 if (text.message == "error") alerta(5)
-                 else alerta(1)
+                 if (text.message == "error")  makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+                 else  makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+
               })
         }
        
@@ -229,8 +231,10 @@ const openAddModulos = (id) => {
          })
          .then(async (res) => {
             const text = JSON.parse(await res.text())
-            if (text.message == "error") alerta(5)
-            else alerta(4)
+            if (text.message == "error")  makeMessage(4, "{% translate 'Notificacion' %}", "{% translate 'un error ha occurrido y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+            else  makeMessage(1, "{% translate 'Notificacion' %}", "{% translate 'Archivo eliminado satisfactoriamente' %}", 'fas fa-trash-alt')
+
          })
          .then(()=>{
             renderContent(padre,page,limit)
@@ -266,7 +270,7 @@ const openAddModulos = (id) => {
          })
          .then(() => {
             $("#addNewModales").modal("show")
-            const formPrograma = document.getElementById("formPrograma")
+            const formPrograma = document.getElementById("formProgram")
             let rules = {
                resumenProgram: {
                   required: true,
@@ -278,8 +282,41 @@ const openAddModulos = (id) => {
                   maxlength: 15,
                   minlength: 3
                },
+               descriptionProgram: {
+                  required: true,
+                  maxlength: 200,
+                  minlength: 20
+               },
+               creditos: {
+                  required: true
+                  
+               },
+               Condicion: {
+                  required: true
+                  
+               },
+               categoryProgram: {
+                  required: true
+                  
+               },
+               Ritmo: {
+                  required: true
+                  
+               },
+               disponibleCourse: {
+                  required: true
+                  
+               },
+               checkDurationCB: {
+                  required: true
+                  
+               },
+               checkDurationC: {
+                  required: true
+                  
+               },
             }
-            commonValidator = $("#formPrograma").validate({
+            commonValidator = $("#formProgram").validate({
                rules,
                highlight: function (element) {
                   $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
@@ -290,7 +327,7 @@ const openAddModulos = (id) => {
             });
             formPrograma.addEventListener("submit", (e) => {
                e.preventDefault()
-               if($("#formPrograma").valid()){
+               if($("#formProgram").valid()){
                   setLoading()
                   clickSave(formPrograma, "{% url 'modaladdcursos' %}")
                      .then(() => {
@@ -311,13 +348,16 @@ const openAddModulos = (id) => {
             ...fetchObject,
             body: JSON.stringify({
                method: "Delete",
-               id
+               id,
+               padre
             })
          })
          .then(async (res) => {
             const text = JSON.parse(await res.text())
-            if (text.message == "error") alerta(5)
-            else alerta(4)
+            if (text.message == "error")  makeMessage(4, "{% translate 'Notificacion' %}", "{% translate 'un error ha occurrido y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+            else  makeMessage(1, "{% translate 'Notificacion' %}", "{% translate 'Archivo eliminado satisfactoriamente' %}", 'fas fa-trash-alt')
+
          })
          .then(()=>{
             rendercurso(padre,page,limit)
@@ -339,7 +379,7 @@ const openAddModulos = (id) => {
          })
          .then(() => {
             $("#addNewModale").modal("show")
-            const formPrograma = document.getElementById("formPrograma")
+            const formPrograma = document.getElementById("formProgram")
             let rules = {
                resumenProgram: {
                   required: true,
@@ -352,7 +392,7 @@ const openAddModulos = (id) => {
                   minlength: 3
                },
             }
-            commonValidator = $("#formPrograma").validate({
+            commonValidator = $("#formProgram").validate({
                rules,
                highlight: function (element) {
                   $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
@@ -363,7 +403,7 @@ const openAddModulos = (id) => {
             });
             formPrograma.addEventListener("submit", (e) => {
                e.preventDefault()
-               if ($("#formPrograma").valid()){
+               if ($("#formProgram").valid()){
                   setLoading()
                   clickSave(formPrograma, "{% url 'modaladdcursos' %}")
                      .then(() => {
@@ -390,7 +430,11 @@ const openAddModulos = (id) => {
          contenedorLista.innerHTML = resultado
    
    
-   }      
+   }   
+   const opengorelation = (id) =>{
+      window.location.href = `{% url 'relation' %}?id=${id}`
+                   
+   } 
 </script>	
 <!-- Specific Page JS goes HERE  -->
 {% endblock javascripts %}

@@ -1,0 +1,183 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% block title %}{% endblock %}
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+ 
+<style>
+    
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="content">
+   <div class="page-inner animated fadeInRight">
+      <div class="page-header">
+         <h4 class="page-title">Academic</h4>
+         <ul class="breadcrumbs">
+            <li class="nav-home">
+               <a href="{% url 'home' %}">
+                  <i class="flaticon-home"></i>
+               </a>
+            </li>
+            <li class="separator">
+               <i class="flaticon-right-arrow"></i>
+            </li>
+            <li class="nav-item">
+               <a href="#">Academic</a>
+            </li>
+         </ul>
+      </div>
+      <div class="page-category">
+         
+           
+            <div class="form-group" id="groupDate">
+
+                <div class="row">
+                    <div class="card col-6" style="background-color: #1a2035 !important; color: white;">
+                        <div class="section-header">
+                            <h3 >Estructura: {{dest}}</h3>
+                            
+                         </div> 
+                        <div class="card-body m-0 p-0" >
+
+                           <ul id="resultado">
+                              
+                           </ul>
+                  </div>
+                </div>
+
+                    <div class="card col-6" style="background-color: #1a2035 !important; color: white;">
+                        <div class="section-header">
+                            <h3 >Componentes</h3>
+                            
+                         </div>
+
+                        <div class="card-body m-0 p-0" >
+                            {% for item in Estructura %}
+                            <ul  class="about" >
+                                <li class="card-list-item">
+                                   <div class="card-list-item-inner">
+                                      <div class="card-list-item-subtitle">{{item.Titulo}}</div>
+                                      
+                                      <div class="card-list-item-actions">
+                                      <div class="btn-group" role="group">
+                                      <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Edit"
+                                      onclick="showContent('{{item.id_estructura}}')">
+                                      <i class="fas fa-plus"></i>
+                                      </button>
+                                      </div>
+                                     </div>
+                                   </div>
+                                </li>
+                             </ul>
+                            
+                             <div class="card-list-item-descripcion card-list-item-close"><strong>Description:</strong>jjj</div>   
+                             <ul id="childsTopic{{item.id_estructura}}"  class="card-list-item-close">
+                              {% for activity in item.id_estructura|hashijos %}
+                              <li id="pos{{activity.id_componenteXestructura}}" class="card-list-item-content deg-primary"> 
+                                 <div class="card-list-item-icon">
+                                    <i class="fas fa-pencil-ruler"></i>
+                                 </div>
+                                 <div class="card-list-item-subtitle">{{activity.fk_componetesformacion}}</div>         
+                                 <div class="card-list-item-actions">
+                                 <div class="btn-group" role="group">         
+                                 <a class="btn btn-icon btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="copiar" id="copiar"
+                                 onclick="ajax_up('{{activity.id_componenteXestructura}}','{{id}}')" >
+                                 <i class="fas fa-copy mt-2"></i>
+                                 </a>
+                                 
+                              </div>
+                             </div>
+                            </li> 
+                           {% endfor %}        
+                          </ul>   
+                         </li>   
+                        </ul>
+                       {% endfor %}
+                     </div>
+                        <!-- <a title="Click to remove all chosen permissions at once." href="#" id="id_permissions_remove_all_link" class="selector-clearall">Remove all</a> -->
+                    </div>
+                </div>
+
+            </div>
+         </div>
+      
+   </div>
+</div>
+<div class="modal fade" id="addNewModal" tabindex="-1" role="dialog" aria-hidden="true">
+   <div id="addNewModalContent" class="modal-dialog  modal-dialog-centered" role="document">
+
+   </div>
+</div>
+<div class="modal fade" id="addNewModale" tabindex="-1" role="dialog" aria-hidden="true">
+   <div id="addNewModalContente" class="modal-dialog  modal-dialog-centered" role="document">
+
+   </div>
+</div>
+<div class="modal fade" id="addNewModales" tabindex="-1" role="dialog" aria-hidden="true">
+   <div id="addNewModalContentes" class="modal-dialog  modal-dialog-centered" role="document">
+
+   </div>
+</div>
+{% endblock content %}
+{% block javascripts %}
+<script>
+   let ids={{id}}
+   let query = ""
+   const renderContent = (id)=>{
+      document.querySelector("#resultado").classList.add("is-loading")
+      fetch("{% url 'componentsxestructura'%}", {
+         ...fetchObject,
+         body: JSON.stringify({
+            query,
+            id
+         })
+      })
+      .then(async(res)=>{
+         result = await res.text()
+         document.querySelector("#resultado").classList.remove("is-loading")
+         document.querySelector("#resultado").innerHTML = result
+      })
+   }
+   renderContent(ids) 
+
+
+const ajax_up=(id,estructura)=>{
+$.ajax({
+   type: "POST",
+   url: "{% url 'update_estrutura' %}",
+   data: {
+     
+       'estructura':estructura,
+       'id':id,
+       'csrfmiddlewaretoken': '{{ csrf_token }}',
+
+   },
+   dataType: "json",
+   success: function (response) {
+      if(response.message == "ok") { 
+         makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro copiado y guardado satisfactoriamente' %}", "fa fa-check")
+         
+         renderContent(estructura)
+      }
+       else{
+      makeMessage(4, "{% translate 'Alerta' %}!", "{% translate 'ya esta estructura posee este compónente' %}", 'fa fa-exclamation-triangle')
+
+       }
+   
+   },
+   failure: function () {
+       swal("failure");
+   }
+}); 
+}
+const showContent = (id) => {
+   
+    let contenido = document.getElementById(`childsTopic${id}`)
+    contenido.classList.toggle("card-list-item-close")
+ }
+ 
+</script>	
+<!-- Specific Page JS goes HERE  -->
+{% endblock javascripts %}

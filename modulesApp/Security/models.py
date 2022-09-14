@@ -6,15 +6,15 @@ class User(AbstractUser):
     def get_default_status():
         status = None
         try:
-            status = ConfTablasConfiguracion.objects.filter(valor_elemento="user_active")[0]
+            status = ConfTablasConfiguracion.objects.filter(valor_elemento="user_active_unverified")[0]
         except Exception as e:
-            pass
+            print("no se ha encotrado el estatus user")
         return status
     fk_rol_usuario = models.ForeignKey(ConfTablasConfiguracion, on_delete=models.CASCADE,
                                        related_name='rol_usuario', null=True, default=None)
     fk_pregunta_secreta = models.ForeignKey(ConfTablasConfiguracion, on_delete=models.DO_NOTHING, related_name='pregunta', null=True, default=None)
     intentos_fallidos = models.IntegerField(default=0)  # Field name made lowercase.
-    fecha_ult_cambio = models.DateField(blank=True, null=True)
+    fecha_ult_cambio = models.DateField(auto_now_add=True,blank=True, null=True)
     respuesta_secreta = models.TextField(blank=True, null=True)
     fk_status_cuenta = models.ForeignKey(ConfTablasConfiguracion, on_delete=models.DO_NOTHING, related_name='estado_cuenta',\
         default=get_default_status(),null=True)

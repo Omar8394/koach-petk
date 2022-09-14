@@ -3,12 +3,21 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from ..App.models import ConfTablasConfiguracion
-from ..Capacitacion.models import Estructuraprograma
+from ..Capacitacion.models import Estructuraprograma,capacitacion_componentesXestructura,Capacitacion_componentesFormacion
 import time, json
 from decimal import Decimal
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.template.defaulttags import register
+from django.contrib.auth.decorators import login_required
 # Create your views here.
-
+@register.filter
+def hashijos(id):
+    lista=[]
+    has=capacitacion_componentesXestructura.objects.filter(fk_estructuraprogramas_id=id)
+    
+    print(has)
+    return has
+@login_required(login_url="/security/login/")
 def index(request):
     
     # user = request.user.extensionusuario
@@ -34,7 +43,8 @@ def getcontentprogrmas(request):
                 title=False
                 lista = []
                 if data["query"] == "":
-                   categorias=ConfTablasConfiguracion.obtenerHijos("Categoria")     
+                   categorias=ConfTablasConfiguracion.obtenerHijos("Categoria") 
+                   print(categorias)    
                    context = {'categorias':categorias}             
                    html_template = loader.get_template( 'Contenido_programas.html' )
                    return HttpResponse(html_template.render(context, request))
@@ -202,7 +212,8 @@ def modalAddproceso(request):
                    
         except Exception as e:
                print(e)
-               return JsonResponse({"message":"error"}, status=500) 
+               return JsonResponse({"message":"error"}, status=500)
+@login_required(login_url="/security/login/") 
 def indextwo(request):
     id=request.GET.get('id')
    
@@ -234,7 +245,7 @@ def getcontentunits(request):
                       return HttpResponse(html_template.render(context, request))
                    else:
                       title=True
-                      context = {'title':title}             
+                      context = {'title':title,'pk':data['pk']}             
                       html_template = loader.get_template( 'contenidounidades.html' )
                       return HttpResponse(html_template.render(context, request)) 
         except Exception as e:
@@ -293,7 +304,7 @@ def getcontentcursos(request):
                 print(data)
                 lista=[]
                 if data["query"] == "":
-                   cursos=Estructuraprograma.objects.filter(fk_estructura_padre_id=data['id'],valor_elemento="Courses")
+                   cursos=capacitacion_componentesXestructura.objects.filter(fk_estructuraprogramas_id=data['id'])
                    if cursos.exists():
                       paginator = Paginator(cursos, data["limit"])
                       lista = paginator.get_page(data["page"])
@@ -319,34 +330,122 @@ def modalAddcursos(request):
                 data = json.load(request)
                 print(data)
                 if data['method'] == "Editar":
-                    modelo = Estructuraprograma.objects.get(pk=data["id"])    
-                    categorias = ConfTablasConfiguracion.obtenerHijos(valor="Categoria")
+                    modelo = Capacitacion_componentesFormacion.objects.get(pk=data["id"])    
+                    categorias = ConfTablasConfiguracion.obtenerHijos(valor="Ritmo_Capacitacion")
                     context = {"categorias": categorias, "modelo": modelo}
                     html_template = (loader.get_template('modaladdcursos.html'))
                     return HttpResponse(html_template.render(context, request))
                 elif data["method"] == "Delete":
-                    cursos = Estructuraprograma.objects.get(pk=data["id"])
+                    rel=capacitacion_componentesXestructura.objects.get(fk_estructuraprogramas_id=data["padre"],fk_componetesformacion=data["id"])
+                    rel.delete()
+                    cursos = Capacitacion_componentesFormacion.objects.get(pk=data["id"])   
                     cursos.delete()
                     return JsonResponse({"message":"Deleted"}) 
                 elif data["method"] == "Update":
-                     cursos = Estructuraprograma.objects.get(pk=data["id"])
-                elif data['method'] == "Create":
-                   proAdd=Estructuraprograma.objects.get(pk=data['id']).fk_categoria_id
-                   print(proAdd)
-                   cursos=Estructuraprograma()
-                   cursos.fk_estructura_padre_id=data['id']
-                   cursos.fk_categoria_id=proAdd
-                cursos.valor_elemento="Courses"
-                cursos.descripcion=data['data']['resumenProgram']    
-                cursos.url=data['data']['urlProgram']         
-                cursos.Titulo=data['data']['descriptionProgram']
-                cursos.peso_creditos=Decimal(data['data']['creditos'].replace(',','.'))
-                cursos.save()
-                return JsonResponse({"message":"ok"})
+                   cursos = Capacitacion_componentesFormacion.objects.get(pk=data["id"])
+                   cursos.descripcion=data['data']['resumenProgram']    
+                   cursos.url=data['data']['urlProgram']         
+                   cursos.titulo=data['data']['descriptionProgram']
+                   cursos.creditos_peso=Decimal(data['data']['creditos'].replace(',','.'))
+                   cursos.Fecha_activo=data['data']['disponibleCourse']
+                   cursos.Condicion=data['data']['Condicion']
+                   cursos.tipo_ritmo_id=data['data']['categoryProgram']
+                   cursos.ritmo=data['data']['Ritmo']
+                   if 'checkDurationCB' in data['data']:
+                      cursos.status_componente=1
+                   else:
+                      cursos.status_componente=0
+                   if 'checkDurationC' in data['data']:
+                      cursos.tiene_certificad=1
+                   else:
+                      cursos.tiene_certificad=0
                 
-            context = {}             
+                   cursos.save()
+                elif data['method'] == "Create":
+                  
+                   cursos=Capacitacion_componentesFormacion()
+                   relacion=capacitacion_componentesXestructura() 
+                   relacion.fk_estructuraprogramas_id=data['id']
+                  
+                   cursos.codigo_componente="Components"
+                   cursos.descripcion=data['data']['resumenProgram']    
+                   cursos.url=data['data']['urlProgram']         
+                   cursos.titulo=data['data']['descriptionProgram']
+                   cursos.creditos_peso=Decimal(data['data']['creditos'].replace(',','.'))
+                   cursos.Fecha_activo=data['data']['disponibleCourse']
+                   cursos.Condicion=data['data']['Condicion']
+                   cursos.tipo_ritmo_id=data['data']['categoryProgram']
+                   cursos.ritmo=data['data']['Ritmo']
+                   if 'checkDurationCB' in data['data']:
+                      cursos.status_componente=1
+                   else:
+                      cursos.status_componente=0
+                   if 'checkDurationC' in data['data']:
+                      cursos.tiene_certificad=1
+                   else:
+                      cursos.tiene_certificad=0
+                
+                   cursos.save()
+                   relacion.fk_componetesformacion=cursos
+                   relacion.save()
+                   
+               
+                
+                return JsonResponse({"message":"ok"})
+            categorias = ConfTablasConfiguracion.obtenerHijos(valor="Ritmo_Capacitacion")  
+            context = {"categorias": categorias}             
             html_template = loader.get_template( 'modaladdcursos.html' )
             return HttpResponse(html_template.render(context, request)) 
         except Exception as e:
                print(e)
                return JsonResponse({"message":"error"}, status=500)
+@login_required(login_url="/security/login/")
+def relation_componente(request):
+    id=request.GET.get('id')
+    Estructura=Estructuraprograma.objects.all()
+    dest=Estructuraprograma.objects.get(pk=id).Titulo
+    componentes=capacitacion_componentesXestructura.objects.filter(fk_estructuraprogramas_id=id)
+    context = {"Estructura":Estructura,"dest":dest,"id":id ,"componentes":componentes}
+    
+    html_template = (loader.get_template('relation_componente.html'))
+    
+    return HttpResponse(html_template.render(context, request))
+def update_estrutura(request) :  
+    estructura=request.POST.get('estructura') 
+    id=request.POST.get('id')
+    notsave=capacitacion_componentesXestructura.objects.filter(fk_estructuraprogramas_id=estructura,fk_componetesformacion_id=id)
+    if notsave.exists():
+       return JsonResponse({"message":"no"})
+    else:
+       componente=capacitacion_componentesXestructura()
+       componente.fk_estructuraprogramas_id=estructura
+       componente.fk_componetesformacion_id=id
+       componente.save()
+       return JsonResponse({"message":"ok"})
+def getcomponentsxestructura(request):
+    if request.method == "POST":
+       if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        
+        try:
+            if request.body:
+                context={}
+                title=False
+                data = json.load(request)
+                print(data)
+                title=False
+                if data["query"] == "": 
+                   componentes=capacitacion_componentesXestructura.objects.filter(fk_estructuraprogramas_id=data["id"])
+                   if componentes.exists():
+                      context = {"componentes":componentes}
+                      html_template = (loader.get_template('rendercompxestructura.html')) 
+                      return HttpResponse(html_template.render(context, request))
+                   else:
+                      title=True
+                      context = {"title":title
+                                 }
+                      html_template = (loader.get_template('rendercompxestructura.html')) 
+                      return HttpResponse(html_template.render(context, request))
+        except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500) 
+   

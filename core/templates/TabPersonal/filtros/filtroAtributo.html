@@ -1,0 +1,10 @@
+{% load i18n %}   
+<option value="" disabled selected>{% translate "Seleccione un atributo" %}</option>
+{% for bloque in bloques %}
+<option disabled style="font-weight: bold;">{{bloque.titulo}}</option>
+{% for filtro in atributos %}
+{% if bloque.bloque == filtro.bloque %}
+<option value="{{filtro.id}}">{{filtro.titulo}}</option>
+{% endif %}
+{% endfor %}
+{% endfor %}

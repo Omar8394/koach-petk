@@ -5,7 +5,23 @@
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}
 
+<style>
+    
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
 
+		-webkit-appearance: none;
+		margin: 0;
+
+	}
+
+	input[type=number] {
+
+		-moz-appearance: textfield;
+
+	}
+    
+</style>
 
 {% endblock stylesheets %}
 
@@ -459,7 +475,7 @@
         ...fetchObject,
         body: JSON.stringify({
             id,
-            data
+            data,
         })
         })
         .then(res => res.text())
@@ -527,11 +543,16 @@
                 
             })
 
-            
             const formAtributo = document.querySelector("#formAtributo")
             formAtributo.addEventListener("submit", (e) => {
 
                 e.preventDefault()
+
+            })
+
+            $('#modalAtributos').modal('show')
+            $('#modalAtributos').on('hidden.bs.modal', function (event) {
+
                 const formData = new FormData(formAtributo);
                 const data = Object.fromEntries(formData.entries())
 
@@ -545,30 +566,15 @@
                 })
                 .then(res => res.text())
                 .then(text => {
-                    
-                    // makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registros guardados' %}", "fa fa-check")
-                    // $('#modalAtributos').modal('hide')
-                    // console.log('guardado')
-
-                })
-                .catch((err)=>{
-
-                    makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
 
                 })
                 .finally(() => {
 
+                    $('#modalAtributos').remove()
+                    $('body').addClass('modal-open')
                     stopLoading()
 
                 })
-
-            })
-
-            $('#modalAtributos').modal('show')
-            $('#modalAtributos').on('hidden.bs.modal', function (event) {
-
-                $('#modalAtributos').remove()
-                $('body').addClass('modal-open')
 
             })
 
@@ -636,12 +642,17 @@
     
     const moveAtributo = (id, data) => {
 
+        const formAtributo = document.querySelector("#formAtributo")
+        const formData = new FormData(formAtributo);
+        const dataForm = Object.fromEntries(formData.entries())
+
         setLoading()
         fetch("{% url 'planning:moverAtributo'%}", {
         ...fetchObject,
         body: JSON.stringify({
             id,
-            data
+            data,
+            dataForm
         })
         })
         .then(res => res.text())

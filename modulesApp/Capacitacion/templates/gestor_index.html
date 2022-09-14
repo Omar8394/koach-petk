@@ -1,6 +1,6 @@
 
    {% extends "layouts/base.html" %}
-
+   {% load i18n %}
    {% block title %}{% endblock %}
    <!-- Specific Page CSS goes HERE  -->
    {% block stylesheets %}
@@ -138,16 +138,18 @@
             return updateModel(url, "Update", data, idSeleted)
                .then(async (res) => {
                   const text = JSON.parse(await res.text())
-                  if (text.message == "error") alerta(5)
-                  else alerta(2)
+                  if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+                  else  makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+
                })
          }
          else {
             return updateModel(url, "Create", data, null)
                .then(async (res) => {
                   const text = JSON.parse(await res.text())
-                  if (text.message == "error") alerta(5)
-                  else alerta(1)
+                  if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+                  else  makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+
                })
          }
         
@@ -187,7 +189,7 @@
       })
       .then(() => {
          $("#addNewModale").modal("show")
-         const formPrograma = document.getElementById("formPrograma")
+         const formPrograma = document.getElementById("formProgramas")
          let rules = {
             resumenProgram: {
                required: true,
@@ -200,7 +202,7 @@
                minlength: 3
             },
          }
-         commonValidator = $("#formPrograma").validate({
+         commonValidator = $("#formProgramas").validate({
             rules,
             highlight: function (element) {
                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
@@ -211,7 +213,7 @@
          });
          formPrograma.addEventListener("submit", (e) => {
             e.preventDefault()
-            if($("#formPrograma").valid()){
+            if($("#formProgramas").valid()){
                setLoading()
                clickSave(formPrograma, "{% url 'modaladdprogram' %}")
                   .then(() => {
@@ -239,7 +241,7 @@ const openEditProgram = (id) =>{
       })
       .then(() => {
          $("#addNewModale").modal("show")
-         const formPrograma = document.getElementById("formPrograma")
+         const formPrograma = document.getElementById("formProgramas")
          let rules = {
             resumenProgram: {
                required: true,
@@ -252,7 +254,7 @@ const openEditProgram = (id) =>{
                minlength: 3
             },
          }
-         commonValidator = $("#formPrograma").validate({
+         commonValidator = $("#formProgramas").validate({
             rules,
             highlight: function (element) {
                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
@@ -263,7 +265,7 @@ const openEditProgram = (id) =>{
          });
          formPrograma.addEventListener("submit", (e) => {
             e.preventDefault()
-            if ($("#formPrograma").valid()){
+            if ($("#formProgramas").valid()){
                setLoading()
                clickSave(formPrograma, "{% url 'modaladdprogram' %}")
                   .then(() => {
@@ -287,8 +289,9 @@ const openDeleteProgram = async (id) =>{
       })
       .then(async (res) => {
          const text = JSON.parse(await res.text())
-         if (text.message == "error") alerta(5)
-         else alerta(4)
+         if (text.message == "error")  makeMessage(4, "{% translate 'Notificacion' %}", "{% translate 'un error ha occurrido y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+         else makeMessage(1, "{% translate 'Notificacion' %}", "{% translate 'Archivo eliminado satisfactoriamente' %}", 'fas fa-trash-alt')
       })
       .then(()=>{
          renderContent()
@@ -329,7 +332,7 @@ const openAddProceso = (id,pages) => {
       })
       .then(() => {
          $("#addNewModales").modal("show")
-         const formPrograma = document.getElementById("formPrograma")
+         const formPrograma = document.getElementById("formProgramatwo")
          let rules = {
             resumenProgram: {
                required: true,
@@ -341,8 +344,17 @@ const openAddProceso = (id,pages) => {
                maxlength: 15,
                minlength: 3
             },
+            descriptionProgram: {
+               required: true,
+               maxlength: 15,
+               minlength: 3
+            },
+            creditos: {
+               required: true
+              
+            },
          }
-         commonValidator = $("#formPrograma").validate({
+         commonValidator = $("#formProgramatwo").validate({
             rules,
             highlight: function (element) {
                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
@@ -353,7 +365,7 @@ const openAddProceso = (id,pages) => {
          });
          formPrograma.addEventListener("submit", (e) => {
             e.preventDefault()
-            if($("#formPrograma").valid()){
+            if($("#formProgramatwo").valid()){
                setLoading()
                clickSavetwo(formPrograma, "{% url 'modaladdproceso' %}")
                   .then(() => {
@@ -380,8 +392,8 @@ const openDeleteProseso = async (id,padre,pages) =>{
       })
       .then(async (res) => {
          const text = JSON.parse(await res.text())
-         if (text.message == "error") alerta(5)
-         else alerta(4)
+         if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+         else makeMessage(1, "{% translate 'Notificacion' %}", "{% translate 'Archivo eliminado satisfactoriamente' %}", 'fas fa-trash-alt')
       })
       .then(()=>{
          renderproseso(padre,pages,limit)
@@ -403,7 +415,7 @@ const openEditProseso = (id,padre,pages) =>{
       })
       .then(() => {
          $("#addNewModale").modal("show")
-         const formPrograma = document.getElementById("formPrograma")
+         const formPrograma = document.getElementById("formProgramatwo")
          let rules = {
             resumenProgram: {
                required: true,
@@ -416,7 +428,7 @@ const openEditProseso = (id,padre,pages) =>{
                minlength: 3
             },
          }
-         commonValidator = $("#formPrograma").validate({
+         commonValidator = $("#formProgramatwo").validate({
             rules,
             highlight: function (element) {
                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
@@ -427,7 +439,7 @@ const openEditProseso = (id,padre,pages) =>{
          });
          formPrograma.addEventListener("submit", (e) => {
             e.preventDefault()
-            if ($("#formPrograma").valid()){
+            if ($("#formProgramatwo").valid()){
                setLoading()
                clickSave(formPrograma, "{% url 'modaladdprogram' %}")
                   .then(() => {
@@ -460,16 +472,18 @@ const clickSavetwo = (formElement, url) => {
       return updateModeltwo(url, "Update", data, idSeleted)
          .then(async (res) => {
             const text = JSON.parse(await res.text())
-            if (text.message == "error") alerta(5)
-            else alerta(2)
+            if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+            else  makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+
          })
    }
    else {
       return updateModeltwo(url, "Create", data, idSeleted)
          .then(async (res) => {
             const text = JSON.parse(await res.text())
-            if (text.message == "error") alerta(5)
-            else alerta(1)
+            if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+            else  makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+
          })
    }
   
@@ -493,6 +507,10 @@ const goToTables =  async (Page,padre)  => {
       contenedorLista.innerHTML = resultado
 
 
+}
+const opengorelation = (id) =>{
+   window.location.href = `{% url 'relation' %}?id=${id}`
+                
 }
 </script>
 	
