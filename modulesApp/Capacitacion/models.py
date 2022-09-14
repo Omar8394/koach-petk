@@ -67,8 +67,8 @@ class capacitacion_LeccionPaginas(models.Model):
       orden_presentacion=models.SmallIntegerField(null=True)
       fk_statusPagina=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name="fk_status_pa")
       fk_tipoContenido=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name="tipo_contenido")
-      id_recurso=models.TextField(null=True)
+      id_recursos=models.TextField(null=True)
 class capacitacion_Recursos(models.Model):
       id_recurso=models.SmallAutoField(primary_key=True)
       fk_tipoRecurso=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name="tipo_recurso")
-      path_ruta=models.TextField(null=True)
+      path_rutas=models.TextField(null=True)
