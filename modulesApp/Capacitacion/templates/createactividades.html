@@ -46,117 +46,96 @@
 				</ul>
 			</div>
 			<div class="page-category">
-			<section>
-        		<div class="card" >
-					<div class="card col-12" style="background-color: #1a2035 !important; color: white;">
-						<ul class="card-list">
-							<li class="card-list-item">
-							   <div class="card-list-item-innertwo">
-								  <div class="card-list-item-title">Lesson one</div>
-								  <div class="card-list-item-actions">
-									<div class="btn-group" role="group">
-									 <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Agregar paginas"
-									 onclick="showContent()">
-									 <i class="fas fa-plus"></i>
-									 </button>
-									 <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Editar "
-                                     onclick="">
-                                     <i class="fas fa-edit"></i>
-                                     </button>	         
-									 <button type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip" data-placement="top"
-                                     title="Eliminar" onclick="">
-                                     <i class="fas fa-trash-alt"></i>
-                                     </button>	
-									 <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top"
-                                     title="Duplicar " onclick="">
-                                     <i class="fas fa-copy "></i>
-                                     </button>	
-									</div>
-								  </div>
-							   </div>
-							</li>
-						 </ul>
+				<div class="form-group" id="groupDate">
 
-						 <div id="childsTopic"  class="card-list-item-close">
-							<div class="form-group col-12">
-								<label for="summernote" class="col-form-label">Pagina</label>
-								<textarea id="summernote" class="form-control" name="summernote"></textarea>
-							 </div>
+					<div class="row">
+						<div class="card col-6" style="background-color: #1a2035 !important; color: white;">
+							<div class="section-header">
+								<h3 >Nueva actividad</h3> 
+                              <div onclick="openAddActivity('{{id}}')" class="btn btn-icon btn-success btn-round add-btn btn-card-lg">
+                             <i class="fas fa-plus"></i>
+                              </div>
+								
+							 </div> 
+							<div class="card-body m-0 p-0" >
+	
+							   
+					       </div>
 					    </div>
+	
+						<div class="card col-6" style="background-color: #1a2035 !important; color: white;">
+							<div class="section-header">
+								<h3 >Componentes</h3>
+								
+							 </div>
+	
+							  <div class="card-body m-0 p-0" >
+							 
+						      </div>
+							<!-- <a title="Click to remove all chosen permissions at once." href="#" id="id_permissions_remove_all_link" class="selector-clearall">Remove all</a> -->
+						</div>
 					</div>
-			   </div>	
-			</section>
+	
+				</div>
       		</div>
 		</div>
 	</div>
-
+	<div class="modal fade" id="addChooseActivities" tabindex="-1" role="dialog">
+		<div class="modal-dialog  modal-dialog-centered" role="document" id="modalContentChoose">
+	 
+		</div>
+	 </div>
+	 <div class="modal fade" id="addNewModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="addNewModalContent">
+	 
+		</div>
+	 </div>
 {% endblock content %}
 	
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 <script>
-	const showContent = () => {
-   
-		let contenido = document.getElementById(`childsTopic`)
-		contenido.classList.toggle("card-list-item-close")
-		setupSummernote()
-	 }
-	 
-	 const setupSummernote = () => {
-
-		$(document).ready(function () {
-		   $(`#summernote`).summernote({
-			  dialogsInBody: true,
-			  height: 300,
-			  placeholder: 'write homework here...',
-			  disableDragAndDrop: true,
-			  toolbar: [
-				 ['style', ['style']],
-				 ['font', ['bold', 'underline', 'clear']],
-				 ['fontname', ['fontname']],
-				 ['color', ['color']],
-				 ['para', ['ul', 'ol', 'paragraph']],
-				 ['table', ['table']],
-				 ['insert', ['resource']],
-			  ],
-			  buttons: {
-				 resource: HelloButton
-			  },
-			  callbacks: {
-				 onPaste: function (e) {
-					e.preventDefault()
-					let items = (e.clipboardData || e.originalEvent.clipboardData).items;
-					for (let index in items) {
-					   var item = items[index];
-					   console.log(item)
-					   if (item.kind === 'file') {
-					   }
-					}
-				 },
-				 // onImageUpload:function(e){
-				 //    e.preventDefault()
-				 // }
-			  }
-		   });
-		});
+	let editmode = false
+	 const openAddActivity = (idPadre) => {
+		editmode = false
+		selectedActivity = idPadre
+		renderModalChooseActivities().then(() => {
+		   $("#addChooseActivities").modal("show")
+		})
 	 }
   
-	 //
-	 //SUMMERNOTE -  BUTTON TO INVOKE RESOURCES BANK
-	 //
-  
-	 const HelloButton = (context) => {
-		var ui = $.summernote.ui;
-		// create button for resource bank
-		var button = ui.button({
-		   contents: '<i class="fas fa-folder-open"/> Resources',
-		   tooltip: 'Resources bank',
-		   click: () => {
-			  // invoke resource bank here
-			  
-		   }
-		});
-		return button.render();
-	 }
+	 const renderModalChooseActivities = () => {
+		return fetch("{% url 'modalChooseActivity' %}", {
+		   ...fetchObject
+		})
+		   .then(async (res) => {
+			  document.getElementById("modalContentChoose").innerHTML = await res.text()
+		   })
+	 }	
+	 const chooseModal = async (type) => {
+		
+		
+		let url
+		
+		if (type == "lesson") {
+		   url = "{% url 'modalNewLesson' %}"
+		}
+		await renderModalActivity(url)
+		$("#addChooseActivities").modal("hide")
+	 } 
+	 const renderModalActivity = (url) => {
+		return fetch(url, {
+		   ...fetchObject,
+		   body: JSON.stringify({
+			  method: "Show",
+		   })
+		})
+		   .then(async (res) => {
+			  document.getElementById("addNewModalContent").innerHTML = await res.text()
+		   })
+		   .then(() => {
+			  $("#addNewModal").modal("show")
+		   })
+	 }	 
 </script>
 {% endblock javascripts %}

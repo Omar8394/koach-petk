@@ -452,4 +452,24 @@ def createactividades(request):
     context = {}
     html_template = (loader.get_template('createactividades.html'))
     return HttpResponse(html_template.render(context, request))
-   
+def getModalChooseActivities(request):
+    id=request.GET.get('id')
+    context = {"id":id}
+    html_template = (loader.get_template('modalchooseactividad.html'))
+    return HttpResponse(html_template.render(context, request))
+def getModalNewLesson(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            context = {}
+            modelo = {}
+            try:
+                if request.body:
+                    data = json.load(request)
+                   
+                    if data["method"] == "Show":
+                        context = {}
+                        html_template = (loader.get_template('modalAddLesson.html'))
+                        return HttpResponse(html_template.render(context, request))
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)
