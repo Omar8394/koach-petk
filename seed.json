@@ -1064,6 +1064,201 @@
                     "datos_adicional":"&#xf162;",
                     "tipo_dato":0
                   }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":72,
+                  "fields": {
+                    "desc_elemento": "Tipo Componente",
+                    "fk_tabla_padre": 1,
+                    "tipo_elemento": "1",
+                    "permite_cambios": 0,
+                    "valor_elemento": "Tipo_Componente",
+                    "mostrar_en_combos": 0,
+                    "maneja_lista": 1,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":73,
+                  "fields": {
+                    "desc_elemento": "Leccion",
+                    "fk_tabla_padre": 72,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Componente_Leccion",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":74,
+                  "fields": {
+                    "desc_elemento": "Evaluacion",
+                    "fk_tabla_padre": 72,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Componente_Evaluacion",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":75,
+                  "fields": {
+                    "desc_elemento": "Tarea",
+                    "fk_tabla_padre": 72,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Componente_Tarea",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":76,
+                  "fields": {
+                    "desc_elemento": "Foro",
+                    "fk_tabla_padre": 72,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Componente_Foro",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":77,
+                  "fields": {
+                    "desc_elemento": "Seminario",
+                    "fk_tabla_padre": 72,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Componente_Seminario",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":78,
+                  "fields": {
+                    "desc_elemento": "Sesiones",
+                    "fk_tabla_padre": 72,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Componente_Sesiones",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":79,
+                  "fields": {
+                    "desc_elemento": "Tipo Contenido",
+                    "fk_tabla_padre": 1,
+                    "tipo_elemento": "1",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Tipo_Contenido",
+                    "mostrar_en_combos": 0,
+                    "maneja_lista": 1,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":80,
+                  "fields": {
+                    "desc_elemento": "pdf",
+                    "fk_tabla_padre": 79,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Tipo_pdf",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":81,
+                  "fields": {
+                    "desc_elemento": "video",
+                    "fk_tabla_padre": 79,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Tipo_video",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":82,
+                  "fields": {
+                    "desc_elemento": "audio",
+                    "fk_tabla_padre": 79,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Tipo_audio",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":83,
+                  "fields": {
+                    "desc_elemento": "imagen",
+                    "fk_tabla_padre": 79,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Tipo_imagen",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":84,
+                  "fields": {
+                    "desc_elemento": "texto",
+                    "fk_tabla_padre": 79,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Tipo_texto",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
                 }
 
 ]
