@@ -88,7 +88,8 @@ $(document).on('submit', 'form', (e) => {
 const mover = (e) => {
 
 	e.setAttribute('title', e.value)
-	e.setAttribute('data-original-title', e.value)
+	const label = e.parentNode.previousElementSibling
+	label.innerHTML = 'Valor actual: ' + e.value
 }
 
 </script>

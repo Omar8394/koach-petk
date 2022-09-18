@@ -1,12 +1,13 @@
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
-import time, json, re
+import time, json, re, sys
 from .models import fichas, fichas_bloques, atributosxfichaxbloque, public_fichas_datos
 from ..App.models import AppPublico, ConfTablasConfiguracion as configuraciones
 from django.template.defaulttags import register
 from django.shortcuts import render
 from django.db.models import F, Q
 from django.template.loader import render_to_string
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 @register.filter
 def publicoFicha(publico):
@@ -167,15 +168,6 @@ def atributo_valido(f = None, all = False):
 
     return res
 
-def renderTablas(request): 
-    
-    context = {}
-    publicos = AppPublico.objects.all()
-    context['publicos'] = publicos
-    ficha = fichas.objects.all()
-    context['fichas'] = ficha
-    html_template = loader.get_template('TabPersonal/carpPlanning/tablaFormularios.html')
-    return HttpResponse(html_template.render(context, request))
 
 def testfi(request): 
 
@@ -837,6 +829,12 @@ def fichaPersonalUsuario(request, idFicha, idUser):
                     else:
 
                         atributos = atributos.exclude(id_atribxfichaxbloq=atributo.id_atribxfichaxbloq)
+                        
+                elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Rango': 
+
+                    if atributo.min == atributo.max:
+
+                        atributos = atributos.exclude(id_atribxfichaxbloq=atributo.id_atribxfichaxbloq)
 
             else:
 
@@ -847,7 +845,6 @@ def fichaPersonalUsuario(request, idFicha, idUser):
         context['atributos'] = atributos
         context['respuestas'] = respuestas
         context['noEditar'] = True
-        print(respuestas.values('id_atributo_fichaBloque__fk_ficha_bloque__fk_idficha').distinct())
         html_template = loader.get_template('TabPersonal/carpPlanning/fichaPersonal.html')
         return HttpResponse(html_template.render(context, request))
 
@@ -920,11 +917,6 @@ def guardarFichaPersonal(request):
     return HttpResponse('ok')
 
     
-def listaPerfiles(request) :
-    
-    context = {}            
-    html_template = loader.get_template('TabPersonal/carpPlanning/listaPerfiles.html')
-    return HttpResponse(html_template.render(context, request))
 
 
 ###########FILTROS###########
@@ -951,7 +943,16 @@ def filtroAtributo(request):
             context['atributos'] = lista
             listaBloque = atributos.values(titulo=F('fk_ficha_bloque__descrip_bloque'), bloque=F('fk_ficha_bloque__id_bloquexficha')).order_by('fk_ficha_bloque__ordenamiento').distinct()
             context['bloques'] = listaBloque
-            return render(request,"TabPersonal/filtros/filtroAtributo.html", context)
+            
+            pagina = fichas.objects.get(id_ficha=id).nombre_ficha
+            tabla = render_to_string('TabPersonal/filtros/filtroAtributo.html', context)
+
+            return JsonResponse({
+                'pagina': pagina,
+                'contenido': tabla
+            })
+
+            # return render(request,"TabPersonal/filtros/filtroAtributo.html", context)
                 
     return render('error')
 
@@ -970,21 +971,20 @@ def filtroElemento(request):
 
                 atributo = atributosxfichaxbloque.objects.get(id_atribxfichaxbloq=id)
                 context['atributo'] = atributo
-
-                # if valor == 'Tipo ayuda':
-                    
-                #     context['seleccion'] = configuraciones.obtenerHijos('Tipo_Ayuda')
-                    
-                # if valor == 'Modulo':
-
-                #     context['seleccion'] = configuraciones.obtenerHijos('Modulos')
+                descripcion = atributo.fk_ficha_bloque.fk_idficha.nombre_ficha + ' > ' + atributo.fk_ficha_bloque.descrip_bloque + ' > ' + atributo.nombre_atrib
 
             except:
                 
                 return HttpResponse()
 
-    html_template = (loader.get_template('TabPersonal/filtros/filtroElemento.html'))
-    return HttpResponse(html_template.render(context, request))
+    tabla = render_to_string('TabPersonal/filtros/filtroElemento.html', context)
+
+    return JsonResponse({
+        'pagina': descripcion,
+        'contenido': tabla
+    })
+    # html_template = (loader.get_template('TabPersonal/filtros/filtroElemento.html'))
+    # return HttpResponse(html_template.render(context, request))
 
 def filtrar(request): 
     # time.sleep(4)
@@ -996,35 +996,47 @@ def filtrar(request):
 
             body = json.load(request)
             filtro = body['filtro']
-            # numero = body.get('numero')
-            # pag = body.get('pag')
+            numero = body.get('numero')
+            pag = body.get('pag')
             publicos = public_fichas_datos.objects.all()
             query = addFiltros(filtro)
             personas = AppPublico.objects.all()
-            print(query)
+
             if (query):
+
+                lista = public_fichas_datos.objects.all()
+                subquery = None
 
                 for q in query:
 
                     publico = publicos.filter(q).values(idpublico=F('id_public__idpublico'))
                     personas = personas.filter(idpublico__in=publico)
+                    subquery = subquery | q if subquery else q
+
+                if subquery:
+                    
+                    lista = publicos.filter(subquery)
 
             # publicos = publicos.filter(query) if query else publicos
             # publicos = publicos.values(idpublico=F('id_public__idpublico'), nombre=F('id_public__nombre'), apellido=F('id_public__apellido'), contenido=F('id_public')).order_by('id_public__idpublico').distinct()
-            context['publicos'] = personas
+            context['publicos'] = paginacion(request, personas, numero, pag)
             ficha = fichas.objects.all()
             context['fichas'] = ficha
-            context['filtro'] = True
-            tabla = render_to_string('TabPersonal/carpPlanning/tablaFormularios.html', context)
+
+            if query:
+
+                lista = (lista.values_list(('id_atributo_fichaBloque__fk_ficha_bloque__fk_idficha__id_ficha'), flat=True).order_by('id_atributo_fichaBloque__fk_ficha_bloque__fk_idficha__ordenamiento').distinct())
+                context['lista'] = lista
+            # tabla = render_to_string('TabPersonal/carpPlanning/tablaFormularios.html', context)
 
     # html_template = (loader.get_template('Helping/contenidoAyuda.html'))
     # return HttpResponse(publicos.values())
 
-    # pagina = render_to_string('Helping/paginas.html', {'data': paginacion(request, helping, numero, pag), 'numero': numero})
-    # tabla = render_to_string('Helping/contenidoAyuda.html', context)
+    pagina = render_to_string('Helping/paginas.html', {'data': paginacion(request, personas, numero, pag), 'numero': numero})
+    tabla = render_to_string('TabPersonal/carpPlanning/tablaFormularios.html', context)
 
     return JsonResponse({
-        # 'pagina': pagina,
+        'pagina': pagina,
         'contenido': tabla
     })
     
@@ -1075,3 +1087,56 @@ def addFiltros(data):
 
     return query
 #############################
+
+def listaPerfiles(request) :
+    
+    context = {}            
+    html_template = loader.get_template('TabPersonal/carpPlanning/listaPerfiles.html')
+    return HttpResponse(html_template.render(context, request))
+    
+def renderTablas(request): 
+    
+    context = {}
+    
+    if request.method == "POST":
+
+        if request.body:
+
+            body = json.load(request)
+            numero = body.get('numero')
+            pag = body.get('pag')
+            filtro = body.get('filtro')
+
+    publicos = AppPublico.objects.all()
+    context['publicos'] = paginacion(request, publicos, numero, pag)
+    ficha = fichas.objects.all()
+    context['fichas'] = ficha
+    
+    pagina = render_to_string('Helping/paginas.html', {'data': paginacion(request, publicos, numero, pag), 'numero': numero})
+    tabla = render_to_string('TabPersonal/carpPlanning/tablaFormularios.html', context)
+    # html_template = loader.get_template('TabPersonal/carpPlanning/tablaFormularios.html')
+    # return HttpResponse(html_template.render(context, request))
+    return JsonResponse({
+        'pagina': pagina,
+        'contenido': tabla
+    })
+
+def paginacion(request, obj, range = 5, pag = 1):
+
+    # page = request.GET.get('page', 1) if request.GET else request.POST.get('page', 1)
+    page = pag
+    paginator = Paginator(obj, sys.maxsize if range and range == '0' else range if range else 5)
+
+    try:
+
+        pages = paginator.page(page)
+
+    except PageNotAnInteger:
+
+        pages = paginator.page(1)
+
+    except EmptyPage:
+
+        pages = paginator.page(paginator.num_pages)
+
+    return pages

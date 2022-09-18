@@ -46,3 +46,12 @@ class public_fichas_datos(models.Model):
     id_public = models.ForeignKey(AppPublico, on_delete=models.DO_NOTHING, default=None, null=True)
     id_atributo_fichaBloque = models.ForeignKey(atributosxfichaxbloque, on_delete=models.DO_NOTHING, default=None, null=True)
     valor = models.TextField(null=True, default=None)
+
+class fichas_listas(models.Model):
+    id_fichas_listas = models.SmallAutoField(primary_key=True)
+    pais = models.SmallIntegerField()
+    region = models.SmallIntegerField()
+    fk_tipo_lista = models.ForeignKey(ConfTablasConfiguracion, on_delete=models.DO_NOTHING,default=None, null=True )
+    Descripcion = models.TextField()
+    fk_fichalista_padre = models.ForeignKey('self', on_delete=models.CASCADE, db_column='fk_tabla_padre', default=None, null=True)
+    # fk_pais = models.ForeignKey(ConfTablasConfiguracion, on_delete=models.DO_NOTHING,default=None, null=True )
