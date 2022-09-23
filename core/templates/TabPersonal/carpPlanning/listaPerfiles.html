@@ -108,7 +108,7 @@
    <div class="content">
       <div class="page-inner">
          <div class="page-header mb-3">
-            <h4 class="page-title">Pagina de inicio</h4>
+            <h4 class="page-title">Planificacion</h4>
             <ul class="breadcrumbs">
                <li class="nav-home">
                   <a href="{% url 'Dashboard' %}">
@@ -197,9 +197,14 @@
 
    
    // metodos para los filtros
-   const eliminarFiltro = (e) => {
+   const eliminarFiltro = (e, multiple = false) => {
 
-      const nodo = e.parentNode.parentNode
+      let nodo = e.parentNode.parentNode
+      
+      if (multiple)
+
+         nodo = nodo.parentNode
+
       nodo.previousElementSibling.remove()
       nodo.parentNode.removeChild(nodo);
 

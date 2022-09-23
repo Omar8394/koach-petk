@@ -17,7 +17,7 @@
 <div class="form-row">
     <div class="form-holder form-holder-2">
         <label for="room" class="special-label-1" style="color: white!important;">{{atributo.nombre_atrib}}</label>
-        <select class="" name="{{atributo.id_atribxfichaxbloq}}" required>
+        <select class="form-control" name="{{atributo.id_atribxfichaxbloq}}" required>
             <option value="" disabled {% if not respuesta %}selected{% endif %}>{% translate "Seleccione una opcion" %}</option>
             {% if atributo.listaValores %}
             {% for x, y in atributo.listaValores|tosJson %}
@@ -68,5 +68,22 @@
     <span class="mr-1" style="color: white;">{{atributo.min}}</span>
     <input type="range" class="form-control-range px-0 mx-0" title="{% if respuesta %}{{respuesta.valor}}{% endif %}" name="{{atributo.id_atribxfichaxbloq}}" min="{{atributo.min}}" max="{{atributo.max}}" id="formControlRange" oninput="mover(this)" {% if respuesta %}value="{{respuesta.valor}}"{% endif %} required>
     <span class="ml-1" style="color: white;">{{atributo.max}}</span>
+</div>
+{% elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Lista_Externa' %}
+<div class="form-row">
+    <div class="form-holder form-holder-2">
+        <label for="room" class="special-label-1" style="color: white!important;">{{atributo.nombre_atrib}}</label>
+        <select class="form-control" name="{{atributo.id_atribxfichaxbloq}}" required>
+            <option value="" disabled {% if not respuesta %}selected{% endif %}>{% translate "Seleccione una opcion" %}</option>
+            {% if atributo.listaValores %}
+            {% for y in atributo.listaValores|listaExternaHijo %}
+            <option value="{{ y }}" {% if respuesta.valor == y %}selected{% endif %}>{{ y }}</option>
+            {% endfor %}
+            {% endif %}
+        </select>
+        <span class="select-btn">
+            <i class="zmdi zmdi-chevron-down"></i>
+        </span>
+    </div>
 </div>
 {% endif %}

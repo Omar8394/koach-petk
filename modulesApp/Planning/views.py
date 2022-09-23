@@ -43,10 +43,42 @@ def respuesta(value, atributo):
 
     return res
 
+@register.simple_tag(takes_context=True)
+def get_pages_with_no_menu(context):
+    lista = configuraciones.objects.get(valor_elemento='Tipo_Atributo_Hijos_Lista')
+    listas = json.loads(lista.datos_adicional.replace("\'", "\""))
+    return listas.keys()
+    
+@register.filter
+def listaExternaHijo(padre):
+
+    lista = configuraciones.objects.get(valor_elemento='Tipo_Atributo_Hijos_Lista')
+    listas = json.loads(lista.datos_adicional.replace("\'", "\"")) 
+    
+    if padre and padre in listas.keys():
+
+        if type(listas[padre]) == dict:
+
+            return listas[padre].keys()
+
+    return {}
+
 def func_Planning(request): 
 
     context = {}
     html_template = loader.get_template( 'TabPersonal/carpPlanning/crear_ficha.html' )
+    return HttpResponse(html_template.render(context, request))
+
+def configuracion(request): 
+
+    context = {}
+    html_template = loader.get_template( 'TabPersonal/configuraciones.html' )
+    return HttpResponse(html_template.render(context, request))
+
+def listasExternas(request): 
+
+    context = {}
+    html_template = loader.get_template( 'TabPersonal/carpPlanning/listasExternas.html' )
     return HttpResponse(html_template.render(context, request))
 
 def render_fihas(request): 
@@ -108,6 +140,21 @@ def ficha_valida():
 
                             borrar = False
                             break
+                        
+                    elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Lista_Externa': 
+
+                        if atributo.listaValores:
+
+                            padre = atributo.listaValores
+                            lista = configuraciones.objects.get(valor_elemento='Tipo_Atributo_Hijos_Lista')
+                            listas = json.loads(lista.datos_adicional.replace("\'", "\"")) 
+                                
+                            if padre and padre in listas.keys():
+
+                                if type(listas[padre]) == dict:
+
+                                    borrar = False
+                                    break
 
                     else:
                         
@@ -158,6 +205,28 @@ def atributo_valido(f = None, all = False):
             elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Rango': 
 
                 if atributo.min == atributo.max:
+
+                    res = res.exclude(id_atribxfichaxbloq=atributo.id_atribxfichaxbloq)     
+
+            elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Lista_Externa': 
+
+                if atributo.listaValores:
+
+                    padre = atributo.listaValores
+                    lista = configuraciones.objects.get(valor_elemento='Tipo_Atributo_Hijos_Lista')
+                    listas = json.loads(lista.datos_adicional.replace("\'", "\"")) 
+                        
+                    if padre and padre in listas.keys():
+
+                        if not type(listas[padre]) == dict:
+
+                            res = res.exclude(id_atribxfichaxbloq=atributo.id_atribxfichaxbloq)
+
+                    else:
+
+                        res = res.exclude(id_atribxfichaxbloq=atributo.id_atribxfichaxbloq)
+
+                else:
 
                     res = res.exclude(id_atribxfichaxbloq=atributo.id_atribxfichaxbloq)
             
@@ -578,7 +647,6 @@ def guardarAtributos(idBloque, data):
                                 atributo.listaValores = None
                                 atributo.min = 0
                                 atributo.max = 0
-
                         
                         else:
 
@@ -614,6 +682,12 @@ def guardarAtributos(idBloque, data):
                             jsonList = dict(sorted(jsonList.items(), key=lambda item: int(item[0])))
                             atributo.min = list(jsonList.keys())[0]
                             atributo.max = list(jsonList.keys())[1]
+
+                    elif tipo == 'externo':
+
+                        atributo.listaValores = y
+                        atributo.min = 0
+                        atributo.max = 0
 
                     atributo.save()
 
@@ -702,6 +776,15 @@ def atributoLista(request):
                 html_template = loader.get_template( 'TabPersonal/carpPlanning/contenidoListaAtributo.html' )
                 return HttpResponse(html_template.render(context, request))
 
+            elif lista.valor_elemento == 'Tipo_Atributo_Lista_Externa':
+
+                lista = configuraciones.objects.get(valor_elemento='Tipo_Atributo_Hijos_Lista')
+                listas = json.loads(lista.datos_adicional.replace("\'", "\""))
+                context['lista'] = lista
+                context['padre'] = atributosxfichaxbloque.objects.get(id_atribxfichaxbloq=padre).id_atribxfichaxbloq
+                html_template = loader.get_template( 'TabPersonal/carpPlanning/contenidoListaExterna.html' )
+                return HttpResponse(html_template.render(context, request))
+
     return HttpResponse()
 
 def mostrarFicha(request): 
@@ -769,6 +852,28 @@ def fichaPersonal(request, idFicha):
                     if atributo.min == atributo.max:
 
                         atributos = atributos.exclude(id_atribxfichaxbloq=atributo.id_atribxfichaxbloq)
+        
+                elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Lista_Externa': 
+
+                    if atributo.listaValores:
+
+                        padre = atributo.listaValores
+                        lista = configuraciones.objects.get(valor_elemento='Tipo_Atributo_Hijos_Lista')
+                        listas = json.loads(lista.datos_adicional.replace("\'", "\"")) 
+                            
+                        if padre and padre in listas.keys():
+
+                            if not type(listas[padre]) == dict:
+
+                                atributos = atributos.exclude(id_atribxfichaxbloq=atributo.id_atribxfichaxbloq)
+
+                        else:
+
+                            atributos = atributos.exclude(id_atribxfichaxbloq=atributo.id_atribxfichaxbloq)
+
+                    else:
+
+                        atributos = atributos.exclude(id_atribxfichaxbloq=atributo.id_atribxfichaxbloq)
 
             else:
 
@@ -833,6 +938,28 @@ def fichaPersonalUsuario(request, idFicha, idUser):
                 elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Rango': 
 
                     if atributo.min == atributo.max:
+
+                        atributos = atributos.exclude(id_atribxfichaxbloq=atributo.id_atribxfichaxbloq)
+
+                elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Lista_Externa': 
+
+                    if atributo.listaValores:
+
+                        padre = atributo.listaValores
+                        lista = configuraciones.objects.get(valor_elemento='Tipo_Atributo_Hijos_Lista')
+                        listas = json.loads(lista.datos_adicional.replace("\'", "\"")) 
+                            
+                        if padre and padre in listas.keys():
+
+                            if not type(listas[padre]) == dict:
+
+                                atributos = atributos.exclude(id_atribxfichaxbloq=atributo.id_atribxfichaxbloq)
+                                
+                        else:
+
+                            atributos = atributos.exclude(id_atribxfichaxbloq=atributo.id_atribxfichaxbloq)
+
+                    else:
 
                         atributos = atributos.exclude(id_atribxfichaxbloq=atributo.id_atribxfichaxbloq)
 
@@ -967,6 +1094,7 @@ def filtroElemento(request):
             
             body = json.load(request)
             id = body['id']
+            
             try:
 
                 atributo = atributosxfichaxbloque.objects.get(id_atribxfichaxbloq=id)
@@ -995,7 +1123,7 @@ def filtrar(request):
         if request.body:
 
             body = json.load(request)
-            filtro = body['filtro']
+            filtro = body.get('filtro')
             numero = body.get('numero')
             pag = body.get('pag')
             publicos = public_fichas_datos.objects.all()
@@ -1140,3 +1268,194 @@ def paginacion(request, obj, range = 5, pag = 1):
         pages = paginator.page(paginator.num_pages)
 
     return pages
+
+def modalListaExterna(request): 
+
+    context = {}
+
+    if request.method == "POST":
+
+        if request.body:
+
+            body = json.load(request)
+            id = body.get('id')
+
+            if id :
+
+                lista = configuraciones.objects.get(valor_elemento='Tipo_Atributo_Hijos_Lista')
+                listas = json.loads(lista.datos_adicional.replace("\'", "\""))
+
+                if id in listas.keys():
+
+                    context['data'] = id
+
+    html_template = loader.get_template( 'TabPersonal/modales/listaExterna.html' )
+    return HttpResponse(html_template.render(context, request))
+    
+def guardarListaExterna(request): 
+
+    context = {}
+
+    if request.method == "POST":
+
+        if request.body:
+
+            body = json.load(request)
+            data = body.get('data')
+            id = body.get('id')
+
+            if data:
+
+                lista = configuraciones.objects.get(valor_elemento='Tipo_Atributo_Hijos_Lista')
+                listas = json.loads(lista.datos_adicional.replace("\'", "\""))
+
+                if id and id in listas.keys():
+
+                    del listas[id]
+
+                listas[data['nombre']] = data['nombre']
+                lista.datos_adicional = json.dumps(listas)
+                lista.save()
+
+    return HttpResponse('exito')
+
+def eliminarListaExterna(request): 
+
+    context = {}
+
+    if request.method == "POST":
+
+        if request.body:
+
+            body = json.load(request)
+            id = body.get('id')
+            lista = configuraciones.objects.get(valor_elemento='Tipo_Atributo_Hijos_Lista')
+            listas = json.loads(lista.datos_adicional.replace("\'", "\""))
+
+            if id and id in listas.keys():
+
+                del listas[id]
+
+            lista.datos_adicional = json.dumps(listas)
+            lista.save()
+
+    return HttpResponse('exito')
+    
+def contenidoListaExterna(request): 
+
+    context = {}
+
+    if request.method == "POST":
+
+        lista = configuraciones.objects.get(valor_elemento='Tipo_Atributo_Hijos_Lista')
+        listas = json.loads(lista.datos_adicional.replace("\'", "\""))
+        context['data'] = listas.keys()
+                
+    html_template = loader.get_template( 'TabPersonal/carpPlanning/Contenido_programas.html' )
+    return HttpResponse(html_template.render(context, request))
+
+def addproceso(request): 
+
+    context = {}
+
+    if request.method == "POST":
+
+        if request.body:
+
+            body = json.load(request)
+            id = body.get('id')
+            lista = configuraciones.objects.get(valor_elemento='Tipo_Atributo_Hijos_Lista')
+            listas = json.loads(lista.datos_adicional.replace("\'", "\""))
+            
+            if id and id in listas.keys():
+
+                context['padre'] = id
+
+                if type(listas[id]) == dict:
+
+                    context['data'] = listas[id].keys()
+                
+    html_template = loader.get_template( 'TabPersonal/carpPlanning/renderizadopro.html' )
+    return HttpResponse(html_template.render(context, request))
+
+def modalListaExternaHijo(request): 
+
+    context = {}
+
+    if request.method == "POST":
+
+        if request.body:
+
+            body = json.load(request)
+            id = body.get('id')
+            padre = body.get('padre')
+            lista = configuraciones.objects.get(valor_elemento='Tipo_Atributo_Hijos_Lista')
+            listas = json.loads(lista.datos_adicional.replace("\'", "\""))
+
+            if padre and padre in listas.keys():
+
+                if type(listas[padre]) == dict and id and id in listas[padre].keys():
+
+                    context['data'] = id
+
+    html_template = loader.get_template( 'TabPersonal/modales/listaExternaHijo.html' )
+    return HttpResponse(html_template.render(context, request))
+    
+def guardarListaExternaHijo(request): 
+
+    context = {}
+
+    if request.method == "POST":
+
+        if request.body:
+
+            body = json.load(request)
+            data = body.get('data')
+            id = body.get('id')
+            padre = body.get('padre')
+
+            if data:
+
+                lista = configuraciones.objects.get(valor_elemento='Tipo_Atributo_Hijos_Lista')
+                listas = json.loads(lista.datos_adicional.replace("\'", "\""))
+
+                if padre and padre in listas.keys():
+
+                    if type(listas[padre]) == dict and id and id in listas[padre].keys():
+
+                        del listas[padre][id]
+
+                    elif type(listas[padre]) != dict:
+
+                        listas[padre] = {}
+                        
+                listas[padre][data['nombre']] = data['nombre']
+                lista.datos_adicional = json.dumps(listas)
+                lista.save()
+
+    return HttpResponse('exito')
+
+def eliminarListaExternaHijo(request): 
+
+    context = {}
+
+    if request.method == "POST":
+
+        if request.body:
+
+            body = json.load(request)
+            id = body.get('id')
+            padre = body.get('padre')
+            lista = configuraciones.objects.get(valor_elemento='Tipo_Atributo_Hijos_Lista')
+            listas = json.loads(lista.datos_adicional.replace("\'", "\""))
+            
+            if padre and padre in listas.keys():
+
+                if type(listas[padre]) == dict and id and id in listas[padre].keys():
+
+                    del listas[padre][id]
+
+            lista.datos_adicional = json.dumps(listas)
+            lista.save()
+
+    return HttpResponse('exito')

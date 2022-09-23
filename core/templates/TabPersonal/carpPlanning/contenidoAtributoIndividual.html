@@ -24,10 +24,12 @@
             </div>
         </div>
         <div class="form-row">
-            {% if page.listaValores and not page.fk_tipodato.valor_elemento == 'Tipo_Atributo_Rango' %}
+            {% if page.listaValores and not page.fk_tipodato.valor_elemento == 'Tipo_Atributo_Rango' and not page.fk_tipodato.valor_elemento == 'Tipo_Atributo_Lista_Externa'%}
             {% include 'TabPersonal/carpPlanning/contenidoListaAtributo.html' with page=page.listaValores|tosJson padre=page.id_atribxfichaxbloq%}  
             {% elif page.fk_tipodato.valor_elemento == 'Tipo_Atributo_Rango' %}
             {% include 'TabPersonal/carpPlanning/contenidoListaRango.html' with padre=page.id_atribxfichaxbloq min=page.min max=page.max %}  
+            {% elif page.fk_tipodato.valor_elemento == 'Tipo_Atributo_Lista_Externa' %}
+            {% include 'TabPersonal/carpPlanning/contenidoListaExterna.html' with padre=page.id_atribxfichaxbloq valor=page.listaValores %}  
             {% endif %}
         </div>
     </div>

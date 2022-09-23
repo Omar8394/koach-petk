@@ -48,6 +48,7 @@ class public_fichas_datos(models.Model):
     valor = models.TextField(null=True, default=None)
 
 class fichas_listas(models.Model):
+    
     id_fichas_listas = models.SmallAutoField(primary_key=True)
     pais = models.SmallIntegerField()
     region = models.SmallIntegerField()

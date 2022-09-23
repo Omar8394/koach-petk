@@ -1,0 +1,88 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}{% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<style>
+  #login{
+    display:flex;
+    justify-content: left;
+    align-items:left;
+    }
+    
+    h2{
+    padding: 10px;
+    } 
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="content">
+    <div class="page-inner animated fadeInRight">
+        <div class="page-header mb-3">
+            <h4 class="page-title">Planificacion</h4>
+            <ul class="breadcrumbs">
+                <li class="nav-home">
+                    <a href="{% url 'Dashboard' %}">
+                        <i class="flaticon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="flaticon-right-arrow"></i>
+                </li>
+                <li class="nav-item">
+                    <span>Planificacion</span>
+                </li>
+                <li class="separator">
+                    <i class="flaticon-right-arrow"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Configuracion</a >
+                </li>
+            </ul>
+        </div>
+        <div class="page-category">
+            <div class="card">
+                <div class="d-flex justify-content-start align-items-center ml-3 mt-3">
+                    <div class="form-group col-md-3 d-flex justify-content-center">
+                        <div class="card" style="width: 20rem;">
+                            <div class="card-header text-center" style="background-color: #252850 !important; color: white;">
+                                <h3>Sistema de fichas</h3>
+                            </div> 
+                            <div class="card-footer d-flex justify-content-center">
+                                <a href="{% url 'planning:func_Planning' %}" class="btn btn-icon btn-success btn-round add-btn btn-card-xl"><i class="fas fa-table"></i></a>	
+                            </div>
+                        </div>
+                    </div>
+                    <h2>Aqui se configuran las fichas utilizadas en el modulo de planificacion, se pueden incluir y modificar.</h2>
+                </div>
+                <div class="d-flex justify-content-start align-items-center ml-3 mt-3">
+                    <div class="form-group col-md-3 d-flex justify-content-center">
+                        <div class="card" style="width: 20rem;">
+                            <div class="card-header text-center" style="background-color: #252850 !important; color: white;">
+                                <h3>Listas Externas</h3>
+                            </div> 
+                            <div class="card-footer d-flex justify-content-center">
+                                <a href="{% url 'planning:listasExternas' %}" class="btn btn-icon btn-success btn-round add-btn btn-card-xl"><i class="fas fa-list-ul"></i></a>	
+                            </div>
+                        </div>
+                    </div>
+                    <h2>Aqui se configuran las listas externas para las fichas.</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+	
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+
+</script>
+{% endblock javascripts %}
+
+  
+      

@@ -1,0 +1,25 @@
+<ul class="card-list">
+   {% for item in data %}
+   <li class="card-list-item" onclick="renderproseso('{{item}}')">
+      <div class="card-list-item-inner">
+         <div class="card-list-item-subtitle">{{item}}</div>
+         <div class="card-list-item-actions">
+            <div class="btn-group" role="group">
+               <button type="button" class="btn btn-icon btn-sm btn-info ml-1" title="Editar" onclick="modalListaExterna('{{item}}')">
+                  <i class="fas fa-edit"></i>
+               </button>
+               <button type="button" class="btn btn-icon btn-sm btn-danger ml-1" title="Eliminar" onclick="openDeleteProgram('{{item}}')">
+                  <i class="fas fa-trash-alt"></i>
+               </button>
+            </div>
+         </div>
+      </div>
+   </li>
+   {% empty %}
+   <li class="card-list-item">
+      <div class="card-list-item-inner">
+         <div class="card-list-item-subtitle">Sin contenido</div>
+      </div>
+   </li>
+   {% endfor %}
+</ul>
