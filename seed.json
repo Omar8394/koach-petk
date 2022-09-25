@@ -1064,6 +1064,37 @@
                     "datos_adicional":"&#xf162;",
                     "tipo_dato":0
                   }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk": 72,
+                  "fields": {
+                    "desc_elemento": "Inscripciones Eventos",
+                    "fk_tabla_padre": 64,
+                    "tipo_elemento": "1",
+                    "permite_cambios": 1,
+                    "valor_elemento": "in_evto_pgs",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"&#xf162;",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk": 73,
+                  "fields": {
+                    "desc_elemento": "Cripto Moneda",
+                    "fk_tabla_padre": 68,
+                    "tipo_elemento": "1",
+                    "permite_cambios": 1,
+                    "valor_elemento": "cripto_pgs",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"&#xf162;",
+                    "tipo_dato":0
+                  }
                 }
+
 
 ]

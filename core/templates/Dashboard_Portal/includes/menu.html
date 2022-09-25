@@ -112,14 +112,11 @@
                 </a>
                 <ul class="dropdown-menu mt-2" aria-labelledby="Payments">
                     <div class="div-caret"></div>
-                    <li>
-                        <a class="dropdown-item mt-2" href="{% url 'payments'%}"><i class="fas fa-user-circle mr-1"></i> Formas Pago1</a>
-                        
+                    <li id="render_metodos_pgs">
+                        <a class="dropdown-item mt-2" href="{% url 'payments'%}"><i class="fas fa-user-circle mr-1"></i>Registrar Pagos</a>                  
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#"><i class='fas fa-paper-plane fa-lg mr-1'></i> Formas Pago1</a>
-                        
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item mb-2" href="{% url 'home' %}"><i class="fas fa-door-open mr-1"></i> Otras Opciones </a>
+                        <a class="dropdown-item mt-2" href="{% url 'payments'%}"><i class="fas fa-user-circle mr-1"></i>Consultar Pagos</a>                  
+                    
                     </li>
 
                 </ul>
@@ -171,3 +168,30 @@
         </ul>
     </div>
 </div>
+
+{% block javascripts %}
+
+    <script>
+        // codigo para realizar los pagos
+        // mis variables
+        let pgs_eventos= document.querySelector('#Payments')
+        let render_metodos_pgs= document.querySelector('#render_metodos_pgs')
+        
+
+        // pgs_eventos.addEventListener('click', ()=>{
+        //     fetch("{% url 'get_metodo_pgs'%}", {
+        //         ...fetchObject,
+        //         body: JSON.stringify({
+        //         acceso:"show",
+        //         })
+        //     })
+        //     .then(async(res)=>{
+        //         result = await res.text()
+        //         render_metodos_pgs.innerHTML = result      
+                    
+        //     })
+
+        // })
+            // cierre del bloque
+    </script>
+{% endblock javascripts %}
