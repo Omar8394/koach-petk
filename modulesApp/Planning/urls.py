@@ -10,6 +10,7 @@ app_name = "planning"
 urlpatterns = [
 
     path('func_Planning/', views.func_Planning, name='func_Planning'),
+    path('configuracion/', views.configuracion, name='configuracion'),
     path('render_fihas/', views.render_fihas, name='renderfihas'),
     path('renderTablas/', views.renderTablas, name='renderTablas'),
     path('testfi/', views.testfi, name='testfi'),
@@ -30,6 +31,13 @@ urlpatterns = [
     path('moverAtributo/', views.moverAtributo, name='moverAtributo'),
     path('atributoLista/', views.atributoLista, name='atributoLista'),
     path('listaPerfiles/', views.listaPerfiles, name='listaPerfiles'),
+    path('listasExternas/', views.listasExternas, name='listasExternas'),
+    path('guardarListaExterna/', views.guardarListaExterna, name='guardarListaExterna'),
+    path('contenidoListaExterna/', views.contenidoListaExterna, name='contenidoListaExterna'),
+    path('eliminarListaExterna/', views.eliminarListaExterna, name='eliminarListaExterna'),
+    path('addproceso/', views.addproceso, name='addproceso'),
+    path('guardarListaExternaHijo/', views.guardarListaExternaHijo, name='guardarListaExternaHijo'),
+    path('eliminarListaExternaHijo/', views.eliminarListaExternaHijo, name='eliminarListaExternaHijo'),
     
     
 
@@ -38,6 +46,8 @@ urlpatterns = [
     path('modalListaBloque/', views.modalListaBloque, name='modalListaBloque'),
     path('modalBloque/', views.modalBloque, name='modalBloque'),
     path('modalAtributo/', views.modalAtributo, name='modalAtributo'),
+    path('modalListaExterna/', views.modalListaExterna, name='modalListaExterna'),
+    path('modalListaExternaHijo/', views.modalListaExternaHijo, name='modalListaExternaHijo'),
 
     # metodos
     path('validarNombreFicha/', views.validarNombreFicha, name='validarNombreFicha'),

@@ -62,8 +62,28 @@
     <input type="date" class="form-control input-border-bottom" style="color: white!important;" name="{{atributo.id_atribxfichaxbloq}}" required {% if respuesta %}value="{{respuesta.valor}}"{% endif %}>
 </div>
 {% elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Rango' %}
-<label for="day" class="special-label-1 mb-4" style="color: white!important;">{{atributo.nombre_atrib}}</label>
-<div class="form-group">
-    <input type="range" class="form-control-range px-0 mx-0" name="{{atributo.id_atribxfichaxbloq}}" min="{{atributo.min}}" max="{{atributo.max}}" id="formControlRange" onchange="mover(this)" {% if respuesta %}value="{{respuesta.valor}}"{% endif %} required>
+<label class="special-label-1" style="color: white!important;">{{atributo.nombre_atrib}}</label>
+<label class="special-label-1" style="color: white!important;">{% if respuesta %}Valor actual: {{respuesta.valor}}{% endif %}</label>
+<div class="form-group d-flex">
+    <span class="mr-1" style="color: white;">{{atributo.min}}</span>
+    <input type="range" class="form-control-range px-0 mx-0" title="{% if respuesta %}{{respuesta.valor}}{% endif %}" name="{{atributo.id_atribxfichaxbloq}}" min="{{atributo.min}}" max="{{atributo.max}}" id="formControlRange" oninput="mover(this)" {% if respuesta %}value="{{respuesta.valor}}"{% endif %} required>
+    <span class="ml-1" style="color: white;">{{atributo.max}}</span>
+</div>
+{% elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Lista_Externa' %}
+<div class="form-row">
+    <div class="form-holder form-holder-2">
+        <label for="room" class="special-label-1" style="color: white!important;">{{atributo.nombre_atrib}}</label>
+        <select class="form-control" name="{{atributo.id_atribxfichaxbloq}}" required>
+            <option value="" disabled {% if not respuesta %}selected{% endif %}>{% translate "Seleccione una opcion" %}</option>
+            {% if atributo.listaValores %}
+            {% for y in atributo.listaValores|listaExternaHijo %}
+            <option value="{{ y }}" {% if respuesta.valor == y %}selected{% endif %}>{{ y }}</option>
+            {% endfor %}
+            {% endif %}
+        </select>
+        <span class="select-btn">
+            <i class="zmdi zmdi-chevron-down"></i>
+        </span>
+    </div>
 </div>
 {% endif %}

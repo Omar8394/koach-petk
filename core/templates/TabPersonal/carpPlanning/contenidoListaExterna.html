@@ -1,0 +1,13 @@
+{% load i18n %}
+<div class="form-group col-12">
+    <label class="col-form-label">{% translate "Opciones" %}</label>
+    <div class="input-group mb-3">
+        <select class="custom-select" name="externo{{padre}}_{% now 'isu' %}">
+           <option value="" disabled {% if not valor %}selected{% endif %}>{% translate "Seleccione un tipo de lista" %}</option>
+           {% get_pages_with_no_menu as pages %}
+           {% for dato in pages %}
+           <option value="{{dato}}" {% if valor == dato %}selected{% endif %}>{{dato}}</option>
+           {% endfor %} 
+        </select>
+    </div>
+</div>

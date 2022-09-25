@@ -25,7 +25,8 @@ urlpatterns = [
     path('update_estrutura/', views.update_estrutura, name='update_estrutura'),
     path('componentsxestructura/', views.getcomponentsxestructura, name='componentsxestructura'),
     path('createactividades/', views.createactividades, name='createactividades'),
-    #Security Settings
+    path('modalChooseActivity/', views.getModalChooseActivities, name='modalChooseActivity'),
+    path('modalNewLesson/', views.getModalNewLesson, name="modalNewLesson"),
     
 
     # Scales

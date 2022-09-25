@@ -1,19 +1,19 @@
 {% load i18n %}
-<div class="modal fade" id="modalFichas" tabindex="-1" role="dialog" style="background-color: rgba(0, 0, 0, 0.9);">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="modalFichasContenido">
+<div class="modal fade" id="modalListaExterna" tabindex="-1" role="dialog" style="background-color: rgba(0, 0, 0, 0.9);">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="modalListaExternaContenido">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">{% translate "Categoria" %}</h5>
+                <h5 class="modal-title">{% translate "Categorias" %}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="formFicha" novalidate>
+            <form id="formListaExterna" novalidate>
                 <div class="modal-body">
                     <div class="form-row">
                         <div class="form-group col-12">
                         <label for="nombreFicha" class="col-form-label">{% translate "Nombre" %}</label>
-                        <input type="text" class="form-control" name="nombre" id="nombreFicha" {% if data %}value = "{{ data.nombre_ficha }}"{% endif %} required>
+                        <input type="text" class="form-control" name="nombre" {% if data %}value = "{{ data }}"{% endif %} required>
                         <div class="invalid-feedback">{% translate "Debes escribir un nombre para la categoria" %}</div>
                         </div>
                     </div>
