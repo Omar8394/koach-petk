@@ -19,7 +19,9 @@
             <td>
                 <div class="btn-group" role="group" aria-label="Basic example">
                     {% for ficha in publico|publicoFicha %}
-                    <a target="_blank" href="/Planning/fichaPersonal/{{ficha.id}}/{{publico.idpublico}}/" class="button btn btn-icon btn-primary mr-1" style="display: flex; justify-content: center; align-items: center;" title="{{ficha.titulo}}"><i class="fab fa-wpforms"></i></a>
+                    {% if lista and ficha.id in lista or not lista %}
+                    <a target="_blank" href="/Planning/fichaPersonal/{{ficha.id}}/{{publico.idpublico}}/" data-toggle="tooltip" class="button btn btn-icon btn-primary mr-1" style="display: flex; justify-content: center; align-items: center;" title="{{ficha.titulo}}"><i class="fab fa-wpforms"></i></a>
+                    {% endif %}
                     {% empty %}
                     <p>No ha completado ningun formulario</p>
                     {% endfor %}

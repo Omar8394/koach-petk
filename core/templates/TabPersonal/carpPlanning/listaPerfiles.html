@@ -99,6 +99,7 @@
       }
 
    }
+
 </style>
 {% endblock stylesheets %}
 
@@ -107,7 +108,7 @@
    <div class="content">
       <div class="page-inner">
          <div class="page-header mb-3">
-            <h4 class="page-title">Pagina de inicio</h4>
+            <h4 class="page-title">Planificacion</h4>
             <ul class="breadcrumbs">
                <li class="nav-home">
                   <a href="{% url 'Dashboard' %}">
@@ -149,11 +150,9 @@
                <section class="card-body">
                   <div id="renderContainer" class="col-md-12 mx-1 table-responsive"></div>
                </section>
-               {% comment %}
                <section class="card-footer d-flex align-items-center" id="paginas">
                   {% include 'Helping/paginas.html' with plan=plan %}   
                </section>
-               {% endcomment %} 
             </main>
          </div>
       </div>
@@ -175,11 +174,15 @@
       document.querySelector("#renderContainer").innerHTML = spinnerBar()
       fetch("{% url 'planning:renderTablas' %}", {
          ...fetchObject,
+         body: JSON.stringify({
+            numero: localStorage.getItem("rango"),
+         })
       })
-      .then(res => res.text())
+      .then(res => res.json())
       .then(text => {
 
-         document.querySelector("#renderContainer").innerHTML = text
+         document.querySelector("#renderContainer").innerHTML = text['contenido']
+         document.querySelector("#paginas").innerHTML = text['pagina']
 
       })
       .catch((err)=>{
@@ -194,9 +197,15 @@
 
    
    // metodos para los filtros
-   const eliminarFiltro = (e) => {
+   const eliminarFiltro = (e, multiple = false) => {
 
-      const nodo = e.parentNode.parentNode
+      let nodo = e.parentNode.parentNode
+      
+      if (multiple)
+
+         nodo = nodo.parentNode
+
+      nodo.previousElementSibling.remove()
       nodo.parentNode.removeChild(nodo);
 
    }
@@ -244,22 +253,24 @@
    const anadirFiltroAtributo = (e) => {
 
       setLoading() 
+      id = e.options[e.selectedIndex].value
       fetch("{% url 'planning:filtroAtributo' %}", {
          ...fetchObject,
          body: JSON.stringify({
 
-            id: e.options[e.selectedIndex].value,
+            id,
 
          })
       })
-      .then(res => res.text())
+      .then(res => res.json())
       .then(text => {
          
          if(text){
             
-            e.innerHTML = text
+            e.innerHTML = text['contenido']
             e.setAttribute("onchange", "anadirFiltroHijo(this)");
-
+            e.setAttribute("name", id);
+            e.parentNode.previousElementSibling.innerHTML = `<strong>${text['pagina']}</strong>`
          }
 
       })
@@ -287,13 +298,14 @@
 
          })
       })
-      .then(res => res.text())
+      .then(res => res.json())
       .then(text => {
          
          if(text){
 
             const parent = e.parentNode
-            parent.innerHTML = text
+            parent.innerHTML = text['contenido']
+            parent.previousElementSibling.innerHTML = `<strong>${text['pagina']}</strong>`
             parent.querySelector(':first-child').focus()
 
          }
@@ -314,25 +326,24 @@
    
    const buscarFiltro = (pag = -1) => {
 
-      console.log(getFormFiltro())
       if(!document.querySelector('.progress-bar')){
-
-         // localStorage.setItem("rango", document.querySelector('#selectNumeracion').value);
+         console.log(getFormFiltro())
+         localStorage.setItem("rango", document.querySelector('#selectNumeracion').value);
 
          document.querySelector("#renderContainer").innerHTML = spinnerBar()
          fetch("{% url 'planning:filtrar' %}", {
             ...fetchObject,
             body: JSON.stringify({
                filtro: getFormFiltro(),
-               // numero: localStorage.getItem("rango"),
-               // pag: pag > 0 ? pag : document.querySelector('.page-item.active > a').dataset.number
+               numero: localStorage.getItem("rango"),
+               pag: pag > 0 ? pag : document.querySelector('.page-item.active > a').dataset.number
             })
          })
          .then(res => res.json())
          .then(text => {
             
                document.querySelector("#renderContainer").innerHTML = text['contenido']
-               // document.querySelector("#paginas").innerHTML = text['pagina']
+               document.querySelector("#paginas").innerHTML = text['pagina']
 
          })
          .catch((err)=>{
@@ -366,6 +377,19 @@
    }
 
    ///////////////////////// 
+   
+   $(document).on('click','.page-link',(e) => {
+
+      e.preventDefault()
+      buscarFiltro(e.currentTarget.dataset.number)
+
+   })
+   
+   $(document).on('mouseover mousedown','[data-toggle="tooltip"]',(e) => {
+
+      $('[data-toggle="tooltip"]').tooltip();
+
+   })
 
 </script>
 {% endblock javascripts %}

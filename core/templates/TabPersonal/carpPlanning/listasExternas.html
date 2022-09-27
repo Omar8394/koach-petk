@@ -1,0 +1,357 @@
+   {% extends "layouts/base.html" %}
+   {% load i18n %}
+   {% block title %}{% endblock %}
+   <!-- Specific Page CSS goes HERE  -->
+   {% block stylesheets %}
+   <style>
+  
+   </style>
+   {% endblock stylesheets %}
+   
+   {% block content %}
+   <div class="content">
+      <div class="page-inner animated fadeInRight">
+         <div class="page-header">
+            <h4 class="page-title">Planificacion</h4>
+            <ul class="breadcrumbs">
+               <li class="nav-home">
+                  <a href="{% url 'home' %}">
+                     <i class="flaticon-home"></i>
+                  </a>
+               </li>
+               <li class="separator">
+                   <i class="flaticon-right-arrow"></i>
+               </li>
+               <li class="nav-item">
+                   <span>Planificacion</span>
+               </li>
+               <li class="separator">
+                   <i class="flaticon-right-arrow"></i>
+               </li>
+               <li class="nav-item">
+                   <a href="{% url 'planning:configuracion' %}">Configuracion</a >
+               </li>
+               <li class="separator">
+                   <i class="flaticon-right-arrow"></i>
+               </li>
+               <li class="nav-item">
+                   <a href="#">Listas Externas</a >
+               </li>
+            </ul>
+         </div>
+         <div class="page-category">
+            <div class="card">
+               <div class="section-header">
+                     <h3 class="section-title">Nueva categoria</h3>
+                     <div onclick="modalListaExterna()" class="btn btn-icon btn-success btn-round add-btn btn-card-lg">
+                        <i class="fas fa-plus"></i>
+                     </div>
+               </div> 
+               <main class="card-body py-0">
+                  
+               </main>
+            </div>
+         </div>
+      </div>
+   </div>
+   {% endblock content %}
+   
+   {% block javascripts %}
+   <script>
+      
+      $(document).ready(function () {
+
+         renderContent()
+
+      });
+
+      const renderContent = ()=>{
+
+         setLoading()
+         fetch("{% url 'planning:contenidoListaExterna'%}", {
+            ...fetchObject,
+         })
+        .then(res => res.text())
+        .then(text => {
+
+            document.querySelector("main.card-body").innerHTML = text
+
+         })
+         .catch((err) => {
+            
+            makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+         })
+         .finally(() => {
+
+            stopLoading()
+
+         })
+
+      }
+
+    const modalListaExterna = (id = null) => {
+
+        setLoading()
+        fetch("{% url 'planning:modalListaExterna' %}", {
+            ...fetchObject,
+            body: JSON.stringify({
+               id
+            })
+        })
+        .then(res => res.text())
+        .then(text => {
+
+            document.querySelector('#carruselAyuda').insertAdjacentHTML("beforebegin", text)
+            const formListaExterna = document.querySelector("#formListaExterna")
+
+            formListaExterna.addEventListener("submit", (e) => {
+
+                e.preventDefault()
+                
+                const formData = new FormData(formListaExterna);
+                const data = Object.fromEntries(formData.entries())
+
+                if(data.nombre.trim()){
+
+                  setLoading()
+                  fetch("{% url 'planning:guardarListaExterna' %}", {
+                     ...fetchObject,
+                     body: JSON.stringify({
+                     data,
+                     id
+                     })
+                  })
+                  .then(res => res.text())
+                  .then(text => {
+
+                     $("#modalListaExterna").modal("hide")
+                     makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+                     renderContent()
+
+                  })
+                  .catch((err) => {
+                     
+                     makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+                  })
+                  .finally(() => {
+
+                     stopLoading()
+
+                  })
+
+                }else {
+
+                    formListaExterna.classList.add('needs-validation', 'was-validated')
+                    formListaExterna.removeAttribute('novalidate');
+
+                }
+                
+            })
+
+            $('#modalListaExterna').modal('show')
+            $('#modalListaExterna').on('hidden.bs.modal', function (event) {
+
+                $('#modalListaExterna').remove()
+
+            })
+
+        })
+        .catch((err) => {
+
+            makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+        })
+        .finally(() => {
+
+            stopLoading()
+
+        })
+
+    }
+
+   const openDeleteProgram = async (id) =>{
+
+      const elimino = await alerta(3)
+
+      if(elimino){
+
+         setLoading()
+         fetch("{% url 'planning:eliminarListaExterna'%}", {
+            ...fetchObject,
+            body: JSON.stringify({
+               id
+            })
+         })
+        .then(res => res.text())
+        .then(text => {
+
+            renderContent()
+            makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro eliminado' %}", "fa fa-check")
+
+        })
+        .catch((err) => {
+
+            makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+        })
+        .finally(() => {
+
+            stopLoading()
+
+        })
+
+      }
+
+   }
+
+   const renderproseso = (id)=>{
+
+      setLoading()
+      fetch("{% url 'planning:addproceso'%}", {
+         ...fetchObject,
+         body: JSON.stringify({
+            id,
+         })
+      })
+      .then(res => res.text())
+      .then(text => {
+
+         document.querySelector("#renderpro").innerHTML = text
+
+      })
+      .catch((err) => {
+
+         makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+      })
+      .finally(() => {
+
+         stopLoading()
+
+      })
+
+   }
+
+   const modalListaExternaHijo = (padre, id = null) => {
+
+      setLoading()
+      fetch("{% url 'planning:modalListaExternaHijo' %}", {
+         ...fetchObject,
+         body: JSON.stringify({
+            id,
+            padre
+         })
+      })
+      .then(res => res.text())
+      .then(text => {
+
+         document.querySelector('#carruselAyuda').insertAdjacentHTML("beforebegin", text)
+         const formListaExternaHijo = document.querySelector("#formListaExternaHijo")
+
+         formListaExternaHijo.addEventListener("submit", (e) => {
+
+               e.preventDefault()
+               const formData = new FormData(formListaExternaHijo);
+               const data = Object.fromEntries(formData.entries())
+
+               if(data.nombre.trim()){
+
+                  setLoading()
+                  fetch("{% url 'planning:guardarListaExternaHijo' %}", {
+                     ...fetchObject,
+                     body: JSON.stringify({
+                     data,
+                     id,
+                     padre
+                     })
+                  })
+                  .then(res => res.text())
+                  .then(text => {
+
+                     $("#modalListaExternaHijo").modal("hide")
+                     makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+                     renderproseso(padre)
+
+                  })
+                  .catch((err) => {
+                     
+                     makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+                  })
+                  .finally(() => {
+
+                     stopLoading()
+
+                  })
+
+               }else {
+
+                  formListaExternaHijo.classList.add('needs-validation', 'was-validated')
+                  formListaExternaHijo.removeAttribute('novalidate');
+
+               }
+               
+         })
+
+         $('#modalListaExternaHijo').modal('show')
+         $('#modalListaExternaHijo').on('hidden.bs.modal', function (event) {
+
+            $('#modalListaExternaHijo').remove()
+
+         })
+
+      })
+      .catch((err) => {
+
+         makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+      })
+      .finally(() => {
+
+         stopLoading()
+
+      })
+
+   }
+
+   const openDeleteProseso = async (padre, id) =>{
+
+      const elimino = await alerta(3)
+
+      if(elimino){
+
+         setLoading()
+         fetch("{% url 'planning:eliminarListaExternaHijo'%}", {
+            ...fetchObject,
+            body: JSON.stringify({
+               id,
+               padre
+            })
+         })
+        .then(res => res.text())
+        .then(text => {
+
+            renderproseso(padre)
+            makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro eliminado' %}", "fa fa-check")
+
+        })
+        .catch((err) => {
+
+            makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+        })
+        .finally(() => {
+
+            stopLoading()
+
+        })
+
+      }
+
+   }
+
+</script>
+	
+{% endblock javascripts %}

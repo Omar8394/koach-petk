@@ -3,7 +3,107 @@
 {% block title %}{% endblock %} 
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="/static/assets/css/swiper_bundle.css">
+	<link rel="stylesheet" href="/static/assets/css/animate.min.css">
+	<style>
+		
+		.contened{
+			width: 90%;
+			padding: 10px 40px;
+			overflow: hidden;
+			width: 100%;
+			position: relative;
+			margin-right: auto;
+			margin-left: auto;
+
+		}
+		.contened .swiper-container{
+			width: 100%;
+			height: 100%;
+		}
+		.contened .swiper-slide {
+			position: relative;
+			text-align: center;
+			font-size: 18px;
+			background: #cab0b0;
+			border-radius: 15px;
+			text-align: start;
+			box-shadow: 0px 4px 4px rgba(196, 196, 196, 0.25);
+		
+		}
+		.contened .swiper-slide img{
+			display: block;
+			width: 100%;
+			height: 180px;
+			object-fit: cover;
+			border-top-left-radius: 15px;
+			border-top-right-radius: 15px;
+
+		}
+		.contened .swiper-slide .card-description{
+			padding:1rem 1rem;
+		}
+		.contened .swiper-slide .card-title,.contened .swiper-slide .card-text{
+			margin-bottom: .5rem;
+		}
+		.contened .swiper-slide .card-link,.contened .swiper-slide .card-text{
+			text-align: center;
+		}
+		.contened .swiper-slide .card-link a{
+			text-decoration: none;
+			
+		}
+
+		.contened .swiper-slide .card-link a:hover {
+			color: #fff;
+			
+		}
+		.swiper-button-next{
+			right: 2px !important;
+		}
+		.swiper-button-prev{
+			left: 2px !important;
+		}
+		.swiper-button-next, .swiper-button-prev{
+			position:absolute !important;
+		}
+		/* block codigo css para btn */
+		.btn-radius{
+			border: 3px solid rgba(100, 100, 100, 0.1);
+			border-radius: 3rem;
+			color: #fff;
+			cursor: pointer;
+			padding: 1px 10px;
+			width: 130px;
+			transition: 0.6s;
+		}
+		.btn-radius:hover{
+			background-position: right;
+		}
+		.card-header .sub-titulo{
+			margin-left: 50px;
+		}
+
+		#messMetodopgs h1{
+			padding: 0 !important;
+			color: black;
+		}
+
+		#messMetodopgs {
+			border: 3px solid #df0808;
+			border-radius: .3em;
+		}
+
+		/* #messMetodopgs_ok {
+			border: 3px solid #0fdf08  !important;
+			border-radius: .3em;
+		} */
+		
+
+		/* endblock */
+	</style>
+{% endblock stylesheets %}
 
 {% block content %}
 
@@ -34,27 +134,139 @@
 			<div class="page-category">
         		<div class="card">
 					<div class="card-header">
-						<h2>Seleccine un Concepto de Pgo</h2>
-						<div class="form-group">
-							<div class="input-group">
-								<input id="txtSearch" type="text" class="form-control" placeholder="Search for course">
-								<div class="input-group-append">
-									<span id="clearBtn" class="btn btn-danger">
-								
-										<i class="fas fa-undo"></i>
-									</span>
-									<span id="searchBtn" class="btn btn-primary">
-										<i class="fa fa-search"></i>
-									</span>
-								</div>
+						
+						<!--Combo-box Programs-->
+						<div class="form-row" style="margin-left:45px !important;">
+							<div class="form-group col-6">
+							   <label for="c_metodo_pgs" class="col-form-label">Concepto de Pago</label>
+							   <select class="form-control" name="c_metodo_pgs" id="c_metodo_pgs" required >
+								  <option value="null">Seleccionar</option>
+								  {% for item in concepto_pgs %}
+								  
+								  <option value={{item.valor_elemento}} id="">{{item.desc_elemento}}</option>
+								  
+								  {% endfor%}
+							   </select>
 							</div>
+						 </div>
+
+						 <h2 class="sub-titulo">Seleccine un Metodo de Pgo</h2>
+						<!-- Swiper -->
+						<div class="contened">
+							
+							<div class="swiper-container mySwiper">
+							
+								<div class="swiper-wrapper">
+									
+									{% for item in metodo_pgs%}
+										
+										<div class="swiper-slide">
+								
+											<div class="card-description">
+												<div class="card-title">
+													<h4>{{item.desc_elemento}}</h4>
+												</div>
+												<div class="card-text">
+													<h1 class=" animated animate__swing ">Opcion {{ forloop.counter }}</h1>
+												</div>
+												<div class="card-link">
+													
+													<!-- <button class="btn-radius btn-mora" onclick="btn_concepto_pgs('{{id_metodo_pgs}}','{{item.valor_elemento}}')">Acceder</button> -->
+													<a href="javascript:void(0);" onclick="btn_concepto_pgs('{{item.valor_elemento}}')" class="btn-radius btn-mora">Click Aqui</a>
+												</div>
+											</div>
+
+										</div>
+									{% endfor %}
+								</div>
+							
+								
+
+							</div>
+							<div class="swiper-button-next"></div>
+							<div class="swiper-button-prev"></div>
 						</div>
+						<!-- Swiper JS -->
 					</div>
 					<main class="card-body is-loading-lg">
-						<h1> No Hay Concepto Seleccionado </h1>
+						<div class="container-fluid p-3 my-3" id="messMetodopgs">
+							<h1> Ningun Metodo de Pago Seleccionado </h1>
+						</div>
+						
+						<div class="card shadow mb-4 mt-4">
+							<!-- Card Header - Dropdown -->
+							<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+								<h2 class="m-0 font-weight-bold text-dark">Beneficiarios</h2>
+								<div class="dropdown no-arrow d-flex flex-row">
+									<a href="javascript:void(0);" id="add-boletin" class="btn-radius btn-azul mr-2" style="display:block;text-align:center;text-decoration:none;color:whitesmoke;" onclick="showModalPublic()"><span>Agregar</span></a>
+									<a href="javascript:void(0);" id="add-boletin" class="btn-radius btn-mora" style="display:block;text-align:center;text-decoration:none;color:whitesmoke;"><span>Vaciar</span></a>
+									
+								</div>
+							</div>
+							
+							<!-- Card Body -->
+							<div class="card-body">
+								
+								<div class="table-responsive">
+									<table class="table" id="TableTranf" width="100%" cellspacing="0">
+										<thead>
+											<tr>
+												<th>Name</th>
+												<th>descripcion_texto</th>
+												
+											</tr>
+										</thead>
+										
+										<tbody id="idtbody">
+											
+											<!-- <tr>
+												
+												<td> JesuCristo</td>
+												<td> Salvador Eterno ReY DE GLORIA </td>
+												
+											</tr>
+						
+											<tr>
+												
+												<td> JesuCristo</td>
+												<td> ReY DE GLORIA </td>
+												
+											</tr>
+						
+											<tr>
+												
+												<td> cRISTO</td>
+												<td> Salvador Eterno  </td>
+												
+											</tr>
+						
+											<tr>
+												
+												<td> JesuS</td>
+												<td> SEÑOR DE sEÑORES </td>
+												
+											</tr> -->
+											
+											
+										</tbody>
+									</table>
+								</div>
+								
+							</div>
+						</div>
+
+						<div class="card shadow mb-4" id="formMonto">
+							
+						</div>
 					</main>
 				</div>
       		</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="PublicModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+		<div id="PublicModalContent" class="modal-dialog  modal-dialog-centered" role="document" style=" max-width:80% ;">
+	
 		</div>
 	</div>
 
@@ -62,4 +274,154 @@
 	
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
+	<script>
+		// block variables
+		card_body = document.querySelector(".card-body")
+		formMonto = document.querySelector("#formMonto")
+		messMetodopgs = document.querySelector('#messMetodopgs')
+		// fin block
+
+
+		// block conf_Swiper 
+		var swiper = new Swiper('.swiper-container', {
+			navigation: {
+			nextEl: '.swiper-button-next',
+			prevEl: '.swiper-button-prev'
+			},
+			slidesPerView: 1,
+			spaceBetween: 10,
+			// init: false,
+			pagination: {
+			el: '.swiper-pagination',
+			clickable: true,
+			},
+
+		
+			breakpoints: {
+			620: {
+				slidesPerView: 1,
+				spaceBetween: 20,
+			},
+			680: {
+				slidesPerView: 2,
+				spaceBetween: 40,
+			},
+			920: {
+				slidesPerView: 3,
+				spaceBetween: 40,
+			},
+			1240: {
+				slidesPerView: 3,
+				spaceBetween: 50,
+			},
+			} 
+		});
+		// endblock swiper
+
+		$(document).ready(function() {
+			$('#TableTranf').DataTable({
+
+			"language":{
+			"processing": "Procesando...",
+			"lengthMenu": "Mostrar _MENU_ registros",
+			"zeroRecords": "No se encontraron resultados",
+			"emptyTable": "Ningún dato disponible en esta tabla",
+			"infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+			"infoFiltered": "(filtrado de un total de _MAX_ registros)",
+			"search": "Buscar:",
+			"infoThousands": ",",
+			"loadingRecords": "Cargando...",
+			"paginate": {
+				"first": "Primero",
+				"last": "Último",
+				"next": "Siguiente",
+				"previous": "Anterior"
+			},
+			"aria": {
+				"sortAscending": ": Activar para ordenar la columna de manera ascendente",
+				"sortDescending": ": Activar para ordenar la columna de manera descendente"
+			}
+
+			}
+
+			});
+
+		});
+
+		function btn_concepto_pgs(id_metodo){
+			console.log(id_metodo)
+
+			if(id_metodo =='paypal_pgs'){
+				messMetodopgs.style.display="none"
+				formMonto.innerHTML = `<h1 class="animated animate__rotateIn"> Paypal pago selecciondo </h1>`
+			}
+
+			if(id_metodo == 'trj_cdto_pgs'){
+				messMetodopgs.style.display="none"
+				formMonto.innerHTML = `<h1 class="animated animate__rotateIn"> Diesmos pago selecciondo </h1>`
+			}
+			
+			if(id_metodo == 'transf_pgs'){
+				messMetodopgs.style.display="block"
+				messMetodopgs.style.border= "3px solid #0fdf08"
+				messMetodopgs.innerHTML = `<h1 class="animate animate__bounceInRight"> Transferencia pago selecciondo </h1>`
+				metodo_transf()
+			}
+			
+			if(id_metodo=='cripto_pgs'){
+				messMetodopgs.style.display="none"
+				formMonto.innerHTML = `<h1 class="animated animate__rotateIn"> En Mantenimiento </h1>`
+			}
+
+		}
+
+		// funciones para renderizar los formularios de metodos de pago
+
+		function metodo_transf(){
+			fetch("{% url 'get_formPgTransf'%}", {
+                ...fetchObject,           
+                body: JSON.stringify({
+                acceso:"show",
+                })
+            })
+            .then(async(res)=>{
+                result = await res.text()
+                formMonto.innerHTML = result  
+				    
+                    
+            })
+		}
+
+		function metodo_pypal(){
+			fetch("{% url 'get_formPayments'%}", {
+                ...fetchObject,           
+                body: JSON.stringify({
+                acceso:"show",
+                })
+            })
+            .then(async(res)=>{
+                result = await res.text()
+                card_body.innerHTML = result      
+                    
+            })
+		}
+
+		function metodo_tarjCredito(){
+
+		}
+
+		function metodo_criptomoneda(){
+
+		}
+		//  fin de block
+
+		// funcion para show modal para seleccionar public
+		const showModalPublic = () =>{
+			alert("Moda para seleccionar Public")
+		}
+
+
+		// fin de block
+
+	</script>
 {% endblock javascripts %}

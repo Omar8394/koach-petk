@@ -285,8 +285,9 @@ input::-ms-input-placeholder { /* Microsoft Edge */
    color: #fff;
 }
 .inner .form-row .form-holder select {
-    background: #fff url('../img/wizard_v6_icon.png') no-repeat scroll;
-    background-position: right 16px center;
+    /* background: #fff url('../img/wizard_v6_icon.png') no-repeat scroll; */
+    /* background-position: right 16px center; */
+    background: #fff;
     z-index: 1;
     cursor: pointer;
     color: #666;

@@ -9,5 +9,9 @@ from modulesApp.Payments import views
 urlpatterns = [
     
     # The home page
-    path('payments/', views.payments, name='payments'),       
+    path('get_metodo_pgs/', views.get_metodo_pgs, name='get_metodo_pgs'),
+    path('get_formPayments/', views.get_formPayments , name='get_formPayments'),  
+    path('payments/', views.payments, name='payments'),
+    path('get_formPgTransf/', views.get_formPgTransf, name='get_formPgTransf'),
+        
 ]

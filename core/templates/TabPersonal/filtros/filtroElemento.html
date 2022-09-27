@@ -15,7 +15,7 @@
     </label>
     {% endfor %}
     <label class="selectgroup-item">
-        <input type="checkbox" class="selectgroup-input" onclick="eliminarFiltro(this)">
+        <input type="checkbox" class="selectgroup-input" onclick="eliminarFiltro(this, true)">
         <i class="fas fa-trash-alt selectgroup-button bg-danger text-light"></i>
     </label>
 </div>
@@ -34,5 +34,18 @@
     <button class="btn btn-danger" type="button" onclick="eliminarFiltro(this)">
         <i class="fas fa-trash-alt"></i>
     </button>
+</div>
+{% elif atributo.fk_tipodato.valor_elemento == 'Tipo_Atributo_Lista_Externa' %}
+<div class="selectgroup selectgroup-pills">
+    {% for y in atributo.listaValores|listaExternaHijo %}
+    <label class="selectgroup-item">
+        <input type="checkbox" name="{{atributo.id_atribxfichaxbloq}}_{{forloop.counter}}{% now 'isu' %}" value="{{y}}" class="selectgroup-input">
+        <span class="selectgroup-button">{{y}}</span>
+    </label>
+    {% endfor %}
+    <label class="selectgroup-item">
+        <input type="checkbox" class="selectgroup-input" onclick="eliminarFiltro(this, true)">
+        <i class="fas fa-trash-alt selectgroup-button bg-danger text-light"></i>
+    </label>
 </div>
 {% endif %}

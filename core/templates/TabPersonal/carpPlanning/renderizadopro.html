@@ -1,0 +1,35 @@
+<div class="section-header">
+   <h3 >Nuevo hijo</h3>
+   <div onclick="modalListaExternaHijo('{{padre}}')" class="btn btn-icon btn-success btn-round add-btn btn-card-lg">
+      <i class="fas fa-plus"></i>
+   </div>
+</div>
+<ul class="card-list">
+   {% for item in data %}
+   <li class="card-list-item">
+      <div class="card-list-item-inner">
+         <div class="card-list-item-subtitle">
+            {{item}}
+         </div>
+         <div class="card-list-item-actions">
+            <div class="btn-group" role="group">
+               <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Editar" onclick="modalListaExternaHijo('{{padre}}', '{{item}}')">
+                  <i class="fas fa-edit"></i>
+               </button>
+               <button type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip" data-placement="top" title="Eliminar" onclick="openDeleteProseso('{{padre}}', '{{item}}')">
+                  <i class="fas fa-trash-alt"></i>
+               </button>
+            </div>
+         </div>
+      </div>
+   </li>
+   {% empty %}
+   <li class="card-list-item">
+      <div class="card-list-item-inner">
+         <div class="card-list-item-subtitle">
+            Sin contenido
+         </div>
+      </div>
+   </li>
+   {% endfor%}
+</ul>

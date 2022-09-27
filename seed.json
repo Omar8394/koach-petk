@@ -1259,6 +1259,67 @@
                     "datos_adicional":"",
                     "tipo_dato":0
                   }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk": 85,
+                  "fields": {
+                    "desc_elemento": "Lista Externa",
+                    "fk_tabla_padre": 41,
+                    "tipo_elemento": "1",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Tipo_Atributo_Lista_Externa",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 1,
+                    "datos_adicional":"&#xf24d;",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk": 86,
+                  "fields": {
+                    "desc_elemento": "Hijos Lista",
+                    "fk_tabla_padre": 85,
+                    "tipo_elemento": "1",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Tipo_Atributo_Hijos_Lista",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional": {"Instituto de Estudio": "Instituto de Estudio", "Empresas": "Empresas", "Operadoras Telefonicas": "Operadoras Telefonicas", "Codigo Zona Postal": "Codigo Zona Postal"},
+                    "tipo_dato":0
+
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk": 87,
+                  "fields": {
+                    "desc_elemento": "Inscripciones Eventos",
+                    "fk_tabla_padre": 64,
+                    "tipo_elemento": "1",
+                    "permite_cambios": 1,
+                    "valor_elemento": "in_evto_pgs",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"&#xf162;",
+                    "tipo_dato":0
+                  }
+                },
+                {"model": "App.ConfTablasConfiguracion",
+                "pk": 88,
+                  "fields": {
+                    "desc_elemento": "Cripto Moneda",
+                    "fk_tabla_padre": 68,
+                    "tipo_elemento": "1",
+                    "permite_cambios": 1,
+                    "valor_elemento": "cripto_pgs",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"&#xf162;",
+                    "tipo_dato":0
+
+                  }
                 }
 
 ]
