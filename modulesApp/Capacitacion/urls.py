@@ -25,10 +25,14 @@ urlpatterns = [
     path('update_estrutura/', views.update_estrutura, name='update_estrutura'),
     path('componentsxestructura/', views.getcomponentsxestructura, name='componentsxestructura'),
     path('createactividades/', views.createactividades, name='createactividades'),
+    path('renderactividades/', views.renderactividades, name='renderactividades'),
     path('modalChooseActivity/', views.getModalChooseActivities, name='modalChooseActivity'),
     path('modalNewLesson/', views.getModalNewLesson, name="modalNewLesson"),
-    
-
+    path('pageslessons/', views.pageslessons, name="pageslessons"),
+    path('savepages/', views.savepages, name="savepages"),
+    path('modalResourcesBank/', views.getModalResourcesBank, name="modalResourcesBank"),
+    path('contenidoRecursos/', views.getContentRecursos, name="contenidoRecursos"),
+    path('renderpaginas/', views.renderpaginas, name="renderpaginas"),
     # Scales
     
 

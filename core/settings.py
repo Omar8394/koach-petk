@@ -183,7 +183,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'core.urls'
 # ROOT dir for templates
 TEMPLATE_DIR = os.path.join(CORE_DIR, "core/templates")
-
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 
 

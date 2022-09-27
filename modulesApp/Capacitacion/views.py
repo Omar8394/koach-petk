@@ -3,12 +3,18 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from ..App.models import ConfTablasConfiguracion
-from ..Capacitacion.models import Estructuraprograma,capacitacion_componentesXestructura,Capacitacion_componentesFormacion
+from ..Capacitacion.models import Estructuraprograma, capacitacion_Actividad_leccion, capacitacion_ComponentesActividades, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,Capacitacion_componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso
 import time, json
 from decimal import Decimal
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.template.defaulttags import register
 from django.contrib.auth.decorators import login_required
+from core import settings
+from pathlib import Path
+import uuid
+import mimetypes
+from django.core.files.storage import FileSystemStorage
+import os
 # Create your views here.
 @register.filter
 def hashijos(id):
@@ -151,19 +157,20 @@ def Addproceso(request):
                 lista=[]
                 if data['query'] == "":
                    procesos=Estructuraprograma.objects.filter(fk_estructura_padre_id=data['id'],valor_elemento="Process")
+                   antesesor=Estructuraprograma.objects.get(pk=data['id'],valor_elemento="Program")
                    print(data)
                    if procesos.exists():
                       paginator = Paginator(procesos, data["limit"])
                       lista = paginator.get_page(data["page"])
                       page = data["page"]
                       limit = data["limit"]
-                      context = {"page": page,"limit": limit,'procesos':procesos,'padre':data['id'],'data':lista}
+                      context = {"titulo": antesesor.Titulo,"page": page,"limit": limit,'procesos':procesos,'padre':data['id'],'data':lista}
                       #print(context)
                       html_template = (loader.get_template('renderizadopro.html'))
                       return HttpResponse(html_template.render(context, request))
                    else:
                       title=True
-                      context = {'title':title,'padre':data['id']}
+                      context = {"titulo": antesesor.Titulo,'title':title,'padre':data['id']}
                       print(procesos)
                       html_template = (loader.get_template('renderizadopro.html'))
                       return HttpResponse(html_template.render(context, request))
@@ -235,17 +242,19 @@ def getcontentunits(request):
                 lista=[]
                 if data["query"] == "":
                    units=Estructuraprograma.objects.filter(fk_estructura_padre_id=data['pk'],valor_elemento="Module")
+                   antesesor=Estructuraprograma.objects.get(pk=data['pk'],valor_elemento="Process")
+                   print(antesesor.Titulo)
                    if units.exists(): 
                       paginator = Paginator(units, data["limit"])
                       lista = paginator.get_page(data["page"])
                       page = data["page"]
                       limit = data["limit"]
-                      context = {"page": page,"limit": limit,'units':units,'pk':data['pk'],'padre':data['pk'],'data':lista}             
+                      context = {"titulo":antesesor.Titulo,"page": page,"limit": limit,'units':units,'pk':data['pk'],'padre':data['pk'],'data':lista}             
                       html_template = loader.get_template( 'contenidounidades.html' )
                       return HttpResponse(html_template.render(context, request))
                    else:
                       title=True
-                      context = {'title':title,'pk':data['pk']}             
+                      context = {"titulo":antesesor.Titulo,'title':title,'pk':data['pk']}             
                       html_template = loader.get_template( 'contenidounidades.html' )
                       return HttpResponse(html_template.render(context, request)) 
         except Exception as e:
@@ -305,17 +314,19 @@ def getcontentcursos(request):
                 lista=[]
                 if data["query"] == "":
                    cursos=capacitacion_componentesXestructura.objects.filter(fk_estructuraprogramas_id=data['id'])
+                   antesesor=Estructuraprograma.objects.get(pk=data['id'])
+                   print(antesesor.Titulo)
                    if cursos.exists():
                       paginator = Paginator(cursos, data["limit"])
                       lista = paginator.get_page(data["page"])
                       page = data["page"]
                       limit = data["limit"] 
-                      context = {"page": page,"limit": limit,'cursos':cursos,'pk':data['id'],'padre':data['id'],'data':lista}             
+                      context = {"titulo":antesesor.Titulo ,"page": page,"limit": limit,'cursos':cursos,'pk':data['id'],'padre':data['id'],'data':lista}             
                       html_template = loader.get_template( 'renderizarcursos.html' )
                       return HttpResponse(html_template.render(context, request))
                    else:
                       title=True
-                      context = {'title':title,'pk':data['id']}             
+                      context = {"titulo":antesesor.Titulo ,'title':title,'pk':data['id']}             
                       html_template = loader.get_template( 'renderizarcursos.html' )
                       return HttpResponse(html_template.render(context, request)) 
         except Exception as e:
@@ -448,15 +459,53 @@ def getcomponentsxestructura(request):
         except Exception as e:
                print(e)
                return JsonResponse({"message":"error"}, status=500) 
-def createactividades(request):  
-    context = {}
+def createactividades(request):
+    id=request.GET.get('id')  
+    context = {"id":id}
     html_template = (loader.get_template('createactividades.html'))
     return HttpResponse(html_template.render(context, request))
+def renderactividades(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest': 
+         try:
+            if request.body:
+                context={}
+                title=False
+                data = json.load(request)
+                print(data)
+                if data["query"] == "":
+                    actividad=capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion_id=data['id'])
+                    print(actividad)
+                    if actividad.exists():
+                       context = {"actividad":actividad,'padre':data['id']}
+                       html_template = (loader.get_template('renderactividade.html'))
+                       return HttpResponse(html_template.render(context, request))
+                    else:
+                      title=True 
+                      context = {"title":title,'padre':data['id']}
+                      html_template = (loader.get_template('renderactividade.html'))
+                      return HttpResponse(html_template.render(context, request))
+         except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)
 def getModalChooseActivities(request):
-    id=request.GET.get('id')
-    context = {"id":id}
-    html_template = (loader.get_template('modalchooseactividad.html'))
-    return HttpResponse(html_template.render(context, request))
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            context = {}
+            modelo = {}
+            try:
+                if request.body:
+                   data = json.load(request)
+                   print(data)
+                   if data["method"] == "Show": 
+                      context = {"id":data['id']}                
+                      html_template = (loader.get_template('modalchooseactividad.html'))
+                      return HttpResponse(html_template.render(context, request))
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)
+
+
 def getModalNewLesson(request):
     if request.method == "POST":
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
@@ -465,11 +514,286 @@ def getModalNewLesson(request):
             try:
                 if request.body:
                     data = json.load(request)
-                   
-                    if data["method"] == "Show":
-                        context = {}
+                    status = ConfTablasConfiguracion.obtenerHijos(valor="Status_global")
+                    tipo = ConfTablasConfiguracion.obtenerHijos(valor="Tipo_Componente")
+                    print(data)
+                    if data['method'] == "Edit":
+                        modelo = capacitacion_ComponentesActividades.objects.get(pk=data["id"])    
+                        categorias = ConfTablasConfiguracion.obtenerHijos(valor="Ritmo_Capacitacion")
+                        context = {"categorias": categorias, "modelo": modelo,"status":status,"tipo":tipo}
                         html_template = (loader.get_template('modalAddLesson.html'))
                         return HttpResponse(html_template.render(context, request))
+                    elif data["method"] == "Show":
+                        context = {"status":status,"tipo":tipo}
+                        html_template = (loader.get_template('modalAddLesson.html'))
+                        return HttpResponse(html_template.render(context, request))
+                    elif data["method"] == "Delete":
+                        actividad=capacitacion_ComponentesActividades.objects.get(pk=data["id"])
+                        leccion=capacitacion_Actividad_leccion.objects.get(fk_componenteActividad_id=data["id"])
+                        actividad.delete()
+                        leccion.delete()
+                        return JsonResponse({"message":"Deleted"}) 
+                    elif data["method"] == "Update":
+                        print(data)
+                        actividad=capacitacion_ComponentesActividades.objects.get(pk=data["id"])
+                        leccion=capacitacion_Actividad_leccion.objects.get(fk_componenteActividad_id=data["id"])
+                        actividad.titulo=data['data']['descriptionActivity']
+                        actividad.descripcion=data['data']['resumenActivity']
+                        actividad.fecha_disponibilidad=data['data']['disponibleLesson']
+                        actividad.peso_creditos=Decimal(data['data']['creditos'].replace(',','.'))
+                        actividad.valor_elemento='Actividad_leccion'
+                        actividad.url=data['data']['urlActivity'] 
+                        actividad.orden_presentacion=len(capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion_id=data['id']))
+                        actividad.fk_tipocomponente_id=data['data']['Componente']
+                        actividad.fk_statuscomponente_id=data['data']['estatusLesson']
+                        actividad.save()
+                        leccion.titulo=data['data']['descriptionActivity']
+                        leccion.descripcion=data['data']['resumenActivity']
+                        leccion.fecha_disponibilidad=data['data']['disponibleLesson']
+                        leccion.peso_creditos=Decimal(data['data']['creditos'].replace(',','.'))
+                        leccion.orden_presentacion=len(capacitacion_Actividad_leccion.objects.all())
+                        leccion.url=data['data']['urlActivity']
+                        leccion.valor_elemento="Leccion"
+                        leccion.fk_statusleccion_id=data['data']['estatusLesson']
+                        leccion.save()
+                        print(data)
+                        return JsonResponse({"message":"ok"})
+                    elif data["method"] == "Create":
+                        actividad=capacitacion_ComponentesActividades()
+                        leccion=capacitacion_Actividad_leccion()
+                        actividad.titulo=data['data']['descriptionActivity']
+                        actividad.descripcion=data['data']['resumenActivity']
+                        actividad.fecha_disponibilidad=data['data']['disponibleLesson']
+                        actividad.peso_creditos=data['data']['creditos']
+                        actividad.valor_elemento='Actividad_leccion'
+                        actividad.url=data['data']['urlActivity'] 
+                        actividad.orden_presentacion=len(capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion_id=data['id']))
+                        actividad.fk_componenteformacion_id=data['id']
+                        actividad.fk_tipocomponente_id=data['data']['Componente']
+                        actividad.fk_statuscomponente_id=data['data']['estatusLesson']
+                        actividad.save()
+                        leccion.titulo=data['data']['descriptionActivity']
+                        leccion.descripcion=data['data']['resumenActivity']
+                        leccion.fecha_disponibilidad=data['data']['disponibleLesson']
+                        leccion.peso_creditos=data['data']['creditos']
+                        leccion.orden_presentacion=len(capacitacion_Actividad_leccion.objects.all())
+                        leccion.url=data['data']['urlActivity']
+                        leccion.valor_elemento="Leccion"
+                        leccion.fk_statusleccion_id=data['data']['estatusLesson']
+                        leccion.fk_componenteActividad=actividad
+                        leccion.save()
+                        print(data)
+                        return JsonResponse({"message":"ok"})
             except Exception as e:
                print(e)
                return JsonResponse({"message":"error"}, status=500)
+def pageslessons(request):
+    id=request.GET.get('id')
+    actividad=capacitacion_ComponentesActividades.objects.get(pk=id).titulo
+    context = {'actividad':actividad,'id':id}
+    html_template = (loader.get_template('pageslessons.html'))
+    return HttpResponse(html_template.render(context, request))
+def savepages(request): 
+    if request.method == "POST":
+       if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+          context = {}
+          modelo = {}
+          try:
+            if request.body:
+               data = json.load(request)
+               
+               path=""
+               tipo="Tipo_texto"
+               if data["method"] == "Create":
+                  print(data)            
+                  for item in data['data']['recursos']: 
+                      if item != "" :
+                         tipo=item['type'] 
+                         path=item['path']
+                      else:
+                         
+                         path="" 
+                  print(tipo)
+                  if path != "":
+                     pk= capacitacion_Recursos.objects.get(path_rutas=path).pk
+                  else:
+                     pk=None
+                  paginas=capacitacion_LeccionPaginas()
+                  paginas.titulo=data['data']['minApp']
+                  paginas.contenido = None
+                  if data["data"]["summernote"] != "<p><br></p>":
+                     paginas.contenido = data["data"]["summernote"]
+                  paginas.fk_actividadLeccion_id=data['id']
+                  paginas.fk_tipoContenido= ConfTablasConfiguracion.obtenerHijos("Tipo_Contenido").get(valor_elemento=tipo)
+                  paginas.orden_presentacion=len(capacitacion_LeccionPaginas.objects.filter(fk_actividadLeccion_id=data['id']))
+                  paginas.fk_statusPagina=ConfTablasConfiguracion.obtenerHijos("Status_global").get(valor_elemento="Status_activo")
+                  paginas.id_recursos=pk
+                  paginas.save()
+                  return JsonResponse({"message":"ok"}, status=200)
+               elif data["method"] == "Edit":
+                    print(data)
+                    paginas=capacitacion_LeccionPaginas.objects.get(pk=data['id'])
+                    paginas.titulo=data['data']['minApp']
+                    paginas.contenido = None
+                    if data["data"]["summernote"] != "<p><br></p>":
+                       paginas.contenido = data["data"]["summernote"]
+                    paginas.save()
+                    return JsonResponse({"message":"ok"}, status=200)
+          except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)
+    html_template = (loader.get_template('modalpdflessons.html'))
+    return HttpResponse(html_template.render({}, request))
+@login_required(login_url="/login/")
+def getModalResourcesBank(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            context = {}
+            modelo = {}
+            # try:
+            if request.headers.get("idPagina"):
+                #Handle the files upload
+                idPagina = request.headers.get('idPagina')
+                myfiles = list(request.FILES.values())
+                print(myfiles)
+                fs = FileSystemStorage(location=settings.MEDIA_ROOT)
+                print(fs)
+                recursos = []
+                for file in myfiles:
+                    resourceType = mimetypes.guess_type(file.name)[0]
+                    nombreImagen = str(uuid.uuid4())
+                    extensionFile=Path(file.name).suffix
+                    nombreImagen="res_"+nombreImagen+extensionFile
+                    Ruta=settings.MEDIA_ROOT
+                    print(Ruta)
+                    # folder = request.path.replace("/", "_")
+                    try:
+                        os.mkdir(os.path.join(Ruta))
+                    except:
+                        pass
+                    #save file
+                    fs.save(Ruta+'/'+nombreImagen, file)
+                    #after save file lets go to save on BBDD
+                    newRecurso = capacitacion_Recursos()
+                    newRecurso.path_rutas = nombreImagen
+                    if "application/pdf" in resourceType:
+                        print("hola")
+                        resourceType = "Tipo_pdf"
+                    if "image/" in resourceType:
+                        resourceType = "Tipo_imagen"
+                    if "audio/" in resourceType:
+                        resourceType = "Tipo_audio"
+                    newRecurso.fk_tipoRecurso = ConfTablasConfiguracion.obtenerHijos("Tipo_Contenido").get(valor_elemento=resourceType)
+                    # newRecurso.fk_publico_autor = request.user.extensionusuario.Publico
+                    tags = request.POST.get("tagResource")
+                    if "," in tags:
+                         tags = tags.split(",")
+                    else:
+                         tags = [tags]
+                    newRecurso.save()
+                    for newtag in tags:
+                        tag = capacitacion_Tag.objects.filter(desc_tag=newtag)
+                        if tag.exists():
+                             tag_recurso = capacitacion_TagRecurso(fk_tag=tag[0], fk_recurso=newRecurso)
+                             tag_recurso.save()
+                        else:
+                             tag = capacitacion_Tag(desc_tag=newtag)
+                             tag.save()
+                             tag_recurso = capacitacion_TagRecurso(fk_tag=tag, fk_recurso=newRecurso)
+                             tag_recurso.save()
+                    # #add resources
+                    recursos.append({"id":newRecurso.pk, "path":newRecurso.path_rutas, "type":resourceType})
+                return JsonResponse({"message":"Perfect", "recursos":recursos})
+            else:
+                data = json.load(request)
+                print(data)
+                if data["method"] == "Show":
+                    #nananananananana batmannnn
+                    recursos = capacitacion_Recursos.objects.all() 
+                    recursos = recursos.order_by('-id_recurso')[:10]
+                    tags = capacitacion_Tag.objects.all().order_by('desc_tag')
+                    context["recursos"] = recursos
+                    context["tags"] = tags
+                    print(context)
+                    html_template = (loader.get_template('modalBancoRecursos.html'))
+                    return HttpResponse(html_template.render(context, request))
+                # elif data["method"] == "Find":
+                #     modelo = Paginas.objects.get(pk=data["id"])
+                #     context = {"modelo": modelo}
+                #     html_template = (loader.get_template('components/modalAddPagina.html'))
+                #     return HttpResponse(html_template.render(context, request))
+                elif data["method"] == "Create":
+                    recurso = capacitacion_Recursos.objects.filter(path_rutas=data["data"]["path"])
+                    if recurso.exists():
+                        return JsonResponse({"message":"Already exists", "id":recurso[0].pk, "path":recurso[0].path})
+                    else:
+                        newRecurso = capacitacion_Recursos()
+                       
+                        newRecurso.path_rutas = data["data"]["path"]
+                       
+                        
+                        newRecurso.fk_tipoRecurso = ConfTablasConfiguracion.obtenerHijos("Tipo_Contenido").get(valor_elemento=data["data"]["tipo_recurso"])
+                        
+                        tags = data["data"]["tags"]
+                        if "," in tags:
+                            tags = tags.split(",")
+                        else:
+                            tags = [tags]
+                        newRecurso.save()
+                        for newtag in tags:
+                            tag = capacitacion_Tag.objects.filter(desc_tag=newtag)
+                            if tag.exists():
+                                tag_recurso = capacitacion_TagRecurso(fk_tag=tag[0], fk_recurso=newRecurso)
+                                tag_recurso.save()
+                            else:
+                                tag = capacitacion_Tag(desc_tag=newtag)
+                                tag.save()
+                                tag_recurso = capacitacion_TagRecurso(fk_tag=tag, fk_recurso=newRecurso)
+                                tag_recurso.save()
+                        return JsonResponse({"message":"Perfect", "id":newRecurso.pk, "path":newRecurso.path_rutas, "type":"Tipo_video"})
+                
+            # except:
+            #     return JsonResponse({"message":"error"}, status=500)
+@login_required(login_url="/login/")
+def getContentRecursos(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            context = {}
+            if request.body:
+                data = json.load(request)
+                if data["show"] == "tags":
+                    if data["query"] == "" or data["query"] == None:
+                        lista = capacitacion_Tag.objects.all().order_by("desc_tag")
+                    else:
+                        lista = capacitacion_Tag.objects.filter(desc_tag__icontains=data["query"]).order_by("desc_tag")
+                if data["show"] == "resources":
+                    tag = capacitacion_Tag.objects.get(pk=data["tag"])
+                    lista = capacitacion_TagRecurso.objects.filter(fk_tag=tag)
+                context = {"data":lista, "show":data["show"]}
+                html_template = (loader.get_template('contenidoRecursos.html'))
+                return HttpResponse(html_template.render(context, request))
+def renderpaginas(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest': 
+         try:
+            if request.body:
+                context={}
+                title=False
+                data = json.load(request)
+                print(data)
+                if data["query"] == "":
+                    actividad=capacitacion_LeccionPaginas.objects.filter(fk_actividadLeccion_id=data['id'])
+                    print(actividad)
+                    if actividad.exists():
+                       context = {"actividad":actividad,'padre':data['id']}
+                       html_template = (loader.get_template('renderpaginas.html'))
+                       return HttpResponse(html_template.render(context, request))
+                    else:
+                      title=True 
+                      context = {"title":title,'padre':data['id']}
+                      html_template = (loader.get_template('renderpaginas.html'))
+                      return HttpResponse(html_template.render(context, request))
+         except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)
+

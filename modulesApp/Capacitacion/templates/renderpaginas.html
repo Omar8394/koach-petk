@@ -1,0 +1,40 @@
+
+{% for activity in actividad %}
+<br>
+    <li class="card-list-item">
+       <div class="card-list-item-inner">
+          <div class="card-list-item-title">{{activity.titulo}}</div>
+          <div class="card-list-item-actions">
+          <div class="btn-group" role="group">
+          <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="agregar pagina"
+          onclick="todos('{{activity.id_leccionPaginas}}')">
+          <i class="fas fa-edit"></i>
+          </button>
+          </div>
+         </div>
+       </div>
+    </li>
+ 
+
+<div class="card-list-item-descripcion card-list-item-close"><strong>Description:</strong></div>   
+<ul id="childsTopic{{activity.id_leccionPaginas}}"  class="card-list-item-close">
+<form id="formActividad{{activity.id_leccionPaginas}}" class="form">
+  <div class="form-row">
+     <div class="form-group col-md-12">
+        <label for="minApp">Titulo</label>
+        <input type="text" name="minApp" class="form-control" id="minApp" placeholder="Enter a text">
+     </div>
+     
+  </div>
+  <div class="form-group col-md-12">
+  <label for="min">Contenido</label>
+  <textarea id="summernote{{activity.id_leccionPaginas}}" class="form-control" name="summernote">{{ activity.contenido}}</textarea>
+  <div class="modal-footer">
+     <a onclick="editar('{{activity.id_leccionPaginas}}')" id="save{{activity.id_leccionPaginas}}" class="btn btn-radius btn-azul">Save<i class="fas fa-save ml-2"></i></a>
+  </div>
+</form>
+</div>
+</ul>   
+</li>   
+</ul>
+{% endfor %}

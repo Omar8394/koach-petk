@@ -72,3 +72,12 @@ class capacitacion_Recursos(models.Model):
       id_recurso=models.SmallAutoField(primary_key=True)
       fk_tipoRecurso=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name="tipo_recurso")
       path_rutas=models.TextField(null=True)
+class capacitacion_Tag(models.Model):
+      id_tag = models.SmallAutoField(primary_key=True)
+      desc_tag = models.TextField(null=True)
+class capacitacion_TagRecurso(models.Model):
+      id_tag_recurso = models.AutoField(primary_key=True)
+      fk_tag = models.ForeignKey(capacitacion_Tag,on_delete=models.CASCADE,  default=None, null=True)
+      fk_recurso = models.ForeignKey(capacitacion_Recursos,on_delete=models.CASCADE,  default=None, null=True)
+
+  

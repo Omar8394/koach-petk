@@ -1,0 +1,32 @@
+
+{% if title %} 
+<h3 class="display-4">Este componente no posee actividades</h3>
+{% endif %}
+{% for activity in actividad %}
+<li class="card-list-item ">
+   <div class="card-list-item-inner 
+   {% if activity.valor_elemento == 'Actividad_leccion'%} deg-warning{% endif %}
+   ">
+   <div class="card-list-item-icon">
+   {% if activity.valor_elemento == 'Actividad_leccion'%}
+      <i class="fas fa-file-contract"></i>
+   {% endif %}   
+   </div>
+      <div class="card-list-item-title">{{activity.titulo}}</div>
+      <div class="card-list-item-actions">
+         <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Editar"
+         onclick="EditActivity('{{activity.id_componenteActividades}}','{{padre}}')">
+         <i class="fas fa-edit"></i>
+         </button> 
+         <button type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip" data-placement="top" title="Eliminar"
+         onclick="openDeleteactividades('{{activity.id_componenteActividades}}','{{padre}}')">
+         <i class="fas fa-trash"></i>
+         </button> 
+         <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Agregar paginas"
+         onclick="opengopages('{{activity.id_componenteActividades}}')">
+         <i class="fas fa-plus"></i>
+         </button> 
+      </div>
+   </div>
+</li>
+{% endfor %}
