@@ -10,6 +10,10 @@
           onclick="todos('{{activity.id_leccionPaginas}}')">
           <i class="fas fa-edit"></i>
           </button>
+          <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="agregar pagina"
+          onclick="openDeletePage('{{activity.id_leccionPaginas}}')">
+          <i class="fas fa-trash"></i>
+          </button>
           </div>
          </div>
        </div>
@@ -22,10 +26,19 @@
   <div class="form-row">
      <div class="form-group col-md-12">
         <label for="minApp">Titulo</label>
-        <input type="text" name="minApp" class="form-control" id="minApp" placeholder="Enter a text">
+        <input type="text" name="minApp" class="form-control" id="minApp" placeholder="Enter a text" value="{{activity.titulo}}" >
      </div>
      
   </div>
+  <div class="form-group col-md-12">
+  <label for="estatusLesson" class="col-form-label">Status</label>
+  <select class="form-control" id="Status" name="Status" required>
+     <option value="null" >Select an option</option>
+     {% for item in status %}
+     <option value="{{item.pk}}" {% if activity.fk_statusPagina_id == item.pk %} selected  {% endif %}>{{item.desc_elemento}}</option>
+     {% endfor %}
+  </select>
+</div>
   <div class="form-group col-md-12">
   <label for="min">Contenido</label>
   <textarea id="summernote{{activity.id_leccionPaginas}}" class="form-control" name="summernote">{{ activity.contenido}}</textarea>

@@ -37,9 +37,14 @@
 					<div class="row">
 						<div class="card col-12" style="background-color: #1a2035 !important; color: white;">
                             <h3 >Actividad: {{actividad}}</h3>
-                            <div class="section-header">
-								<h3 >Nueva pagina</h3>  
-                            </div>
+                            
+                           <div class="section-header">
+								   
+                           <div class="form-group col-md-12 d-flex flex-row  justify-content-end">                 
+                              <a href="{% url 'previewlessons' %}?id={{id}}" class="btn-radius btn-azul " style="display:block;text-align:center;text-decoration:none;color:whitesmoke;"><span>Vista previa</span></a>
+                           </div>
+                           </div>
+                           
                             <ul  class="about" >
                                 <li class="card-list-item">
                                    <div class="card-list-item-inner">
@@ -118,6 +123,27 @@
    let recursosArray = []
    let selectedResources = []
    let bankPage = 1
+   const openDeletePage = async (id) =>{
+      const elimino = await alerta(3)
+      if(elimino){
+         fetch("{% url 'savepages'%}", {
+            ...fetchObject,
+            body: JSON.stringify({
+               method: "Delete",
+               id
+            })
+         })
+         .then(async (res) => {
+            const text = JSON.parse(await res.text())
+            if (text.message == "error")  makeMessage(4, "{% translate 'Notificacion' %}", "{% translate 'un error ha occurrido y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+   
+            else makeMessage(1, "{% translate 'Notificacion' %}", "{% translate 'Archivo eliminado satisfactoriamente' %}", 'fas fa-trash-alt')
+         })
+         .then(()=>{
+            renderContent({{id}})
+         })
+      }
+   }
    function todos(id){
       showContent(id) 
       setupSummernote(id)
@@ -130,12 +156,13 @@
    for (var [key, value] of formData.entries()) {
       data[key] = value
    } 
+   data["recursos"] = comprobarRecursosArray() 
    updateModel("{% url 'savepages'%}", "Edit", data,id)
    .then(async (res) => {
       const text = JSON.parse(await res.text())
       if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
       else makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
-        
+      renderContent({{id}})  
    })
   }
    const showContent = (id) => {

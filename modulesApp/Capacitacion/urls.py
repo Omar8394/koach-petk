@@ -33,6 +33,7 @@ urlpatterns = [
     path('modalResourcesBank/', views.getModalResourcesBank, name="modalResourcesBank"),
     path('contenidoRecursos/', views.getContentRecursos, name="contenidoRecursos"),
     path('renderpaginas/', views.renderpaginas, name="renderpaginas"),
+    path('previewlessons/', views.previewlessons, name="previewlessons"),
     # Scales
     
 

@@ -630,13 +630,32 @@ def savepages(request):
                   paginas.id_recursos=pk
                   paginas.save()
                   return JsonResponse({"message":"ok"}, status=200)
+               elif data["method"] == "Delete":
+                    paginas=capacitacion_LeccionPaginas.objects.get(pk=data['id'])
+                    paginas.delete()
+                    return JsonResponse({"message":"delete"}, status=200)
                elif data["method"] == "Edit":
+                    print(data)            
+                    for item in data['data']['recursos']: 
+                        if item != "" :
+                           tipo=item['type'] 
+                           path=item['path']
+                        else:
+                         
+                           path="" 
                     print(data)
+                    if path != "":
+                      pk= capacitacion_Recursos.objects.get(path_rutas=path).pk
+                    else:
+                      pk=None
                     paginas=capacitacion_LeccionPaginas.objects.get(pk=data['id'])
                     paginas.titulo=data['data']['minApp']
                     paginas.contenido = None
                     if data["data"]["summernote"] != "<p><br></p>":
                        paginas.contenido = data["data"]["summernote"]
+                    paginas.fk_tipoContenido= ConfTablasConfiguracion.obtenerHijos("Tipo_Contenido").get(valor_elemento=tipo)
+                    paginas.id_recursos=pk
+                    paginas.fk_statusPagina_id=data['data']['Status']
                     paginas.save()
                     return JsonResponse({"message":"ok"}, status=200)
           except Exception as e:
@@ -778,14 +797,16 @@ def renderpaginas(request):
          try:
             if request.body:
                 context={}
+                modelo = {}
                 title=False
                 data = json.load(request)
                 print(data)
                 if data["query"] == "":
                     actividad=capacitacion_LeccionPaginas.objects.filter(fk_actividadLeccion_id=data['id'])
+                    status=ConfTablasConfiguracion.obtenerHijos("Status_global")
                     print(actividad)
                     if actividad.exists():
-                       context = {"actividad":actividad,'padre':data['id']}
+                       context = {"status":status,"actividad":actividad,'padre':data['id']}
                        html_template = (loader.get_template('renderpaginas.html'))
                        return HttpResponse(html_template.render(context, request))
                     else:
@@ -796,4 +817,9 @@ def renderpaginas(request):
          except Exception as e:
                print(e)
                return JsonResponse({"message":"error"}, status=500)
-
+def previewlessons(request):
+    id=request.GET.get('id')  
+    paginas=capacitacion_LeccionPaginas.objects.filter(fk_actividadLeccion_id=id)
+    context = {'paginas':paginas}
+    html_template = (loader.get_template('previewpages.html'))
+    return HttpResponse(html_template.render(context, request))
