@@ -625,7 +625,7 @@ def savepages(request):
                      paginas.contenido = data["data"]["summernote"]
                   paginas.fk_actividadLeccion_id=data['id']
                   paginas.fk_tipoContenido= ConfTablasConfiguracion.obtenerHijos("Tipo_Contenido").get(valor_elemento=tipo)
-                  paginas.orden_presentacion=len(capacitacion_LeccionPaginas.objects.filter(fk_actividadLeccion_id=data['id']))
+                  paginas.orden_presentacion=len(capacitacion_LeccionPaginas.objects.filter(fk_actividadLeccion_id=data['id'])) + 1
                   paginas.fk_statusPagina=ConfTablasConfiguracion.obtenerHijos("Status_global").get(valor_elemento="Status_activo")
                   paginas.id_recursos=pk
                   paginas.save()
@@ -634,6 +634,17 @@ def savepages(request):
                     paginas=capacitacion_LeccionPaginas.objects.get(pk=data['id'])
                     paginas.delete()
                     return JsonResponse({"message":"delete"}, status=200)
+               elif data["method"] == "sort":
+                    print(data)
+                    paginas=capacitacion_LeccionPaginas.objects.filter(fk_actividadLeccion_id=data['id'])
+                    i = 1
+                    for d in data['data']:
+                        if d != None:
+                           pagina = paginas.get(id_leccionPaginas=d)
+                           pagina.orden_presentacion = i
+                           i = i + 1
+                           pagina.save()
+                    return JsonResponse({"message":"ok"}, status=200)
                elif data["method"] == "Edit":
                     print(data)            
                     for item in data['data']['recursos']: 
@@ -802,7 +813,7 @@ def renderpaginas(request):
                 data = json.load(request)
                 print(data)
                 if data["query"] == "":
-                    actividad=capacitacion_LeccionPaginas.objects.filter(fk_actividadLeccion_id=data['id'])
+                    actividad=capacitacion_LeccionPaginas.objects.filter(fk_actividadLeccion_id=data['id']).order_by('orden_presentacion')
                     status=ConfTablasConfiguracion.obtenerHijos("Status_global")
                     print(actividad)
                     if actividad.exists():
@@ -819,7 +830,7 @@ def renderpaginas(request):
                return JsonResponse({"message":"error"}, status=500)
 def previewlessons(request):
     id=request.GET.get('id')  
-    paginas=capacitacion_LeccionPaginas.objects.filter(fk_actividadLeccion_id=id)
+    paginas=capacitacion_LeccionPaginas.objects.filter(fk_actividadLeccion_id=id).order_by('orden_presentacion')
     context = {'paginas':paginas}
     html_template = (loader.get_template('previewpages.html'))
     return HttpResponse(html_template.render(context, request))

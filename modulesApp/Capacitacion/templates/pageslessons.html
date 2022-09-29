@@ -84,7 +84,7 @@
                         </ul>
                         <div class="card-body m-0 p-0" >
                         <ul id="resultado">
-                              
+
                         </ul>
                      </div>
 					    </div>
@@ -190,7 +190,7 @@
          else makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
          let contenidoto = document.getElementById(`childsTopic0`)
          contenidoto.classList.add("card-list-item-close") 
-         $("#summernote").summernote("code", "");
+         $("#summernote0").summernote("code", "");
          let test =document.getElementById("minApp")
          test.value=""
          renderContent({{id}})  
@@ -729,6 +729,68 @@ renderContent({{id}})
             id
          })
       })
-   }    
+   }  
+   //var items = document.querySelector('.resultado');
+   //Sortable.create(items, {
+       //animation: 150,
+       //chosenClass: "seleccionado",
+       //ghostClass: "fantasma",
+       //dragClass: "drag",
+       //onEnd: () => {
+           //console.log('se insertó un elemento');
+       //},
+      
+  // }); 
+   new Sortable(document.querySelector("#resultado"), {
+      handle: '.handle',
+      animation: 150,
+      chosenClass: "seleccionado",
+      ghostClass: "fantasma",
+      dragClass: "drag",
+      onEnd: function (evt) {
+         let arreglo = []
+         evt.to.children.forEach(element => arreglo.push(element.dataset.move));
+         move({{id}}, arreglo)
+      },
+   });
+   const move = (id, data) => {
+
+      setLoading()
+      fetch("{% url 'savepages'%}", {
+         ...fetchObject,
+         body: JSON.stringify({
+            id,
+            method:"sort",
+            data
+         })
+      })
+      
+      .then(async (res) => {
+         const text = JSON.parse(await res.text())
+         if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+         else makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+         renderContent({{id}}) 
+         stopLoading()
+      })
+     
+
+   } 
+   {% comment %} function clonar(id){
+      var c = document.getElementById(`avout${id}`);
+      var clon = c.cloneNode(true);
+      destino=document.getElementById("resultado");
+      destino.appendChild(clon);
+      if (destino.hasChildNodes()) {
+
+         var children = destino.childNodes;
+         for (var i = 0; i < children.length; i++) {
+            console.log(children[i])
+            
+            // do something with each child as children[i]
+            // NOTE: List is live, adding or removing children will change the list
+          }
+        
+      }
+    } {% endcomment %}
 </script>
 {% endblock javascripts %}

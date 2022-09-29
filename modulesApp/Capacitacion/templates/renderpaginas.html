@@ -1,11 +1,19 @@
 
 {% for activity in actividad %}
 <br>
-    <li class="card-list-item">
+    <li class="card-list-item" data-move="{{activity.id_leccionPaginas}}" id="avout{{activity.id_leccionPaginas}}">
        <div class="card-list-item-inner">
-          <div class="card-list-item-title">{{activity.titulo}}</div>
+          <div class="card-list-item-title">{{activity.orden_presentacion}} {{activity.titulo}}</div>
           <div class="card-list-item-actions">
           <div class="btn-group" role="group">
+          <button type="button" class="btn btn-icon btn-sm btn-success ml-1 handle" data-toggle="tooltip"
+          data-placement="top" title="Mover">
+          <i class="fas fa-arrows-alt"></i>
+          </button>  
+          <button type="button" onclick="clonar({{activity.id_leccionPaginas}})" class="btn btn-icon btn-sm btn-success ml-1 handle" data-toggle="tooltip"
+          data-placement="top" title="duplicar paginas">
+          <i class="fas fa-copy"></i>
+          </button> 
           <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="agregar pagina"
           onclick="todos('{{activity.id_leccionPaginas}}')">
           <i class="fas fa-edit"></i>
