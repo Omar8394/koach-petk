@@ -629,6 +629,7 @@ renderContent({{id}})
             ],
             buttons: {
                resource: HelloButton
+             
             },
             callbacks: {
                onPaste: function (e) {
@@ -775,22 +776,26 @@ renderContent({{id}})
      
 
    } 
-   {% comment %} function clonar(id){
+    function clonar(id){
       var c = document.getElementById(`avout${id}`);
       var clon = c.cloneNode(true);
       destino=document.getElementById("resultado");
       destino.appendChild(clon);
-      if (destino.hasChildNodes()) {
-
-         var children = destino.childNodes;
-         for (var i = 0; i < children.length; i++) {
-            console.log(children[i])
-            
-            // do something with each child as children[i]
-            // NOTE: List is live, adding or removing children will change the list
-          }
-        
-      }
-    } {% endcomment %}
+      const formActividad = document.getElementById(`formActividad${id}`)
+  
+      const formData = new FormData(formActividad);
+      const data = {}
+      for (var [key, value] of formData.entries()) {
+         data[key] = value
+      } 
+      data["recursos"] = comprobarRecursosArray() 
+      updateModel("{% url 'savepages'%}", "Create", data,{{id}})
+      .then(async (res) => {
+         const text = JSON.parse(await res.text())
+         if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+         else makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro copiado' %}", "fa fa-check")
+         renderContent({{id}})  
+      })
+    } 
 </script>
 {% endblock javascripts %}

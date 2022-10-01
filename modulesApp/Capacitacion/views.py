@@ -633,6 +633,7 @@ def savepages(request):
                elif data["method"] == "Delete":
                     paginas=capacitacion_LeccionPaginas.objects.get(pk=data['id'])
                     paginas.delete()
+                    
                     return JsonResponse({"message":"delete"}, status=200)
                elif data["method"] == "sort":
                     print(data)
