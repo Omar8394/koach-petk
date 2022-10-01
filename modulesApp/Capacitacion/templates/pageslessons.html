@@ -123,13 +123,14 @@
    let recursosArray = []
    let selectedResources = []
    let bankPage = 1
-   const openDeletePage = async (id) =>{
+   const openDeletePage = async (id,padre) =>{
       const elimino = await alerta(3)
       if(elimino){
          fetch("{% url 'savepages'%}", {
             ...fetchObject,
             body: JSON.stringify({
                method: "Delete",
+               padre,
                id
             })
          })
