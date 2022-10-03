@@ -342,6 +342,40 @@
 	 const opengopages = (id) =>{
 		window.location.href = `{% url 'pageslessons' %}?id=${id}`
 					 
-	 }	 
+	 }
+	 new Sortable(document.querySelector("#resultado"), {
+		handle: '.handle',
+		animation: 150,
+		chosenClass: "seleccionado",
+		ghostClass: "fantasma",
+		dragClass: "drag",
+		onEnd: function (evt) {
+		   let arreglo = []
+		   evt.to.children.forEach(element => arreglo.push(element.dataset.move));
+		   move({{id}}, arreglo)
+		},
+	 });
+	 const move = (id, data) => {
+
+		setLoading()
+		fetch("{% url 'modalNewLesson'%}", {
+		   ...fetchObject,
+		   body: JSON.stringify({
+			  id,
+			  method:"sort",
+			  data
+		   })
+		})
+		
+		.then(async (res) => {
+		   const text = JSON.parse(await res.text())
+		   if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+		   else makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro ordenado' %}", "fa fa-check")
+		   renderContent({{id}}) 
+		   stopLoading()
+		})
+	   
+  
+	 } 
 </script>
 {% endblock javascripts %}

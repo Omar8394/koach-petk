@@ -474,7 +474,7 @@ def renderactividades(request):
                 data = json.load(request)
                 print(data)
                 if data["query"] == "":
-                    actividad=capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion_id=data['id'])
+                    actividad=capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion_id=data['id']).order_by('orden_presentacion')
                     print(actividad)
                     if actividad.exists():
                        context = {"actividad":actividad,'padre':data['id']}
@@ -527,6 +527,17 @@ def getModalNewLesson(request):
                         context = {"status":status,"tipo":tipo}
                         html_template = (loader.get_template('modalAddLesson.html'))
                         return HttpResponse(html_template.render(context, request))
+                    elif data["method"] == "sort":
+                        print(data)
+                        paginas=capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion_id=data['id'])
+                        i = 1
+                        for d in data['data']:
+                            if d != None:
+                               pagina = paginas.get(id_componenteActividades=d)
+                               pagina.orden_presentacion = i
+                               i = i + 1
+                               pagina.save()
+                        return JsonResponse({"message":"ok"}, status=200)
                     elif data["method"] == "Delete":
                         actividad=capacitacion_ComponentesActividades.objects.get(pk=data["id"])
                         leccion=capacitacion_Actividad_leccion.objects.get(fk_componenteActividad_id=data["id"])
@@ -567,7 +578,7 @@ def getModalNewLesson(request):
                         actividad.peso_creditos=data['data']['creditos']
                         actividad.valor_elemento='Actividad_leccion'
                         actividad.url=data['data']['urlActivity'] 
-                        actividad.orden_presentacion=len(capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion_id=data['id']))
+                        actividad.orden_presentacion=len(capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion_id=data['id'])) + 1
                         actividad.fk_componenteformacion_id=data['id']
                         actividad.fk_tipocomponente_id=data['data']['Componente']
                         actividad.fk_statuscomponente_id=data['data']['estatusLesson']
@@ -576,7 +587,7 @@ def getModalNewLesson(request):
                         leccion.descripcion=data['data']['resumenActivity']
                         leccion.fecha_disponibilidad=data['data']['disponibleLesson']
                         leccion.peso_creditos=data['data']['creditos']
-                        leccion.orden_presentacion=len(capacitacion_Actividad_leccion.objects.all())
+                        leccion.orden_presentacion=len(capacitacion_Actividad_leccion.objects.all()) + 1
                         leccion.url=data['data']['urlActivity']
                         leccion.valor_elemento="Leccion"
                         leccion.fk_statusleccion_id=data['data']['estatusLesson']

@@ -3,7 +3,7 @@
 <h3 class="display-4">Este componente no posee actividades</h3>
 {% endif %}
 {% for activity in actividad %}
-<li class="card-list-item ">
+<li class="card-list-item " data-move="{{activity.id_componenteActividades}}">
    <div class="card-list-item-inner 
    {% if activity.valor_elemento == 'Actividad_leccion'%} deg-warning{% endif %}
    ">
@@ -14,6 +14,10 @@
    </div>
       <div class="card-list-item-title">{{activity.titulo}}</div>
       <div class="card-list-item-actions">
+         <button type="button" class="btn btn-icon btn-sm btn-success ml-1 handle" data-toggle="tooltip"
+          data-placement="top" title="Mover">
+          <i class="fas fa-arrows-alt"></i>
+          </button>
          <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Editar"
          onclick="EditActivity('{{activity.id_componenteActividades}}','{{padre}}')">
          <i class="fas fa-edit"></i>

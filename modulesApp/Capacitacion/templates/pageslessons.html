@@ -732,18 +732,8 @@ renderContent({{id}})
          })
       })
    }  
-   //var items = document.querySelector('.resultado');
-   //Sortable.create(items, {
-       //animation: 150,
-       //chosenClass: "seleccionado",
-       //ghostClass: "fantasma",
-       //dragClass: "drag",
-       //onEnd: () => {
-           //console.log('se insertó un elemento');
-       //},
-      
-  // }); 
-   new Sortable(document.querySelector("#resultado"), {
+    
+    new Sortable(document.querySelector("#resultado"), {
       handle: '.handle',
       animation: 150,
       chosenClass: "seleccionado",
@@ -754,7 +744,7 @@ renderContent({{id}})
          evt.to.children.forEach(element => arreglo.push(element.dataset.move));
          move({{id}}, arreglo)
       },
-   });
+   }); 
    const move = (id, data) => {
 
       setLoading()
