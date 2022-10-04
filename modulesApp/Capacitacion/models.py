@@ -79,5 +79,7 @@ class capacitacion_TagRecurso(models.Model):
       id_tag_recurso = models.AutoField(primary_key=True)
       fk_tag = models.ForeignKey(capacitacion_Tag,on_delete=models.CASCADE,  default=None, null=True)
       fk_recurso = models.ForeignKey(capacitacion_Recursos,on_delete=models.CASCADE,  default=None, null=True)
-
-  
+class capacitacion_componentesPrerequisitos(models.Model):
+      id_componentePrerequisitos= models.AutoField(primary_key=True)
+      fk_componenteFormacion=models.ForeignKey(Capacitacion_componentesFormacion,on_delete=models.CASCADE,  default=None, null=True)
+      fk_prerequisito=models.ForeignKey(Capacitacion_componentesFormacion,on_delete=models.CASCADE,  default=None, null=True, related_name="requisito")
