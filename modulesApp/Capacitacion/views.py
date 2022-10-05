@@ -49,7 +49,8 @@ def getcontentprogrmas(request):
                 title=False
                 lista = []
                 if data["query"] == "":
-                   categorias=ConfTablasConfiguracion.obtenerHijos("Categoria") 
+                   padres = ConfTablasConfiguracion.objects.filter(valor_elemento='Categoria')
+                   categorias=ConfTablasConfiguracion.objects.filter(fk_tabla_padre=padres[0],mostrar_en_combos=1) 
                    print(categorias)    
                    context = {'categorias':categorias}             
                    html_template = loader.get_template( 'Contenido_programas.html' )
@@ -348,9 +349,10 @@ def modalAddcursos(request):
                     return HttpResponse(html_template.render(context, request))
                 elif data["method"] == "Delete":
                     rel=capacitacion_componentesXestructura.objects.get(fk_estructuraprogramas_id=data["padre"],fk_componetesformacion=data["id"])
-                    rel.delete()
-                    cursos = Capacitacion_componentesFormacion.objects.get(pk=data["id"])   
-                    cursos.delete()
+                    rel.fk_estructuraprogramas=Estructuraprograma.objects.get(fk_categoria__valor_elemento="Categoria_papelera")
+                    rel.save()
+                    # cursos = Capacitacion_componentesFormacion.objects.get(pk=data["id"])   
+                    # cursos.delete()
                     return JsonResponse({"message":"Deleted"}) 
                 elif data["method"] == "Update":
                    cursos = Capacitacion_componentesFormacion.objects.get(pk=data["id"])
@@ -540,9 +542,11 @@ def getModalNewLesson(request):
                         return JsonResponse({"message":"ok"}, status=200)
                     elif data["method"] == "Delete":
                         actividad=capacitacion_ComponentesActividades.objects.get(pk=data["id"])
+                        actividad.fk_componenteformacion= Capacitacion_componentesFormacion.objects.get(codigo_componente="papelera")
+                        actividad.save()
                         leccion=capacitacion_Actividad_leccion.objects.get(fk_componenteActividad_id=data["id"])
-                        actividad.delete()
-                        leccion.delete()
+                        leccion.fk_componenteActividad=capacitacion_ComponentesActividades.objects.get(valor_elemento="papelera")
+                        leccion.save()
                         return JsonResponse({"message":"Deleted"}) 
                     elif data["method"] == "Update":
                         print(data)
@@ -643,7 +647,8 @@ def savepages(request):
                   return JsonResponse({"message":"ok"}, status=200)
                elif data["method"] == "Delete":
                     paginas=capacitacion_LeccionPaginas.objects.get(pk=data['id'])
-                    paginas.delete()
+                    paginas.fk_actividadLeccion=capacitacion_Actividad_leccion.objects.get(valor_elemento="papelera")
+                    paginas.save()
                     pag=capacitacion_LeccionPaginas.objects.filter(fk_actividadLeccion_id=data['padre'], orden_presentacion__gte=paginas.orden_presentacion)
                     for pg in pag:
     

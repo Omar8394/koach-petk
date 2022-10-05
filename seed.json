@@ -1320,6 +1320,21 @@
                     "tipo_dato":0
 
                   }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk": 89,
+                  "fields": {
+                    "desc_elemento": "Papelera",
+                    "fk_tabla_padre_id": 49,
+                    "tipo_elemento": 1,
+                    "permite_cambios":1,
+                    "valor_elemento":"Categoria_papelera",
+                    "mostrar_en_combos":1,
+                    "maneja_lista":0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
                 }
 
 ]
