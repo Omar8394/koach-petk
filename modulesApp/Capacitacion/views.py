@@ -2,8 +2,9 @@ from unicodedata import category, decimal
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
+from django.template.loader import render_to_string
 from ..App.models import ConfTablasConfiguracion
-from ..Capacitacion.models import Estructuraprograma, capacitacion_Actividad_leccion, capacitacion_ComponentesActividades, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,Capacitacion_componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso
+from ..Capacitacion.models import Estructuraprograma, capacitacion_Actividad_leccion, capacitacion_ComponentesActividades, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,Capacitacion_componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos
 import time, json
 from decimal import Decimal
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -856,3 +857,131 @@ def previewlessons(request):
     context = {'paginas':paginas}
     html_template = (loader.get_template('previewpages.html'))
     return HttpResponse(html_template.render(context, request))
+def preRequirements(request):
+    result=Estructuraprograma.objects.filter(valor_elemento="Program") 
+    context = {'result':result}
+    html_template = (loader.get_template('prerequisitos.html'))
+    return HttpResponse(html_template.render(context, request))
+def comboboxpro(request):
+    
+    valor=request.GET.get('valor')
+    tipo=request.GET.get('tipo')
+    hay=False
+    print(valor)
+    print(tipo)
+    if tipo == "componente":
+        hay=1
+    elif tipo == "atv":
+        hay=2    
+    data = {'opsion2': metodo_llenar_combo(valor,tipo),'hay':hay}
+    print(data)
+    html_template = (loader.get_template('comboboxpro.html'))
+    return HttpResponse(html_template.render(data, request))
+def metodo_llenar_combo(valor,tipo):
+    valor1=valor
+    tipo2=tipo
+    if tipo2 == "pro":
+       result1=Estructuraprograma.objects.filter(fk_estructura_padre_id=valor1,valor_elemento="Process")
+       print(result1)
+       lista=[]
+
+       for file in result1:
+        
+           lista.append(file)
+       print(lista)    
+       return lista
+    elif tipo2 =="modulos":
+       result1=Estructuraprograma.objects.filter(fk_estructura_padre_id=valor1,valor_elemento="Module")
+       print(result1)
+       lista=[]
+
+       for file in result1:
+        
+           lista.append(file)
+       print(lista)    
+       return lista
+    elif tipo2 == "componente":
+       result1=capacitacion_componentesXestructura.objects.filter(fk_estructuraprogramas_id=valor1)
+       print(result1)
+       lista=[]
+
+       for file in result1:
+        
+           lista.append(file)
+       print(lista)    
+       return lista
+    elif tipo2 == "atv":
+       result1=capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion_id=valor1)
+       print(result1)
+       lista=[]
+
+       for file in result1:
+        
+           lista.append(file)
+       print(lista)    
+       return lista
+def renderListasPublic(request):
+    
+    id = request.POST.get('id', None)
+    tipo = request.POST.get('tipo', None)
+    tipoHijo = request.POST.get('tipoHijo', None)
+    tipoPadre = request.POST.get('tipoPadre', None)
+    req = None
+    #print(id)
+    #print(tipo)
+    #print(tipoHijo)
+    #print(tipoPadre)
+    
+        
+    if (tipo == 'Estructuraprograma'):
+
+         if tipoPadre: 
+
+              structuras=capacitacion_ComponentesActividades.objects.all()
+              structuras=structuras.filter(fk_componenteformacion_id=tipoPadre)
+              structuras=structuras.exclude(id_componenteActividades=tipoHijo)
+              #print(structuras)
+              
+              actividad = capacitacion_ComponentesActividades.objects.get(pk=tipoHijo)
+              #print(actividad)
+              requisitos=capacitacion_componentesPrerequisitos.objects.filter(fk_componenteActividades=actividad)
+              prerequisitos=capacitacion_componentesPrerequisitos.objects.filter(fk_prerequisito=actividad)
+              for x in requisitos:
+                  structuras=structuras.exclude(id_componenteActividades=x.fk_componenteActividades.id_componenteActividades)
+                  print(structuras)
+              for x in prerequisitos:
+                  structuras=structuras.exclude(id_componenteActividades=x.fk_prerequisito.id_componenteActividades)
+                  print(structuras)
+              if(structuras.first()): print(structuras.first().valor_elemento)
+              html = render_to_string('listaspre.html', {'lista': structuras, 'tipo': 'Estructuraprograma'})
+              req = render_to_string('listaspre.html', {'lista': requisitos, 'tipo': 'cursos_prerequisitos'})
+              
+   
+    response = {
+
+         'competence': html,
+         'requirements': req if req else None
+
+    }
+
+    return JsonResponse(response)
+def requirementos(request):  
+
+
+    if request.method == "POST":  
+        
+        tipo = request.POST.get('tipo')
+        requisito = capacitacion_ComponentesActividades.objects.get(id_componenteActividades=request.POST.get('requisito'))
+        actividad = capacitacion_ComponentesActividades.objects.get(id_componenteActividades=request.POST.get('actividad'))
+        #actividad=request.POST.get('actividad')
+        if tipo == 'agregar':
+            matricula=capacitacion_componentesPrerequisitos.objects.create(fk_componenteActividades=actividad,fk_prerequisito=requisito)
+            matricula.save()
+
+        else:
+            matricula = capacitacion_componentesPrerequisitos.objects.get(fk_componenteActividades=actividad,fk_prerequisito=requisito)
+            matricula.delete()  
+
+        return JsonResponse({'mensaje': 'succes'})
+
+    return JsonResponse({})   

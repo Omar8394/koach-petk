@@ -1,0 +1,240 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="content">
+		<div class="page-inner animated fadeInDown">
+			<div class="page-header"></div>
+			<div class="page-category d-flex justify-content-center">
+           	 	<div class="card" style="width: 50rem;">
+					<div class="card-header" style="background-color: #1a2035 !important; color: white;">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <h2 class="card-text mt-2">
+                                   Pre Requisitos
+                                </h2>
+                            </div>
+                        </div>
+					</div>
+                    
+                    <div class="card-body">
+                        
+                        <div class="form-group" id="groupSelect">
+                        <label for="estatusLesson">Programas:</label>
+                        <div class="input-group mb-3">
+                                    
+                            <select class="form-control" id="estatusLesson" name="estatusLesson" onchange="cambiar_comb()">
+                            
+                                <option value="">Seleccione una opcion</option>
+                                {% for item in result %}
+                                
+                                <option value= {{item.id_estructura}} >{{item.descripcion}}</option>
+                                
+                                {% endfor%}
+                             </select>
+                        </div>
+                        <label for="estatusProcess">Procesos:</label>
+                        <div class="input-group mb-3">
+                                    
+                            <select class="form-control" id="estatusProcess" name="estatusProcess" onchange="cambiar_comb2()">
+
+                            </select>
+
+                        </div>
+                        <label for="estatusUnit">Modulos:</label>
+                        <div class="input-group mb-3">
+                                    
+                            <select class="form-control" id="estatusUnit" name="estatusUnit" onchange="cambiar_comb3()">></select>
+
+                        </div>
+                        <label for="estatusCourse">Componente:</label>
+                        <div class="input-group mb-3">
+                                    
+                            <select class="form-control" id="estatusCourse" name="estatusCourse" onchange="cambiar_comb4()"></select>
+
+                        </div>
+                        <label for="estatusTopic">Actividad:</label>
+                        <div class="input-group mb-3">
+                                    
+                            <select class="form-control" id="estatusTopic" name="estatusTopic" ></select>
+
+                        </div>
+                        
+                    </div>
+
+                    <div class="form-group" id="groupDate">
+
+                        <div class="row">
+                            <div class="card col-5">
+                                <div class="card-header" style="background-color: #1a2035 !important; color: white;" title="This is the list of available activities. You may choose some by selecting them in the box below and then double clicking them.">
+                                    <h2>Actividades</h2>
+                                </div>
+                                <div class="card-body m-0 p-0">
+                                    <select name="permissions_old" id="idRequirement" multiple="" class="form-control multiple" style="overflow-y: auto;">
+                                    </select>
+                                </div>
+                                <!-- <a title="Click to choose all permissions at once." href="#" id="id_permissions_add_all_link" class="selector-chooseall active">Choose all</a> -->
+                            </div>
+
+                            <div class="col-2 d-flex align-items-center justify-content-center">
+                                <i class="fas fa-exchange-alt"></i>
+                            </div>
+
+                            <div class="card col-5">
+                                
+                                <div class="card-header" style="background-color: #1a2035 !important; color: white;" title="This is the list of chosen activities. You may remove some by selecting them in the box below and then double clicking them.">
+                                    <h2>Requisito</h2>
+                                </div>
+                                <div class="card-body m-0 p-0">
+                                    <select id="idRequirementTo" multiple="" size="0" name="permissions" class="form-control multiple" style="overflow-y: auto;"></select>
+                                </div>
+                                <!-- <a title="Click to remove all chosen permissions at once." href="#" id="id_permissions_remove_all_link" class="selector-clearall">Remove all</a> -->
+                            </div>
+                        </div>
+
+                    </div>
+
+
+				</div>        
+      		</div>
+		</div>
+	</div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  planning/edit-->
+{% block javascripts %}
+ <script>
+    function cambiar_comb() {
+    
+        const varia= document.getElementById("estatusLesson").value;
+		
+        document.getElementById("estatusProcess").innerHTML=" ";
+        const url= `/capacitacion/comboboxpro/?valor=${varia}&tipo=pro`;
+        fetch(url)
+       
+        .then(async(result)=>{
+            resulta = await result.text()
+            document.getElementById("estatusProcess").innerHTML=resulta;    
+        });
+
+    } 
+    function cambiar_comb2() {
+    
+        const varia= document.getElementById("estatusProcess").value;
+		
+        document.getElementById("estatusUnit").innerHTML=" ";
+        const url= `/capacitacion/comboboxpro/?valor=${varia}&tipo=modulos`;
+        fetch(url)
+       
+        .then(async(result)=>{
+            resulta = await result.text()
+            document.getElementById("estatusUnit").innerHTML=resulta;    
+        });
+
+    } 
+    function cambiar_comb3() {
+    
+        const varia= document.getElementById("estatusUnit").value;
+		
+        document.getElementById("estatusCourse").innerHTML=" ";
+        const url= `/capacitacion/comboboxpro/?valor=${varia}&tipo=componente`;
+        fetch(url)
+       
+        .then(async(result)=>{
+            resulta = await result.text()
+            document.getElementById("estatusCourse").innerHTML=resulta;    
+        });
+
+    }
+    function cambiar_comb4() {
+    
+        const varia= document.getElementById("estatusCourse").value;
+		
+        document.getElementById("estatusTopic").innerHTML=" ";
+        const url= `/capacitacion/comboboxpro/?valor=${varia}&tipo=atv`;
+        fetch(url)
+       
+        .then(async(result)=>{
+            resulta = await result.text()
+            document.getElementById("estatusTopic").innerHTML=resulta;    
+        });
+
+    }
+    $(document).on('change', "#estatusTopic ", function(e){
+        console.log( $(this).val())
+        let idSelect = $(this).attr('id')
+        //alert(idSelect)
+        if($(this).val() && idSelect==='estatusTopic'){
+            setLoading()
+            $.ajax({
+                type: "POST",
+                data: {
+                    'tipo': "Estructuraprograma",
+                    'tipoHijo': $(this).val(),
+                    'tipoPadre': $('#estatusCourse').val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+
+                },
+                url: "{% url 'renderListasPublic' %}",
+                success: function (response) {
+                    //alert(response.requirements)
+                    document.getElementById('idRequirement').innerHTML = response.competence
+                    document.getElementById('idRequirementTo').innerHTML = response.requirements
+                    stopLoading()
+
+                },
+                error: function (response) {
+                    console.log(response.responseJSON.errors)
+                    stopLoading()
+                }
+            });  
+
+        }else{
+            document.getElementById('idRequirement').innerHTML = null
+            document.getElementById('idRequirementTo').innerHTML = null
+
+        }
+
+    })
+     //metodo para agregar o eliminar prerequisitos
+     $(document).on('dblclick', ".multiple option", function(e){
+
+        var parent = $(this).parent().attr('id')==='idRequirement'?'idRequirementTo':'idRequirement'
+        var child = $(this)
+        setLoading()
+        $.ajax({
+            type: "POST",
+            data: {
+                'tipo': parent === 'idRequirementTo'?'agregar':'borrar',
+                'requisito': child.val(),
+                'actividad': $('#estatusTopic').val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+
+            },
+            url: "{% url 'requirementos' %}",
+            success: function (response) {
+
+                var element = child.detach();
+                $('#'+parent).append(element);
+                stopLoading()
+
+            },
+            error: function (response) {
+                console.log(response.responseJSON.errors)
+                stopLoading()
+            }
+        });
+
+    })
+</script> 
+
+{% endblock javascripts %}

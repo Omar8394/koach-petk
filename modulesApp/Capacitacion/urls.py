@@ -34,6 +34,10 @@ urlpatterns = [
     path('contenidoRecursos/', views.getContentRecursos, name="contenidoRecursos"),
     path('renderpaginas/', views.renderpaginas, name="renderpaginas"),
     path('previewlessons/', views.previewlessons, name="previewlessons"),
+    path('preRequirements/', views.preRequirements, name="preRequirements"),
+    path('comboboxpro/', views.comboboxpro, name='comboboxpro'),
+    path('renderListasPublic', views.renderListasPublic, name='renderListasPublic'),
+    path('requirementos/', views.requirementos, name="requirementos"), 
     # Scales
     
 

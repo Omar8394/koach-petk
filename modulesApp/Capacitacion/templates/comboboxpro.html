@@ -1,0 +1,27 @@
+
+
+{% if hay == 1%}
+<option value=null> Seleccione una Opcion </option>
+{% for items in opsion2 %}
+
+<option value={{items.fk_componetesformacion_id}}> {{ items.fk_componetesformacion}}</option>
+
+
+{% endfor %}
+{% elif hay == 2 %}
+<option value=null> Seleccione una Opcion </option>
+{% for items in opsion2 %}
+
+<option value={{items.id_componenteActividades}}> {{ items.titulo}}</option>
+
+
+{% endfor %}
+{% else %}
+<option value=null> Seleccione una Opcion </option>
+{% for items in opsion2 %}
+
+<option value={{items.id_estructura}}> {{ items.descripcion }}</option>
+
+
+{% endfor %}
+{% endif %}

@@ -1,0 +1,18 @@
+
+
+
+    
+    {% for p in lista %}  
+        
+        {% if tipo == 'Estructuraprograma' %}
+
+    <option value={{ p.id_componenteActividades }}>{{ p.titulo }}</option>
+
+        {% elif tipo == 'cursos_prerequisitos' %}
+
+    <option value={{ p.fk_prerequisito.id_componenteActividades }}>{{ p.fk_prerequisito.titulo }}</option>
+
+        {% endif %}
+
+    {% endfor %} 
+

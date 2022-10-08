@@ -1330,7 +1330,7 @@
                     "tipo_elemento": 1,
                     "permite_cambios":1,
                     "valor_elemento":"Categoria_papelera",
-                    "mostrar_en_combos":1,
+                    "mostrar_en_combos":0,
                     "maneja_lista":0,
                     "datos_adicional":"",
                     "tipo_dato":0
