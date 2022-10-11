@@ -1,5 +1,6 @@
 from django.db import models
-from ..App.models import ConfTablasConfiguracion
+from ..App.models import ConfTablasConfiguracion, AppPublico
+from ..Organizational_network.models import nodos_grupos
 # Create your models here.
 class Estructuraprograma(models.Model):
     id_estructura = models.SmallAutoField(primary_key=True)
@@ -91,3 +92,20 @@ class capacitacion_Actividad_tareas	(models.Model):
       fk_status=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name="fk_status_homework")	
       tiempo_entrega=models.IntegerField(blank=True, null=True)
       fk_tipoTiempoEntrega=models.ForeignKey(ConfTablasConfiguracion, on_delete=models.DO_NOTHING, default=None, null=True,related_name="fk_time")
+class capacitacion_Actividad_Sesiones(models.Model):
+      id_capacitacionActividadSesiones= models.AutoField(primary_key=True)
+      titulo=models.TextField(null=True)
+      Descripción = models.TextField(null=True)
+      MAYBECHOICE = ( ('0', 'Presencial'), ('1', 'Online'), ('2', 'Mixta'), )
+      modalidad = models.CharField(max_length=1, choices=MAYBECHOICE)
+      fk_status=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name="fk_status_sesiones")	
+class capacitacion_ActSesiones_programar(models.Model):
+      id_capacitacionActSesiones_programar= models.AutoField(primary_key=True)
+      id_capacitacionActividadSesiones=models.ForeignKey(capacitacion_Actividad_Sesiones, on_delete=models.DO_NOTHING, default=None, null=True)
+      director_ponente=models.ForeignKey(AppPublico, on_delete=models.DO_NOTHING, default=None, null=True)
+      fk_grupoNodo=models.ForeignKey(nodos_grupos, on_delete=models.DO_NOTHING, default=None, null=True)
+      status_sesion=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name="status_sesiones")
+      fecha_inicio=models.DateField(blank=True, null=True)
+      datos_sesion = models.TextField(null=True)
+      fecha_finalizacion=models.DateField(blank=True, null=True)	
+      
