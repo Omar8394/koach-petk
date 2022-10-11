@@ -83,3 +83,11 @@ class capacitacion_componentesPrerequisitos(models.Model):
       id_componentePrerequisitos= models.AutoField(primary_key=True)
       fk_componenteActividades=models.ForeignKey(capacitacion_ComponentesActividades,on_delete=models.CASCADE,  default=None, null=True)
       fk_prerequisito=models.ForeignKey(capacitacion_ComponentesActividades,on_delete=models.CASCADE,  default=None, null=True, related_name="requisito")
+class capacitacion_Actividad_tareas	(models.Model):
+      id_capacitacion_actividadTareas= models.AutoField(primary_key=True)
+      titulo=models.TextField(null=True)
+      Descripcion_tarea=models.TextField(null=True)
+      path_recurso=models.TextField(null=True)
+      fk_status=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name="fk_status_homework")	
+      tiempo_entrega=models.IntegerField(blank=True, null=True)
+      fk_tipoTiempoEntrega=models.ForeignKey(ConfTablasConfiguracion, on_delete=models.DO_NOTHING, default=None, null=True,related_name="fk_time")
