@@ -92,6 +92,7 @@ class capacitacion_Actividad_tareas	(models.Model):
       fk_status=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name="fk_status_homework")	
       tiempo_entrega=models.IntegerField(blank=True, null=True)
       fk_tipoTiempoEntrega=models.ForeignKey(ConfTablasConfiguracion, on_delete=models.DO_NOTHING, default=None, null=True,related_name="fk_time")
+      fk_componenteActividad=models.ForeignKey(capacitacion_ComponentesActividades, on_delete=models.DO_NOTHING, default=None, null=True)
 class capacitacion_Actividad_Sesiones(models.Model):
       id_capacitacionActividadSesiones= models.AutoField(primary_key=True)
       titulo=models.TextField(null=True)
@@ -99,6 +100,7 @@ class capacitacion_Actividad_Sesiones(models.Model):
       MAYBECHOICE = ( ('0', 'Presencial'), ('1', 'Online'), ('2', 'Mixta'), )
       modalidad = models.CharField(max_length=1, choices=MAYBECHOICE)
       fk_status=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name="fk_status_sesiones")	
+      fk_componenteActividad=models.ForeignKey(capacitacion_ComponentesActividades, on_delete=models.DO_NOTHING, default=None, null=True,related_name="fk_atvidad")
 class capacitacion_ActSesiones_programar(models.Model):
       id_capacitacionActSesiones_programar= models.AutoField(primary_key=True)
       id_capacitacionActividadSesiones=models.ForeignKey(capacitacion_Actividad_Sesiones, on_delete=models.DO_NOTHING, default=None, null=True)

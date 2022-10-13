@@ -44,22 +44,33 @@
             </div>
          </div>
          <div class="form-row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-12">
                <label for="creditos" class="col-form-label">Creditos</label>
                <input type="text" class="form-control" name="creditos" id="creditos"
                   placeholder="#" required
                   value="{% if modelo %}{{ modelo.peso_creditos }}{% endif %}"
                   >
+                  <label id="tipo"  for="tipo_ritmo" class="col-form-label" hidden>Tipo de Ritmo</label>
+                  <select class="form-control" name="tipo_ritmo" id="tipo_ritmo" required
+                  hidden>
+                     <option value="null" disabled {% if not tareas %}selected{% endif %}>Seleccione una opcion</option>
+                     {% for item in categorias %}
+                     {%if item.mostrar_en_combos == 1%}
+                     <option value="{{item.id_tabla}}" {% if tareas.fk_tipoTiempoEntrega_id == item.id_tabla %}selected{% endif %}>{{item.desc_elemento}}</option>
+                     {%endif%}
+                     {% endfor%}
+                  </select> 
+                  <label id="ritmo_entregas" for="urlProgram" class="col-form-label" hidden>Ritmo</label>
+                  <input type="text" class="form-control" name="ritmo_entrega" id="ritmo_entrega"
+                     placeholder="Enter a codename" required
+                     value="{{tareas.tiempo_entrega}}"
+                     hidden>
             </div>
-            <div class="form-group col-md-6">
-                <label for="estatusLesson" class="col-form-label">Tipo Componente</label>
-                <select class="form-control" id="Componente" name="Componente" required>
-                   <option value="null" disabled {% if not modelo %} selected {% endif %}>Select an option</option>
-                   {% for item in tipo %}
-                   <option value="{{item.pk}}" {% if modelo %} {% if modelo.fk_tipocomponente_id == item.pk %} selected {% endif %} {% endif %}>{{item.desc_elemento}}</option>
-                   {% endfor %}
-                </select>
-             </div>    
+              
+          </div>
+          <div class="form-group col-md-12">
+            <label id="min" for="min" hidden>Contenido</label>
+            <textarea id="summernote" class="form-control" name="summernote" hidden>{{tareas.path_recurso}}</textarea> 
           </div>
        </div>
        <div class="modal-footer">
