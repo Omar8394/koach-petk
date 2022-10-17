@@ -65,6 +65,14 @@
                      placeholder="Enter a codename" required
                      value="{{tareas.tiempo_entrega}}"
                      hidden>
+                  <label id="modalidad" for="urlProgra" class="col-form-label" hidden>Modalidad</label>
+                  <select class="form-control" name="modalidades" id="modalidades" required
+                  hidden> 
+                     <option value="0"  {% if tareas.modalidad == '0' %}selected{% endif %}>Presencial</option>
+                    
+                     <option value="1"  {% if tareas.modalidad == '1' %}selected{% endif %}>Online</option>
+                     <option value="2"  {% if tareas.modalidad == '2' %}selected{% endif %}>MixTa</option>
+                  </select>    
             </div>
               
           </div>

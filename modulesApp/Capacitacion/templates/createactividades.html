@@ -142,6 +142,9 @@
 		if (type == "Componente_Tarea") {
 			url = "{% url 'modalNewhome' %}"
 		}
+		if (type == "Componente_Sesiones") {
+			url = "{% url 'modalNewsesiones' %}"
+		}
 		await renderModalActivity(url,id,type)
 		$("#addChooseActivities").modal("hide")
 	 } 
@@ -220,6 +223,12 @@
 				tipo_ritmos.hidden=false
 				setupSummernote()
 			 }
+			 if (tipo === "Componente_Sesiones") {
+				const modalidad = document.getElementById("modalidad")
+				const modalidades = document.getElementById("modalidades")
+				modalidad.hidden= false
+				modalidades.hidden=false
+			 }
 			 formPrograma.addEventListener("submit", (e) => {
 				e.preventDefault()
 				if($("#formActividad").valid()){
@@ -242,8 +251,12 @@
 		idSeleted=id
 		if (tipo === "Actividad_Tarea") {
 			url="{% url 'modalNewhome' %}"
-		}else{
+		}
+		if (tipo === "Actividad_leccion"){
 			url="{% url 'modalNewLesson' %}"
+		}
+		if (tipo === "Actividad_Sesiones"){
+			url="{% url 'modalNewsesiones' %}"
 		}
 		editmode = true
 		return fetch(url, {
@@ -316,6 +329,12 @@
 				tipo_ritmos.hidden=false
 				setupSummernote()
 			 }
+			 if (tipo === "Actividad_Sesiones") {
+				const modalidad = document.getElementById("modalidad")
+				const modalidades = document.getElementById("modalidades")
+				modalidad.hidden= false
+				modalidades.hidden=false
+			 }
 			 formPrograma.addEventListener("submit", (e) => {
 				e.preventDefault()
 				if($("#formActividad").valid()){
@@ -372,11 +391,20 @@
         }
        
      }	
-	 const openDeleteactividades = async (id,padre) =>{
-   
+	 const openDeleteactividades = async (id,padre,tipo) =>{
+		let url=""
+		if (tipo === "Actividad_Tarea") {
+			url="{% url 'modalNewhome' %}"
+		}
+		if (tipo === "Actividad_leccion"){
+			url="{% url 'modalNewLesson' %}"
+		}
+		if (tipo === "Actividad_Sesiones"){
+			url="{% url 'modalNewsesiones' %}"
+		}
 		const elimino = await alerta(3)
 		if(elimino){
-		   fetch("{% url 'modalNewLesson'%}", {
+		   fetch(url, {
 			  ...fetchObject,
 			  body: JSON.stringify({
 				 method: "Delete",

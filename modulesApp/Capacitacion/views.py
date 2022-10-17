@@ -4,7 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.template.loader import render_to_string
 from ..App.models import ConfTablasConfiguracion
-from ..Capacitacion.models import Estructuraprograma, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,Capacitacion_componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos
+from ..Capacitacion.models import Estructuraprograma, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,Capacitacion_componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos
 import time, json
 from decimal import Decimal
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -1062,3 +1062,77 @@ def getModalNewhomework(request):
             except Exception as e:
                print(e)
                return JsonResponse({"message":"error"}, status=500)
+def getModalNewsesiones(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            context = {}
+            modelo = {}
+            try:
+                if request.body:
+                    data = json.load(request)
+                    status = ConfTablasConfiguracion.obtenerHijos(valor="Status_global")
+                   
+                    if data["method"] == "Show":
+                       context = {"status":status}
+                       html_template = (loader.get_template('modalAddLesson.html'))
+                       return HttpResponse(html_template.render(context, request))           
+                    elif data['method'] == "Edit":
+                        print(data)
+                        modelo = capacitacion_ComponentesActividades.objects.get(pk=data["id"]) 
+                        tareas= capacitacion_Actividad_Sesiones.objects.get(fk_componenteActividad_id=data["id"])   
+                        
+                        context = {"modelo": modelo,"status":status,"tareas":tareas}
+                        html_template = (loader.get_template('modalAddLesson.html'))
+                        return HttpResponse(html_template.render(context, request))
+                    elif data["method"] == "Delete":
+                        actividad=capacitacion_ComponentesActividades.objects.get(pk=data["id"])
+                        actividad.fk_componenteformacion= Capacitacion_componentesFormacion.objects.get(codigo_componente="papelera")
+                        actividad.save()
+                        sesion=capacitacion_Actividad_Sesiones.objects.get(fk_componenteActividad_id=data["id"])
+                        sesion.fk_componenteActividad=capacitacion_ComponentesActividades.objects.get(valor_elemento="papelera")
+                        sesion.save()
+                        return JsonResponse({"message":"Deleted"})
+                    elif data["method"] == "Update":
+                        print(data)
+                        actividad=capacitacion_ComponentesActividades.objects.get(pk=data["id"])
+                        sesiones=capacitacion_Actividad_Sesiones.objects.get(fk_componenteActividad_id=data["id"])
+                        actividad.titulo=data['data']['descriptionActivity']
+                        actividad.descripcion=data['data']['resumenActivity']
+                        actividad.fecha_disponibilidad=data['data']['disponibleLesson']
+                        actividad.peso_creditos=Decimal(data['data']['creditos'].replace(',','.'))
+                        actividad.valor_elemento='Actividad_Sesiones'
+                        actividad.url=data['data']['urlActivity'] 
+                        actividad.fk_statuscomponente_id=data['data']['estatusLesson']
+                        actividad.save()
+                        sesiones.Descripción=data['data']['resumenActivity']
+                        sesiones.titulo=data['data']['descriptionActivity']                        
+                        sesiones.fk_status_id=data['data']['estatusLesson']
+                        sesiones.modalidad=data['data']['modalidades']                       
+                        sesiones.save()
+                        return JsonResponse({"message":"ok"})
+                    elif data["method"] == "Create":
+                        print(data)
+                        actividad=capacitacion_ComponentesActividades()
+                        sesiones=capacitacion_Actividad_Sesiones()
+                        actividad.titulo=data['data']['descriptionActivity']
+                        actividad.descripcion=data['data']['resumenActivity']
+                        actividad.fecha_disponibilidad=data['data']['disponibleLesson']
+                        actividad.peso_creditos=data['data']['creditos']
+                        actividad.valor_elemento='Actividad_Sesiones'
+                        actividad.url=data['data']['urlActivity'] 
+                        actividad.orden_presentacion=len(capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion_id=data['id'])) + 1
+                        actividad.fk_componenteformacion_id=data['id']
+                        actividad.fk_tipocomponente_id=ConfTablasConfiguracion.objects.get(valor_elemento=data['tipo']).pk 
+                        actividad.fk_statuscomponente_id=data['data']['estatusLesson']
+                        actividad.save()
+                        sesiones.Descripción=data['data']['resumenActivity']
+                        sesiones.titulo=data['data']['descriptionActivity']
+                        sesiones.fk_componenteActividad=actividad
+                        sesiones.fk_status_id=data['data']['estatusLesson']
+                        sesiones.modalidad=data['data']['modalidades']
+                       
+                        sesiones.save()
+                        return JsonResponse({'mensaje': 'ok'})
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)       

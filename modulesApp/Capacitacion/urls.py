@@ -29,6 +29,7 @@ urlpatterns = [
     path('modalChooseActivity/', views.getModalChooseActivities, name='modalChooseActivity'),
     path('modalNewLesson/', views.getModalNewLesson, name="modalNewLesson"),
     path('modalNewhome/', views.getModalNewhomework, name="modalNewhome"),
+    path('modalNewsesiones/', views.getModalNewsesiones, name="modalNewsesiones"),
     path('pageslessons/', views.pageslessons, name="pageslessons"),
     path('savepages/', views.savepages, name="savepages"),
     path('modalResourcesBank/', views.getModalResourcesBank, name="modalResourcesBank"),
