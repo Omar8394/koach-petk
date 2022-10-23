@@ -33,6 +33,7 @@ urlpatterns = [
     path("Helping/", include("modulesApp.Helping.urls", namespace="helping")),
     path("security/", include("modulesApp.Security.urls",namespace="security")),
     path("capacitacion/", include("modulesApp.Capacitacion.urls")),
+    path("Organizational_network/", include("modulesApp.Organizational_network.urls")),
     path("payments/", include("modulesApp.Payments.urls")),
     path("ckeditor/", include("ckeditor_uploader.urls")),
     path('admin/', admin.site.urls),

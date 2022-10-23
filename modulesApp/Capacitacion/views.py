@@ -1,10 +1,13 @@
+from itertools import filterfalse
 from unicodedata import category, decimal
+from django import apps
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.template.loader import render_to_string
-from ..App.models import ConfTablasConfiguracion
-from ..Capacitacion.models import Estructuraprograma, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,Capacitacion_componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos
+from ..App.models import ConfTablasConfiguracion,AppPublico
+from ..Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,Capacitacion_componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos
+from ..Organizational_network.models import nodos_grupos
 import time, json
 from decimal import Decimal
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -17,6 +20,76 @@ import mimetypes
 from django.core.files.storage import FileSystemStorage
 import os
 # Create your views here.
+@register.filter
+def jsonsesion(datos):
+  if datos==None or datos=="" or datos=={}:
+    return ""
+  tlf=None
+  data = json.loads(datos)
+
+  
+  if data==None or data=="" or data=={}:
+      return ""
+  if   'datos_sesion' in data :
+     return data['datos_sesion'][0]['lugar']
+  else:
+      return ""
+@register.filter
+def jsonsesionfive(datos):
+  if datos==None or datos=="" or datos=={}:
+    return ""
+  tlf=None
+  data = json.loads(datos)
+
+  
+  if data==None or data=="" or data=={}:
+      return ""
+  if   'datos_sesion' in data :
+     return data['datos_sesion'][0]['key']
+  else:
+      return ""  
+@register.filter
+def jsonsesiontwo(datos):
+  if datos==None or datos=="" or datos=={}:
+    return ""
+  tlf=None
+  data = json.loads(datos)
+
+  
+  if data==None or data=="" or data=={}:
+      return ""
+  if   'datos_sesion' in data :
+     return data['datos_sesion'][0]['tema']
+  else:
+      return "" 
+@register.filter
+def jsonsesionthre(datos):
+  if datos==None or datos=="" or datos=={}:
+    return ""
+  tlf=None
+  data = json.loads(datos)
+
+  
+  if data==None or data=="" or data=={}:
+      return ""
+  if   'datos_sesion' in data :
+     return data['datos_sesion'][0]['tipo_ritmo']
+  else:
+      return "" 
+@register.filter
+def jsonsesionfour(datos):
+  if datos==None or datos=="" or datos=={}:
+    return ""
+  tlf=None
+  data = json.loads(datos)
+
+  
+  if data==None or data=="" or data=={}:
+      return ""
+  if   'datos_sesion' in data :
+     return data['datos_sesion'][0]['ritmo']
+  else:
+      return ""      
 @register.filter
 def hashijos(id):
     lista=[]
@@ -1091,6 +1164,7 @@ def getModalNewsesiones(request):
                         sesion=capacitacion_Actividad_Sesiones.objects.get(fk_componenteActividad_id=data["id"])
                         sesion.fk_componenteActividad=capacitacion_ComponentesActividades.objects.get(valor_elemento="papelera")
                         sesion.save()
+                        
                         return JsonResponse({"message":"Deleted"})
                     elif data["method"] == "Update":
                         print(data)
@@ -1136,3 +1210,116 @@ def getModalNewsesiones(request):
             except Exception as e:
                print(e)
                return JsonResponse({"message":"error"}, status=500)       
+def programarsesiones(request):
+    id=request.GET.get('id')
+    pro_sesion=None
+    title=0
+    actividad=capacitacion_Actividad_Sesiones.objects.get(fk_componenteActividad_id=id)
+    try: 
+        pro_sesion=capacitacion_ActSesiones_programar.objects.get(id_capacitacionActividadSesiones=actividad)  
+        title=1           
+    except capacitacion_ActSesiones_programar.DoesNotExist:
+        pro_sesion = None
+        
+    context = {'pro_sesion':pro_sesion,'title':title,'actividad':actividad,'id':id}
+    print(context)
+    html_template = (loader.get_template('programarsesiones.html'))
+    return HttpResponse(html_template.render(context, request))           
+def rendersesiones(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest': 
+         try:
+            if request.body:
+                context={}
+                modelo = {}
+                title=False
+                
+                data = json.load(request)
+                nodos=nodos_grupos.objects.filter(fk_grupoNodo_padre_id=1)                
+                ponente=AppPublico.objects.filter(user_id__fk_rol_usuario_id=90)
+                pro_sesion=None
+                categorias = ConfTablasConfiguracion.obtenerHijos(valor="Ritmo_Capacitacion")
+                print(ponente)
+                print(data)
+                
+                try: 
+                   pro_sesion=capacitacion_ActSesiones_programar.objects.get(id_capacitacionActividadSesiones_id=data['id'])  
+                   
+                except capacitacion_ActSesiones_programar.DoesNotExist:
+                   pro_sesion = None
+                if data["query"] == "" and data["tipo"] == 0:                
+                    context = {'categorias':categorias,'pro_sesion':pro_sesion,'nodo':nodos,'ponente':ponente}
+                    html_template = (loader.get_template('rendersesionestipouno.html'))
+                    return HttpResponse(html_template.render(context, request))
+                elif data["query"] == "" and data["tipo"] == 1:
+                    context = {'categorias':categorias,'nodo':nodos,'ponente':ponente,'pro_sesion':pro_sesion}
+                    html_template = (loader.get_template('rendersesiones.html'))
+                    return HttpResponse(html_template.render(context, request))
+                     
+         except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)
+
+def savesesionprogramas(request): 
+    if request.method == "POST":
+       if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+          context = {}
+          modelo = {}
+          try:
+            if request.body:
+               data = json.load(request)
+               
+              
+               if data["method"] == "Create":
+                  print(data)
+                  programar=[]
+                  obj={}
+                  datos = {}
+                  obj["lugar"]= data['data']['linkForum']
+                  obj["tema"]= data['data']['idForum']
+                  obj["ritmo"]= data['data']['Ritmo']
+                  obj["tipo_ritmo"]= data['data']['categoryProgram']
+                  if 'key' in data['data']:
+                      obj["key"]=data['data']['keyForum']
+                  programar.append(obj or 0)
+                  datos['datos_sesion']=programar
+                  programar=capacitacion_ActSesiones_programar() 
+                  programar.fecha_inicio=data['data']['datetimeForum']                  
+                  programar=capacitacion_ActSesiones_programar() 
+                  programar.fecha_inicio=data['data']['datetimeForum']
+                  programar.datos_sesion=json.dumps(datos)
+                  programar.fk_grupoNodo_id=data['data']['Grupo']
+                  programar.director_ponente_id=data['data']['Director']
+                  programar.status_sesion=ConfTablasConfiguracion.objects.get(valor_elemento="Status_activo")                   
+                  programar.fecha_finalizacion=data['data']['datetimeFinal']
+                  programar.id_capacitacionActividadSesiones_id=data['id']
+                  programar.save()
+                  return JsonResponse({"message":"ok"})
+               elif data["method"] == "Edit":
+                    programaredit=capacitacion_ActSesiones_programar.objects.get(pk=data['id'])
+                    programaredit.delete()
+                    programar=[]
+                    obj={}
+                    datos = {}
+                    obj["lugar"]= data['data']['linkForum']
+                    obj["tema"]= data['data']['idForum']
+                    obj["ritmo"]= data['data']['Ritmo']
+                    obj["tipo_ritmo"]= data['data']['categoryProgram']
+                    if 'key' in data['data']:
+                        obj["key"]=data['data']['keyForum']
+                    programar.append(obj or 0)
+                    datos['datos_sesion']=programar
+                    programar=capacitacion_ActSesiones_programar() 
+                    programar.fecha_inicio=data['data']['datetimeForum']
+                    programar.datos_sesion=json.dumps(datos)
+                    programar.fk_grupoNodo_id=data['data']['Grupo']
+                    programar.director_ponente_id=data['data']['Director']
+                    programar.status_sesion=ConfTablasConfiguracion.objects.get(valor_elemento="Status_activo")                   
+                    programar.fecha_finalizacion=data['data']['datetimeFinal']
+                    programar.id_capacitacionActividadSesiones_id=data['ed']
+                    programar.save()
+                    print(data)
+                    return JsonResponse({"message":"ok"})
+          except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)                                         

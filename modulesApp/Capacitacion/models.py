@@ -103,7 +103,7 @@ class capacitacion_Actividad_Sesiones(models.Model):
       fk_componenteActividad=models.ForeignKey(capacitacion_ComponentesActividades, on_delete=models.DO_NOTHING, default=None, null=True,related_name="fk_atvidad")
 class capacitacion_ActSesiones_programar(models.Model):
       id_capacitacionActSesiones_programar= models.AutoField(primary_key=True)
-      id_capacitacionActividadSesiones=models.ForeignKey(capacitacion_Actividad_Sesiones, on_delete=models.DO_NOTHING, default=None, null=True)
+      id_capacitacionActividadSesiones=models.OneToOneField(capacitacion_Actividad_Sesiones, on_delete=models.DO_NOTHING, default=None, null=True)
       director_ponente=models.ForeignKey(AppPublico, on_delete=models.DO_NOTHING, default=None, null=True)
       fk_grupoNodo=models.ForeignKey(nodos_grupos, on_delete=models.DO_NOTHING, default=None, null=True)
       status_sesion=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name="status_sesiones")

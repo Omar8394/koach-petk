@@ -1,0 +1,64 @@
+<div class="form-row">
+    <div class="form-group col-md-6">
+       <label for="datetimeForum">Fecha inicio</label>
+       <input type="date" class="form-control" name="datetimeForum" id="datetimeForum" placeholder="Fecha inicio"   value="{{ pro_sesion.fecha_inicio|date:'Y-m-d'}}" required >
+    </div>
+    <div class="form-group col-md-6">
+       <label for="linkForum">Lugar</label>
+       <input type="text" class="form-control" name="linkForum" id="linkForum" placeholder="Ingrese Lugar"   value="{{ pro_sesion.datos_sesion|jsonsesion}}" required>
+    </div>
+ </div>
+ <div class="form-row">
+    <div class="form-group col-md-6">
+       <label for="idForum">Tema</label>
+       <input type="text" class="form-control" name="idForum" id="idForum" placeholder="Ingrese Tema"  value="{{ pro_sesion.datos_sesion|jsonsesiontwo}}" required>
+    </div>
+    <div class="form-group col-md-6">
+       <label for="keyForum">Fecha finalizar</label>
+       <input type="date" class="form-control" name="datetimeFinal" id="datetimeFinal" placeholder="Fecha final" value="{{ pro_sesion.fecha_finalizacion|date:'Y-m-d'}}" required >
+    </div>
+    <div class="form-group col-md-6">
+      <label for="idForum">Director Ponente</label>
+      <select class="form-control" name="Director" id="Director" required>
+<option value="null" disabled {% if not pro_sesion %}selected{% endif %}>Seleccione una opcion</option>
+{% for item in ponente %}
+
+<option value="{{item.idpublico}}" {% if pro_sesion.director_ponente_id == item.idpublico %}selected{% endif %}>{{item}}</option>
+
+{% endfor%}
+</select>
+   </div>
+   <div class="form-group col-md-6">
+      <label for="keyForum">Grupo</label>
+      <select class="form-control" name="Grupo" id="Grupo" required>
+         <option value="null" disabled {% if not pro_sesion %}selected{% endif %}>Seleccione una opcion</option>
+         {% for item in nodo %}
+        
+         <option value="{{item.if_gruponodo}}"  {% if pro_sesion.fk_grupoNodoe_id == item.if_gruponodo %}selected{% endif %} >{{item.Descripcion}}</option>
+         
+         {% endfor%}
+         </select>
+   </div>
+    <div class="form-group col-md-6">
+        
+          
+        <div id="renderList" class="form-group col-md-6" >   
+         <label for="categoryProgram" class="col-form-label">Tipo de Ritmo</label>
+         <select class="form-control" name="categoryProgram" id="categoryProgram" required
+         >
+         <option value="null" disabled {% if not pro_sesion %}selected{% endif %}>Seleccione una opcion</option>
+         {% for item in categorias %}
+         {%if item.mostrar_en_combos == 1%}
+         <option value="{{item.id_tabla}}" {% if pro_sesion.datos_sesion|jsonsesionthre == item.id_tabla %}selected{% endif %}>{{item.desc_elemento}}</option>
+         {%endif%}
+         {% endfor%}
+         </select>       
+         <label for="urlProgram" class="col-form-label">Ritmo</label>
+         <input type="text" class="form-control" name="Ritmo" id="Ritmo"
+         placeholder="Enter a codename" required
+         value="{{ pro_sesion.datos_sesion|jsonsesionfour }}" >     
+        </div>  
+       
+    </div>
+    </div>
+ </div>
