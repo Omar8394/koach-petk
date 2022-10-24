@@ -1168,6 +1168,7 @@ def getModalNewsesiones(request):
                         return JsonResponse({"message":"Deleted"})
                     elif data["method"] == "Update":
                         print(data)
+                        pro_sesion=None
                         actividad=capacitacion_ComponentesActividades.objects.get(pk=data["id"])
                         sesiones=capacitacion_Actividad_Sesiones.objects.get(fk_componenteActividad_id=data["id"])
                         actividad.titulo=data['data']['descriptionActivity']
@@ -1183,6 +1184,11 @@ def getModalNewsesiones(request):
                         sesiones.fk_status_id=data['data']['estatusLesson']
                         sesiones.modalidad=data['data']['modalidades']                       
                         sesiones.save()
+                        try: 
+                          pro_sesion = capacitacion_ActSesiones_programar.objects.get(id_capacitacionActividadSesiones=sesiones)  
+                          pro_sesion.delete()
+                        except capacitacion_ActSesiones_programar.DoesNotExist:
+                          pro_sesion = None  
                         return JsonResponse({"message":"ok"})
                     elif data["method"] == "Create":
                         print(data)
@@ -1212,6 +1218,7 @@ def getModalNewsesiones(request):
                return JsonResponse({"message":"error"}, status=500)       
 def programarsesiones(request):
     id=request.GET.get('id')
+    print(id)
     pro_sesion=None
     title=0
     actividad=capacitacion_Actividad_Sesiones.objects.get(fk_componenteActividad_id=id)
@@ -1221,7 +1228,7 @@ def programarsesiones(request):
     except capacitacion_ActSesiones_programar.DoesNotExist:
         pro_sesion = None
         
-    context = {'pro_sesion':pro_sesion,'title':title,'actividad':actividad,'id':id}
+    context = {'padre':actividad.fk_componenteActividad.fk_componenteformacion_id,'pro_sesion':pro_sesion,'title':title,'actividad':actividad,'id':id}
     print(context)
     html_template = (loader.get_template('programarsesiones.html'))
     return HttpResponse(html_template.render(context, request))           
@@ -1279,7 +1286,7 @@ def savesesionprogramas(request):
                   obj["tema"]= data['data']['idForum']
                   obj["ritmo"]= data['data']['Ritmo']
                   obj["tipo_ritmo"]= data['data']['categoryProgram']
-                  if 'key' in data['data']:
+                  if 'keyForum' in data['data']:
                       obj["key"]=data['data']['keyForum']
                   programar.append(obj or 0)
                   datos['datos_sesion']=programar
@@ -1305,7 +1312,7 @@ def savesesionprogramas(request):
                     obj["tema"]= data['data']['idForum']
                     obj["ritmo"]= data['data']['Ritmo']
                     obj["tipo_ritmo"]= data['data']['categoryProgram']
-                    if 'key' in data['data']:
+                    if 'keyForum' in data['data']:
                         obj["key"]=data['data']['keyForum']
                     programar.append(obj or 0)
                     datos['datos_sesion']=programar

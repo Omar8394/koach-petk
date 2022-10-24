@@ -53,7 +53,7 @@
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 <script>
-
+let padre={{padre}}
 let semaforo={{title}}	
 let query = ""	
 let tipe = {{actividad.modalidad}}
@@ -83,6 +83,7 @@ const formActividad = document.getElementById("formActividad")
 formActividad.addEventListener('submit', (e)=>{
 	e.preventDefault()
   if(semaforo==0) {
+	setLoading()
 	const formData = new FormData(formActividad);
 	const data = {}
 	for (var [key, value] of formData.entries()) {
@@ -94,9 +95,11 @@ formActividad.addEventListener('submit', (e)=>{
          const text = JSON.parse(await res.text())
          if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
          else makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
-          
+          stopLoading()
+		  window.location.href = `{% url 'createactividades' %}?id=${padre}`
       })
 	}else{
+		setLoading()
 		const formData = new FormData(formActividad);
 	    const data = {}
 	    for (var [key, value] of formData.entries()) {
@@ -109,7 +112,10 @@ formActividad.addEventListener('submit', (e)=>{
         const text = JSON.parse(await res.text())
         if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
         else makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
-		
+		stopLoading()
+		window.location.href = `{% url 'createactividades' %}?id=${padre}`
+				 
+
       })
 	}
 })
@@ -124,5 +130,7 @@ const updateModel = (url, method, data, id, ed) => {
 	   })
 	})
  }
+ 
+	
 </script>
 {% endblock javascripts %}
