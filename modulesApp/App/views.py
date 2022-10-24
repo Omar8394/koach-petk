@@ -1,12 +1,14 @@
 import json, math
-
+from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
 import sys
 from ..App.models import ConfMisfavoritos,ConfSettings,ConfSettings_Atributo,ConfTablasConfiguracion
+from ..Capacitacion.models import EscalasEvaluaciones,EscalasCalificacion
 from django.shortcuts import render
 from django.template.defaulttags import register
-
+from django.http.response import HttpResponseForbidden
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 # Create your views here.
 @register.filter
@@ -418,3 +420,141 @@ def getModalSetting(request):
           except Exception as e:
                print(e)
                return JsonResponse({"message":"error"}, status=500)
+@login_required(login_url="/login/")
+def scales(request):
+    # user = request.user.extensionusuario
+    # rol = user.CtaUsuario.fk_rol_usuario.desc_elemento
+
+    # if rol != 'Admin':
+    #     return HttpResponseForbidden()
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            # try:
+            context = {}
+            data = json.load(request)["data"]
+            if "delete" in data:
+                newScaleGe = EscalasEvaluaciones.objects.get(pk=data["id"])
+                newScaleGe.delete()
+                return JsonResponse({"message": "Deleted"})
+            elif "idFind" in data:
+                newScaleGe = EscalasEvaluaciones.objects.filter(pk=data["idFind"])
+                findScaleGe = list(newScaleGe.values())
+                childs = EscalasCalificacion.objects.filter(fk_escala_evaluacion_id=data["idFind"])
+                listaChilds = list(childs.values())
+                return JsonResponse({"data":findScaleGe[0], "childs":listaChilds}, safe=False)
+            elif "idViejo" in data:
+                newScaleGe = EscalasEvaluaciones.objects.get(pk=data["idViejo"])
+            else:
+                newScaleGe = EscalasEvaluaciones()
+            newScaleGe.Descripcion=data["descripcion"] 
+            newScaleGe.maxima_puntuacion=data["maxScore"] 
+            newScaleGe.save()
+            hijos = data["hijos"]
+            if hijos:
+                if "idViejo" in data:
+                    childs = EscalasCalificacion.objects.filter(fk_escala_evaluacion=newScaleGe)
+                    childs.delete()
+                for newScalePa in hijos:
+                    newSP = EscalasCalificacion()
+                    newSP.descripcion=newScalePa["descriptionCalif"]
+                    newSP.puntos_maximo=newScalePa["max_points"] 
+                    newSP.fk_RangoCalificacion_id=newScalePa["quack"]
+                    newSP.fk_escalaEvaluaciones= newScaleGe
+                    newSP.save()      
+            return JsonResponse({"message": "Perfect"})                
+            # except:
+            #     return JsonResponse({"message": "Error"})
+                
+    context = {
+        "califs" : ConfTablasConfiguracion.obtenerHijos('Tipo_Calificion'),
+    }
+    context['segment'] = 'settings'
+    html_template = (loader.get_template('scales.html'))
+    return HttpResponse(html_template.render(context, request))
+
+
+@login_required(login_url="/login/")
+def scalesGeAddModal(request): 
+    context = {
+        "califs" : ConfTablasConfiguracion.obtenerHijos('Tipo_Calificion'),
+    }
+    return render(request, 'modalAddScaleGe.html', context)
+def componentTabla(request):
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        context = {}
+        data = json.load(request)["data"]
+        #Aqui cada quien puede poner su script para su tabla
+        #aqui comienza la de tabla configuraciones
+        if data["name"] == "tablaConfig":
+            padre = data["padre"]
+            hijos = ConfTablasConfiguracion.objects.filter(fk_tabla_padre=padre, mostrar_en_combos=1)
+            if not hijos:
+                return JsonResponse({"message":"There are no childs"})
+            lista = []
+            limit = None
+            page = None
+            #en este bucle les paso la pk de cada elemento 
+            #con el fin de llamar a los metodos luego en JS
+            for i in list(hijos.values()):
+                i['pk'] = i['id_tabla']
+                if i["maneja_lista"] == 1:
+                    i["manejaLista"] = True
+                    i["crearHijos"] = True
+                if i["permite_cambios"] == 1:
+                    i["editar"] = True
+                    i["eliminable"] = True
+                lista.append(i)
+            if data["page"] != None and data["page"] != "":
+                paginator = Paginator(lista, data["limit"])
+                lista = paginator.get_page(data["page"])
+                page = data["page"]
+                limit = data["limit"]
+            context = {
+                #aqui el nombre de la columna a mostrar
+                "fields": ["Description", "Actions"],
+                #aqui ponemos el nombre de la columna de la BBDD
+                "keys": ["desc_elemento"],
+                "data": lista,
+                "page": page,
+                "limit": limit,
+            }
+        #if data["name"] == "El nombre de tu tabla"
+        elif data["name"] == "tablaScales":
+            hijos = EscalasEvaluaciones.objects.all()
+            if not hijos:
+                return JsonResponse({"message":"There are no items"})
+            lista = []
+            for i in list(hijos.values()):
+                i['pk'] = i['id_escalaEvaluaciones']
+                i['manejaLista'] = True
+                i['editar'] = True
+                i['eliminable'] = True
+                lista.append(i)
+            context = {
+                
+                "fields": ["Description", "Max Score", "Actions"],
+                
+                "keys": ["Descripcion", "maxima_puntuacion"],
+                "data": lista
+            }
+        elif data["name"] == "tablaScalesPa":
+            if "idScalesPa" in data:
+                table = EscalasEvaluaciones.objects.get(pk=data["idScalesPa"])
+                print(table)
+                hijos = table.EscalasCalificacion_set.all()
+            if not hijos:
+                return JsonResponse({"message":"There are no items"})
+            lista = []
+            for i in list(hijos.values()):
+                i['pk'] = i['id_escalaCalificacion']
+                i['description_config'] = ConfTablasConfiguracion.objects.filter(id_tabla = i['fk_RangoCalificacion_id'])[0].desc_elemento
+                lista.append(i)
+            context = {
+                
+                "fields": ["Description","Qualification", "Max Score",],
+                
+                "keys": ["desc_calificacion","description_config", "puntos_maximo"],
+                "data": lista
+            }
+        return render(request,'tabla.html', context)
+    return

@@ -13,7 +13,9 @@ urlpatterns = [
     path('App/Favorito/mostrarfavoritos/', views.mostrarfavoritos, name='mostrarfavoritos'), 
     path('App/Favorito/añadirFavoritos/', views.añadirFavoritos, name='añadirFavoritos'),
     path('App/configuracion/', views.configuracion, name='configuracion'),
-    
+    path('App/settings/scales/', views.scales, name='scales'),
+    path('App/settings/scalesGeAddModal/', views.scalesGeAddModal, name='modalScaleGeAdd'),
+    path('App/settings/tabla', views.componentTabla, name='component_tabla'),   
     #Calendar & index settings
     path('App/settings/preferencias/', views.preferencias, name='preferencias'),
     path('App/settings/modalprefer/', views.getmodalprefer, name='modalprefer'),

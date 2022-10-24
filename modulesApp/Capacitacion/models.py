@@ -109,5 +109,18 @@ class capacitacion_ActSesiones_programar(models.Model):
       status_sesion=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name="status_sesiones")
       fecha_inicio=models.DateField(blank=True, null=True)
       datos_sesion = models.TextField(null=True)
-      fecha_finalizacion=models.DateField(blank=True, null=True)	
-      
+      fecha_finalizacion=models.DateField(blank=True, null=True)
+class EscalasEvaluaciones(models.Model):      	
+      id_escalaEvaluaciones= models.AutoField(primary_key=True)
+      Descripcion= models.TextField(null=True)
+      maxima_puntuacion =models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+      def __str__(self):
+            return self.Descripcion
+class EscalasCalificacion(models.Model): 
+      id_escalaCalificacion= models.AutoField(primary_key=True)
+      descripcion= models.TextField(null=True) 
+      puntos_maximo=models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+      fk_escalaEvaluaciones=models.ForeignKey(EscalasEvaluaciones,on_delete=models.DO_NOTHING,default=None, null=True)
+      fk_RangoCalificacion=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name='escalaMenor') 
+      def __str__(self):
+        return self.descripcion

@@ -1335,6 +1335,49 @@
                     "datos_adicional":"",
                     "tipo_dato":0
                   }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":90,
+                  "fields": {
+                    "desc_elemento": "Calificion",
+                    "fk_tabla_padre": 1,
+                    "tipo_elemento": "1",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Tipo_Calificion",
+                    "mostrar_en_combos": 0,
+                    "maneja_lista": 1,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },{
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":91,
+                  "fields": {
+                    "desc_elemento": "Aprobado",
+                    "fk_tabla_padre": 90,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Tipo_Approved",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },{
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":92,
+                  "fields": {
+                    "desc_elemento": "Reprobado",
+                    "fk_tabla_padre": 90,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Tipo_Reprobado",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
                 }
 
 ]
