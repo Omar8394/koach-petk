@@ -124,3 +124,43 @@ class EscalasCalificacion(models.Model):
       fk_RangoCalificacion=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.CASCADE,default=None, null=True) 
       def __str__(self):
           return self.descripcion
+class capacitacion_ActividadEvaluaciones(models.Model):    
+      id_ActividadEvaluaciones= models.AutoField(primary_key=True)
+      fk_componenteActividad=models.ForeignKey(capacitacion_ComponentesActividades, on_delete=models.DO_NOTHING, default=None, null=True,related_name="fk_atvidad_ev")
+      nro_repeticiones=models.SmallIntegerField(null=True)
+      calificacion_aprobar=models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+      duracion=models.SmallIntegerField(null=True)
+      fk_tipoduracion=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.CASCADE,default=None, null=True) 
+      fk_escalasEvaluaciones=models.ForeignKey(EscalasEvaluaciones,on_delete=models.CASCADE,default=None, null=True, related_name='escala_ev')
+      point_in_use=models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+      titulo_evaluacion=models.TextField(null=True) 
+      enviar_mensaje=models.BooleanField(null=True)
+      enviar_notificacion_lider=models.BooleanField(null=True)
+class capacitacion_EvaluacionesBloques(models.Model):
+      id_evaluacionesBloques= models.AutoField(primary_key=True)
+      fk_ActividadEvaluaciones=models.ForeignKey(capacitacion_ActividadEvaluaciones,on_delete=models.CASCADE,default=None, null=True)
+      fk_escalasEvaluaciones=models.ForeignKey(EscalasEvaluaciones,on_delete=models.CASCADE,default=None, null=True, related_name='escala_evav')
+      Titulo_bloque=models.TextField(null=True)
+      peso=models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+      MAYBECHOICE = ( ('0', 'Normal'), ('1', 'Encuesta'), ('2', 'Experto'), ('3', 'Entrevista'), ('4', 'Logica'), )
+      tipo_bloque = models.CharField(max_length=1, choices=MAYBECHOICE)
+      instrucciones_bloque=models.TextField(null=True)
+class capacitacion_EvaluacionesBloquesOpciones(models.Model): 
+      id_EvaluacionesBloquesOpciones= models.AutoField(primary_key=True) 
+      fk_evaluacionesBloques = models.ForeignKey(capacitacion_EvaluacionesBloques,on_delete=models.CASCADE,default=None, null=True)
+      texto_opcion=models.TextField(null=True)	
+      puntos_opcion=models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+class capacitacion_EvaluacionesPreguntas(models.Model):      
+      id_capacitacionEvaluacionesPreguntas=models.AutoField(primary_key=True)
+      fk_evaluacionesBloques=models.ForeignKey(capacitacion_EvaluacionesBloques,on_delete=models.CASCADE,default=None, null=True)
+      texto_pregunta=models.TextField(null=True)
+      path_imagen_pregunta=models.TextField(null=True)
+      puntos_pregunta=models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+      fk_tipoPregunta=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.CASCADE,default=None, null=True)
+      orden=models.SmallIntegerField(null=True) 
+class capacitacion_EvaluacionesPreguntasOpciones(models.Model): 
+      id_capacitacionEvaluacionesPreguntasOpciones=models.AutoField(primary_key=True)
+      fk_capacitacionEvaluacionesPreguntas=models.ForeignKey(capacitacion_EvaluacionesPreguntas,on_delete=models.CASCADE,default=None, null=True)
+      texto_opcion=models.TextField(null=True)
+      respuesta_correcta=models.BooleanField(null=True)
+      porc_respuesta=models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
