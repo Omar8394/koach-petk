@@ -120,7 +120,7 @@ class EscalasCalificacion(models.Model):
       id_escalaCalificacion= models.AutoField(primary_key=True)
       descripcion= models.TextField(null=True) 
       puntos_maximo=models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
-      fk_escalaEvaluaciones=models.ForeignKey(EscalasEvaluaciones,on_delete=models.DO_NOTHING,default=None, null=True)
-      fk_RangoCalificacion=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name='escalaMenor') 
+      fk_escalaEvaluaciones=models.ForeignKey(EscalasEvaluaciones,on_delete=models.CASCADE,default=None, null=True, related_name='escalaMenor')
+      fk_RangoCalificacion=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.CASCADE,default=None, null=True) 
       def __str__(self):
-        return self.descripcion
+          return self.descripcion

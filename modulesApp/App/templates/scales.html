@@ -99,7 +99,7 @@
             let fila =
                 `<tr>
                         <td>${dato.descriptionCalif}</td>
-                        <td>${dato.qualification}</td>
+                        <td>${dato.quack}</td>
                         <td>${dato.max_points}</td>
                         <td>
                             <div class="btn-group" role="group">
@@ -237,7 +237,7 @@
                     let datos = {
                         descriptionCalif: document.getElementById("desc_calificacion").value,
                         qualification: hashObj[document.getElementById("fk_calificacion").value],
-                        quack: document.getElementById("fk_calificacion").value,
+                        quack: hashObj[document.getElementById("fk_calificacion").value],
                         max_points: document.getElementById("max_points").value,
                         actions: `
                         <div class="btn-group" role="group">
@@ -457,15 +457,16 @@
                 await renderModalScaleGe()
                 limpiarModal()
                 let respuesta = JSON.parse(await res.text())
-                document.getElementById("desc_escala").value = respuesta.data.desc_escala
+                document.getElementById("desc_escala").value = respuesta.data.Descripcion
                 document.getElementById("max_score").value = respuesta.data.maxima_puntuacion
                 let listaLoca = respuesta.childs
+               
                 if(listaLoca){
                     listaLoca.map((el)=>{
                         let datos = {
-                            descriptionCalif: el.desc_calificacion,
-                            qualification: hashObj[el.fk_calificacion_id],
-                            quack: el.fk_calificacion_id,
+                            descriptionCalif: el.descripcion,
+                            qualification: hashObj[el.fk_escalaEvaluaciones_id],
+                            quack:hashObj[el.fk_RangoCalificacion_id], 
                             max_points: el.puntos_maximo,
                             actions: `
                             <div class="btn-group" role="group">
@@ -474,6 +475,7 @@
                                 </button>
                             </div>`
                         }
+                        console.log(listaLoca)
                         listaScales.push(datos)
                     })
                     actualizarLista()
