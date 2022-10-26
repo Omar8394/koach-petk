@@ -1378,6 +1378,77 @@
                     "datos_adicional":"",
                     "tipo_dato":0
                   }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":93,
+                  "fields": {
+                    "desc_elemento": "Tipo duracion",
+                    "fk_tabla_padre": 1,
+                    "tipo_elemento": "1",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Tipo_Duracion",
+                    "mostrar_en_combos": 0,
+                    "maneja_lista": 1,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },{
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":94,
+                  "fields": {
+                    "desc_elemento": "Dias",
+                    "fk_tabla_padre": 93,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Tipo_Dias",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },{
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":95,
+                  "fields": {
+                    "desc_elemento": "Horas",
+                    "fk_tabla_padre": 93,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Tipo_Horas",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },{
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":96,
+                  "fields": {
+                    "desc_elemento": "Minutos",
+                    "fk_tabla_padre": 93,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Tipo_Minutoss",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":97,
+                  "fields": {
+                    "desc_elemento": "Tipo Pregunta",
+                    "fk_tabla_padre": 1,
+                    "tipo_elemento": "1",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Tipo_Pregunta",
+                    "mostrar_en_combos": 0,
+                    "maneja_lista": 1,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
                 }
-
 ]

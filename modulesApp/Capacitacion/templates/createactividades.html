@@ -145,6 +145,10 @@
 		if (type == "Componente_Sesiones") {
 			url = "{% url 'modalNewsesiones' %}"
 		}
+		if (type == "Componente_Evaluacion") {
+			url = "{% url 'modalNewtest' %}"
+		}
+		
 		await renderModalActivity(url,id,type)
 		$("#addChooseActivities").modal("hide")
 	 } 
@@ -229,6 +233,9 @@
 				modalidad.hidden= false
 				modalidades.hidden=false
 			 }
+			 if (tipo === "Componente_Evaluacion") {
+				renderModalNewActivity("{% url 'renderNewtest' %}")
+			 }
 			 formPrograma.addEventListener("submit", (e) => {
 				e.preventDefault()
 				if($("#formActividad").valid()){
@@ -243,6 +250,43 @@
 	
 				}
 			 })
+		   })
+	 }
+	 const renderModalNewActivity = (url) => {
+		return fetch(url, {
+		   ...fetchObject,
+		   body: JSON.stringify({
+			  method: "Show",
+		   })
+		})
+		   .then(async (res) => {
+			  document.getElementById("sectionDetailed").innerHTML = await res.text()
+		   })
+		   .then(() => {
+			  const formActividad = document.getElementById("formActividad")
+			  let rules = {
+				 resumenActivity: {
+					required: true,
+					maxlength: 200,
+					minlength: 20
+				 },
+				 urlActivity: {
+					required: true,
+					maxlength: 15,
+					minlength: 3
+				 },
+			  }
+			  commonValidator = $("#formActividad").validate({
+				 rules,
+				 highlight: function (element) {
+					$(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+				 },
+				 success: function (element) {
+					$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+				 },
+			  });
+			 
+			  
 		   })
 	 }
 	 const EditActivity = (id,padre,tipo) => {

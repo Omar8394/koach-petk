@@ -6,7 +6,7 @@ from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.template.loader import render_to_string
 from ..App.models import ConfTablasConfiguracion,AppPublico
-from ..Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,Capacitacion_componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos
+from ..Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,Capacitacion_componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos,EscalasEvaluaciones
 from ..Organizational_network.models import nodos_grupos
 import time, json
 from decimal import Decimal
@@ -673,6 +673,47 @@ def getModalNewLesson(request):
                         leccion.save()
                         print(data)
                         return JsonResponse({"message":"ok"})
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)
+def getModalNewtest(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            context = {}
+            modelo = {}
+            try:
+                if request.body:
+                    data = json.load(request)
+                    status = ConfTablasConfiguracion.obtenerHijos(valor="Status_global")
+                    tipo = ConfTablasConfiguracion.obtenerHijos(valor="Tipo_Componente")
+                    print(data)
+                   
+                    if data["method"] == "Show":
+                        context = {"status":status,"tipo":tipo}
+                        html_template = (loader.get_template('modalAddLesson.html'))
+                        return HttpResponse(html_template.render(context, request)) 
+                    elif data["method"] == "Create": 
+                        print(data)
+                        return JsonResponse({"message":"ok"})
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)  
+def renderModalNewTest(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            context = {}
+            modelo = {}
+            try:
+                if request.body:
+                        data = json.load(request)
+                        tipoDuracion = ConfTablasConfiguracion.obtenerHijos(valor="Tipo_Duracion")
+                        escalas = EscalasEvaluaciones.objects.all()
+                        print('hola')
+                        print(tipoDuracion)
+                        if data["method"] == "Show":
+                            context = {"escalas":escalas, "tipoDuracion":tipoDuracion}
+                            html_template = (loader.get_template('modalAddTest.html'))
+                            return HttpResponse(html_template.render(context, request))                           
             except Exception as e:
                print(e)
                return JsonResponse({"message":"error"}, status=500)
