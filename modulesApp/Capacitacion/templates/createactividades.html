@@ -202,6 +202,31 @@
 					required: true
 					
 				 },
+				 minApptest:{
+					required: true
+				 },
+				 repeatstest:{
+					required: true
+				 },
+				 qualificationtest:{
+					required: true
+				 },
+				 point_use:{
+					required: true
+				 },
+				 duration:{
+					required: true
+				 },
+				 Duracion_repeats:{
+					required: true
+				 },
+				 modalidad_estudiante:{
+					required: true
+					
+				 },
+				 modalidad_lider:{
+					required: true
+				 }
 			  }
 			  commonValidator = $("#formActividad").validate({
 				rules,
@@ -234,7 +259,7 @@
 				modalidades.hidden=false
 			 }
 			 if (tipo === "Componente_Evaluacion") {
-				renderModalNewActivity("{% url 'renderNewtest' %}")
+				renderModalNewActivity("{% url 'renderNewtest' %}",idSeleted,"Show")
 			 }
 			 formPrograma.addEventListener("submit", (e) => {
 				e.preventDefault()
@@ -252,40 +277,18 @@
 			 })
 		   })
 	 }
-	 const renderModalNewActivity = (url) => {
+	 const renderModalNewActivity = (url, ids, metodo) => {
 		return fetch(url, {
 		   ...fetchObject,
 		   body: JSON.stringify({
-			  method: "Show",
+			  method: metodo,
+			  ids
 		   })
 		})
 		   .then(async (res) => {
 			  document.getElementById("sectionDetailed").innerHTML = await res.text()
 		   })
-		   .then(() => {
-			  const formActividad = document.getElementById("formActividad")
-			  let rules = {
-				 resumenActivity: {
-					required: true,
-					maxlength: 200,
-					minlength: 20
-				 },
-				 urlActivity: {
-					required: true,
-					maxlength: 15,
-					minlength: 3
-				 },
-			  }
-			  commonValidator = $("#formActividad").validate({
-				 rules,
-				 highlight: function (element) {
-					$(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-				 },
-				 success: function (element) {
-					$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
-				 },
-			  });
-			 
+		   .then(() => {			 
 			  
 		   })
 	 }
@@ -301,6 +304,9 @@
 		}
 		if (tipo === "Actividad_Sesiones"){
 			url="{% url 'modalNewsesiones' %}"
+		}
+		if (tipo === "Actividad_Test"){
+			url="{% url 'modalNewtest' %}"
 		}
 		editmode = true
 		return fetch(url, {
@@ -379,6 +385,9 @@
 				modalidad.hidden= false
 				modalidades.hidden=false
 			 }
+			 if (tipo === "Actividad_Test") {
+				renderModalNewActivity("{% url 'renderNewtest' %}", idSeleted,"Edit")
+			 }
 			 formPrograma.addEventListener("submit", (e) => {
 				e.preventDefault()
 				if($("#formActividad").valid()){
@@ -445,6 +454,9 @@
 		}
 		if (tipo === "Actividad_Sesiones"){
 			url="{% url 'modalNewsesiones' %}"
+		}
+		if (tipo === "Actividad_Test"){
+			url="{% url 'modalNewtest' %}"
 		}
 		const elimino = await alerta(3)
 		if(elimino){

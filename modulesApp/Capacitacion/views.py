@@ -6,7 +6,7 @@ from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.template.loader import render_to_string
 from ..App.models import ConfTablasConfiguracion,AppPublico
-from ..Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,Capacitacion_componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos,EscalasEvaluaciones
+from ..Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,Capacitacion_componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos,EscalasEvaluaciones,capacitacion_ActividadEvaluaciones
 from ..Organizational_network.models import nodos_grupos
 import time, json
 from decimal import Decimal
@@ -691,9 +691,86 @@ def getModalNewtest(request):
                     if data["method"] == "Show":
                         context = {"status":status,"tipo":tipo}
                         html_template = (loader.get_template('modalAddLesson.html'))
-                        return HttpResponse(html_template.render(context, request)) 
+                        return HttpResponse(html_template.render(context, request))
+                    elif data["method"] == "Delete":
+                        actividad=capacitacion_ComponentesActividades.objects.get(pk=data["id"])
+                        actividad.fk_componenteformacion= Capacitacion_componentesFormacion.objects.get(codigo_componente="papelera")
+                        actividad.save()
+                        test=capacitacion_ActividadEvaluaciones.objects.get(fk_componenteActividad_id=data["id"])
+                        test.fk_componenteActividad=capacitacion_ComponentesActividades.objects.get(valor_elemento="papelera")
+                        test.save()
+                        return JsonResponse({"message":"Deleted"}) 
+                    elif data['method'] == "Edit":
+                        print(data)
+                        modelo = capacitacion_ComponentesActividades.objects.get(pk=data["id"])    
+                        categorias = ConfTablasConfiguracion.obtenerHijos(valor="Ritmo_Capacitacion")
+                        test= capacitacion_ActividadEvaluaciones.objects.get(fk_componenteActividad_id=data['id'])
+                        context = {"categorias": categorias, "modelo": modelo,"status":status,"tipo":tipo}
+                        html_template = (loader.get_template('modalAddLesson.html'))
+                        return HttpResponse(html_template.render(context, request))
+                    elif data["method"] == "sort":
+                        print(data)
+                        paginas=capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion_id=data['id'])
+                        i = 1
+                        for d in data['data']:
+                            if d != None:
+                               pagina = paginas.get(id_componenteActividades=d)
+                               pagina.orden_presentacion = i
+                               i = i + 1
+                               pagina.save()
+                        return JsonResponse({"message":"ok"}, status=200)
+                    elif data["method"] == "Update":
+                        print(data)
+                        actividad=capacitacion_ComponentesActividades.objects.get(pk=data["id"])
+                        test= capacitacion_ActividadEvaluaciones.objects.get(fk_componenteActividad_id=data["id"])
+                        actividad.titulo=data['data']['descriptionActivity']
+                        actividad.descripcion=data['data']['resumenActivity']
+                        actividad.fecha_disponibilidad=data['data']['disponibleLesson']
+                        actividad.peso_creditos=Decimal(data['data']['creditos'].replace(',','.'))
+                        #actividad.valor_elemento='Actividad_leccion'
+                        actividad.url=data['data']['urlActivity'] 
+                       #actividad.orden_presentacion=len(capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion_id=data['id']))
+                        #actividad.fk_tipocomponente_id=ConfTablasConfiguracion.objects.get(valor_elemento=data['tipo']).pk 
+                        actividad.fk_statuscomponente_id=data['data']['estatusLesson']
+                        actividad.save()
+                        test.calificacion_aprobar=Decimal(data['data']['minApptest'].replace(',','.')) 
+                        test.duracion=data['data']['Duracion_repeats']                        
+                        test.fk_escalasEvaluaciones_id=data['data']['qualificationtest']
+                        test.fk_tipoduracion_id=data['data']['duration']
+                        test.enviar_mensaje=data['data']['modalidad_estudiante']
+                        test.enviar_notificacion_lider=data['data']['modalidad_lider']
+                        test.nro_repeticiones=data['data']['repeatstest']
+                        test.point_in_use=Decimal(data['data']['point_use'].replace(',','.')) 
+                        test.titulo_evaluacion=data['data']['descriptionActivity']
+                        test.save()
+                        print(data)
+                        return JsonResponse({"message":"ok"})
                     elif data["method"] == "Create": 
                         print(data)
+                        test=capacitacion_ActividadEvaluaciones()
+                        actividad=capacitacion_ComponentesActividades()
+                        actividad.titulo=data['data']['descriptionActivity']
+                        actividad.descripcion=data['data']['resumenActivity']
+                        actividad.fecha_disponibilidad=data['data']['disponibleLesson']
+                        actividad.peso_creditos=data['data']['creditos']
+                        actividad.valor_elemento='Actividad_Test'
+                        actividad.url=data['data']['urlActivity'] 
+                        actividad.orden_presentacion=len(capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion_id=data['id'])) + 1
+                        actividad.fk_componenteformacion_id=data['id']
+                        actividad.fk_tipocomponente_id=ConfTablasConfiguracion.objects.get(valor_elemento=data['tipo']).pk 
+                        actividad.fk_statuscomponente_id=data['data']['estatusLesson']
+                        actividad.save()
+                        test.calificacion_aprobar=data['data']['minApptest'] 
+                        test.duracion=data['data']['Duracion_repeats']
+                        test.fk_componenteActividad=actividad
+                        test.fk_escalasEvaluaciones_id=data['data']['qualificationtest']
+                        test.fk_tipoduracion_id=data['data']['duration']
+                        test.enviar_mensaje=data['data']['modalidad_estudiante']
+                        test.enviar_notificacion_lider=data['data']['modalidad_lider']
+                        test.nro_repeticiones=data['data']['repeatstest']
+                        test.point_in_use=data['data']['point_use']
+                        test.titulo_evaluacion=data['data']['descriptionActivity']
+                        test .save()                       
                         return JsonResponse({"message":"ok"})
             except Exception as e:
                print(e)
@@ -708,12 +785,19 @@ def renderModalNewTest(request):
                         data = json.load(request)
                         tipoDuracion = ConfTablasConfiguracion.obtenerHijos(valor="Tipo_Duracion")
                         escalas = EscalasEvaluaciones.objects.all()
+                        
                         print('hola')
                         print(tipoDuracion)
                         if data["method"] == "Show":
+                            print(data)
                             context = {"escalas":escalas, "tipoDuracion":tipoDuracion}
                             html_template = (loader.get_template('modalAddTest.html'))
-                            return HttpResponse(html_template.render(context, request))                           
+                            return HttpResponse(html_template.render(context, request))
+                        elif data["method"] == "Edit": 
+                            test= capacitacion_ActividadEvaluaciones.objects.get(fk_componenteActividad_id=data['ids'])
+                            context = {"escalas":escalas,"test":test, "tipoDuracion":tipoDuracion}
+                            html_template = (loader.get_template('modalAddTest.html'))
+                            return HttpResponse(html_template.render(context, request))                   
             except Exception as e:
                print(e)
                return JsonResponse({"message":"error"}, status=500)

@@ -8,6 +8,7 @@
    {% if activity.valor_elemento == 'Actividad_leccion'%} deg-warning{% endif %}
    {% if activity.valor_elemento == 'Actividad_Tarea'%} deg-danger{% endif %}
    {% if activity.valor_elemento == 'Actividad_Sesiones'%}deg-info{% endif %}
+   {% if activity.valor_elemento == 'Actividad_Test'%}deg-success{% endif %}
    ">
    <div class="card-list-item-icon">
    {% if activity.valor_elemento == 'Actividad_leccion'%}
@@ -18,6 +19,9 @@
    {% endif %}
    {% if activity.valor_elemento == 'Actividad_Sesiones'%}
    <i class="fas fa-file-powerpoint"></i>
+   {% endif %}
+   {% if activity.valor_elemento == 'Actividad_Test'%}
+   <i class="fas fa-file-signature"></i>
    {% endif %}
    </div>
       <div class="card-list-item-title">{{activity.titulo}}</div>      

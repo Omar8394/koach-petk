@@ -2,24 +2,29 @@
    <div class="form-group col-md-6">
       <label for="minApp">Minimo aprobar</label>
       <input type="text" name="minApptest" class="form-control" id="minApptest" placeholder="Enter a number"
-      {% if modelo %}{% if modelo.calificacion_aprobar %} value="{{modelo.calificacion_aprobar}}" {% endif %}{% endif %}>
+      {% if test.calificacion_aprobar %} value="{{test.calificacion_aprobar}}" {% endif %}>
    </div>
    <div class="form-group col-md-6">
       <label for="repeats">Numero de repeticiones</label>
       <input type="text" name="repeatstest" class="form-control" id="repeatstest" placeholder="Enter a number"
-      {% if modelo %}{% if modelo.nro_repeticiones %} value="{{modelo.nro_repeticiones}}" {% endif %}{% endif %}>
+{% if test.nro_repeticiones %} value="{{test.nro_repeticiones}}" {% endif %}>
    </div>
 </div>
 <div class="form-row">
-   <div class="form-group col-md-12">
+   <div class="form-group col-md-6">
       <label for="qualification">Test Total Qualification</label>
-      <select class="form-control" id="qualificationtest" name="qualificationtest" {% if modelo %}disabled{% endif %}>
-         <option value="null" disabled {% if not modelo %}selected{% else %}{% if not modelo.fk_escala_evaluacion %} selected {% endif %}{% endif %}>Select an option</option>
+      <select class="form-control" id="qualificationtest" name="qualificationtest" >
+         <option value="null"  >Select an option</option>
    
          {% for cal in escalas %}
-         <option value="{{cal.pk}}" {% if modelo %}{% if modelo.fk_escala_evaluacion_id == cal.pk %}selected{% endif %}{% endif %}> {{cal}}</option>
+         <option value="{{cal.pk}}" {% if test.fk_escalasEvaluaciones_id == cal.pk %}selected{% endif %}> {{cal}}</option>
          {% endfor %}
       </select>
+   </div>
+   <div class="form-group col-md-6">
+      <label for="repeats">Puntos en uso</label>
+      <input type="text" name="point_use" class="form-control" id="point_use" placeholder="Enter a number"
+      {% if test.point_in_use %} value="{{test.point_in_use}}" {% endif %}>
    </div>
 </div>
 
@@ -29,34 +34,42 @@
    <div class="form-group col-md-6">
       <label for="durationActivity" class="col-form-label">Tipo Duracion</label>
       <select class="form-control" id="duration" name="duration" {% if modelo %}disabled{% endif %}>
-         <option value="null" disabled {% if not modelo %}selected{% else %}{% if not modelo.fk_escala_evaluacion %} selected {% endif %}{% endif %}>Select an option</option>
+         <option value="null" disabled {% if not test %}selected{% else %}{% if not modelo.fk_escala_evaluacion %} selected {% endif %}{% endif %}>Select an option</option>
    
          {% for duration in tipoDuracion %}
-         <option value="{{duration.pk}}" {% if modelo %}{% if modelo.fk_escala_evaluacion_id == cal.pk %}selected{% endif %}{% endif %}> {{duration}}</option>
+         <option value="{{duration.pk}}" {% if test.fk_tipoduracion_id == duration.pk %}selected{% endif %}>{{duration}}</option>
          {% endfor %}
       </select>
    </div>
    <div class="form-group col-md-6">
       <label for="repeats" class="col-form-label">Duracion</label>
       <input type="text" name="Duracion_repeats" class="form-control" id="Duracion_repeats" placeholder="Enter a number"
-      {% if modelo %}{% if modelo.nro_repeticiones %} value="{{modelo.nro_repeticiones}}" {% endif %}{% endif %}>
+      {% if test.duracion %} value="{{test.duracion}}" {% endif %}>
    </div>
 </div>
 <div class="form-group col-md-6">
 <label id="modalidad" for="urlProgra" class="col-form-label" >Enviar mensaje</label>
-<select class="form-control" name="modalidades" id="modalidades" required
+<select class="form-control" name="modalidad_estudiante" id="modalidad_estudiante" 
 > 
-   <option value="0"  {% if tareas.modalidad == '0' %}selected{% endif %}>Presencial</option>
+   <option value="null" selected>Seleccione una opcion</option>
+   <option value="0"  {% if test.enviar_mensaje == '0' %}selected{% endif %}>Mensaje</option>
   
-   <option value="1"  {% if tareas.modalidad == '1' %}selected{% endif %}>Online</option>
-   <option value="2"  {% if tareas.modalidad == '2' %}selected{% endif %}>MixTa</option>
+   <option value="1"  {% if test.enviar_mensaje == '1' %}selected{% endif %}>Notificacion</option>
+   <option value="2"  {% if test.enviar_mensaje == '2' %}selected{% endif %}>Ambas</option>
+   <option value="3"  {% if test.enviar_mensaje == '3' %}selected{% endif %}>RRSS</option>
+   <option value="4"  {% if test.enviar_mensaje == '4' %}selected{% endif %}>Telefono</option>
+   
 </select> 
 <label id="modalidad" for="urlProgra" class="col-form-label" >Enviar mensaje al lider</label>
-<select class="form-control" name="modalidades" id="modalidades" required
+<select class="form-control" name="modalidad_lider" id="modalidad_lider" 
 > 
-   <option value="0"  {% if tareas.modalidad == '0' %}selected{% endif %}>Presencial</option>
+<option value="null" selected>Seleccione una opcion</option>
+<option value="0"  {% if test.enviar_notificacion_lider == '0' %}selected{% endif %}>Mensaje</option>
   
-   <option value="1"  {% if tareas.modalidad == '1' %}selected{% endif %}>Online</option>
-   <option value="2"  {% if tareas.modalidad == '2' %}selected{% endif %}>MixTa</option>
+<option value="1"  {% if test.enviar_notificacion_lider == '1' %}selected{% endif %}>Notificacion</option>
+<option value="2"  {% if test.enviar_notificacion_lider == '2' %}selected{% endif %}>Ambas</option>
+<option value="3"  {% if test.enviar_notificacion_lider == '3' %}selected{% endif %}>RRSS</option>
+<option value="2"  {% if test.enviar_notificacion_lider == '4' %}selected{% endif %}>Telefono</option>
+
 </select> 
 </div>
