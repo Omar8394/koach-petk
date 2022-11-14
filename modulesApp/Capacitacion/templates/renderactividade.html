@@ -49,6 +49,12 @@
          onclick="programsesions('{{activity.id_componenteActividades}}')">
          <i class="fas fa-plus"></i>
          </button> 
+        
+         {% elif activity.valor_elemento == 'Actividad_Test'%}
+         <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Programar sesion "
+         onclick="test('{{activity.id_componenteActividades}}')">
+         <i class="fas fa-plus"></i>
+         </button> 
          {% endif %}
       </div>
    </div>

@@ -6,7 +6,7 @@ from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.template.loader import render_to_string
 from ..App.models import ConfTablasConfiguracion,AppPublico
-from ..Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,Capacitacion_componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos,EscalasEvaluaciones,capacitacion_ActividadEvaluaciones
+from ..Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_EvaluacionesPreguntas, capacitacion_EvaluacionesPreguntasOpciones, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,Capacitacion_componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos,EscalasEvaluaciones,capacitacion_ActividadEvaluaciones,capacitacion_EvaluacionesBloques 
 from ..Organizational_network.models import nodos_grupos
 import time, json
 from decimal import Decimal
@@ -19,7 +19,9 @@ import uuid
 import mimetypes
 from django.core.files.storage import FileSystemStorage
 import os
-# Create your views here.
+from django.db.models import Count, Sum, FloatField
+# Create your 
+# views here.
 @register.filter
 def jsonsesion(datos):
   if datos==None or datos=="" or datos=={}:
@@ -97,6 +99,18 @@ def hashijos(id):
     
     print(has)
     return has
+@register.filter
+def peso(id,test):
+    totales=0
+    if id == "":
+        return ""
+    else:
+      test=capacitacion_ActividadEvaluaciones.objects.get(pk=test).fk_escalasEvaluaciones.maxima_puntuacion       
+      has=capacitacion_EvaluacionesBloques.objects.get(pk=id).peso 
+      total=(int(test)*int(has))
+      totales=(total/100)
+      print(has)
+    return totales
 @login_required(login_url="/security/login/")
 def index(request):
     
@@ -1454,4 +1468,486 @@ def savesesionprogramas(request):
                     return JsonResponse({"message":"ok"})
           except Exception as e:
                print(e)
-               return JsonResponse({"message":"error"}, status=500)                                         
+               return JsonResponse({"message":"error"}, status=500) 
+def testinit(request):
+    id=request.GET.get('id')
+    print(id)
+    test=capacitacion_ActividadEvaluaciones.objects.get(fk_componenteActividad_id=id)
+    has=EscalasEvaluaciones.objects.all()
+    padre=ConfTablasConfiguracion.objects.filter(valor_elemento="Tipo_Pregunta")
+    tipos_pre=ConfTablasConfiguracion.objects.filter(fk_tabla_padre=padre[0].id_tabla)
+    context = {'test':test,'has':has, 'tipos_pre':tipos_pre}
+    html_template = (loader.get_template('testinit.html'))
+    return HttpResponse(html_template.render(context, request)) 
+def rendertest(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest': 
+         try:
+            if request.body:
+                context={}
+                modelo = {}
+                title=False
+                
+                data = json.load(request)
+                tipo_preguntas=ConfTablasConfiguracion.obtenerHijos(valor="Tipo_Pregunta")
+                if data["query"] == "" : 
+                    print(data)  
+                    #test=capacitacion_ActividadEvaluaciones.objects.get(pk=data['id']).fk_escalasEvaluaciones.maxima_puntuacion     
+                    bloques=capacitacion_EvaluacionesBloques.objects.filter(fk_ActividadEvaluaciones_id=data['id'])             
+                    if bloques.exists():
+                      
+                       context = {'bloques':bloques,'tipo_preguntas':tipo_preguntas}
+                       html_template = (loader.get_template('rendertestbloques.html'))
+                       return HttpResponse(html_template.render(context, request))
+                    else:
+                       title= True
+                       context = {'title': title,'tipo_preguntas':tipo_preguntas}
+                       html_template = (loader.get_template('rendertestbloques.html'))
+                       return HttpResponse(html_template.render(context, request)) 
+         except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)
+def renderpreguntas(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest': 
+         try:
+            if request.body:
+                context={}
+                modelo = {}
+                title=False
+                
+                data = json.load(request)
+                #tipo_preguntas=ConfTablasConfiguracion.obtenerHijos(valor="Tipo_Pregunta")
+                if data["query"] == "" : 
+                    print(data['pk'])
+                    tipo_preguntas=ConfTablasConfiguracion.objects.get(pk=data['id']).desc_elemento     
+                    if tipo_preguntas == 'Simple':
+                       context={'id':data['pk'],'peso':data['peso']} 
+                       html_template = (loader.get_template('renderpreguntassimple.html'))
+                       return HttpResponse(html_template.render(context, request))
+                    elif tipo_preguntas == 'Multiple':
+                       context={'id':data['pk'],'peso':data['peso']} 
+                       html_template = (loader.get_template('renderpreguntasmultiples.html'))
+                       return HttpResponse(html_template.render(context, request))
+         except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)           
+def renderizarnuevaspre(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest': 
+         try:
+            if request.body:
+                context={}
+                modelo = {}
+                title=False
+                
+                data = json.load(request)
+                
+                if data["query"] == "" : 
+                    preguntas=capacitacion_EvaluacionesPreguntas.objects.filter(fk_evaluacionesBloques_id=data['vl'])
+                   
+                    context={'preguntas':preguntas}
+                    html_template = (loader.get_template('rendertapreg.html'))
+                    return HttpResponse(html_template.render(context, request))
+                    #return JsonResponse({'data':findpregunta}, safe=False)
+                    
+                      
+         except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)
+def getModalbloques(request):            
+   if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            context = {}
+            modelo = {}
+            try:
+                if request.body:
+                    data = json.load(request)
+                    escalas = EscalasEvaluaciones.objects.all()
+                    if data["method"] == "Show":
+                       print(data)
+                       context = {'escalas':escalas}
+                       html_template = (loader.get_template('modalAddBlock.html'))
+                       return HttpResponse(html_template.render(context, request))            
+                    elif data["method"] == "Create": 
+                         total=0
+                         
+                         bloque=capacitacion_EvaluacionesBloques.objects.filter(fk_ActividadEvaluaciones_id=data["id"])     
+                         for item in bloque:
+                            
+                             total=total+item.peso
+                         print(total)
+                         if total + Decimal(data['data']['blocknum'].replace(',','.')) > 100:
+                            return JsonResponse({"message":"No"})
+                         else: 
+                           bloques=capacitacion_EvaluacionesBloques()
+                           bloques.Titulo_bloque=data['data']['blockTitle']
+                           bloques.instrucciones_bloque=data['data']['blockText']
+                           bloques.peso=Decimal(data['data']['blocknum'].replace(',','.'))
+                           bloques.tipo_bloque=data['data']['modalidad']
+                           bloques.fk_escalasEvaluaciones_id=data['data']['qualificationtest']
+                           bloques.fk_ActividadEvaluaciones_id=data['id']
+                           bloques.save()
+                           return JsonResponse({"message":"ok"})
+                    elif data["method"] == "Delete":
+                        actividad=capacitacion_EvaluacionesBloques.objects.get()
+                        actividad.fk_ActividadEvaluaciones= capacitacion_ActividadEvaluaciones.objects.get(codigo_componente="papelera")
+                        actividad.save()
+                        
+                    elif data["method"] == "Update": 
+                         print(data)
+                         bloques=capacitacion_EvaluacionesBloques.objects.get(pk=data["id"])
+                         bloques.Titulo_bloque=data['data']['blockTitle']
+                         bloques.instrucciones_bloque=data['data']['blockText']
+                         bloques.peso=Decimal(data['data']['blocknum'].replace(',','.'))
+                         bloques.tipo_bloque=data['data']['modalidad']
+                         bloques.fk_escalasEvaluaciones_id=data['data']['qualificationtest']
+                         bloques.save()
+                         return JsonResponse({"message":"ok"})
+                    elif data["method"] == "Edit":
+                         bloques=capacitacion_EvaluacionesBloques.objects.get(pk=data['id'])               
+                         context = {'bloques':bloques,'escalas':escalas}
+                         html_template = (loader.get_template('modalAddBlock.html'))
+                         return HttpResponse(html_template.render(context, request))
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)                                                                      
+
+
+@login_required(login_url="/login/")
+def getModalNewSimple(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            
+            try:
+                context = {}
+                data = json.load(request)["data"]   
+                print(data)
+                if data['method']=="Create":
+                    total=0
+                         
+                    bloque=capacitacion_EvaluacionesBloques.objects.get(pk=data['fatherId'])   
+                    masimapt= bloque.fk_ActividadEvaluaciones.fk_escalasEvaluaciones.maxima_puntuacion
+                    testpoint=capacitacion_EvaluacionesPreguntas.objects.filter(fk_evaluacionesBloques_id=data['fatherId'])
+                    
+                    for item in testpoint:
+                        total=total+item.puntos_pregunta
+                    print(total)
+                    portje=(bloque.peso * masimapt)/100
+                    print(portje)
+                    if total + Decimal(data['puntosPregunta']) > portje:
+                        return JsonResponse({"message":"No"})
+                    else:    
+                       pregunta=capacitacion_EvaluacionesPreguntas.objects.create()
+                       pregunta.fk_evaluacionesBloques_id=data['fatherId']
+                       pregunta.fk_tipoPregunta_id=ConfTablasConfiguracion.objects.get(valor_elemento="Simple").pk     
+                       pregunta.texto_pregunta=data['textoPregunta']
+                       pregunta.puntos_pregunta=data['puntosPregunta']
+                       pregunta.orden=len(capacitacion_EvaluacionesPreguntas.objects.filter(fk_evaluacionesBloques_id=data['fatherId'])) + 1
+                       pregunta.save()
+                       hijos = data["hijos"]
+                       if hijos:
+                          print(hijos)
+                          selectetedOp=int(data['select2'])     
+                          for newOpcion in hijos:
+                                
+                              Opcion=capacitacion_EvaluacionesPreguntasOpciones()
+                              Opcion.fk_capacitacionEvaluacionesPreguntas=pregunta
+                              Opcion.texto_opcion=newOpcion['OpcionText']       
+                              Opcion.respuesta_correcta=True if newOpcion['id']==selectetedOp else False
+                              Opcion.save()
+                    
+                       return JsonResponse({"message": "ok"})
+                
+                #return JsonResponse({"message": "ok"})
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)                                                                      
+@login_required(login_url="/login/")
+def EditNewSimple(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            
+            try:
+                context = {}
+                data = json.load(request)["data"]   
+                print(data)
+                if "delete" in data:
+                    print(data)
+                    return JsonResponse({"message": "Deleted"})
+                if "idFind" in data:
+                    print(data)
+                    pregunta=capacitacion_EvaluacionesPreguntas.objects.filter(pk=data["idFind"])
+                    findpregunta = list(pregunta.values())
+                    childs = capacitacion_EvaluacionesPreguntasOpciones.objects.filter(fk_capacitacionEvaluacionesPreguntas=data["idFind"])
+                    listaChilds = list(childs.values())
+                    print(listaChilds)
+                    return JsonResponse({"data":findpregunta[0], "childs":listaChilds}, safe=False)
+                
+                if data["method"] == "Update":
+                    pregunta=capacitacion_EvaluacionesPreguntas.objects.get(pk=data["idViejo"])
+                    pregunta.orden=pregunta.orden
+                    pregunta.texto_pregunta=data['textoPregunta']
+                    pregunta.puntos_pregunta=data['puntosPregunta']
+                    pregunta.fk_tipoPregunta_id=ConfTablasConfiguracion.objects.get(valor_elemento="Simple").pk
+                    pregunta.save()
+                    childs = capacitacion_EvaluacionesPreguntasOpciones.objects.filter(fk_capacitacionEvaluacionesPreguntas=data["idViejo"])
+                    
+                    hijos = data["hijos"]
+                    if hijos:
+                            print(hijos)
+                        
+                            if "idViejo" in data:
+                                 
+                                 childs.delete()
+                            selectetedOp=int(data['select2'])     
+                            for newOpcion in hijos:
+                                
+                                 Opcion=capacitacion_EvaluacionesPreguntasOpciones()
+                                 Opcion.fk_capacitacionEvaluacionesPreguntas=pregunta
+                                 Opcion.texto_opcion=newOpcion['OpcionText']   
+                                    
+                                 Opcion.respuesta_correcta=True if newOpcion['id']==selectetedOp else False
+                                 Opcion.save()
+                    
+                    
+                
+                    return JsonResponse({"message": "ok"})
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500) 
+@login_required(login_url="/login/")
+def EditNewMultiple(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            
+            try:
+                context = {}
+                data = json.load(request)["data"]   
+                print(data)
+                if "delete" in data:
+                    print(data)
+                    return JsonResponse({"message": "Deleted"})
+                if "idFind" in data:
+                    print(data)
+                    pregunta=capacitacion_EvaluacionesPreguntas.objects.filter(pk=data["idFind"])
+                    findpregunta = list(pregunta.values())
+                    childs = capacitacion_EvaluacionesPreguntasOpciones.objects.filter(fk_capacitacionEvaluacionesPreguntas=data["idFind"])
+                    listaChilds = list(childs.values())
+                    print(listaChilds)
+                    return JsonResponse({"data":findpregunta[0], "childs":listaChilds}, safe=False)
+                
+                if data["method"] == "Update":
+                    pregunta=capacitacion_EvaluacionesPreguntas.objects.get(pk=data["idViejo"])
+                    pregunta.orden=pregunta.orden
+                    pregunta.texto_pregunta=data['textoPregunta']
+                    pregunta.puntos_pregunta=data['puntosPregunta']
+                    pregunta.fk_tipoPregunta_id=ConfTablasConfiguracion.objects.get(valor_elemento="Multiple").pk
+                    pregunta.save()
+                    childs = capacitacion_EvaluacionesPreguntasOpciones.objects.filter(fk_capacitacionEvaluacionesPreguntas=data["idViejo"])
+                    
+                    hijos = data["hijos"]
+                    if hijos:
+                            print(hijos)
+                        
+                            if "idViejo" in data:
+                                 
+                                 childs.delete()
+                                
+                            for newOpcion in hijos:
+                                
+                                 Opcion=capacitacion_EvaluacionesPreguntasOpciones()
+                                 Opcion.fk_capacitacionEvaluacionesPreguntas=pregunta
+                                 Opcion.texto_opcion=newOpcion['OpcionText']                                    
+                                 Opcion.porc_respuesta=float(newOpcion['value'])
+                                 Opcion.save()                    
+                    
+                
+                    return JsonResponse({"message": "ok"})
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)            
+                #if "delete" in data:
+                    #pregunta=EvaluacionesPreguntas.objects.filter(idevaluaciones_preguntas=data["id"]).update(fk_evaluaciones_bloque_id=33)
+                    # bloque = pregunta.fk_evaluaciones_bloque
+                    # bloque.pointUse=bloque.pointUse-pregunta.puntos_pregunta
+                    # actividad=bloque.fk_actividad_evaluaciones
+                    # actividad.pointUse=actividad.pointUse-pregunta.puntos_pregunta
+                    # bloque.save()
+                   # actividad.save()
+
+                    # pregunta.delete()
+                    
+                    # preguntas = bloque.bloque_pregunta.order_by('orden')
+                    # for idx, value in enumerate(preguntas, start=1):
+                    #     value.orden = idx
+                    #     value.save()
+                    #return JsonResponse({"message": "Deleted"})
+                # if "idFind" in data:
+                #     print(data)
+                #     pregunta=EvaluacionesPreguntas.objects.filter(pk=data["idFind"])
+                #     findpregunta = list(pregunta.values())
+                #     childs = PreguntasOpciones.objects.filter(fk_evaluacion_pregunta=data["idFind"])
+                #     listaChilds = list(childs.values())
+                #     return JsonResponse({"data":findpregunta[0], "childs":listaChilds}, safe=False)
+                
+                
+                # if data["method"] == "Update":
+                #     pregunta=EvaluacionesPreguntas.objects.get(pk=data["idViejo"])
+                #     bloque=EvaluacionesBloques.objects.annotate(num_child=Count('bloque_pregunta', distinct=True) ).get(pk=data['fatherId'])
+                  
+                #     pregunta.orden=pregunta.orden
+
+                #     pregunta.fk_evaluaciones_bloque=bloque
+                #     pregunta.texto_pregunta=data['textoPregunta']
+                #     pregunta.titulo_pregunta=data['tituloPregunta']
+
+
+                #     actividad=ActividadEvaluaciones.objects.get(pk=bloque.fk_actividad_evaluaciones.pk)
+                #     actividad.pointUse=float(actividad.pointUse)-float(bloque.pointUse)
+                #     bloque.pointUse=float(bloque.pointUse)-float(pregunta.puntos_pregunta)+float(data['puntosPregunta'])
+                #     actividad.pointUse=float(actividad.pointUse)+float(bloque.pointUse)
+                #     bloque.save()
+                #     actividad.save()
+
+
+                #     pregunta.puntos_pregunta=data['puntosPregunta']
+
+                    
+                #     pregunta.fk_tipo_pregunta_evaluacion=MyMethod.OrigenPreguntaTipo('Simple')
+                #     pregunta.save()
+                #     childs = PreguntasOpciones.objects.filter(fk_evaluacion_pregunta=data["idViejo"])
+                    
+                #     hijos = data["hijos"]
+                #     if hijos:
+                #             print(hijos)
+                        
+                #             if "idViejo" in data:
+                                 
+                #                  childs.delete()
+                #             selectetedOp=int(data['select2'])     
+                #             for newOpcion in hijos:
+                                
+                #                  Opcion=PreguntasOpciones()
+                #                  Opcion.fk_evaluacion_pregunta=pregunta
+                #                  Opcion.texto_opcion=newOpcion['OpcionText']   
+                #                  Opcion.idLista=newOpcion['id']    
+                #                  Opcion.respuetaCorrecta=True if newOpcion['id']==selectetedOp else False
+                #                  Opcion.save()
+
+                
+                #     bloque=EvaluacionesBloques.objects.annotate(num_child=Count('bloque_pregunta', distinct=True) ).get(pk=data['fatherId'])
+                #     newOrden=bloque.num_child+1
+                #     pregunta.orden=newOrden
+
+                #     pregunta.fk_evaluaciones_bloque=bloque
+                #     pregunta.texto_pregunta=data['textoPregunta']
+                #     pregunta.titulo_pregunta=data['tituloPregunta']
+
+
+                #     pregunta.puntos_pregunta=data['puntosPregunta']
+                   
+                #     bloque.pointUse=float(bloque.pointUse)+float(pregunta.puntos_pregunta)
+                #     actividad=ActividadEvaluaciones.objects.get(pk=bloque.fk_actividad_evaluaciones.pk)
+                #     actividad.pointUse=float(pregunta.puntos_pregunta)+float(actividad.pointUse)
+                #     bloque.save()
+                #     actividad.save()
+
+
+                #     pregunta.fk_tipo_pregunta_evaluacion=MyMethod.OrigenPreguntaTipo('Simple')
+                #     pregunta.save()
+
+                #     hijos = data["hijos"]
+                #     if hijos:
+                #             print(hijos)
+                        
+                #             if "idViejo" in data:
+                        
+                #                  childs.delete()
+                #             selectetedOp=int(data['select2'])     
+                #             for newOpcion in hijos:
+                                
+                #                  Opcion=PreguntasOpciones()
+                #                  Opcion.fk_evaluacion_pregunta=pregunta
+                #                  Opcion.texto_opcion=newOpcion['OpcionText']   
+                #                  Opcion.idLista=newOpcion['id']    
+                #                  Opcion.respuetaCorrecta=True if newOpcion['id']==selectetedOp else False
+                #                  Opcion.save()
+@login_required(login_url="/login/")
+def getModalNewMultiple(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            
+            try:
+                context = {}
+                data = json.load(request)["data"]   
+                print(data['method'])
+                if data['method']=="Create":
+                    total=0
+                         
+                    bloque=capacitacion_EvaluacionesBloques.objects.get(pk=data['fatherId'])   
+                    masimapt= bloque.fk_ActividadEvaluaciones.fk_escalasEvaluaciones.maxima_puntuacion
+                    testpoint=capacitacion_EvaluacionesPreguntas.objects.filter(fk_evaluacionesBloques_id=data['fatherId'])
+                    
+                    for item in testpoint:
+                        total=total+item.puntos_pregunta
+                    print(total)
+                    portje=(bloque.peso * masimapt)/100
+                    print(portje)
+                    if total + Decimal(data['puntosPregunta']) > portje:
+                        return JsonResponse({"message":"No"})
+                    else: 
+                       pregunta=capacitacion_EvaluacionesPreguntas.objects.create()
+                       pregunta.fk_evaluacionesBloques_id=data['fatherId']
+                       pregunta.fk_tipoPregunta_id=ConfTablasConfiguracion.objects.get(valor_elemento="Multiple").pk     
+                       pregunta.texto_pregunta=data['textoPregunta']
+                       pregunta.puntos_pregunta=data['puntosPregunta']
+                       pregunta.orden=len(capacitacion_EvaluacionesPreguntas.objects.filter(fk_evaluacionesBloques_id=data['fatherId'])) + 1
+                       pregunta.save()
+                       hijos = data["hijos"]
+                       if hijos:
+                          print(hijos)
+                          
+                          for newOpcion in hijos:
+                                
+                              Opcion=capacitacion_EvaluacionesPreguntasOpciones()
+                              Opcion.fk_capacitacionEvaluacionesPreguntas=pregunta
+                              Opcion.texto_opcion=newOpcion['OpcionText']       
+                              Opcion.porc_respuesta=float(newOpcion['value'])
+                              Opcion.save()
+                       print(data)
+                    
+                       return JsonResponse({"message": "ok"})
+                
+                #return JsonResponse({"message": "ok"})
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)                                                                      
+@login_required(login_url="/login/")
+def getModalQuestion(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            context = {}
+            modelo = {}
+            try:
+                if request.body:
+                    data = json.load(request) 
+                    print(data)
+                    context = {
+                     "tipoPreguntas" : ConfTablasConfiguracion.objects.get(valor_elemento=data['data']['tp']).desc_elemento,
+                           }
+                    print(context)
+                    html_template = (loader.get_template('modalAddQuestion.html'))
+                    return HttpResponse(html_template.render(context, request))
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)        
+   
+             
+                      
+            
+           
+   
+   
+
+           

@@ -1,0 +1,81 @@
+
+<div class="form-row col-md-12">
+    <h2>General</h2>
+</div>
+
+<div class="card-body" id="tabQuestions">
+    <div class="form-row text-center">
+        <div class="form-group col-md-12">
+            <div class="table-responsive">
+                  <table id="optionsta{{id}}" class="table table-sm table-bordered table-striped table-hover table-responsive">
+                    <thead class="form-group col-md-12">
+                        <tr>
+                            <th>
+                                N°
+                            </th>
+                            <th>
+                               Question title
+                            </th>
+                            <th>
+                               Question points
+                            </th>
+                            <th>
+                                Type
+                            </th>
+                        
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody  id="table{{id}}">
+                        {% for pregunta in preguntas %}
+                           <tr id="itemPregunta{{pregunta.pk}}" >
+                                                    <td>
+                                                        {{pregunta.orden}}
+                                                    </td>
+    
+    
+                                                <td>
+                                                    {{pregunta.texto_pregunta}}
+                                                </td>
+                                                <td>
+                                                    {{pregunta.puntos_pregunta}}
+                                                </td>
+                                               
+    
+                                                <td>
+                                                    {{pregunta.fk_tipoPregunta}}
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group" role="group">
+                                                 
+                                                       <button onclick="openEditModal({{pregunta.id_capacitacionEvaluacionesPreguntas}},'{{pregunta.fk_tipoPregunta}}',{{pregunta.fk_evaluacionesBloques_id}})" type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip"  data-placement="top" title="Edit">
+                                                          <i class="fas fa-edit"></i>
+                                                       </button>
+                                                    
+                                                  
+                                                       <button onclick="openDeleteModal({{pregunta.id_capacitacionEvaluacionesPreguntas}},'{{pregunta.fk_tipoPregunta}}')" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="modal"
+                                                          data-target="#newModal">
+                                                          <i class="fas fa-trash-alt"></i>
+                                                       </button>
+                                                     
+                                                  
+                                                    </div>
+                                                 </td>
+    
+                                                </tr>
+                                                {% endfor %}
+                                                
+                    </tbody>
+                </table>
+            </div>
+        </div>  
+    </div>
+</div>    
+       
+   
+    
+    
+   
+

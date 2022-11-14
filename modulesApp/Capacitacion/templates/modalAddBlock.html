@@ -1,0 +1,70 @@
+<div class="modal-content">
+
+    <div class="modal-header">
+        <h4 style="left: initial;" class="modal-title">Block Details</h4>  
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    </div>
+    <form class="form" id="formBlock" name="formBlock">
+        <div class="modal-body">
+            <div id="seccionGeneral">
+                <div class="form-row">
+                   
+                </div>
+
+                 <div class="form-row col-md-12">
+                    <div class="form-group col-md-12">
+                        <label for="blockTiltle">Titulo</label>
+                        <input type='text' name="blockTitle" class="form-control" id="blockTitle" placeholder="Write here the title for the block" value={{bloques.Titulo_bloque}}>
+                    </div>                       
+                </div>    
+    
+                <div class="form-row col-md-12">
+                    <div class="form-group col-md-12">
+                        <label for="blockText">instrucciones</label>
+                        <textarea name="blockText" class="form-control" placeholder="Write here a comment for the block" id="blockText" cols="100" rows="4">{{bloques.instrucciones_bloque}}</textarea>
+                    </div>                       
+                </div>    
+                <div class="form-row col-md-12">
+                    <div class="form-group col-md-12">
+                        <label for="blockText">Peso</label>
+                        <input type='text' name="blocknum"  class="form-control" placeholder="Write here a comment for the block" id="blocknum" value={{bloques.peso}}>
+                    </div>                       
+                </div>
+                <div class="form-row col-md-12">
+                    <div class="form-group col-md-12">
+                        <label for="blockTiltle">Tipo bloque</label>
+                        <select class="form-control" name="modalidad" id="modalidad" 
+                        > 
+                           <option value="null" selected>Seleccione una opcion</option>
+                           <option value="0"  {% if bloques.tipo_bloque == '0' %}selected{% endif %}>Normal</option>
+                          
+                           <option value="1"  {% if bloques.tipo_bloque == '1' %}selected{% endif %}>Encuesta</option>
+                           <option value="2"  {% if bloques.tipo_bloque == '2' %}selected{% endif %}>Experto</option>
+                           <option value="3"  {% if bloques.tipo_bloque == '3' %}selected{% endif %}>Entrevista</option>
+                           <option value="4"  {% if bloques.tipo_bloque == '4' %}selected{% endif %}>Logica</option>
+                           
+                        </select> 
+                    </div>                       
+                </div>
+            </div>
+            <div class="form-row col-md-12">
+            <div class="form-group col-md-12">
+                <label for="qualification">Test Total Qualification</label>
+                <select class="form-control" id="qualificationtest" name="qualificationtest" >
+                   <option value="null"  >Select an option</option>
+             
+                   {% for cal in escalas %}
+                   <option value="{{cal.pk}}" {% if bloques.fk_escalasEvaluaciones_id == cal.pk %}selected{% endif %}> {{cal}}</option>
+                   {% endfor %}
+                </select>
+             </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">
+                <i class="fas fa-arrow-left mr-2"></i>Back
+            </button>
+            <button type="submit" value="Submit" class="btn btn-primary">Save<i class="fas fa-save ml-2"></i></button>
+        </div>
+    </form>
+</div><!-- /.modal-content -->

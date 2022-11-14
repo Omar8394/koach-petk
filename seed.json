@@ -1450,5 +1450,97 @@
                     "datos_adicional":"",
                     "tipo_dato":0
                   }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":98,
+                  "fields": {
+                    "desc_elemento": "Verdadero/Falso",
+                    "fk_tabla_padre": 97,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "VoF",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":99,
+                  "fields": {
+                    "desc_elemento": "Simple",
+                    "fk_tabla_padre": 97,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Simple",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":100,
+                  "fields": {
+                    "desc_elemento": "Multiple",
+                    "fk_tabla_padre": 97,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Multiple",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":101,
+                  "fields": {
+                    "desc_elemento": "Parrafo",
+                    "fk_tabla_padre": 97,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Parrafo",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":102,
+                  "fields": {
+                    "desc_elemento": "asociacion",
+                    "fk_tabla_padre": 97,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "asociacion",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
                 }
+                ,
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":103,
+                  "fields": {
+                    "desc_elemento": "completar",
+                    "fk_tabla_padre": 97,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": " completar",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                }
+
 ]

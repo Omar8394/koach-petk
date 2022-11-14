@@ -44,7 +44,18 @@ urlpatterns = [
     path('preRequirements/', views.preRequirements, name="preRequirements"),
     path('comboboxpro/', views.comboboxpro, name='comboboxpro'),
     path('renderListasPublic', views.renderListasPublic, name='renderListasPublic'),
-    path('requirementos/', views.requirementos, name="requirementos"), 
+    path('requirementos/', views.requirementos, name="requirementos"),
+    path('testinit/', views.testinit, name="testinit"),
+    path('rendertest/', views.rendertest, name="rendertest"),
+    path('renderizarnuevaspre/', views.renderizarnuevaspre, name="renderizarnuevaspre"),
+    path('renderpreguntas/', views.renderpreguntas, name="renderpreguntas"),
+    #path('modalChooseTypeQuestion/', views.getModalChooseTypeQuestion, name="modalTypeQuestion"),
+    path('getModalbloques/', views.getModalbloques, name="getModalbloques"),
+    path('modalNewSimple/', views.getModalNewSimple, name="modalNewSimple"),
+    path('EditNewSimple/', views.EditNewSimple, name="EditNewSimple"),
+    path('EditNewMultiple/', views.EditNewMultiple, name="EditNewMultiple"),
+    path('modalNewMultiple/', views.getModalNewMultiple, name="modalNewMultiple"),
+    path('modalAddQuestion/', views.getModalQuestion, name="modalAddQuestion"),
     # Scales
     
 

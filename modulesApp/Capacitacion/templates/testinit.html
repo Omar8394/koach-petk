@@ -1,0 +1,1057 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% block title %}{% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<style>
+  header{
+    text-align: center;
+    background: #000;
+    color:#fff;
+    padding:10px;
+
+  }  
+ .container{
+    max-width:900px;
+    margin:auto;
+    padding: 20px;
+
+ }   
+ section{
+    border: 2px solid #5624d0;
+    border-radius: 7px;
+    padding: 10px;
+    margin :10px 0;
+
+
+ }
+ label{
+    display:block;
+    padding:7px;
+    border-radius: 7px;
+    cursor: pointer;
+    border:1px dashed #ccc;
+    margin-bottom: 3px;
+ }
+ label:hover{
+    background: #cec0fc;
+ }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+	<div class="content">
+		<div class="page-inner">
+			<div class="page-header">
+				<h4 class="page-title">Starter page</h4>
+				<ul class="breadcrumbs">
+					<li class="nav-home">
+						<a href="{% url 'Dashboard' %}">
+							<i class="flaticon-home"></i>
+						</a>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<span>Module name</span>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<a href="#">Page 1</a>
+					</li>
+				</ul>
+			</div>
+			<div class="page-category">
+                <header>
+                    <h1>{{test.titulo_evaluacion}}</h1>
+                    <p>{{test.fk_componenteActividad.descripcion}}</p>
+					<p>Maxima Puntuacion: {{test.fk_escalasEvaluaciones.maxima_puntuacion}}</p>
+					<p>Puntos en uso: {{test.point_in_use}}</p>
+					<p>Calificacion Aprobar: {{test.calificacion_aprobar}}</p>
+                </header>   
+                <div class="container">
+               <div class="form-group col-md-12 d-flex flex-row  justify-content-end">                 
+                  <a onclick="renderModal('{{test.pk}}')" class="btn-radius btn-azul " style="display:block;text-align:center;text-decoration:none;color:whitesmoke;"><span>Agregar Bloques de Preguntas</span></a>
+               </div>
+			 <div id="resultado" > 
+				
+        	 
+              </div>
+			</div>
+      		</div>
+		</div>
+	</div>
+    <div class="modal fade" tabindex="-1" role="dialog" id="chooseTypeQuestion">
+        <div class="modal-dialog modal-dialog-centered" role="document" id="modalChooseQuestion">
+        
+            
+        </div>
+    </div>
+	<div class="modal fade" tabindex="-1" role="dialog" id="addNewQuestion">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="modalQuestion">
+        
+            
+        </div>
+    </div>
+	<div class="modal fade" id="addNewModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="addNewModalContent">
+	 
+		</div>
+	 </div>
+{% endblock content %}
+	
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+	
+	let selectedId=null
+	let editmode = false
+    let query = ""
+	let tablaPreguntas = []
+	let tipoPreguntaSelected=null
+	let ids={{test.pk}}
+	const arrayLoco = [{% for cal in has %}{ id: "{{cal.id_escalaEvaluaciones}}", descripcion: "{{cal.maxima_puntuacion}}" }, {% endfor %}]
+	const arraytipopre = [{% for tipo in tipos_pre %}{ id: "{{tipo.id_tabla}}", descripcion: "{{tipo.desc_elemento}}" }, {% endfor %}]
+    let hashObj = arraytipopre.reduce(function (acc, e) {
+        acc[e.id] = e.descripcion
+        return acc
+    }, {})
+	let hashtipo = arraytipopre.reduce(function (acc, e) {
+        acc[e.id] = e.descripcion
+        return acc
+    }, {})
+   const renderContent = (id)=>{
+		document.querySelector("#resultado").classList.add("is-loading")
+		fetch("{% url 'rendertest'%}", {
+		   ...fetchObject,
+		   body: JSON.stringify({
+			  query,
+			  id
+		   })
+		})
+		.then(async(res)=>{
+		   result = await res.text()
+
+		   document.querySelector("#resultado").classList.remove("is-loading")
+		   document.querySelector("#resultado").innerHTML = result
+		})
+	 }
+	 renderContent(ids)
+	 const renderpreguntas = (vl)=>{
+		document.querySelector("#preguntasrender"+vl).classList.add("is-loading")
+		fetch("{% url 'renderizarnuevaspre'%}", {
+		   ...fetchObject,
+		   body: JSON.stringify({
+			  query,
+			  vl
+		   })
+		})
+		.then(async(res)=>{
+		   result = await res.text()
+		   
+		   document.querySelector("#preguntasrender"+vl).classList.remove("is-loading")
+		   document.querySelector("#preguntasrender"+vl).innerHTML = result
+		})
+	 } 
+	 const renderModal = (id) => {
+		
+		idSeleted=id
+		editmode = false
+		return fetch("{% url 'getModalbloques'%}", {
+		   ...fetchObject,
+		   body: JSON.stringify({
+			  method: "Show",
+			  id
+			  
+		   })
+		})
+		   .then(async (res) => {
+			  document.getElementById("addNewModalContent").innerHTML = await res.text()
+		   })
+		   .then(() => {
+			  $("#addNewModal").modal("show")
+			  const formPrograma = document.getElementById("formBlock")
+			  let rules = {
+				blockTitle: {
+					required: true
+					
+				 },
+				 blockText: {
+					required: true
+					
+				 },
+				 blocknum: {
+					required: true
+					
+				 },
+				 blockTipo: {
+					required: true
+					
+				 },
+				 qualificationtest: {
+					required: true
+					
+				 }
+
+
+			  }
+			  commonValidator = $("#formBlock").validate({
+				rules,
+				highlight: function (element) {
+				   $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+				},
+				success: function (element) {
+				   $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+				},
+			 });
+
+			 
+			 formPrograma.addEventListener("submit", (e) => {
+				e.preventDefault()
+				if($("#formBlock").valid()){
+				   setLoading()
+				   clickSave(formPrograma, "{% url 'getModalbloques'%}",)
+					  .then(() => {
+						 $("#addNewModal").modal("hide")
+						 renderContent(idSeleted)
+						 stopLoading()
+						 
+					  })
+	
+				}
+			 })
+		   })
+	 }
+	 const renderModaledit = (id,padre) => {
+		father=padre
+		idSeleted=id
+		editmode = true
+		return fetch("{% url 'getModalbloques'%}", {
+		   ...fetchObject,
+		   body: JSON.stringify({
+			  method: "Edit",
+			  id
+			  
+			  
+		   })
+		})
+		   .then(async (res) => {
+			  document.getElementById("addNewModalContent").innerHTML = await res.text()
+		   })
+		   .then(() => {
+			  $("#addNewModal").modal("show")
+			  const formPrograma = document.getElementById("formBlock")
+			  let rules = {
+				blockTitle: {
+					required: true
+					
+				 },
+				 blockText: {
+					required: true
+					
+				 },
+				 blocknum: {
+					required: true
+					
+				 },
+				 blockTipo: {
+					required: true
+					
+				 },
+				 qualificationtest: {
+					required: true
+					
+				 }
+
+
+			  }
+			  commonValidator = $("#formBlock").validate({
+				rules,
+				highlight: function (element) {
+				   $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+				},
+				success: function (element) {
+				   $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+				},
+			 });
+
+			 
+			 formPrograma.addEventListener("submit", (e) => {
+				e.preventDefault()
+				if($("#formBlock").valid()){
+				   setLoading()
+				   clickSave(formPrograma, "{% url 'getModalbloques'%}",)
+					  .then(() => {
+						 $("#addNewModal").modal("hide")
+						 renderContent(father)
+						 stopLoading()
+						 
+					  })
+	
+				}
+			 })
+		   })
+	 }
+	 const updateModel = (url, method, data, id, father) => {
+        return fetch(url, {
+           ...fetchObject,
+           body: JSON.stringify({
+              method,
+              data,
+              id,
+			  father
+			  
+           })
+        })
+     }
+	 const clickSave = (formElement, url) => {
+		
+		
+        const formData = new FormData(formElement);
+        const data = {}
+     
+        for (var [key, value] of formData.entries()) {
+           data[key] = value
+        }
+        if (editmode) {
+           return updateModel(url, "Update", data, idSeleted, father)
+              .then(async (res) => {
+                 const text = JSON.parse(await res.text())
+                 if (text.message == "error"){
+					makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+			   }
+			   if (text.message == "No") {
+				  makeMessage(4, "{% translate 'Error' %}", "{% translate 'el puntaje excede el limite de puntos permitidos por el test revise nuevamente' %}", 'fa fa-exclamation-triangle')
+			   } 
+			   if (text.message == "ok"){
+				  makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+
+			 }
+              })
+        }
+        else {
+           return updateModel(url, "Create", data, idSeleted, null)
+              .then(async (res) => {
+                 const text = JSON.parse(await res.text())
+                 if (text.message == "error"){
+					  makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+
+				 }
+				 if (text.message == "No") {
+					makeMessage(4, "{% translate 'Error' %}", "{% translate 'el puntaje excede el limite de puntos permitidos por el test revise nuevamente' %}", 'fa fa-exclamation-triangle')
+				 } 
+				 if (text.message == "ok"){
+					makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+
+			   }
+              })
+        }
+	
+     }	
+	 const openDelete= async (id,padre) =>{
+		
+		const elimino = await alerta(3)
+		if(elimino){
+		   fetch("{% url 'getModalbloques'%}", {
+			  ...fetchObject,
+			  body: JSON.stringify({
+				 method: "Delete",
+				 id,
+				 padre
+			  })
+		   })
+		   .then(async (res) => {
+			  const text = JSON.parse(await res.text())
+			  if (text.message == "error")  makeMessage(4, "{% translate 'Notificacion' %}", "{% translate 'un error ha occurrido y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+  
+			  else  makeMessage(1, "{% translate 'Notificacion' %}", "{% translate 'Archivo eliminado satisfactoriamente' %}", 'fas fa-trash-alt')
+  
+		   })
+		   .then(()=>{
+			renderContent(padre)
+		   })
+		}
+	 } 
+     function cambiar_comb(pk,peso) {
+		const id= document.getElementById("duration"+pk).value;
+		fetch("{% url 'renderpreguntas'%}", {
+			...fetchObject,
+			body: JSON.stringify({
+			   query,
+			   id,
+			   pk,
+			   peso
+			})
+		 })
+		 .then(async(res)=>{
+			result = await res.text()
+			document.querySelector("#preguntas"+pk).classList.remove("is-loading")
+			document.querySelector("#preguntas"+pk).innerHTML = result
+		 })
+    } 
+var nextinput = 0;
+const addoptions= async (id) =>{
+	let tipo= document.getElementById("duration"+id).value
+	//alert(hashtipo[tipo])	
+	if (hashtipo[tipo]=="Simple"){
+	let datos = {
+		OpcionText: document.getElementById("questionOptions"+id).value,
+		isCorrect:false,
+		id:tablaPreguntas.length,
+		actions: `
+		<div class="btn-group" role="group">
+			<button onclick="borrarItem(${tablaPreguntas.length}) type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
+				<i class="fas fa-trash-alt"></i>
+			</button>
+		</div>`
+	}  
+	tablaPreguntas.push(datos)
+	actualizarListaSimple(id)
+}
+ if (hashtipo[tipo]=="Multiple"){
+	let datos = {
+		OpcionText: document.getElementById("questionOptions"+id).value,
+		id:tablaPreguntas.length,
+		value:0,
+		
+		actions: `
+		<div class="btn-group" role="group">
+			<button onclick="borrarItem(${tablaPreguntas.length})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
+				<i class="fas fa-trash-alt"></i>
+			</button>
+		</div>`
+	}
+
+	tablaPreguntas.push(datos)
+
+	actualizarListaMultiple(id)
+} 
+}
+
+function actualizarListaMultiple(id) {	
+let contenido = "";
+tablaPreguntas.map((dato, index) => {
+	 let fila =
+		 `<tr>
+				 <td>${dato.OpcionText}</td>
+				 
+				 <td>
+					 <div class="btn-group" role="group">
+						 <input type='number'  value='${dato.value}' step='any' onchange="actualizarValue(${index},this)"   >
+					 </div>
+				 </td>
+				 <td>
+					 <div class="btn-group" role="group">
+						 <button onclick="borrarItemSimple(${index})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
+							 <i class="fas fa-trash-alt"></i>
+						 </button>
+					 </div>
+				 </td>
+			 </tr>`
+	 contenido += fila
+ })
+ $('#tableMultiple'+ id +'').html(contenido);
+}
+function actualizarListaSimple(id) {   
+let contenido = "";
+tablaPreguntas.map((dato, index) => {
+    let checked=dato.isCorrect? 'checked':''
+    //console.log(dato)
+    let fila =
+        `<tr>
+            <td>
+                ${dato.OpcionText}
+            </td>
+                
+            <td>
+                <div class="btn-group" role="group">
+                    <input type='radio' name='listaSimpleRadio' ${checked} value='${index}'  onchange="respuestaCorrecta(this)"  >
+                </div>
+            </td>
+            <td>
+                <div class="btn-group" role="group">
+                    <button onclick="borrarItemSimple(${index})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </td>              
+        </tr>`
+    contenido += fila;
+})
+$('#tableContentSimple'+ id +'').html(contenido);
+//tableContentSimple.innerHTML = contenido;
+}
+function actualizarValue(id, number) {
+
+
+	tablaPreguntas[id].value=number.value;
+   // console.log( tablaPreguntas[id]);
+}
+function respuestaCorrecta(radio){
+    respuesta=radio.value
+    for(const item of tablaPreguntas){
+        item.isCorrect=false
+    }
+    tablaPreguntas[radio.value].isCorrect=true
+  // alert(radio.value)
+
+}
+function save(id,peso){
+	editmode=false
+	idSeleted=id
+	let url=''
+	let tipo= document.getElementById("duration"+id).value
+	//alert(hashtipo[tipo])	
+	if (hashtipo[tipo]=="Simple"){
+		url="{% url 'modalNewSimple'%}"
+		tipoPreguntaSelected=1
+	}
+	if (hashtipo[tipo]=="Multiple"){
+		url="{% url 'modalNewMultiple'%}"
+		tipoPreguntaSelected=2
+	}
+	clickguardar(url,idSeleted,tipoPreguntaSelected,peso)
+	limpiarModalOpciones()
+
+
+ }
+
+ async function clickguardar (url,id,tipo,peso)  {
+            
+	setLoading()
+	console.log(peso)
+
+	const tipoPreguntaSelected= document.getElementById("duration"+id)
+	const questionText= document.getElementById("questionTittle")
+	const questionPoints= document.getElementById("questionPoints"+id)
+	if(tipo==1){
+	var select2=document.querySelector('input[name="listaSimpleRadio"]:checked').value
+	}
+	if(questionPoints.value>peso){
+		stopLoading()
+		console.log(questionPoints.value)
+		alertaMensajitos(5,'Invalid value', 'The questions points exceed the total points available');
+		return;
+	}
+		
+	const metodo=editmode?'Update':'Create'
+	  
+	form = {
+	   textoPregunta: questionText.value,
+	   puntosPregunta: questionPoints.value,
+	   tipoPregunta:tipo,
+	   seleccionada: respuestaCorrecta,
+	   select2:select2,
+	   fatherId:id,
+	   method:metodo,
+	   hijos: tablaPreguntas,
+
+	
+
+	
+	}
+	if (editmode) {
+		console.log(form)
+		console.log('form')
+
+		updateQuestion(form, selectedId, url)
+	}
+	else {
+		createQuestion(form,url)
+	}            
+	
+}
+async function clickSaveedit (url,id)  {
+            
+	setLoading()
+	
+	const questionText= document.getElementById("questionText")
+	
+
+	const questionPoints= document.getElementById("questionPoints")
+	
+
+	
+
+	if(tablaPreguntas.length<=0){
+		stopLoading()
+
+		alertaMensajitos(5,'There are no any options', 'You can not save a questions with no options')
+		return;
+	}
+
+	
+
+	if(tipoPreguntaSelected==1){
+		   var select2=document.querySelector('input[name="listaSimpleRadio"]:checked').value
+	   }
+
+	 
+	   const metodo=editmode?'Update':'Create'
+	  
+	form = {
+	   textoPregunta: questionText.value,
+	   puntosPregunta: questionPoints.value,
+	   //tipoPregunta: typeQuestion.value,
+	   tipoPregunta:tipoPreguntaSelected,
+	   seleccionada: respuestaCorrecta,
+	   select2:select2,
+	   fatherId:id,
+	   method:metodo,
+	   hijos: tablaPreguntas,
+
+	
+
+	
+	}
+	if (editmode) {
+		console.log(form)
+		console.log('form')
+
+		updateQuestion(form, selectedId, url)
+	}
+	            
+
+}
+const createQuestion = (form,url) => {
+	fetch(url, {
+		...fetchObject,
+		body: JSON.stringify({
+		   data: form
+		}),
+	})
+	.then(async (res) => {
+		stopLoading()
+
+		let result = JSON.parse(await res.text())
+		if (result.message === "Error") {
+		   alerta(5)
+		}
+		if (result.message === "No") {
+			alerta(5)
+		 }
+		 if (result.message === "ok") {
+			alerta(1)
+		 }
+		
+		
+	})
+
+} 
+const updateQuestion = (form, idViejo, url) => {
+	fetch(url, {
+		...fetchObject,
+		body: JSON.stringify({
+			data: {
+				...form,
+				idViejo
+			}
+		}),
+	})
+		.then(async (res) => {
+			stopLoading()
+
+			let result = JSON.parse(await res.text())
+			if (result.message === "Error") {
+				alerta(5)
+			}
+			alerta(2)
+			form=null
+		   tablaPreguntas=[]
+			$("#addNewQuestion").modal("hide");
+			
+
+		})
+		.then(() => {
+		   // renderTable()
+		  
+		})
+}
+function limpiarModalOpciones(){
+	tablaPreguntas=[]
+	
+	editmode = false
+	tablaPreguntas.splice(0,tablaPreguntas.length)
+	console.log('clean')
+
+
+}	
+const openEditModal= async (id,type,padre) => {
+setLoading()
+await renderModalQuestions(type)	
+stopLoading()
+let padresv = padre	
+editmode= true 
+selectedId = id
+let url
+   if (type == "Simple"){
+	  url = "{% url 'EditNewSimple' %}"
+	  tipoPreguntaSelected=1
+   }
+   if (type == "Multiple") {
+	  url = "{% url 'EditNewMultiple' %}"
+	  tipoPreguntaSelected=2
+
+   }
+   
+fetch(url, {
+	...fetchObject,
+	body: JSON.stringify({
+		data: {
+			idFind: id
+			 
+		}
+	}),
+})
+.then(async (res) => {
+tablaPreguntas.splice(0,tablaPreguntas.length)
+
+tablaPreguntas=[]
+respuesta=null
+indicePalabra=null
+indiceRespuesta= null
+indicePalabra=null
+//editmode = false
+console.log('clean')
+
+let PreguntaDatos = JSON.parse(await res.text())
+
+document.getElementById("questionText").value=PreguntaDatos.data.texto_pregunta
+
+ document.getElementById("questionPoints").value=PreguntaDatos.data.puntos_pregunta
+ editModePoints=PreguntaDatos.data.puntos_pregunta
+
+
+let listaLoca = PreguntaDatos.childs
+if(listaLoca){
+	if (type=="Simple"){
+		listaLoca.map((el)=>{
+			console.log(el)
+			let datos = {
+				isCorrect:el.respuesta_correcta,
+				id:tablaPreguntas.length,
+				OpcionText: el.texto_opcion,
+				actions: `
+				<div class="btn-group" role="group">
+					<button onclick="borrarItem(${tablaPreguntas.length})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
+						<i class="fas fa-trash-alt"></i>
+					</button>
+				</div>`
+			}
+			tablaPreguntas.push(datos)         
+		})  
+		ListaSimple()          
+	}
+	if (type=="Multiple"){
+		listaLoca.map((el)=>{
+			console.log(el)
+			let datos = {
+				value:el.porc_respuesta,
+				id:tablaPreguntas.length,
+				OpcionText: el.texto_opcion,
+				actions: `
+				<div class="btn-group" role="group">
+					<button onclick="borrarItem(${tablaPreguntas.length})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
+						<i class="fas fa-trash-alt"></i>
+					</button>
+				</div>`
+			}
+			tablaPreguntas.push(datos)         
+		})  
+		ListaMultiple()
+	}
+}	
+})
+.then(async (res) => {
+	var formQuestion = document.getElementById("formQuestion")
+           
+	var z=(e) => {
+		e.preventDefault()
+		clickSaveedit(url,selectedId)
+		
+	}
+	formQuestion.removeEventListener("submit", z);
+	formQuestion.addEventListener("submit",z )   
+	 
+	const questionText = document.getElementById("questionText")
+      console.log(url)
+	   CargarModalOpciones() 
+	   
+})
+}
+function borrarItemSimple(id) {
+	tablaPreguntas.splice(id, 1)
+
+	//if(tipoPreguntaSelected==1)
+	ListaSimple()
+	ListaMultiple()
+	//if(tipoPreguntaSelected==2)
+	//actualizarListaMultiple()
+	//if(tipoPreguntaSelected==3)
+	//actualizarListaCompletations()
+	//if(tipoPreguntaSelected==4)
+	//actualizarListaAssociation()
+	//if(tipoPreguntaSelected==5)
+	//actualizarListaTF()
+}
+function ListaSimple() {   
+	let contenido = "";
+	tablaPreguntas.map((dato, index) => {
+		let checked=dato.isCorrect? 'checked':''
+		//console.log(dato)
+		let fila =
+			`<tr>
+				<td>
+					${dato.OpcionText}
+				</td>
+					
+				<td>
+					<div class="btn-group" role="group">
+						<input type='radio' name='listaSimpleRadio' ${checked} value='${index}'  onchange="respuestaCorrecta(this)"  >
+					</div>
+				</td>
+				<td>
+					<div class="btn-group" role="group">
+						<button onclick="borrarItemSimple(${index})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
+							<i class="fas fa-trash-alt"></i>
+						</button>
+					</div>
+				</td>              
+			</tr>`
+		contenido += fila;
+	})
+	$('#tableContentSimple').html(contenido);
+	//tableContentSimple.innerHTML = contenido;
+	}
+	function ListaMultiple() {	
+		let contenido = "";
+		tablaPreguntas.map((dato, index) => {
+			 let fila =
+				 `<tr>
+						 <td>${dato.OpcionText}</td>
+						 
+						 <td>
+							 <div class="btn-group" role="group">
+								 <input type='number'  value='${dato.value}' step='any' onchange="actualizarValue(${index},this)"   >
+							 </div>
+						 </td>
+						 <td>
+							 <div class="btn-group" role="group">
+								 <button onclick="borrarItemSimple(${index})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
+									 <i class="fas fa-trash-alt"></i>
+								 </button>
+							 </div>
+						 </td>
+					 </tr>`
+			 contenido += fila
+		 })
+		 $('#tableContentSimple').html(contenido);
+		}	
+const renderModalQuestions = (tp) => {
+	return fetch("{% url 'modalAddQuestion' %}", {
+		...fetchObject,
+		body: JSON.stringify({
+			data: {
+				tp
+				 
+			}
+		}),
+	})
+	.then(async (res) => {
+		document.getElementById("modalQuestion").innerHTML = await res.text()
+	})  .then(() => {
+	$("#addNewQuestion").modal("show")
+	const formQuestion = document.getElementById("formQuestion")
+   
+ })
+
+}  
+function CargarModalOpciones(){
+	if(tipoPreguntaSelected==1){
+	$("#addRow").click(function () {
+		event.preventDefault()
+
+
+
+		for(const element of tablaPreguntas ){
+
+			if(element.OpcionText==document.getElementById("optionText").value){
+
+			alertaMensajitos(5,'Invalid description',"There is already a question with the same text")
+			return
+
+			}
+
+
+		}
+	
+
+		let datos = {
+			OpcionText: document.getElementById("optionText").value,
+			isCorrect:false,
+			id:tablaPreguntas.length,
+			actions: `
+			<div class="btn-group" role="group">
+				<button onclick="borrarItem(${tablaPreguntas.length})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
+					<i class="fas fa-trash-alt"></i>
+				</button>
+			</div>`
+		}
+
+		tablaPreguntas.push(datos)
+	
+		ListaSimple()
+
+	})
+}
+if(tipoPreguntaSelected==2){
+
+	$("#addRow").click(function () {
+		event.preventDefault()
+
+
+
+		for(const element of tablaPreguntas ){
+
+			if(element.OpcionText==document.getElementById("optionText").value){
+
+			alertaMensajitos(5,'Invalid description',"There is already a question with the same text")
+			return
+
+			}
+
+
+		}
+	
+
+		let datos = {
+			OpcionText: document.getElementById("optionText").value,
+			id:tablaPreguntas.length,
+			value:0,
+			
+			actions: `
+			<div class="btn-group" role="group">
+				<button onclick="borrarItem(${tablaPreguntas.length})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
+					<i class="fas fa-trash-alt"></i>
+				</button>
+			</div>`
+		}
+
+		tablaPreguntas.push(datos)
+	
+		ListaMultiple()
+
+	})
+
+	}
+}
+function Repartir(id){
+	 console.log(tablaPreguntas.length)
+ 
+ if(!document.getElementById("questionPoints"+id).value || document.getElementById("questionPoints"+id).value<=0 ){
+	 alertaMensajitos(5,'Invalid Value', 'The current point can not be divided')
+	 return;
+ }
+ let dividido=document.getElementById("questionPoints"+id).value/tablaPreguntas.length
+
+ console.log(dividido)
+ 
+ for (const item of tablaPreguntas){
+ 
+ 
+
+ 
+ item.value=dividido
+ 
+ 
+ }
+ actualizarListaMultiple(id)
+}
+function RepartirModal(){
+	console.log(tablaPreguntas.length)
+
+if(!document.getElementById("questionPoints").value || document.getElementById("questionPoints").value<=0 ){
+	alertaMensajitos(5,'Invalid Value', 'The current point can not be divided')
+	return;
+}
+let dividido=document.getElementById("questionPoints").value/tablaPreguntas.length
+
+console.log(dividido)
+
+for (const item of tablaPreguntas){
+
+
+
+
+item.value=dividido
+
+
+}
+ListaMultiple()
+}
+const openDeleteModal = async (id, type) => {
+
+const elimino = await alerta(3)
+//  console.log(type)
+if (elimino) {
+	setLoading()
+
+	let urlDelete=''
+  if (type == "Simple" ){
+	urlDelete = "{% url 'EditNewSimple' %}"
+	  tipoPreguntaSelected=1
+   }
+   if (type == "Multiple") {
+	urlDelete = "{% url 'EditNewMultiple' %}"
+	  tipoPreguntaSelected=2
+
+   }
+ 
+  
+	const res = await matarPregunta(id, urlDelete)
+	if (res) {
+		stopLoading()
+
+		alerta(4)
+	
+	}
+	else {
+		stopLoading()
+
+		alerta(5)
+	}
+}
+}
+const matarPregunta = (id, url) => {
+        
+
+	return fetch(url, {
+		...fetchObject,
+		body: JSON.stringify({
+			data: {
+				delete: true,
+				method:'',
+				id
+			}
+		}),
+	})
+		.then(async (res) => {
+			let result = JSON.parse(await res.text())
+			if (result.message === "Error") {
+				return false
+			}
+			return true
+		})
+		.then((result) => {
+		   // renderTable()
+			return result
+		})
+}
+</script>   
+{% endblock javascripts %}
