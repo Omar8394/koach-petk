@@ -1,0 +1,72 @@
+<div class="form-row col-md-12">
+    <h2>Verdadero / Falso</h2>
+</div>
+<form id="formProguntas{{id}}" class="form">
+<div class="form-row col-md-12">
+    <div class="form-group col-md-6">
+        <label for="questionText">Question title</label>
+        <input type='text' name="questionTilte" class="form-control" id="questionTittle" placeholder="Write here the title for the question" >
+    </div> 
+    <div class="form-group col-md-6">
+        <label for="questionPoints">Question points</label>
+        <input type="number" step='any' name="questionPoints" class="form-control" id="questionPoints{{id}}" placeholder="Enter the number of points">
+    </div>                     
+    <div class="form-group col-md-6">
+        <label for="questionOptions">Opciones</label>
+        <input type="text" step='any' name="questionOptions" class="form-control" id="questionOptions{{id}}" placeholder="Enter the number of points">
+        <div class="form-group col-md-12 d-flex flex-col  justify-content-end" >
+        </div>
+    </div>
+        <div class="form-row col-md-12 text-center">
+            <div class="form-group col-md-12">
+                  <table id="optionsta{{id}}" class="table table-sm table-bordered table-striped table-hover table-responsive">
+                    <thead class="form-group col-md-12">
+                        <tr>
+                            <th class="col-md-8">
+                                Option text
+                            </th>
+                            <th>
+                                True
+                            </th> 
+                             <th>
+                               False
+                            </th>  
+                              <th>
+                               Value
+                            </th>                     
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody  id="tableContentTF{{id}}" name='tableContentTF{{id}}'>
+              
+                    </tbody>
+                </table>
+            </div>
+        </div>  
+       
+   
+    
+    
+    <div class="form-group col-md-12 d-flex flex-col  justify-content-end" >
+        <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Agregar paginas"
+        onclick="">
+        <i class="fas fa-copy"></i>
+        </button>
+        <button type="button" id="add" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Agregar paginas"
+        onclick="addoptions('{{id}}')">
+        <i class="fas fa-plus"></i>
+        </button>
+        <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Agregar paginas"
+        onclick="save('{{id}}','{{peso}}')">
+        <i class="fas 
+        fa-save"></i>
+        </button>
+        <button type="button" id='repatriar' onclick="Repartir('{{id}}')" class="btn btn-icon btn-sm btn-info ml-1" value="Distribute Points ">
+        <i class="fas fa-exchange-alt"></i>
+        </button>
+      
+    </div>  
+</div>
+</form>

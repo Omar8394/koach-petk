@@ -1529,6 +1529,10 @@ def renderpreguntas(request):
                        context={'id':data['pk'],'peso':data['peso']} 
                        html_template = (loader.get_template('renderpreguntasmultiples.html'))
                        return HttpResponse(html_template.render(context, request))
+                    elif tipo_preguntas == 'VoF': 
+                       context={'id':data['pk'],'peso':data['peso']} 
+                       html_template = (loader.get_template('renderverdaderfalso.html'))
+                       return HttpResponse(html_template.render(context, request))        
          except Exception as e:
                print(e)
                return JsonResponse({"message":"error"}, status=500)           
@@ -1585,6 +1589,7 @@ def getModalbloques(request):
                            bloques.instrucciones_bloque=data['data']['blockText']
                            bloques.peso=Decimal(data['data']['blocknum'].replace(',','.'))
                            bloques.tipo_bloque=data['data']['modalidad']
+                           bloques.valor_elemento="block"
                            bloques.fk_escalasEvaluaciones_id=data['data']['qualificationtest']
                            bloques.fk_ActividadEvaluaciones_id=data['id']
                            bloques.save()
@@ -1673,7 +1678,11 @@ def EditNewSimple(request):
                 data = json.load(request)["data"]   
                 print(data)
                 if "delete" in data:
-                    print(data)
+                    print(data['id'])
+                    actividad=capacitacion_EvaluacionesPreguntas.objects.get(pk=data['id'])
+                    print(actividad)
+                    actividad.fk_evaluacionesBloques= capacitacion_EvaluacionesBloques.objects.get(valor_elemento="block_papelera")
+                    actividad.save()
                     return JsonResponse({"message": "Deleted"})
                 if "idFind" in data:
                     print(data)
@@ -1727,6 +1736,10 @@ def EditNewMultiple(request):
                 print(data)
                 if "delete" in data:
                     print(data)
+                    print(data)
+                    actividad=capacitacion_EvaluacionesPreguntas.objects.get(pk=data['id'])
+                    actividad.fk_evaluacionesBloques= capacitacion_EvaluacionesBloques.objects.get(valor_elemento="block_papelera")
+                    actividad.save()
                     return JsonResponse({"message": "Deleted"})
                 if "idFind" in data:
                     print(data)
@@ -1766,113 +1779,77 @@ def EditNewMultiple(request):
                     return JsonResponse({"message": "ok"})
             except Exception as e:
                print(e)
-               return JsonResponse({"message":"error"}, status=500)            
-                #if "delete" in data:
-                    #pregunta=EvaluacionesPreguntas.objects.filter(idevaluaciones_preguntas=data["id"]).update(fk_evaluaciones_bloque_id=33)
-                    # bloque = pregunta.fk_evaluaciones_bloque
-                    # bloque.pointUse=bloque.pointUse-pregunta.puntos_pregunta
-                    # actividad=bloque.fk_actividad_evaluaciones
-                    # actividad.pointUse=actividad.pointUse-pregunta.puntos_pregunta
-                    # bloque.save()
-                   # actividad.save()
-
-                    # pregunta.delete()
-                    
-                    # preguntas = bloque.bloque_pregunta.order_by('orden')
-                    # for idx, value in enumerate(preguntas, start=1):
-                    #     value.orden = idx
-                    #     value.save()
-                    #return JsonResponse({"message": "Deleted"})
-                # if "idFind" in data:
-                #     print(data)
-                #     pregunta=EvaluacionesPreguntas.objects.filter(pk=data["idFind"])
-                #     findpregunta = list(pregunta.values())
-                #     childs = PreguntasOpciones.objects.filter(fk_evaluacion_pregunta=data["idFind"])
-                #     listaChilds = list(childs.values())
-                #     return JsonResponse({"data":findpregunta[0], "childs":listaChilds}, safe=False)
-                
-                
-                # if data["method"] == "Update":
-                #     pregunta=EvaluacionesPreguntas.objects.get(pk=data["idViejo"])
-                #     bloque=EvaluacionesBloques.objects.annotate(num_child=Count('bloque_pregunta', distinct=True) ).get(pk=data['fatherId'])
-                  
-                #     pregunta.orden=pregunta.orden
-
-                #     pregunta.fk_evaluaciones_bloque=bloque
-                #     pregunta.texto_pregunta=data['textoPregunta']
-                #     pregunta.titulo_pregunta=data['tituloPregunta']
-
-
-                #     actividad=ActividadEvaluaciones.objects.get(pk=bloque.fk_actividad_evaluaciones.pk)
-                #     actividad.pointUse=float(actividad.pointUse)-float(bloque.pointUse)
-                #     bloque.pointUse=float(bloque.pointUse)-float(pregunta.puntos_pregunta)+float(data['puntosPregunta'])
-                #     actividad.pointUse=float(actividad.pointUse)+float(bloque.pointUse)
-                #     bloque.save()
-                #     actividad.save()
-
-
-                #     pregunta.puntos_pregunta=data['puntosPregunta']
-
-                    
-                #     pregunta.fk_tipo_pregunta_evaluacion=MyMethod.OrigenPreguntaTipo('Simple')
-                #     pregunta.save()
-                #     childs = PreguntasOpciones.objects.filter(fk_evaluacion_pregunta=data["idViejo"])
-                    
-                #     hijos = data["hijos"]
-                #     if hijos:
-                #             print(hijos)
-                        
-                #             if "idViejo" in data:
-                                 
-                #                  childs.delete()
-                #             selectetedOp=int(data['select2'])     
-                #             for newOpcion in hijos:
-                                
-                #                  Opcion=PreguntasOpciones()
-                #                  Opcion.fk_evaluacion_pregunta=pregunta
-                #                  Opcion.texto_opcion=newOpcion['OpcionText']   
-                #                  Opcion.idLista=newOpcion['id']    
-                #                  Opcion.respuetaCorrecta=True if newOpcion['id']==selectetedOp else False
-                #                  Opcion.save()
-
-                
-                #     bloque=EvaluacionesBloques.objects.annotate(num_child=Count('bloque_pregunta', distinct=True) ).get(pk=data['fatherId'])
-                #     newOrden=bloque.num_child+1
-                #     pregunta.orden=newOrden
-
-                #     pregunta.fk_evaluaciones_bloque=bloque
-                #     pregunta.texto_pregunta=data['textoPregunta']
-                #     pregunta.titulo_pregunta=data['tituloPregunta']
-
-
-                #     pregunta.puntos_pregunta=data['puntosPregunta']
+               return JsonResponse({"message":"error"}, status=500)
+@login_required(login_url="/login/")
+def EditNewtof(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            
+            try:
+                context = {}
+                data = json.load(request)["data"]   
+                print(data)
+                if "delete" in data:
+                    print(data)
                    
-                #     bloque.pointUse=float(bloque.pointUse)+float(pregunta.puntos_pregunta)
-                #     actividad=ActividadEvaluaciones.objects.get(pk=bloque.fk_actividad_evaluaciones.pk)
-                #     actividad.pointUse=float(pregunta.puntos_pregunta)+float(actividad.pointUse)
-                #     bloque.save()
-                #     actividad.save()
-
-
-                #     pregunta.fk_tipo_pregunta_evaluacion=MyMethod.OrigenPreguntaTipo('Simple')
-                #     pregunta.save()
-
-                #     hijos = data["hijos"]
-                #     if hijos:
-                #             print(hijos)
+                    actividad=capacitacion_EvaluacionesPreguntas.objects.get(pk=data['id'])
+                    actividad.fk_evaluacionesBloques= capacitacion_EvaluacionesBloques.objects.get(valor_elemento="block_papelera")
+                    actividad.save()
+                    return JsonResponse({"message": "Deleted"})
+                if "idFind" in data:
+                    print(data)
+                    pregunta=capacitacion_EvaluacionesPreguntas.objects.filter(pk=data["idFind"])
+                    findpregunta = list(pregunta.values())
+                    childs = capacitacion_EvaluacionesPreguntasOpciones.objects.filter(fk_capacitacionEvaluacionesPreguntas=data["idFind"])
+                    listaChilds = list(childs.values())
+                    print(listaChilds)
+                    return JsonResponse({"data":findpregunta[0], "childs":listaChilds}, safe=False)
+                
+                if data["method"] == "Update":
+                    pregunta=capacitacion_EvaluacionesPreguntas.objects.get(pk=data["idViejo"])
+                    pregunta.orden=pregunta.orden
+                    pregunta.texto_pregunta=data['textoPregunta']
+                    pregunta.puntos_pregunta=data['puntosPregunta']
+                    pregunta.fk_tipoPregunta_id=ConfTablasConfiguracion.objects.get(valor_elemento="VoF").pk
+                    pregunta.save()
+                    childs = capacitacion_EvaluacionesPreguntasOpciones.objects.filter(fk_capacitacionEvaluacionesPreguntas=data["idViejo"])
+                    
+                    hijos = data["hijos"]
+                    if hijos:
+                            print(hijos)
                         
-                #             if "idViejo" in data:
-                        
-                #                  childs.delete()
-                #             selectetedOp=int(data['select2'])     
-                #             for newOpcion in hijos:
+                            if "idViejo" in data:
+                                 
+                                 childs.delete()
                                 
-                #                  Opcion=PreguntasOpciones()
-                #                  Opcion.fk_evaluacion_pregunta=pregunta
-                #                  Opcion.texto_opcion=newOpcion['OpcionText']   
-                #                  Opcion.idLista=newOpcion['id']    
-                #                  Opcion.respuetaCorrecta=True if newOpcion['id']==selectetedOp else False
-                #                  Opcion.save()
+                            for newOpcion in hijos:
+                                
+                                Opcion=capacitacion_EvaluacionesPreguntasOpciones()
+                                Opcion.fk_capacitacionEvaluacionesPreguntas=pregunta
+                                Opcion.texto_opcion=newOpcion['OpcionText']    
+                                Opcion.porc_respuesta=float(newOpcion['value'])  
+                                Opcion.respuesta_correcta=int(newOpcion['trueFalse'])  
+                                Opcion.save()
+                    
+                
+                    return JsonResponse({"message": "ok"})
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)                       
+               
+
+               
+
+
+               
+                
+                
+
+              
+
+                
+                        
+               
 @login_required(login_url="/login/")
 def getModalNewMultiple(request):
     if request.method == "POST":
@@ -1899,7 +1876,7 @@ def getModalNewMultiple(request):
                     else: 
                        pregunta=capacitacion_EvaluacionesPreguntas.objects.create()
                        pregunta.fk_evaluacionesBloques_id=data['fatherId']
-                       pregunta.fk_tipoPregunta_id=ConfTablasConfiguracion.objects.get(valor_elemento="Multiple").pk     
+                       pregunta.fk_tipoPregunta_id=ConfTablasConfiguracion.objects.get(valor_elemento="VoF").pk     
                        pregunta.texto_pregunta=data['textoPregunta']
                        pregunta.puntos_pregunta=data['puntosPregunta']
                        pregunta.orden=len(capacitacion_EvaluacionesPreguntas.objects.filter(fk_evaluacionesBloques_id=data['fatherId'])) + 1
@@ -1912,8 +1889,10 @@ def getModalNewMultiple(request):
                                 
                               Opcion=capacitacion_EvaluacionesPreguntasOpciones()
                               Opcion.fk_capacitacionEvaluacionesPreguntas=pregunta
-                              Opcion.texto_opcion=newOpcion['OpcionText']       
-                              Opcion.porc_respuesta=float(newOpcion['value'])
+                              Opcion.texto_opcion=newOpcion['OpcionText']    
+                              Opcion.porc_respuesta=float(newOpcion['value'])  
+                              Opcion.respuesta_correcta=int(newOpcion['trueFalse'])  
+                                   
                               Opcion.save()
                        print(data)
                     
@@ -1942,7 +1921,56 @@ def getModalQuestion(request):
             except Exception as e:
                print(e)
                return JsonResponse({"message":"error"}, status=500)        
-   
+@login_required(login_url="/login/")
+def getModalNewTof(request):
+    
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            try:
+                context = {}
+                data = json.load(request)["data"]
+                if data["method"] == "Create": 
+                    total=0
+                         
+                    bloque=capacitacion_EvaluacionesBloques.objects.get(pk=data['fatherId'])   
+                    masimapt= bloque.fk_ActividadEvaluaciones.fk_escalasEvaluaciones.maxima_puntuacion
+                    testpoint=capacitacion_EvaluacionesPreguntas.objects.filter(fk_evaluacionesBloques_id=data['fatherId'])
+                    
+                    for item in testpoint:
+                        total=total+item.puntos_pregunta
+                    print(total)
+                    portje=(bloque.peso * masimapt)/100
+                    print(portje)
+                    if total + Decimal(data['puntosPregunta']) > portje:
+                        return JsonResponse({"message":"No"})
+                    else: 
+                        pregunta=capacitacion_EvaluacionesPreguntas.objects.create()
+                    
+                        pregunta.fk_evaluacionesBloques_id=data['fatherId']
+                        pregunta.fk_tipoPregunta_id=ConfTablasConfiguracion.objects.get(valor_elemento="VoF").pk     
+                        pregunta.texto_pregunta=data['textoPregunta']
+                        pregunta.puntos_pregunta=data['puntosPregunta']
+                        pregunta.orden=len(capacitacion_EvaluacionesPreguntas.objects.filter(fk_evaluacionesBloques_id=data['fatherId'])) + 1
+                        pregunta.save()
+
+                        hijos = data["hijos"]
+                        if hijos:
+                         
+                            for newOpcion in hijos:
+                                 Opcion=capacitacion_EvaluacionesPreguntasOpciones()
+                                 Opcion.fk_capacitacionEvaluacionesPreguntas=pregunta
+                                 Opcion.texto_opcion=newOpcion['OpcionText']    
+                                 Opcion.porc_respuesta=float(newOpcion['value'])  
+                                 Opcion.respuesta_correcta=int(newOpcion['trueFalse'])  
+                                     
+
+                                 Opcion.save()
+
+             
+                        return JsonResponse({"message": "ok"}) 
+            except Exception as e:
+                   print(e)
+                   return JsonResponse({"message":"error"}, status=500)
              
                       
             

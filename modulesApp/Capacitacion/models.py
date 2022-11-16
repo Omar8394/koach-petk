@@ -147,6 +147,7 @@ class capacitacion_EvaluacionesBloques(models.Model):
       MAYBECHOICE = ( ('0', 'Normal'), ('1', 'Encuesta'), ('2', 'Experto'), ('3', 'Entrevista'), ('4', 'Logica'), )
       tipo_bloque = models.CharField(max_length=1, choices=MAYBECHOICE)
       instrucciones_bloque=models.TextField(null=True)
+      valor_elemento=models.TextField(blank=True, null=True)
 class capacitacion_EvaluacionesBloquesOpciones(models.Model): 
       id_EvaluacionesBloquesOpciones= models.AutoField(primary_key=True) 
       fk_evaluacionesBloques = models.ForeignKey(capacitacion_EvaluacionesBloques,on_delete=models.CASCADE,default=None, null=True)

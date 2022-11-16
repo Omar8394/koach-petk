@@ -432,6 +432,27 @@ const addoptions= async (id) =>{
 
 	actualizarListaMultiple(id)
 } 
+if (hashtipo[tipo]=="VoF"){
+	//alert(document.getElementById("questionOptions"+id).value)
+	let datos = {
+		OpcionText: document.getElementById("questionOptions"+id).value,
+		id:tablaPreguntas.length,
+		value:0,
+		trueFalse:1,
+		
+		actions: `
+		<div class="btn-group" role="group">
+			<button onclick="borrarItem(${tablaPreguntas.length})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
+				<i class="fas fa-trash-alt"></i>
+			</button>
+		</div>`
+	}
+
+	
+	tablaPreguntas.push(datos)
+
+	actualizarListaTF(id)
+} 
 }
 
 function actualizarListaMultiple(id) {	
@@ -487,6 +508,61 @@ tablaPreguntas.map((dato, index) => {
 $('#tableContentSimple'+ id +'').html(contenido);
 //tableContentSimple.innerHTML = contenido;
 }
+function actualizarListaTF(id) {
+
+ let contenido = "";
+tablaPreguntas.map((dato, index) => {
+	 checkF=''
+	 checkT=''
+
+
+	 if(dato.trueFalse=='0'){
+
+	  checkF='checked'
+ 
+	 }  
+	  if(dato.trueFalse=='1'){
+
+	  checkT='checked'
+
+	 }
+
+   
+	 let fila =
+		 `<tr>
+				 <td>${dato.OpcionText}</td>
+
+				   <td>
+					 <div class="btn-group" role="group">
+						 <input type='radio' name='listaTF${index}' value="1"`+checkT+  ` onchange="tfChange(${index},this)"  >
+					 </div>
+				 </td>
+
+				   <td>
+					 <div class="btn-group" role="group">
+						 <input type='radio' name='listaTF${index}' value="0"  `+checkF+  ` onchange="tfChange(${index},this)"  >
+					 </div>
+				 </td>
+
+				 
+				 <td>
+					 <div class="btn-group" role="group">
+						 <input type='number'  value='${dato.value}' step='any' onchange="actualizarValue(${index},this)"   >
+					 </div>
+				 </td>
+				 <td>
+					 <div class="btn-group" role="group">
+						 <button onclick="borrarItemSimple(${index})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
+							 <i class="fas fa-trash-alt"></i>
+						 </button>
+					 </div>
+				 </td>
+			 </tr>`
+	 contenido += fila
+	
+ })
+ $('#tableContentTF'+id+'').html(contenido);
+}
 function actualizarValue(id, number) {
 
 
@@ -516,8 +592,12 @@ function save(id,peso){
 		url="{% url 'modalNewMultiple'%}"
 		tipoPreguntaSelected=2
 	}
+	if (hashtipo[tipo]=="VoF"){
+		url="{% url 'modalNewTof'%}"
+		tipoPreguntaSelected=3
+	}
 	clickguardar(url,idSeleted,tipoPreguntaSelected,peso)
-	limpiarModalOpciones()
+	
 
 
  }
@@ -563,11 +643,11 @@ function save(id,peso){
 		updateQuestion(form, selectedId, url)
 	}
 	else {
-		createQuestion(form,url)
+		createQuestion(form,url,id)
 	}            
 	
 }
-async function clickSaveedit (url,id)  {
+async function clickSaveedit (url,id,padr)  {
             
 	setLoading()
 	
@@ -614,12 +694,12 @@ async function clickSaveedit (url,id)  {
 		console.log(form)
 		console.log('form')
 
-		updateQuestion(form, selectedId, url)
+		updateQuestion(form, selectedId, url, padr)
 	}
 	            
 
 }
-const createQuestion = (form,url) => {
+const createQuestion = (form,url,id) => {
 	fetch(url, {
 		...fetchObject,
 		body: JSON.stringify({
@@ -638,13 +718,15 @@ const createQuestion = (form,url) => {
 		 }
 		 if (result.message === "ok") {
 			alerta(1)
+			limpiarModalOpciones()
+			renderpreguntas(id)
 		 }
 		
 		
 	})
 
 } 
-const updateQuestion = (form, idViejo, url) => {
+const updateQuestion = (form, idViejo, url,padr) => {
 	fetch(url, {
 		...fetchObject,
 		body: JSON.stringify({
@@ -661,12 +743,14 @@ const updateQuestion = (form, idViejo, url) => {
 			if (result.message === "Error") {
 				alerta(5)
 			}
+			if (result.message === "ok") {
 			alerta(2)
-			form=null
-		   tablaPreguntas=[]
-			$("#addNewQuestion").modal("hide");
+			limpiarModalOpciones()
+			renderpreguntas(padr)
 			
-
+			
+			}
+			$("#addNewQuestion").modal("hide");
 		})
 		.then(() => {
 		   // renderTable()
@@ -699,6 +783,12 @@ let url
 	  tipoPreguntaSelected=2
 
    }
+   if (type == "VoF") {
+	url = "{% url 'EditNewtof' %}"
+	tipoPreguntaSelected=3
+
+ }
+ 
    
 fetch(url, {
 	...fetchObject,
@@ -766,6 +856,34 @@ if(listaLoca){
 		})  
 		ListaMultiple()
 	}
+	if (type=="VoF"){
+		
+		listaLoca.map((el)=>{
+
+            console.log(el)                    
+
+			let datos = {
+				value:el.porc_respuesta,
+				id: tablaPreguntas.length,
+				OpcionText: el.texto_opcion,
+				trueFalse:el.respuesta_correcta==true?1:0,
+			   
+
+				actions: `
+				<div class="btn-group" role="group">
+					<button onclick="borrarItem(${tablaPreguntas.length})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
+						<i class="fas fa-trash-alt"></i>
+					</button>
+				</div>`
+			}
+			tablaPreguntas.push(datos)
+	   //     console.log(datos)
+
+			})
+
+			ListaTF()
+
+	}
 }	
 })
 .then(async (res) => {
@@ -773,7 +891,7 @@ if(listaLoca){
            
 	var z=(e) => {
 		e.preventDefault()
-		clickSaveedit(url,selectedId)
+		clickSaveedit(url,selectedId,padre)
 		
 	}
 	formQuestion.removeEventListener("submit", z);
@@ -853,6 +971,65 @@ function ListaSimple() {
 		 })
 		 $('#tableContentSimple').html(contenido);
 		}	
+		function ListaTF() {
+			//document.getElementById('tableContentTF').innerHTML = "";
+		 let contenido = "";
+ 
+	  
+ 
+ 
+		 tablaPreguntas.map((dato, index) => {
+			 checkF=''
+			 checkT=''
+ 
+ 
+			 if(dato.trueFalse=='0'){
+ 
+			  checkF='checked'
+		 
+			 }  
+			  if(dato.trueFalse=='1'){
+ 
+			  checkT='checked'
+ 
+			 }
+ 
+		   
+			 let fila =
+				 `<tr>
+						 <td>${dato.OpcionText}</td>
+ 
+						   <td>
+							 <div class="btn-group" role="group">
+								 <input type='radio' name='listaTF${index}' value="1"`+checkT+  ` onchange="tfChange(${index},this)"  >
+							 </div>
+						 </td>
+ 
+						   <td>
+							 <div class="btn-group" role="group">
+								 <input type='radio' name='listaTF${index}' value="0"  `+checkF+  ` onchange="tfChange(${index},this)"  >
+							 </div>
+						 </td>
+ 
+						 
+						 <td>
+							 <div class="btn-group" role="group">
+								 <input type='number'  value='${dato.value}' step='any' onchange="actualizarValue(${index},this)"   >
+							 </div>
+						 </td>
+						 <td>
+							 <div class="btn-group" role="group">
+								 <button onclick="borrarItemSimple(${index})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
+									 <i class="fas fa-trash-alt"></i>
+								 </button>
+							 </div>
+						 </td>
+					 </tr>`
+			 contenido += fila
+			
+		 })
+		 $('#tableContentSimple').html(contenido);
+	 }		
 const renderModalQuestions = (tp) => {
 	return fetch("{% url 'modalAddQuestion' %}", {
 		...fetchObject,
@@ -950,9 +1127,50 @@ if(tipoPreguntaSelected==2){
 	})
 
 	}
+	if(tipoPreguntaSelected==3){
+
+		$("#addRow").click(function () {
+			event.preventDefault()
+	
+	
+	
+			for(const element of tablaPreguntas ){
+	
+				if(element.OpcionText==document.getElementById("optionText").value){
+	
+				alertaMensajitos(5,'Invalid description',"There is already a question with the same text")
+				return
+	
+				}
+	
+	
+			}
+		
+	
+			let datos = {
+				OpcionText: document.getElementById("questionOptions").value,
+				id:tablaPreguntas.length,
+				value:0,
+				trueFalse:1,
+				
+				actions: `
+				<div class="btn-group" role="group">
+					<button onclick="borrarItem(${tablaPreguntas.length})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
+						<i class="fas fa-trash-alt"></i>
+					</button>
+				</div>`
+			}
+	
+			tablaPreguntas.push(datos)
+		
+			ListaTF()
+	
+		})
+	
+		}
 }
 function Repartir(id){
-	 console.log(tablaPreguntas.length)
+	 console.log(tipoPreguntaSelected)
  
  if(!document.getElementById("questionPoints"+id).value || document.getElementById("questionPoints"+id).value<=0 ){
 	 alertaMensajitos(5,'Invalid Value', 'The current point can not be divided')
@@ -960,7 +1178,7 @@ function Repartir(id){
  }
  let dividido=document.getElementById("questionPoints"+id).value/tablaPreguntas.length
 
- console.log(dividido)
+ //console.log(dividido)
  
  for (const item of tablaPreguntas){
  
@@ -971,8 +1189,17 @@ function Repartir(id){
  
  
  }
+ 
+ actualizarListaSimple(id)
+ 
  actualizarListaMultiple(id)
+ 
+ actualizarListaTF(id)
+
+
 }
+
+
 function RepartirModal(){
 	console.log(tablaPreguntas.length)
 
@@ -994,9 +1221,10 @@ item.value=dividido
 
 }
 ListaMultiple()
+ListaTF()
 }
-const openDeleteModal = async (id, type) => {
-
+const openDeleteModal = async (id, type, padre) => {
+//alert(type)
 const elimino = await alerta(3)
 //  console.log(type)
 if (elimino) {
@@ -1012,9 +1240,13 @@ if (elimino) {
 	  tipoPreguntaSelected=2
 
    }
- 
+   if (type == "VoF") {
+	urlDelete = "{% url 'EditNewtof' %}"
+	tipoPreguntaSelected=3
+
+    }
   
-	const res = await matarPregunta(id, urlDelete)
+	const res = await matarPregunta(id, urlDelete, padre)
 	if (res) {
 		stopLoading()
 
@@ -1028,7 +1260,7 @@ if (elimino) {
 	}
 }
 }
-const matarPregunta = (id, url) => {
+const matarPregunta = (id, url, pa) => {
         
 
 	return fetch(url, {
@@ -1049,9 +1281,22 @@ const matarPregunta = (id, url) => {
 			return true
 		})
 		.then((result) => {
-		   // renderTable()
+		    renderpreguntas(pa)
 			return result
 		})
 }
+function actualizarValue(id, number) {
+
+
+         tablaPreguntas[id].value=number.value;
+        // console.log( tablaPreguntas[id]);
+     }
+
+      function tfChange(id, tf) {
+
+
+         tablaPreguntas[id].trueFalse=tf.value;
+       //  console.log( tablaPreguntas[id]);
+     }
 </script>   
 {% endblock javascripts %}
