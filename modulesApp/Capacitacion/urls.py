@@ -57,7 +57,9 @@ urlpatterns = [
     path('modalNewMultiple/', views.getModalNewMultiple, name="modalNewMultiple"),
     path('modalAddQuestion/', views.getModalQuestion, name="modalAddQuestion"),
     path('modalNewTof/', views.getModalNewTof, name="modalNewTof"),
-     path('EditNewtof/', views.EditNewtof, name="EditNewtof"),
+    path('getModalNewparrafo/', views.getModalNewparrafo, name="getModalNewparrafo"),
+    path('EditNewtof/', views.EditNewtof, name="EditNewtof"),
+    path('EditNewparrafo/', views.EditNewparrafo, name="EditNewparrafo"),
     # Scales
     
 

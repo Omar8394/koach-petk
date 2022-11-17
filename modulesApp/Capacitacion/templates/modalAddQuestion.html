@@ -28,6 +28,7 @@
                 </div> 
             </div>
             <hr>
+            {% if not tipoPreguntas == 'Parrafo' %}
             <div id="seccionDetallada">
                 <div class="form-row">
                     <h2>Options</h2>
@@ -111,6 +112,7 @@
                 </div>  
                      
             </div>
+            {% endif %}
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal">

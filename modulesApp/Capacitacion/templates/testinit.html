@@ -596,6 +596,10 @@ function save(id,peso){
 		url="{% url 'modalNewTof'%}"
 		tipoPreguntaSelected=3
 	}
+	if (hashtipo[tipo]=="Parrafo"){
+		url="{% url 'getModalNewparrafo'%}"
+		tipoPreguntaSelected=4
+	}
 	clickguardar(url,idSeleted,tipoPreguntaSelected,peso)
 	
 
@@ -658,7 +662,7 @@ async function clickSaveedit (url,id,padr)  {
 	
 
 	
-
+	if(tipoPreguntaSelected!==4){
 	if(tablaPreguntas.length<=0){
 		stopLoading()
 
@@ -672,7 +676,7 @@ async function clickSaveedit (url,id,padr)  {
 		   var select2=document.querySelector('input[name="listaSimpleRadio"]:checked').value
 	   }
 
-	 
+	}
 	   const metodo=editmode?'Update':'Create'
 	  
 	form = {
@@ -788,7 +792,12 @@ let url
 	tipoPreguntaSelected=3
 
  }
- 
+ if (type == "Parrafo") {
+	url = "{% url 'EditNewparrafo' %}"
+	tipoPreguntaSelected=4
+
+ }
+
    
 fetch(url, {
 	...fetchObject,
@@ -1245,7 +1254,12 @@ if (elimino) {
 	tipoPreguntaSelected=3
 
     }
-  
+	if (type == "Parrafo") {
+		urlDelete = "{% url 'EditNewparrafo' %}"
+		tipoPreguntaSelected=4
+	
+	}
+	
 	const res = await matarPregunta(id, urlDelete, padre)
 	if (res) {
 		stopLoading()

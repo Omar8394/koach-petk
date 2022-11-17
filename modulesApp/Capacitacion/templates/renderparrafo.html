@@ -1,0 +1,30 @@
+<div class="form-row col-md-12">
+    <h2>Preguntas de parrafo
+
+    </h2>
+</div>
+<form id="formProguntas{{id}}" class="form">
+<div class="form-row col-md-12">
+    <div class="form-group col-md-6">
+        <label for="questionText">Question title</label>
+        <input type='text' name="questionTilte" class="form-control" id="questionTittle" placeholder="Write here the title for the question" >
+    </div> 
+    <div class="form-group col-md-6">
+        <label for="questionPoints">Question points</label>
+        <input type="number" step='any' name="questionPoints" class="form-control" id="questionPoints{{id}}" placeholder="Enter the number of points">
+    </div>                     
+   
+    
+    <div class="form-group col-md-12 d-flex flex-col  justify-content-end" >
+       
+       
+        <button type="button" class="btn-radius btn-azul" style="display:block;text-align:center;text-decoration:none;color:whitesmoke;" data-toggle="tooltip" data-placement="top" title="Agregar paginas"
+        onclick="save('{{id}}','{{peso}}')">Guardar Pregunta
+        <i class="fas 
+        fa-save"></i>
+        </button>
+       
+      
+    </div>  
+</div>
+</form>

@@ -1532,7 +1532,11 @@ def renderpreguntas(request):
                     elif tipo_preguntas == 'VoF': 
                        context={'id':data['pk'],'peso':data['peso']} 
                        html_template = (loader.get_template('renderverdaderfalso.html'))
-                       return HttpResponse(html_template.render(context, request))        
+                       return HttpResponse(html_template.render(context, request)) 
+                    elif tipo_preguntas == 'Parrafo': 
+                       context={'id':data['pk'],'peso':data['peso']} 
+                       html_template = (loader.get_template('renderparrafo.html'))
+                       return HttpResponse(html_template.render(context, request))               
          except Exception as e:
                print(e)
                return JsonResponse({"message":"error"}, status=500)           
@@ -1781,6 +1785,46 @@ def EditNewMultiple(request):
                print(e)
                return JsonResponse({"message":"error"}, status=500)
 @login_required(login_url="/login/")
+def EditNewparrafo(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            
+            try:
+                context = {}
+                data = json.load(request)["data"]   
+                print(data)
+                if "delete" in data:
+                    print(data)
+                    print(data)
+                    actividad=capacitacion_EvaluacionesPreguntas.objects.get(pk=data['id'])
+                    actividad.fk_evaluacionesBloques= capacitacion_EvaluacionesBloques.objects.get(valor_elemento="block_papelera")
+                    actividad.save()
+                    return JsonResponse({"message": "Deleted"})
+                if "idFind" in data:
+                    print(data)
+                    pregunta=capacitacion_EvaluacionesPreguntas.objects.filter(pk=data["idFind"])
+                    findpregunta = list(pregunta.values())
+                    childs = capacitacion_EvaluacionesPreguntasOpciones.objects.filter(fk_capacitacionEvaluacionesPreguntas=data["idFind"])
+                    listaChilds = list(childs.values())
+                    print(listaChilds)
+                    return JsonResponse({"data":findpregunta[0], "childs":listaChilds}, safe=False)
+                
+                if data["method"] == "Update":
+                    pregunta=capacitacion_EvaluacionesPreguntas.objects.get(pk=data["idViejo"])
+                    pregunta.orden=pregunta.orden
+                    pregunta.texto_pregunta=data['textoPregunta']
+                    pregunta.puntos_pregunta=data['puntosPregunta']
+                    pregunta.fk_tipoPregunta_id=ConfTablasConfiguracion.objects.get(valor_elemento="Parrafo").pk
+                    pregunta.save()
+                                        
+                    
+                
+                    return JsonResponse({"message": "ok"})
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)
+           
+@login_required(login_url="/login/")
 def EditNewtof(request):
     if request.method == "POST":
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
@@ -1836,7 +1880,44 @@ def EditNewtof(request):
             except Exception as e:
                print(e)
                return JsonResponse({"message":"error"}, status=500)                       
-               
+@login_required(login_url="/login/")
+def getModalNewparrafo(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            
+            try:
+                context = {}
+                data = json.load(request)["data"]   
+                print(data)
+                if data['method']=="Create":
+                    total=0
+                         
+                    bloque=capacitacion_EvaluacionesBloques.objects.get(pk=data['fatherId'])   
+                    masimapt= bloque.fk_ActividadEvaluaciones.fk_escalasEvaluaciones.maxima_puntuacion
+                    testpoint=capacitacion_EvaluacionesPreguntas.objects.filter(fk_evaluacionesBloques_id=data['fatherId'])
+                    
+                    for item in testpoint:
+                        total=total+item.puntos_pregunta
+                    print(total)
+                    portje=(bloque.peso * masimapt)/100
+                    print(portje)
+                    if total + Decimal(data['puntosPregunta']) > portje:
+                        return JsonResponse({"message":"No"})
+                    else:    
+                       pregunta=capacitacion_EvaluacionesPreguntas.objects.create()
+                       pregunta.fk_evaluacionesBloques_id=data['fatherId']
+                       pregunta.fk_tipoPregunta_id=ConfTablasConfiguracion.objects.get(valor_elemento="Parrafo").pk     
+                       pregunta.texto_pregunta=data['textoPregunta']
+                       pregunta.puntos_pregunta=data['puntosPregunta']
+                       pregunta.orden=len(capacitacion_EvaluacionesPreguntas.objects.filter(fk_evaluacionesBloques_id=data['fatherId'])) + 1
+                       pregunta.save()                     
+                    
+                       return JsonResponse({"message": "ok"})
+                
+                #return JsonResponse({"message": "ok"})
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)                                                                                     
 
                
 
@@ -1929,6 +2010,7 @@ def getModalNewTof(request):
             try:
                 context = {}
                 data = json.load(request)["data"]
+                print(data)
                 if data["method"] == "Create": 
                     total=0
                          
