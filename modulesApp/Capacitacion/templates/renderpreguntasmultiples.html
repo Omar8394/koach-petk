@@ -16,6 +16,18 @@
         <input type="text" step='any' name="questionOptions" class="form-control" id="questionOptions{{id}}" placeholder="Enter the number of points">
         <div class="form-group col-md-12 d-flex flex-col  justify-content-end" >
         </div>
+        <button type="button" class="btn-radius btn-azul" style="display:block;text-align:center;text-decoration:none;color:whitesmoke;" data-toggle="tooltip" data-placement="top" title="Agregar paginas"
+        onclick="addoptions('{{id}}')">Agregar Opciones
+        <i class="fas 
+        fa-plus"></i>
+        </button>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        <button type="button" id='repatriar' onclick="Repartir('{{id}}')" class="btn-radius btn-azul" value="Distribute Points " style="display:block;text-align:center;text-decoration:none;color:whitesmoke;">
+        Repartir puntos
+        <i class="fas fa-exchange-alt"></i>
+        </button>
     </div>
         <div class="form-row col-md-12 text-center">
             <div class="form-group col-md-12">
@@ -44,22 +56,14 @@
     
     
     <div class="form-group col-md-12 d-flex flex-col  justify-content-end" >
-        <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Agregar paginas"
-        onclick="">
-        <i class="fas fa-copy"></i>
-        </button>
-        <button type="button" id="add" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Agregar paginas"
-        onclick="addoptions('{{id}}')">
-        <i class="fas fa-plus"></i>
-        </button>
-        <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Agregar paginas"
-        onclick="save('{{id}}','{{peso}}')">
+       
+
+        <button type="button" class="btn-radius btn-azul" style="display:block;text-align:center;text-decoration:none;color:whitesmoke;" data-toggle="tooltip" data-placement="top" title="Agregar paginas"
+        onclick="save('{{id}}','{{peso}}')">Guardar Pregunta
         <i class="fas 
         fa-save"></i>
         </button>
-        <button type="button" id='repatriar' onclick="Repartir('{{id}}')" class="btn btn-icon btn-sm btn-info ml-1" value="Distribute Points ">
-        <i class="fas fa-exchange-alt"></i>
-        </button>
+
       
     </div>  
 </div>

@@ -620,7 +620,8 @@ function save(id,peso){
 	if(questionPoints.value>peso){
 		stopLoading()
 		console.log(questionPoints.value)
-		alertaMensajitos(5,'Invalid value', 'The questions points exceed the total points available');
+		
+		makeMessage(4, "{% translate 'valor invalido' %}", "{% translate 'el puntaje excede el total de puntos disponibles' %}", 'fa fa-exclamation-triangle')
 		return;
 	}
 		
@@ -666,7 +667,8 @@ async function clickSaveedit (url,id,padr)  {
 	if(tablaPreguntas.length<=0){
 		stopLoading()
 
-		alertaMensajitos(5,'There are no any options', 'You can not save a questions with no options')
+		//alertaMensajitos(5,'There are no any options', 'You can not save a questions with no options')
+		makeMessage(4, "{% translate 'No ha agregado optiones' %}", "{% translate 'No puede guardar preguntas sin Opciones' %}", 'fa fa-exclamation-triangle')
 		return;
 	}
 
@@ -715,13 +717,13 @@ const createQuestion = (form,url,id) => {
 
 		let result = JSON.parse(await res.text())
 		if (result.message === "Error") {
-		   alerta(5)
+			makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
 		}
 		if (result.message === "No") {
-			alerta(5)
+			makeMessage(4, "{% translate 'Error' %}", "{% translate 'el puntaje de esta pregunta excede el total de puntos del bloque' %}", 'fa fa-exclamation-triangle')
 		 }
 		 if (result.message === "ok") {
-			alerta(1)
+			makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
 			limpiarModalOpciones()
 			renderpreguntas(id)
 		 }
@@ -745,10 +747,10 @@ const updateQuestion = (form, idViejo, url,padr) => {
 
 			let result = JSON.parse(await res.text())
 			if (result.message === "Error") {
-				alerta(5)
+				makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
 			}
 			if (result.message === "ok") {
-			alerta(2)
+				makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
 			limpiarModalOpciones()
 			renderpreguntas(padr)
 			
@@ -915,17 +917,12 @@ if(listaLoca){
 function borrarItemSimple(id) {
 	tablaPreguntas.splice(id, 1)
 
-	//if(tipoPreguntaSelected==1)
+	
 	ListaSimple()
 	ListaMultiple()
-	//if(tipoPreguntaSelected==2)
-	//actualizarListaMultiple()
-	//if(tipoPreguntaSelected==3)
-	//actualizarListaCompletations()
-	//if(tipoPreguntaSelected==4)
-	//actualizarListaAssociation()
-	//if(tipoPreguntaSelected==5)
-	//actualizarListaTF()
+    actualizarListaMultiple()
+	actualizarListaSimple()	
+	actualizarListaTF()
 }
 function ListaSimple() {   
 	let contenido = "";
@@ -1069,7 +1066,8 @@ function CargarModalOpciones(){
 
 			if(element.OpcionText==document.getElementById("optionText").value){
 
-			alertaMensajitos(5,'Invalid description',"There is already a question with the same text")
+			//alertaMensajitos(5,'Invalid description',"There is already a question with the same text")
+			makeMessage(4, "{% translate 'Descripcion invalida' %}", "{% translate 'Ya hay una pregunta igual' %}", 'fa fa-exclamation-triangle')
 			return
 
 			}
@@ -1107,7 +1105,7 @@ if(tipoPreguntaSelected==2){
 
 			if(element.OpcionText==document.getElementById("optionText").value){
 
-			alertaMensajitos(5,'Invalid description',"There is already a question with the same text")
+			makeMessage(4, "{% translate 'Descripcion invalida' %}", "{% translate 'Ya hay una pregunta igual' %}", 'fa fa-exclamation-triangle')
 			return
 
 			}
@@ -1147,7 +1145,7 @@ if(tipoPreguntaSelected==2){
 	
 				if(element.OpcionText==document.getElementById("optionText").value){
 	
-				alertaMensajitos(5,'Invalid description',"There is already a question with the same text")
+				makeMessage(4, "{% translate 'Descripcion invalida' %}", "{% translate 'Ya hay una pregunta igual' %}", 'fa fa-exclamation-triangle')
 				return
 	
 				}
@@ -1182,7 +1180,8 @@ function Repartir(id){
 	 console.log(tipoPreguntaSelected)
  
  if(!document.getElementById("questionPoints"+id).value || document.getElementById("questionPoints"+id).value<=0 ){
-	 alertaMensajitos(5,'Invalid Value', 'The current point can not be divided')
+	 //alertaMensajitos(5,'Invalid Value', 'The current point can not be divided')
+	 makeMessage(4, "{% translate 'valor invalido' %}", "{% translate 'el puntaje no puede ser dividido' %}", 'fa fa-exclamation-triangle')
 	 return;
  }
  let dividido=document.getElementById("questionPoints"+id).value/tablaPreguntas.length
@@ -1213,7 +1212,7 @@ function RepartirModal(){
 	console.log(tablaPreguntas.length)
 
 if(!document.getElementById("questionPoints").value || document.getElementById("questionPoints").value<=0 ){
-	alertaMensajitos(5,'Invalid Value', 'The current point can not be divided')
+	makeMessage(4, "{% translate 'valor invalido' %}", "{% translate 'El puntaje no puede ser dividido' %}", 'fa fa-exclamation-triangle')
 	return;
 }
 let dividido=document.getElementById("questionPoints").value/tablaPreguntas.length
@@ -1312,5 +1311,6 @@ function actualizarValue(id, number) {
          tablaPreguntas[id].trueFalse=tf.value;
        //  console.log( tablaPreguntas[id]);
      }
+		 
 </script>   
 {% endblock javascripts %}
