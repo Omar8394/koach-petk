@@ -916,9 +916,14 @@ if(listaLoca){
 }
 function borrarItemSimple(id) {
 	tablaPreguntas.splice(id, 1)
-
+    
 	
+	if(tipoPreguntaSelected==1)
 	ListaSimple()
+	if(tipoPreguntaSelected==2)
+	ListaMultiple()
+	if(tipoPreguntaSelected==3)	
+	ListaTF()
 	
 	
 }
