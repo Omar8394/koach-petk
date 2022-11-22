@@ -469,7 +469,7 @@ tablaPreguntas.map((dato, index) => {
 				 </td>
 				 <td>
 					 <div class="btn-group" role="group">
-						 <button onclick="borrarItemSimple(${index})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
+						 <button onclick="borrarItemSimples(${index},${id})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
 							 <i class="fas fa-trash-alt"></i>
 						 </button>
 					 </div>
@@ -497,7 +497,7 @@ tablaPreguntas.map((dato, index) => {
             </td>
             <td>
                 <div class="btn-group" role="group">
-                    <button onclick="borrarItemSimple(${index})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
+                    <button onclick="borrarItemSimples(${index},${id})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
                         <i class="fas fa-trash-alt"></i>
                     </button>
                 </div>
@@ -552,7 +552,7 @@ tablaPreguntas.map((dato, index) => {
 				 </td>
 				 <td>
 					 <div class="btn-group" role="group">
-						 <button onclick="borrarItemSimple(${index})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
+						 <button onclick="borrarItemSimples(${index},${id})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
 							 <i class="fas fa-trash-alt"></i>
 						 </button>
 					 </div>
@@ -916,13 +916,34 @@ if(listaLoca){
 }
 function borrarItemSimple(id) {
 	tablaPreguntas.splice(id, 1)
-
+    
 	
+	if(tipoPreguntaSelected==1)
 	ListaSimple()
+	if(tipoPreguntaSelected==2)
 	ListaMultiple()
-    actualizarListaMultiple()
-	actualizarListaSimple()	
-	actualizarListaTF()
+	if(tipoPreguntaSelected==3)	
+	ListaTF()
+	
+	
+}
+function borrarItemSimples(id,other) {
+	tablaPreguntas.splice(id, 1)
+	let tipo= document.getElementById("duration"+other).value
+	//alert(hashtipo[tipo])	
+	if (hashtipo[tipo]=="Simple"){
+	
+	actualizarListaSimple(other)
+	}
+	if (hashtipo[tipo]=="Multiple"){
+	
+		actualizarListaMultiple(other)
+	}
+	if (hashtipo[tipo]=="VoF"){
+	
+		actualizarListaTF(other)
+	}
+	
 }
 function ListaSimple() {   
 	let contenido = "";

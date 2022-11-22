@@ -1957,7 +1957,7 @@ def getModalNewMultiple(request):
                     else: 
                        pregunta=capacitacion_EvaluacionesPreguntas.objects.create()
                        pregunta.fk_evaluacionesBloques_id=data['fatherId']
-                       pregunta.fk_tipoPregunta_id=ConfTablasConfiguracion.objects.get(valor_elemento="VoF").pk     
+                       pregunta.fk_tipoPregunta_id=ConfTablasConfiguracion.objects.get(valor_elemento="Multiple").pk     
                        pregunta.texto_pregunta=data['textoPregunta']
                        pregunta.puntos_pregunta=data['puntosPregunta']
                        pregunta.orden=len(capacitacion_EvaluacionesPreguntas.objects.filter(fk_evaluacionesBloques_id=data['fatherId'])) + 1
@@ -1972,7 +1972,6 @@ def getModalNewMultiple(request):
                               Opcion.fk_capacitacionEvaluacionesPreguntas=pregunta
                               Opcion.texto_opcion=newOpcion['OpcionText']    
                               Opcion.porc_respuesta=float(newOpcion['value'])  
-                              Opcion.respuesta_correcta=int(newOpcion['trueFalse'])  
                                    
                               Opcion.save()
                        print(data)
