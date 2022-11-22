@@ -1541,6 +1541,52 @@
                     "datos_adicional":"",
                     "tipo_dato":0
                   }
+                },
+
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":104,
+                  "fields": {
+                    "desc_elemento": "Status Pagos",
+                    "fk_tabla_padre": 1,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 0,
+                    "valor_elemento": "statusPaymts",
+                    "mostrar_en_combos": 0,
+                    "maneja_lista": 1,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":105,
+                  "fields": {
+                    "desc_elemento": "Confirmado",
+                    "fk_tabla_padre": 104,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "conf_paymts",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":106,
+                  "fields": {
+                    "desc_elemento": "En Revision",
+                    "fk_tabla_padre": 104,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "rev_paymts",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
                 }
 
 ]

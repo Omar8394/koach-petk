@@ -179,7 +179,7 @@ def edit_boletin_save(request):
                 cadena2=cadena1[:pos_last]
 
                 cadena3=cadena2.replace('media/recursoBoletin', "media/uploads/"+str(datetime.today().strftime('%Y/%m/%d')), 1)
-                print(cadena3)
+                # print(cadena3)
                     
                     
                 source= r'%s'%str(os.path.join('core'+cadena2))
@@ -203,7 +203,7 @@ def edit_boletin_save(request):
 
                     
                 cadena3=cadena2.replace('media/recursoBoletin', "media/uploads/"+str(datetime.today().strftime('%Y/%m/%d')), 1)
-                print(cadena3)
+                # print(cadena3)
 
                 cadena1=cadena3[24:]
 

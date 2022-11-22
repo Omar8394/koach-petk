@@ -71,6 +71,10 @@
 <script src="/static/assets/js/ckeditor/ckeditor-init.js"></script>
 <script src="/static/assets/js/ckeditor/ckeditor.js"></script>
 
+<!-- font fontawesome -->
+<script src="https://kit.fontawesome.com/ac9caf18b7.js" crossorigin="anonymous"></script>
+
+
 <script>
 	//con mensajitos
 	function setLoading() {
@@ -138,6 +142,13 @@
 					}
 				}
 			});
+		}
+		if (tipoAlerta === 10) {
+			swal("Bien Hecho!", "Registro fue guardado satisfactoriamente!",
+				{
+					icon: "success"
+					
+				});
 		}
 	}
 	function alertaMensajitos(tipoAlerta, tittle, mssg) {
@@ -238,6 +249,18 @@
 					}
 				}
 			});
+		}
+
+		if (tipoAlerta === 8) {
+			swal(tittle, mssg,
+				{
+					icon: "success",
+					buttons: {
+						confirm: {
+							className: 'btn btn-success'
+						}
+					},
+				});
 		}
 	}
     //FUNCION PARA OBTENER EL CRSFTOKEN DESDE JS EN CASO DE USAR AJAX
