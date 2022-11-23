@@ -115,6 +115,9 @@
 	let tablaPreguntas = []
 	let tipoPreguntaSelected=null
 	let ids={{test.pk}}
+	let ordenamientoArray = []
+	let sortableList = {}
+	let sortable = false
 	const arrayLoco = [{% for cal in has %}{ id: "{{cal.id_escalaEvaluaciones}}", descripcion: "{{cal.maxima_puntuacion}}" }, {% endfor %}]
 	const arraytipopre = [{% for tipo in tipos_pre %}{ id: "{{tipo.id_tabla}}", descripcion: "{{tipo.desc_elemento}}" }, {% endfor %}]
     let hashObj = arraytipopre.reduce(function (acc, e) {
@@ -1332,6 +1335,60 @@ function actualizarValue(id, number) {
          tablaPreguntas[id].trueFalse=tf.value;
        //  console.log( tablaPreguntas[id]);
      }
-		 
+	 const updateOrder = () => {
+		let paginas = listaPaginas = document.getElementById("table").children
+		ordenamientoArray = []
+		paginas.forEach((pagina, index) => {
+		   let orderObj = {
+			  pk: pagina.id.slice(12),
+			  order: index + 1
+		   }
+		   ordenamientoArray.push(orderObj)
+		})
+	 //   console.log(ordenamientoArray)
+	 }
+	 const mover=(id)=>{
+		sortable = !sortable
+		const listaPaginas = document.getElementById("table")
+		//console.log(listaPaginas)
+		if (sortable) {
+		 sortableBtn.innerHTML = `<i class="fas fa-lock-open mr-1"></i> Ordenar`
+		 for (let item of listaPaginas.children) {
+			//item.classList.add("card-list-item-sortable")
+		 }
+		 new Sortable(listaPaginas, {
+			animation: 150,
+			ghostClass: 'blue-background-class'
+		 });
+		 return
+		}
+		sortableBtn.innerHTML = `<i class="fas fa-lock mr-1"></i> Ordenar`
+		for (let item of listaPaginas.children) {
+		 //item.children[0].classList.remove("card-list-item-sortable")
+		}
+		renderSortedContent(id)
+	 }
+	 const renderSortedContent = (idsi) => {
+		setLoading()
+		  updateOrder()
+		  
+		 // document.querySelector("main.card-body").classList.add("is-loading")
+		  fetch("{% url 'sortPreguntas'%}", {
+			 ...fetchObject,
+			 body: JSON.stringify({
+			  data:{
+				method: "Sort",
+				order: ordenamientoArray
+			  }
+			   
+			 })
+		  })
+		  .then(async (res) => {
+			  stopLoading()
+			  makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro ordenado' %}", "fa fa-check")
+			  
+			  renderpreguntas(idsi)
+		  })
+	   }
 </script>   
 {% endblock javascripts %}

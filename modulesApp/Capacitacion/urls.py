@@ -60,6 +60,7 @@ urlpatterns = [
     path('getModalNewparrafo/', views.getModalNewparrafo, name="getModalNewparrafo"),
     path('EditNewtof/', views.EditNewtof, name="EditNewtof"),
     path('EditNewparrafo/', views.EditNewparrafo, name="EditNewparrafo"),
+     path('sortPreguntas/', views.sortPreguntas, name="sortPreguntas"),
     # Scales
     
 

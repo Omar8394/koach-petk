@@ -2,7 +2,12 @@
 <div class="form-row col-md-12">
     <h2>General</h2>
 </div>
-
+<div class="form-group col-md-12 d-flex flex-row  justify-content-end">
+<button onclick="mover('{{vl}}')" id="sortableBtn" class="btn-radius btn-azul" style="display:block;text-align:center;text-decoration:none;color:whitesmoke;">
+    <i class="fas fa-lock mr-1"></i>
+    Ordenar
+ </button>
+</div>
 <div class="card-body" id="tabQuestions">
     <div class="form-row text-center">
         <div class="form-group col-md-12">
@@ -14,21 +19,21 @@
                                 N°
                             </th>
                             <th>
-                               Question title
+                               Titulo Preguntas
                             </th>
                             <th>
-                               Question points
+                               Puntos Preguntas
                             </th>
                             <th>
-                                Type
+                                Tipo Pregunta
                             </th>
                         
                             <th>
-                                Actions
+                                Acciones
                             </th>
                         </tr>
                     </thead>
-                    <tbody  id="table{{id}}">
+                    <tbody  id="table">
                         {% for pregunta in preguntas %}
                            <tr id="itemPregunta{{pregunta.pk}}" >
                                                     <td>

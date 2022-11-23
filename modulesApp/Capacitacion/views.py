@@ -1552,9 +1552,9 @@ def renderizarnuevaspre(request):
                 data = json.load(request)
                 
                 if data["query"] == "" : 
-                    preguntas=capacitacion_EvaluacionesPreguntas.objects.filter(fk_evaluacionesBloques_id=data['vl'])
+                    preguntas=capacitacion_EvaluacionesPreguntas.objects.filter(fk_evaluacionesBloques_id=data['vl']).order_by('orden')
                    
-                    context={'preguntas':preguntas}
+                    context={'preguntas':preguntas,'vl':data['vl']}
                     html_template = (loader.get_template('rendertapreg.html'))
                     return HttpResponse(html_template.render(context, request))
                     #return JsonResponse({'data':findpregunta}, safe=False)
@@ -2052,6 +2052,26 @@ def getModalNewTof(request):
             except Exception as e:
                    print(e)
                    return JsonResponse({"message":"error"}, status=500)
+@login_required(login_url="/login/")
+def sortPreguntas(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            try:
+                context = {}
+                data = json.load(request)["data"]
+
+                if data["method"] == "Sort":
+                        print(data["order"])
+                        for item in data["order"]:
+                            pregunta =capacitacion_EvaluacionesPreguntas.objects.get(pk=item["pk"])
+                            print(pregunta)
+                            pregunta.orden= item["order"]
+                            pregunta.save()
+
+                
+                return JsonResponse({"message": "Perfect"})     
+            except:
+                return JsonResponse({"message": "Error"})               
              
                       
             
