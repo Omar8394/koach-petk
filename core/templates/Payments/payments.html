@@ -93,16 +93,19 @@
 		#messMetodopgs {
 			border: 3px solid #df0808;
 			border-radius: .3em;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
 		}
 
-		/* #messMetodopgs_ok {
-			border: 3px solid #0fdf08  !important;
-			border-radius: .3em;
-		} */
+		#messMetodopgs i {
+			font-size: 35px;
+		}
 		
 
 		/* endblock */
 	</style>
+	<script src="https://kit.fontawesome.com/ac9caf18b7.js" crossorigin="anonymous"></script>
 {% endblock stylesheets %}
 
 {% block content %}
@@ -132,7 +135,7 @@
 				</ul>
 			</div>
 			<div class="page-category">
-        		<div class="card">
+        		<div class="card mt-4">
 					<div class="card-header">
 						
 						<!--Combo-box Programs-->
@@ -147,6 +150,12 @@
 								  
 								  {% endfor%}
 							   </select>
+							</div>
+							<div class="form-group col-6">
+
+								<label for="fechaAutorizado" class="col-form-label">Fecha</label>
+								<input id="fechaAutorizado" name="fechaAutorizado" value={{fech_act}} type="date" class="form-control" style="padding-top:6px;" disabled>
+									
 							</div>
 						 </div>
 
@@ -167,7 +176,7 @@
 													<h4>{{item.desc_elemento}}</h4>
 												</div>
 												<div class="card-text">
-													<h1 class=" animated animate__swing ">Opcion {{ forloop.counter }}</h1>
+													<h1 class=" animated animate__swing">Opcion {{ forloop.counter }}</h1>
 												</div>
 												<div class="card-link">
 													
@@ -190,7 +199,8 @@
 					</div>
 					<main class="card-body is-loading-lg">
 						<div class="container-fluid p-3 my-3" id="messMetodopgs">
-							<h1> Ningun Metodo de Pago Seleccionado </h1>
+							<h1 class="animated animate__bounceInRight">  Ningun Metodo de Pago Seleccionado </h1>
+							<i class="icon-close"></i>
 						</div>
 						
 						<div class="card shadow mb-4 mt-4">
@@ -199,54 +209,28 @@
 								<h2 class="m-0 font-weight-bold text-dark">Beneficiarios</h2>
 								<div class="dropdown no-arrow d-flex flex-row">
 									<a href="javascript:void(0);" id="add-boletin" class="btn-radius btn-azul mr-2" style="display:block;text-align:center;text-decoration:none;color:whitesmoke;" onclick="showModalPublic()"><span>Agregar</span></a>
-									<a href="javascript:void(0);" id="add-boletin" class="btn-radius btn-mora" style="display:block;text-align:center;text-decoration:none;color:whitesmoke;"><span>Vaciar</span></a>
+									<a href="javascript:void(0);" id="add-boletin" class="btn-radius btn-mora" style="display:block;text-align:center;text-decoration:none;color:whitesmoke;"><span>Eliminar</span></a>
 									
 								</div>
 							</div>
 							
 							<!-- Card Body -->
-							<div class="card-body">
+							<div class="card-body" id="id_card_body">
 								
 								<div class="table-responsive">
-									<table class="table" id="TableTranf" width="100%" cellspacing="0">
+									<table class="table" id="TablePublic" width="100%" cellspacing="0">
 										<thead>
 											<tr>
 												<th>Name</th>
-												<th>descripcion_texto</th>
+												<th>Apellido</th>
+												<th class="text-center">seleccionar</th>
 												
 											</tr>
 										</thead>
 										
 										<tbody id="idtbody">
-											
-											<!-- <tr>
-												
-												<td> JesuCristo</td>
-												<td> Salvador Eterno ReY DE GLORIA </td>
-												
-											</tr>
-						
-											<tr>
-												
-												<td> JesuCristo</td>
-												<td> ReY DE GLORIA </td>
-												
-											</tr>
-						
-											<tr>
-												
-												<td> cRISTO</td>
-												<td> Salvador Eterno  </td>
-												
-											</tr>
-						
-											<tr>
-												
-												<td> JesuS</td>
-												<td> SEÑOR DE sEÑORES </td>
-												
-											</tr> -->
-											
+
+
 											
 										</tbody>
 									</table>
@@ -265,8 +249,12 @@
 	</div>
 
 	<div class="modal fade" id="PublicModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-		<div id="PublicModalContent" class="modal-dialog  modal-dialog-centered" role="document" style=" max-width:80% ;">
-	
+		<div id="PublicModalContent" class="modal-dialog  modal-dialog-centered" role="document" style="max-width:80%;">
+			<div class="modal-footer color-footer-modal">
+				<button type="button" class="btn btn-radius btn-naranja mr-auto" data-dismiss="modal"><i
+					class="fas fa-arrow-left mr-2"></i>Atras</button>
+				<button type="submit" class="btn btn-radius btn-azul" id="btn_guardar">Guardar<i class="fas fa-save ml-2" onclick="addtable_beneficiario()"></i></button>
+			</div>
 		</div>
 	</div>
 
@@ -277,8 +265,11 @@
 	<script>
 		// block variables
 		card_body = document.querySelector(".card-body")
+		id_card_body = document.querySelector("#id_card_body")
 		formMonto = document.querySelector("#formMonto")
 		messMetodopgs = document.querySelector('#messMetodopgs')
+		concepto_pg= document.querySelector('#c_metodo_pgs')
+		let id_metodo_pg=0
 		// fin block
 
 
@@ -317,71 +308,75 @@
 			} 
 		});
 		// endblock swiper
+		
+		const Table =()=>{
+			$('#TablePublic').DataTable({
 
-		$(document).ready(function() {
-			$('#TableTranf').DataTable({
+				"language":{
+				"processing": "Procesando...",
+				"lengthMenu": "Mostrar _MENU_ registros",
+				"zeroRecords": "No se encontraron resultados",
+				"emptyTable": "Ningún dato disponible en esta tabla",
+				"infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+				"infoFiltered": "(filtrado de un total de _MAX_ registros)",
+				"search": "Buscar:",
+				"infoThousands": ",",
+				"loadingRecords": "Cargando...",
+				"paginate": {
+					"first": "Primero",
+					"last": "Último",
+					"next": "Siguiente",
+					"previous": "Anterior"
+				},
+				"aria": {
+					"sortAscending": ": Activar para ordenar la columna de manera ascendente",
+					"sortDescending": ": Activar para ordenar la columna de manera descendente"
+				}
 
-			"language":{
-			"processing": "Procesando...",
-			"lengthMenu": "Mostrar _MENU_ registros",
-			"zeroRecords": "No se encontraron resultados",
-			"emptyTable": "Ningún dato disponible en esta tabla",
-			"infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-			"infoFiltered": "(filtrado de un total de _MAX_ registros)",
-			"search": "Buscar:",
-			"infoThousands": ",",
-			"loadingRecords": "Cargando...",
-			"paginate": {
-				"first": "Primero",
-				"last": "Último",
-				"next": "Siguiente",
-				"previous": "Anterior"
-			},
-			"aria": {
-				"sortAscending": ": Activar para ordenar la columna de manera ascendente",
-				"sortDescending": ": Activar para ordenar la columna de manera descendente"
-			}
-
-			}
+				}
 
 			});
+		}
 
-		});
+		Table()
 
 		function btn_concepto_pgs(id_metodo){
-			console.log(id_metodo)
+	
+			id_metodo_pg=id_metodo
 
 			if(id_metodo =='paypal_pgs'){
-				messMetodopgs.style.display="none"
-				formMonto.innerHTML = `<h1 class="animated animate__rotateIn"> Paypal pago selecciondo </h1>`
+				messMetodopgs.style.border= "3px solid #0fdf08"
+				messMetodopgs.innerHTML = `<h1 class="animated animate__bounceInRight"> Paypal pago selecciondo </h1> <i class="icon-check"></i>`
+			
 			}
 
 			if(id_metodo == 'trj_cdto_pgs'){
-				messMetodopgs.style.display="none"
-				formMonto.innerHTML = `<h1 class="animated animate__rotateIn"> Diesmos pago selecciondo </h1>`
+				messMetodopgs.style.border= "3px solid #0fdf08"
+				messMetodopgs.innerHTML = `<h1 class="animated animate__bounceInRight"> Tarjeta de Credito pago selecciondo </h1> <i class="icon-check"></i>`
 			}
 			
 			if(id_metodo == 'transf_pgs'){
-				messMetodopgs.style.display="block"
+				
 				messMetodopgs.style.border= "3px solid #0fdf08"
-				messMetodopgs.innerHTML = `<h1 class="animate animate__bounceInRight"> Transferencia pago selecciondo </h1>`
-				metodo_transf()
+				messMetodopgs.innerHTML = `<h1 class="animated animate__bounceInRight"> Transferencia pago selecciondo </h1> <i class="icon-check"></i>`
+			
 			}
 			
 			if(id_metodo=='cripto_pgs'){
-				messMetodopgs.style.display="none"
-				formMonto.innerHTML = `<h1 class="animated animate__rotateIn"> En Mantenimiento </h1>`
+				messMetodopgs.style.border= "3px solid rgb(242, 165, 16)"
+				messMetodopgs.innerHTML = `<h1 class="animated animate__bounceInRight"> En Mantenimiento </h1> <i class="icon-exclamation"></i>`
 			}
-
+			make_pago(id_metodo_pg)
 		}
 
 		// funciones para renderizar los formularios de metodos de pago
 
-		function metodo_transf(){
-			fetch("{% url 'get_formPgTransf'%}", {
+		function make_pago(form_pg){
+			fetch("{% url 'get_formPayments'%}", {
                 ...fetchObject,           
                 body: JSON.stringify({
                 acceso:"show",
+				form_pg
                 })
             })
             .then(async(res)=>{
@@ -393,7 +388,7 @@
 		}
 
 		function metodo_pypal(){
-			fetch("{% url 'get_formPayments'%}", {
+			fetch("{% url 'get_formPgPaypal'%}", {
                 ...fetchObject,           
                 body: JSON.stringify({
                 acceso:"show",
@@ -417,11 +412,134 @@
 
 		// funcion para show modal para seleccionar public
 		const showModalPublic = () =>{
-			alert("Moda para seleccionar Public")
+			fetch("{% url 'get_buscarpublic'%}", {
+				...fetchObject,
+				body: JSON.stringify({
+					acceso:"buscar"
+						
+				})
+				
+			})
+			.then(async(res)=>{
+                result = await res.text()
+                PublicModalContent.innerHTML = result 
+				$('#TablePublicSelect').DataTable({
+
+					"language":{
+					"processing": "Procesando...",
+					"lengthMenu": "Mostrar _MENU_ registros",
+					"zeroRecords": "No se encontraron resultados",
+					"emptyTable": "Ningún dato disponible en esta tabla",
+					"infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+					"infoFiltered": "(filtrado de un total de _MAX_ registros)",
+					"search": "Buscar:",
+					"infoThousands": ",",
+					"loadingRecords": "Cargando...",
+					"paginate": {
+						"first": "Primero",
+						"last": "Último",
+						"next": "Siguiente",
+						"previous": "Anterior"
+					},
+					"aria": {
+						"sortAscending": ": Activar para ordenar la columna de manera ascendente",
+						"sortDescending": ": Activar para ordenar la columna de manera descendente"
+					}
+
+					}
+
+				});
+				$("#PublicModal").modal("show")     
+                    
+            })
+			
 		}
 
 
 		// fin de block
+		let btn_guardar= document.querySelector("#btn_guardar")
+
+		btn_guardar.addEventListener('click', ()=>{
+			// console.log("Cristo Santo Santo Santo")
+			$("#PublicModal").modal("hide")	
+		})
+		// variables para buscar publico
+		idCheckbox=[]
+		let idtbody= document.querySelector('#idtbody')
+		// fin block
+		function addtable_beneficiario(){
+			
+            cont = $('input[type=checkbox]').length;
+        
+			console.log(cont)
+            $('input:checked').each(function(indice, op) {
+
+                if (idCheckbox.includes($(op).attr('data-idchecked'))){
+                      
+                }else{
+					idCheckbox.push($(op).attr('data-idchecked'))
+				}
+
+            });
+			
+			$("#PublicModal").modal("hide")
+
+			
+			fetch("{% url 'get_contenido_tab_beneficiario'%}", {
+                ...fetchObject,           
+                body: JSON.stringify({
+                acceso:"show",
+				idCheckbox,
+                })
+            })
+            .then(async(res)=>{
+                result = await res.text()
+                id_card_body.innerHTML = result 
+				$(document).ready(Table())
+            })
+
+		}
+
+		function inicio(){
+			// window.location.href = "{% url 'payments' %}"
+		}
+
+		const makeTransf =()=>{
+			const id_concepto_pg = concepto_pg.value
+			const formSave = document.getElementById("formSave")
+            formSave.addEventListener("submit", (e) => {
+               e.preventDefault()
+               console.log(idCheckbox)
+			   const formData = new FormData(formSave);
+			   const data = {}
+				for (var [key, value] of formData.entries()) {
+					data[key] = value
+				}
+				console.log(id_concepto_pg)
+				console.log(JSON.stringify(data))
+				console.log(id_metodo_pg)
+				fetch("{% url 'get_sava_transferencia' %}", {
+                ...fetchObject,
+                    body: JSON.stringify({
+						acceso:"save",
+                    	idCheckbox,
+						data,
+                        id_concepto_pg,
+						id_metodo_pg
+                    })
+				})
+				.then(async(res)=>{
+					
+					const text = JSON.parse(await res.text())
+					if (text.message == "error") alerta(1)
+					else alertaMensajitos(8,"Ok","Registro fue guardado satisfactoriamente!"); setTimeout(() => window.location.href = "{% url 'payments' %}", 700) 			
+				})
+				
+            })
+
+			
+			
+		}
 
 	</script>
 {% endblock javascripts %}

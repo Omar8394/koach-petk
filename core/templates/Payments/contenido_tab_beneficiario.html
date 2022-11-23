@@ -1,0 +1,29 @@
+
+<div class="table-responsive">
+    <table class="table" id="TablePublic" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Apellido</th>
+                <th class="text-center">seleccionar</th>
+                
+            </tr>
+        </thead>
+        
+        <tbody id="idtbody">
+
+            {% for row in data %}
+            <tr>
+                
+                <td>{{ row.nombre }}</td>
+                <td>{{ row.apellido }}</td>
+                <td class="text-center">
+                    <input type="checkbox" id="id_public" value="{{row.idpublico}}" data-idchecked="{{row.idpublico}}">
+                </td>
+                
+            </tr>
+        {% endfor %}
+            
+        </tbody>
+    </table>
+</div>

@@ -2,26 +2,37 @@
 
 <!-- <div class="card shadow mb-4"> -->
     <!-- Card Header - Dropdown -->
-    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h2 class="m-0 font-weight-bold text-dark">Monto a Pagar</h2>
-        <div class="dropdown no-arrow d-flex flex-row">
-            <div class="form-row">
-    
-                <div class="form-group col-12">
-                   <!-- <label for="descriptionProgram" class="col-form-label">Name</label> -->
-                   <input type="text" class="form-control" placeholder="Monto" value="">
+    <form id="formSave" class="form">
+        <div class="card-header py-3" style="text-align:-moz-center;">
+            
+            <div class="form-row" style="display:ruby-base;">
+
+                <div class="form-group col-4">
+                    <label for="descriptionProgram" class="col-form-label">Monto</label>
+                    <input type="text" class="form-control" placeholder="Monto" value="" name="v_monto">
                 </div>
-                
-             </div>
-                        
+                <div class="form-group col-4">
+                    <label for="descriptionProgram" class="col-form-label">Numero Referencia</label>
+                    <input type="text" class="form-control" placeholder="Referencia" value="" name="v_referencia">
+                    </div>
+                    <!-- <div class="form-group col-4">
+                    <label for="descriptionProgram" class="col-form-label">Capture</label>
+                    <input type="text" class="form-control" placeholder="Capture" value="" name="v_capture">
+                    </div> -->
+                </div>
+
+                <div class="card-body" style="text-align: center;">
+                    <button type="submit" class="btn-radius btn-azul" id="id_aceptar" onclick="makeTransf()">Aceptar</button>
+                    
+                </div>
+            </div>  
+                    
+            
         </div>
-    </div>
+        
+        <!-- Card Body -->
     
-    <!-- Card Body -->
-    <div class="card-body">
-        
-        
-    </div>
+    </form> 
 <!-- </div> -->
 
 
