@@ -754,12 +754,13 @@ const updateQuestion = (form, idViejo, url,padr) => {
 			}
 			if (result.message === "ok") {
 				makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
-			limpiarModalOpciones(padr)
+			//limpiarModalOpciones(padr)
+			$("#addNewQuestion").modal("hide");
 			renderpreguntas(padr)
 			
 			
 			}
-			$("#addNewQuestion").modal("hide");
+			
 		})
 		.then(() => {
 		   // renderTable()
@@ -936,6 +937,7 @@ if(listaLoca){
 	const questionText = document.getElementById("questionText")
       console.log(url)
 	   CargarModalOpciones() 
+
 	   
 })
 }
