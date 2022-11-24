@@ -615,7 +615,7 @@ function save(id,peso){
 	console.log(peso)
 
 	const tipoPreguntaSelected= document.getElementById("duration"+id)
-	const questionText= document.getElementById("questionTittle")
+	const questionText= document.getElementById("questionTittle"+id)
 	const questionPoints= document.getElementById("questionPoints"+id)
 	if(tipo==1){
 	var select2=document.querySelector('input[name="listaSimpleRadio"]:checked').value
@@ -727,7 +727,7 @@ const createQuestion = (form,url,id) => {
 		 }
 		 if (result.message === "ok") {
 			makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
-			limpiarModalOpciones()
+			limpiarModalOpciones(id)
 			renderpreguntas(id)
 		 }
 		
@@ -754,7 +754,7 @@ const updateQuestion = (form, idViejo, url,padr) => {
 			}
 			if (result.message === "ok") {
 				makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
-			limpiarModalOpciones()
+			limpiarModalOpciones(padr)
 			renderpreguntas(padr)
 			
 			
@@ -766,12 +766,34 @@ const updateQuestion = (form, idViejo, url,padr) => {
 		  
 		})
 }
-function limpiarModalOpciones(){
+function limpiarModalOpciones(id){
 	tablaPreguntas=[]
-	
-	editmode = false
 	tablaPreguntas.splice(0,tablaPreguntas.length)
-	console.log('clean')
+	editmode = false
+	let valortitulo=document.getElementById("questionTittle"+id)
+	let valorptj=document.getElementById("questionPoints"+id)
+	let valorop=document.getElementById("questionOptions"+id)
+	valortitulo.value=""
+	valorptj.value=""
+	valorop.value=""
+	let tipo= document.getElementById("duration"+id).value
+	//alert(hashtipo[tipo])	
+	if (hashtipo[tipo]=="Simple"){
+	
+	actualizarListaSimple(id)
+	}
+	if (hashtipo[tipo]=="Multiple"){
+	
+		actualizarListaMultiple(id)
+	}
+	if (hashtipo[tipo]=="VoF"){
+	
+		actualizarListaTF(id)
+	}
+	
+	document.querySelector("#preguntas"+id).innerHTML =""
+	
+	//console.log(document.getElementById("questionPoints"+id).value)
 
 
 }	
@@ -814,7 +836,7 @@ fetch(url, {
 	}),
 })
 .then(async (res) => {
-tablaPreguntas.splice(0,tablaPreguntas.length)
+tablaPreguntas.splice(tablaPreguntas.length,0)
 
 tablaPreguntas=[]
 respuesta=null
@@ -1383,6 +1405,7 @@ function actualizarValue(id, number) {
 			   
 			 })
 		  })
+		  
 		  .then(async (res) => {
 			  stopLoading()
 			  makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro ordenado' %}", "fa fa-check")
