@@ -6,7 +6,7 @@ from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.template.loader import render_to_string
 from ..App.models import ConfTablasConfiguracion,AppPublico
-from ..Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_EvaluacionesPreguntas, capacitacion_EvaluacionesPreguntasOpciones, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,Capacitacion_componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos,EscalasEvaluaciones,capacitacion_ActividadEvaluaciones,capacitacion_EvaluacionesBloques 
+from ..Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_EvaluacionesPreguntas, capacitacion_EvaluacionesPreguntasOpciones, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos,EscalasEvaluaciones,capacitacion_ActividadEvaluaciones,capacitacion_EvaluacionesBloques 
 from ..Organizational_network.models import nodos_grupos
 import time, json
 from decimal import Decimal
@@ -430,7 +430,7 @@ def modalAddcursos(request):
                 data = json.load(request)
                 print(data)
                 if data['method'] == "Editar":
-                    modelo = Capacitacion_componentesFormacion.objects.get(pk=data["id"])    
+                    modelo = componentesFormacion.objects.get(pk=data["id"])    
                     categorias = ConfTablasConfiguracion.obtenerHijos(valor="Ritmo_Capacitacion")
                     context = {"categorias": categorias, "modelo": modelo}
                     html_template = (loader.get_template('modaladdcursos.html'))
@@ -443,7 +443,7 @@ def modalAddcursos(request):
                     # cursos.delete()
                     return JsonResponse({"message":"Deleted"}) 
                 elif data["method"] == "Update":
-                   cursos = Capacitacion_componentesFormacion.objects.get(pk=data["id"])
+                   cursos = componentesFormacion.objects.get(pk=data["id"])
                    cursos.descripcion=data['data']['resumenProgram']    
                    cursos.url=data['data']['urlProgram']         
                    cursos.titulo=data['data']['descriptionProgram']
@@ -464,7 +464,7 @@ def modalAddcursos(request):
                    cursos.save()
                 elif data['method'] == "Create":
                   
-                   cursos=Capacitacion_componentesFormacion()
+                   cursos=componentesFormacion()
                    relacion=capacitacion_componentesXestructura() 
                    relacion.fk_estructuraprogramas_id=data['id']
                   
@@ -630,7 +630,7 @@ def getModalNewLesson(request):
                         return JsonResponse({"message":"ok"}, status=200)
                     elif data["method"] == "Delete":
                         actividad=capacitacion_ComponentesActividades.objects.get(pk=data["id"])
-                        actividad.fk_componenteformacion= Capacitacion_componentesFormacion.objects.get(codigo_componente="papelera")
+                        actividad.fk_componenteformacion= componentesFormacion.objects.get(codigo_componente="papelera")
                         actividad.save()
                         leccion=capacitacion_Actividad_leccion.objects.get(fk_componenteActividad_id=data["id"])
                         leccion.fk_componenteActividad=capacitacion_ComponentesActividades.objects.get(valor_elemento="papelera")
@@ -708,7 +708,7 @@ def getModalNewtest(request):
                         return HttpResponse(html_template.render(context, request))
                     elif data["method"] == "Delete":
                         actividad=capacitacion_ComponentesActividades.objects.get(pk=data["id"])
-                        actividad.fk_componenteformacion= Capacitacion_componentesFormacion.objects.get(codigo_componente="papelera")
+                        actividad.fk_componenteformacion= componentesFormacion.objects.get(codigo_componente="papelera")
                         actividad.save()
                         test=capacitacion_ActividadEvaluaciones.objects.get(fk_componenteActividad_id=data["id"])
                         test.fk_componenteActividad=capacitacion_ComponentesActividades.objects.get(valor_elemento="papelera")
@@ -1241,7 +1241,7 @@ def getModalNewhomework(request):
                         return JsonResponse({"message":"ok"})
                     elif data["method"] == "Delete":
                         actividad=capacitacion_ComponentesActividades.objects.get(pk=data["id"])
-                        actividad.fk_componenteformacion= Capacitacion_componentesFormacion.objects.get(codigo_componente="papelera")
+                        actividad.fk_componenteformacion= componentesFormacion.objects.get(codigo_componente="papelera")
                         actividad.save()
                         tarea=capacitacion_Actividad_tareas.objects.get(fk_componenteActividad_id=data["id"])
                         tarea.fk_componenteActividad=capacitacion_ComponentesActividades.objects.get(valor_elemento="papelera")
@@ -1298,7 +1298,7 @@ def getModalNewsesiones(request):
                         return HttpResponse(html_template.render(context, request))
                     elif data["method"] == "Delete":
                         actividad=capacitacion_ComponentesActividades.objects.get(pk=data["id"])
-                        actividad.fk_componenteformacion= Capacitacion_componentesFormacion.objects.get(codigo_componente="papelera")
+                        actividad.fk_componenteformacion= componentesFormacion.objects.get(codigo_componente="papelera")
                         actividad.save()
                         sesion=capacitacion_Actividad_Sesiones.objects.get(fk_componenteActividad_id=data["id"])
                         sesion.fk_componenteActividad=capacitacion_ComponentesActividades.objects.get(valor_elemento="papelera")

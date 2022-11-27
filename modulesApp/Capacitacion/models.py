@@ -1,6 +1,6 @@
 from django.db import models
 from ..App.models import ConfTablasConfiguracion, AppPublico
-from ..Organizational_network.models import nodos_grupos
+from ..Organizational_network.models import nodos_gruposIntegrantes,nodos_grupos
 # Create your models here.
 class Estructuraprograma(models.Model):
     id_estructura = models.SmallAutoField(primary_key=True)
@@ -14,7 +14,7 @@ class Estructuraprograma(models.Model):
     fk_estructura_padre = models.ForeignKey('self',on_delete=models.DO_NOTHING, default=None, null=True)
     def __str__(self):
         return self.descripcion
-class Capacitacion_componentesFormacion(models.Model):
+class componentesFormacion(models.Model):
     id_componetesformacion=models.SmallAutoField(primary_key=True)
     titulo=models.TextField(null=True)
     descripcion=models.TextField()
@@ -33,11 +33,11 @@ class Capacitacion_componentesFormacion(models.Model):
 
 class capacitacion_componentesXestructura(models.Model):
     id_componenteXestructura=models.SmallAutoField(primary_key=True)
-    fk_componetesformacion=models.ForeignKey(Capacitacion_componentesFormacion, on_delete=models.DO_NOTHING, default=None, null=True)
+    fk_componetesformacion=models.ForeignKey(componentesFormacion, on_delete=models.DO_NOTHING, default=None, null=True)
     fk_estructuraprogramas=models.ForeignKey(Estructuraprograma, on_delete=models.DO_NOTHING, default=None, null=True)
 class capacitacion_ComponentesActividades(models.Model):
     id_componenteActividades=models.SmallAutoField(primary_key=True)
-    fk_componenteformacion=models.ForeignKey(Capacitacion_componentesFormacion,on_delete=models.DO_NOTHING, default=None, null=True)
+    fk_componenteformacion=models.ForeignKey(componentesFormacion,on_delete=models.DO_NOTHING, default=None, null=True)
     titulo=models.TextField(null=True)
     descripcion=models.TextField()
     fk_tipocomponente=models.ForeignKey(ConfTablasConfiguracion, on_delete=models.DO_NOTHING,related_name="tipo_componente")
@@ -167,3 +167,10 @@ class capacitacion_EvaluacionesPreguntasOpciones(models.Model):
       texto_opcion=models.TextField(null=True)
       respuesta_correcta=models.BooleanField(null=True)
       porc_respuesta=models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+class capacitacion_ActividadesTiempoReal(models.Model):
+      id_Actividad_tiempoReal=models.AutoField(primary_key=True)
+      fk_componenteXestructura=models.ForeignKey(capacitacion_componentesXestructura, on_delete=models.DO_NOTHING, default=None, null=True)
+      fk_componenteActividades=models.ForeignKey(capacitacion_ComponentesActividades, on_delete=models.DO_NOTHING, default=None, null=True)
+      fecha_realizado=models.DateField(blank=True, null=True)
+      culminado=models.BooleanField(null=True)
+      fk_nodo_Grupo_integrantes=models.ForeignKey(nodos_gruposIntegrantes, on_delete=models.DO_NOTHING, default=None, null=True)		
