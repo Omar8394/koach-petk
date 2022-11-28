@@ -2073,7 +2073,15 @@ def sortPreguntas(request):
             except:
                 return JsonResponse({"message": "Error"})               
              
-                      
+@login_required(login_url="/security/login/")
+def indexstudent(request):
+    
+   
+    context = {}
+   
+    html_template = (loader.get_template('indezstudent.html'))
+   
+    return HttpResponse(html_template.render(context, request))                      
             
            
    

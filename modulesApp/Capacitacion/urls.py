@@ -11,6 +11,7 @@ urlpatterns = [
     # The home page
     # path('', views.index, name='home'),
     path('', views.index, name='capacitacion'),
+    path('capacitacion_student', views.indexstudent, name='capacitacion_student'),
     path('saveunits/', views.indextwo, name='capacitaciontwo'),
     path('contenido_programas/', views.getcontentprogrmas, name='contenido_programas'),
     path('contenido_unidades/', views.getcontentunits, name='contenido_unidades'),
