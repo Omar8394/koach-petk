@@ -19,6 +19,7 @@ class nodos_gruposIntegrantes(models.Model):
     datos_adicionales=models.TextField()
     motivo_desincorporacion=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name="motivo")
     descripcion_comentarios=models.TextField()
+    fk_nodogrupo=models.ForeignKey(nodos_grupos,on_delete=models.DO_NOTHING,default=None, null=True)
 class nodos_PlanFormacion(models.Model):
      idnodo_planformacion= models.SmallAutoField(primary_key=True)
      fk_gruponodo=models.ForeignKey(nodos_grupos, on_delete=models.DO_NOTHING, default=None, null=True)
