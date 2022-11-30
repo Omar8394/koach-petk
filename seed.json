@@ -1455,7 +1455,7 @@
                   "model": "App.ConfTablasConfiguracion",
                   "pk":98,
                   "fields": {
-                    "desc_elemento": "Verdadero/Falso",
+                    "desc_elemento": "VoF",
                     "fk_tabla_padre": 97,
                     "tipo_elemento": "2",
                     "permite_cambios": 1,

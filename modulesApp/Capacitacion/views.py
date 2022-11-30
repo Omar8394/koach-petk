@@ -20,6 +20,7 @@ import mimetypes
 from django.core.files.storage import FileSystemStorage
 import os
 from django.db.models import Count, Sum, FloatField
+from ..Security.models import User
 # Create your 
 # views here.
 @register.filter
@@ -2076,8 +2077,8 @@ def sortPreguntas(request):
 @login_required(login_url="/security/login/")
 def indexstudent(request):
     
-   
-    context = {}
+    print(request.user)
+    context = {'usuario':request.user}
    
     html_template = (loader.get_template('indezstudent.html'))
    

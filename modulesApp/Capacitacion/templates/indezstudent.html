@@ -4,9 +4,7 @@
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}
-<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
-<!-- font wesome stylesheet -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
 <style>
     
 
@@ -74,26 +72,8 @@
   
   /*header section*/
   
-  .header_section {
-    padding-top: 10px;
-  }
   
-  nav.navbar.navbar-expand-lg {
   
-    padding: 10px 0;
-  }
-  
-  .custom_nav-container.navbar-expand-lg .navbar-nav .nav-link {
-    padding: 10px 20px;
-    color: #2d2c2c;
-    font-size: 15px;
-    text-align: center;
-    text-transform: uppercase;
-  }
-  
-  .custom_nav-container.navbar-expand-lg .navbar-nav .nav-item.active .nav-link {
-    color: #232323;
-  }
   
   a,
   a:hover,
@@ -142,48 +122,7 @@
     height: auto;
   }
   
-  .navbar-brand img {
-    width: 25px;
-    margin-right: 7px;
-  }
-  
-  
-  .custom_nav-container .nav_search-btn {
-    background-image: url(../images/search-icon.png);
-    background-size: 22px;
-    background-repeat: no-repeat;
-    background-position-y: 7px;
-    width: 35px;
-    height: 35px;
-    padding: 0;
-    border: none;
-  }
-  
-  .navbar-brand {
-    display: flex;
-    align-items: center;
-  }
-  
-  .navbar-brand span {
-    font-size: 20px;
-    font-weight: 700;
-    color: #fefefe;
-  }
-  
-  .custom_nav-container {
-    z-index: 99999;
-    padding: 15px 0;
-  }
-  
-  .custom_nav-container .navbar-toggler {
-    outline: none;
-  }
-  
-  .custom_nav-container .navbar-toggler .navbar-toggler-icon {
-    background-image: url(../images/menu.png);
-    background-size: 40px;
-  }
-  
+
   /*end header section*/
   
   /* hero section */
@@ -426,21 +365,7 @@
   
   /* footer section*/
   
-  .footer_section {
-    background-color: #082465;
-    padding: 20px 0;
-    font-family: "Roboto", sans-serif;
-  }
-  
-  .footer_section p {
-    color: #fdfdfe;
-    margin: 0;
-    text-align: center;
-  }
-  
-  .footer_section a {
-    color: #fdfdfe;
-  }
+
   @media (max-width: 1120px) {}
 
 @media (max-width: 992px) {
@@ -646,8 +571,8 @@
                           <div class="hero_detail-box">
                             
                             <h3>
-                              Welcome to <br>
-                              Best educations
+                              Bienvenido <br>
+                              {{usuario}}
                             </h3>
                             <h1>
                               Capacitacion
