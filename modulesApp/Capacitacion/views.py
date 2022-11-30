@@ -7,7 +7,7 @@ from django.template import loader
 from django.template.loader import render_to_string
 from ..App.models import ConfTablasConfiguracion,AppPublico
 from ..Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_EvaluacionesPreguntas, capacitacion_EvaluacionesPreguntasOpciones, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos,EscalasEvaluaciones,capacitacion_ActividadEvaluaciones,capacitacion_EvaluacionesBloques 
-from ..Organizational_network.models import nodos_grupos
+from ..Organizational_network.models import nodos_grupos,nodos_gruposIntegrantes,nodos_PlanFormacion
 import time, json
 from decimal import Decimal
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -2077,7 +2077,12 @@ def sortPreguntas(request):
 @login_required(login_url="/security/login/")
 def indexstudent(request):
     
-    print(request.user)
+    usuario=request.user
+    userpu= AppPublico.objects.get(user_id=usuario)
+    print(userpu)
+    nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu).fk_nodogrupo
+    nodoplan=nodos_PlanFormacion.objects.filter(fk_gruponodo=nodosuser)
+    print(nodoplan)
     context = {'usuario':request.user}
    
     html_template = (loader.get_template('indezstudent.html'))

@@ -15,6 +15,8 @@ def index(request):
 @login_required(login_url='/security/login/')
 @permission_required('App.view_confmisfavoritos', login_url="/security/login/")
 def Dashboard(request):
+    usuario=request.user
+    rol=usuario.fk_rol_usuario
     
     context = {}
     context['segment'] = 'Dashboard'
