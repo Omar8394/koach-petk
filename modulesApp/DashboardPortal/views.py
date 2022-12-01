@@ -17,9 +17,9 @@ def index(request):
 def Dashboard(request):
     usuario=request.user
     rol=usuario.fk_rol_usuario
-    
-    context = {}
+    print(rol)
+    context = {'rol':str(rol), 'user':usuario}
     context['segment'] = 'Dashboard'
-    
+    print(context)
     html_template = loader.get_template( 'Dashboard_Portal/Dashboard.html' )
     return HttpResponse(html_template.render(context, request))

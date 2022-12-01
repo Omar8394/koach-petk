@@ -2,7 +2,7 @@ from itertools import filterfalse
 from unicodedata import category, decimal
 from django import apps
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseForbidden
 from django.template import loader
 from django.template.loader import render_to_string
 from ..App.models import ConfTablasConfiguracion,AppPublico
@@ -115,17 +115,14 @@ def peso(id,test):
 @login_required(login_url="/security/login/")
 def index(request):
     
-    # user = request.user.extensionusuario
-    # rol = user.CtaUsuario.fk_rol_usuario.desc_elemento
-    # publico = user.Publico
+    user = request.user
+    rol=user.fk_rol_usuario   
     context = {}
-    # context['segment'] = 'academic'
-    # context['rol'] = rol
-    # context['user'] = publico
-    # if rol == "Admin" or rol == "Student" or rol == "Teacher":
-    html_template = (loader.get_template('gestor_index.html'))
-    # else:
-    #     return HttpResponseForbidden()
+   
+    if str(rol) == "Admin"  or str(rol) == "Lider":
+       html_template = (loader.get_template('gestor_index.html'))
+    else:
+        html_template = (loader.get_template('page-403.html'))
     return HttpResponse(html_template.render(context, request))
 def getcontentprogrmas(request):
     if request.method == "POST":
@@ -2073,20 +2070,19 @@ def sortPreguntas(request):
                 return JsonResponse({"message": "Perfect"})     
             except:
                 return JsonResponse({"message": "Error"})               
-             
+
+
+#vistas para el estudiante             
 @login_required(login_url="/security/login/")
 def indexstudent(request):
     
     usuario=request.user
-    userpu= AppPublico.objects.get(user_id=usuario)
-    print(userpu)
+    userpu= AppPublico.objects.get(user_id=usuario)  
     nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu).fk_nodogrupo
-    nodoplan=nodos_PlanFormacion.objects.filter(fk_gruponodo=nodosuser)
+    nodoplan=nodos_PlanFormacion.objects.filter(fk_gruponodo=nodosuser) 
     print(nodoplan)
-    context = {'usuario':request.user}
-   
-    html_template = (loader.get_template('indezstudent.html'))
-   
+    context = {'usuario':request.user}   
+    html_template = (loader.get_template('indezstudent.html'))   
     return HttpResponse(html_template.render(context, request))                      
             
            
