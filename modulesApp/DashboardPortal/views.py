@@ -15,9 +15,11 @@ def index(request):
 @login_required(login_url='/security/login/')
 @permission_required('App.view_confmisfavoritos', login_url="/security/login/")
 def Dashboard(request):
-    
-    context = {}
+    usuario=request.user
+    rol=usuario.fk_rol_usuario
+    print(rol)
+    context = {'rol':str(rol), 'user':usuario}
     context['segment'] = 'Dashboard'
-    
+    print(context)
     html_template = loader.get_template( 'Dashboard_Portal/Dashboard.html' )
     return HttpResponse(html_template.render(context, request))

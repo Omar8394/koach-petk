@@ -1587,6 +1587,66 @@
                     "datos_adicional":"",
                     "tipo_dato":0
                   }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":107,
+                  "fields": {
+                    "desc_elemento": "Roles Usuario",
+                    "fk_tabla_padre": 1,
+                    "tipo_elemento": "1",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Roles",
+                    "mostrar_en_combos": 0,
+                    "maneja_lista": 1,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":108,
+                  "fields": {
+                    "desc_elemento": "Admin",
+                    "fk_tabla_padre": 107,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Admin",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":109,
+                  "fields": {
+                    "desc_elemento": "Estudiante",
+                    "fk_tabla_padre": 107,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Estudiante",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":110,
+                  "fields": {
+                    "desc_elemento": "Lider",
+                    "fk_tabla_padre": 107,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Lider",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
                 }
 
 ]
