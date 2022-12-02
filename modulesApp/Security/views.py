@@ -285,5 +285,11 @@ def logout_view(request):
     logout(request)
     return redirect("/")
 
+def testvue(request):
+    return render(request, "testVue.html")
+
+def testdata(request):
+    return JsonResponse({"hola":"hola mundo"})
+
             
 
