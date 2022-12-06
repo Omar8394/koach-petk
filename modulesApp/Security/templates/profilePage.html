@@ -1,0 +1,356 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="content">
+    <div class="page-inner animated fadeInRight">
+        <div class="page-header">
+            <h4 class="page-title">Mi perfil</h4>
+            <ul class="breadcrumbs">
+                <li class="nav-home">
+                    <a href="{% url 'home' %}">
+                        <i class="flaticon-home"></i>
+                    </a>
+                </li>
+                <li class="separator">
+                    <i class="flaticon-right-arrow"></i>
+                </li>
+                <li class="nav-item">
+                    <span>Mi perfil</span>
+                </li>             
+            </ul>
+        </div>
+        <div class="page-category">
+            <div class="row">
+                <div class="col-lg-4 col-xlg-3 col-md-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <center class="mt-4"> 
+                                
+                                    <div class="image-upload">
+                                        <div class="row">
+                                            <div class="col">
+                                                <label for="file-input">
+                                                    {%if img%}
+                                                    <img src="/upload/user/{{img}}" class="rounded-circle border" style="cursor: pointer;" width="150" id="imagenPerfil">
+                                                    {%else%}
+                                                    <img src="/static/assets/img/default-user-icon.png" class="rounded-circle border" style="cursor: pointer;" width="150" id="imagenPerfil">
+                    
+                                                    {%endif%}
+                                                   
+                                                    
+                                                </label>  
+                                                <input id="file-input" name="file-input" type="file" style="display: none;" accept="image/*" />
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col" id="buttons">
+                                                <button class="btn btn-primary btn-round" onclick=clickImage()>Agregue una foto</button>
+                                            </div>
+                                        </div>
+                                    </div> 
+
+            
+                                <h4 class="card-title my-2">
+                                    {{request.user.username}}
+                                </h4>
+                                <h6 class="card-subtitle">
+                                    {{ request.user.email }}
+                                </h6>
+                            </center>
+                        </div>
+                        <div>
+                            <hr> </div>
+                        <div class="card-body text-center"> 
+                            <small class="text-muted">Direccion de correo </small>
+                            <h6>{{ request.user.email }}</h6> 
+                            <small class="text-muted pt-4 db">Telefono</small>
+                            <h6>{{telefono}}</h6> 
+                            <small class="text-muted pt-4 db">Direcion</small>
+                            <h6>{{form.direccion.value}}</h6>
+                        </div>
+                    </div>
+                </div>
+            
+            
+                <div class="col-lg-8 col-xlg-9 col-md-7">
+                    <div class="card">
+                        <div class="card-header bg-dark2">
+                            <span class="h1 text-white d-flex justify-content-center">Mi Informacion</span>
+                        </div>
+                        <div class="card-body m-0 p-0">
+                            <form method="post" action="" id="formulario">
+                                {% csrf_token %}
+            
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                
+                                            {% for p in form %}  
+            
+                                                <div class="form-group">
+                                                    <label for="{{ p.auto_id }}" >{{p.label}}</label>
+                                                    <div class="input-group">
+                                                        {{ p }}   
+                                                        {% if p.field.widget.input_type == 'select' %}
+                                                            
+                                                            <div class="input-group-prepend" id="{{ p.auto_id }}" >
+                                                                <span class="input-group-text">
+                                                                    <i class="fas fa-search"></i>
+                                                                </span>
+                                                            </div>
+            
+                                                        {% endif %}
+                                                    </div>
+                                                    
+                                                </div>
+            
+                                            {% endfor %} 
+                
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-action d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary btn-lg text-white">Guardar <i class="fas fa-save ml-1"></i></button>
+                                    {% if activo %}
+                                    <span id="next" class="btn btn-primary">Siguiente
+                                        <i class="fas fa-arrow-right"></i>
+                                    </span>
+                                    {% endif %}
+                                </div>
+                               
+                            </form>  
+                        </div>
+                    </div>
+                </div>
+            </div>                           
+        </div>
+    </div>
+</div>
+
+
+{% include 'Planning/mensajes.html' %}  
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<script>
+
+    // metodos para cargar botones de imagenes
+    $(document).ready(function(){
+
+        if('{{img}}'.toLowerCase()!=='none'){
+
+            document.getElementById('buttons').innerHTML = '<button class="btn btn-primary btn-round mr-2" onclick=clickImage()>Change</button><button class="btn btn-danger btn-round" onclick=borrarImage()>Quitar</button>'
+
+        }else{
+
+            document.getElementById('buttons').innerHTML = '<button class="btn btn-primary btn-round" onclick=clickImage()>Agregue una foto</button>'
+
+        }
+
+    });
+
+    // metodo borrar imagen
+    function borrarImage() {
+
+        alerta(3).then((willDelete) => {
+
+            if(willDelete){
+
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'security:borrarImages' %}", 
+                    data : {csrfmiddlewaretoken: '{{ csrf_token }}'},
+                    success: function (response) {
+
+                        if(response.mensaje){
+                            
+                            $(".avatar-img").attr('src', "/static/assets/img/default-user-icon.png")
+                            $('#imagenPerfil').attr('src', "/static/assets/img/default-user-icon.png" );
+                            swal(response.mensaje)
+                            document.getElementById('buttons').innerHTML = '<button class="btn btn-primary btn-round" onclick=clickImage()>Agregue una foto</button>'
+                            
+                        }
+
+                    },
+                    error: function () {}
+                });
+                
+            }
+
+        });
+
+    }
+
+    // metodos para disparar el gestor de imagen
+    function clickImage() {
+
+        $( "#file-input").trigger('click')
+        
+    }
+
+    //metodos para guardar imagen
+    $(document).on('change', "#file-input", function(e){
+    //     // console.log(document.getElementById("file-input").files[0].fullName)
+    //     // $('#imagenPerfil').attr('src', document.getElementById("file-input").files[0].path);
+        
+    //   const file = document.querySelector('#file-input').files[0];
+
+    //   if(file){
+        
+    //   const reader = new FileReader();
+    //             reader.onload = imageIsLoaded;
+    //             reader.readAsDataURL(file);
+    //   }else
+      console.log("nada")
+
+        // $('#fileForm').submit()
+    var x = document.getElementById("file-input")
+    var txt = "";
+        if (x.files.length > 0) {
+
+            var file = x.files[0];
+            if((file.size / 1024 / 1024).toFixed(2) > 6){
+
+                swal("Max Upload size is 6MB only")
+
+            }else if(!(x.files[0].type.toLowerCase().endsWith('/png')||x.files[0].type.toLowerCase().endsWith('/jpg')||x.files[0].type.toLowerCase().endsWith('/jpeg'))){
+
+                swal("Only JPG, JPEG and PNG file types are allowed")
+
+            }else{
+
+                // $('#fileForm').submit()
+                var formdata = new FormData();
+                formdata.append('file-input', file);
+                formdata.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+                
+                $.ajax({
+                        type: "POST",
+                        url: "{% url 'security:images' %}", 
+                        data : formdata,
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+
+                            if(response.mensaje){
+                                
+                                const reader = new FileReader();
+                                reader.onload = imageIsLoaded;
+                                reader.readAsDataURL(file);
+                                swal(response.mensaje)
+                                document.getElementById('buttons').innerHTML = '<button class="btn btn-primary btn-round mr-2" onclick=clickImage()>Cambiar</button><button class="btn btn-danger btn-round" onclick=borrarImage()>Remove</button>'
+                                
+                            }
+
+                                
+
+                        },
+                        error: function () {}
+                });
+
+            }
+
+        }
+        
+    });
+
+    function imageIsLoaded(e) {
+
+        $(".avatar-img").attr('src', e.target.result)
+        $('#imagenPerfil').attr('src', e.target.result );
+
+    }
+
+
+	
+
+	// metodos filtro combo
+	$("#formulario").on('click', ".input-group-prepend", function(e){
+
+        if(document.getElementById('myBrowser')==null){
+            // console.log( $(this).attr('name'))
+
+            // console.log($(this).prev().attr('name'))
+            
+            console.log($(this).prev().is('.countryList'))
+            const d = $(this)
+            
+            $.ajax({
+                    type: "POST",
+                    url: "{% url 'security:renderListasCombos' %}", 
+                    data : {    
+                    clave: $(this).prev().attr('name'),
+                    tipo: 'TablasConfiguracion',
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                success: function (response) {
+
+                    // document.getElementById('paginas').innerHTML = response.paginas;
+                    // document.getElementById('tablaContenido').innerHTML = response.contenido;
+                    // // console.log(response.contenido)
+                    d.before(response.lista)
+                    $("#myBrowser").focus()
+
+                },
+                error: function () {}
+            });
+
+        }
+    })	 
+
+    $("#formulario").on('focusout', "#myBrowser", function(e){
+
+        $('#browsers').remove()
+
+        $('#myBrowser').remove()
+
+    })
+
+    $("#formulario").on('input keydown', "#myBrowser", function(e){
+
+        let val = this.value;
+        let id
+
+        if($('#browsers option').filter(function(){return this.value.toUpperCase() === val.toUpperCase()}).length && e.keyCode == 13) {
+            
+            id = $('#browsers option').filter(function(){return this.value.toUpperCase() === val.toUpperCase()})[0].id
+
+            $('#myBrowser').prev().val(id)
+
+            $('#myBrowser').blur()
+
+        }
+
+    });
+
+    
+    $(document).on('keydown', "form input", function(e){
+
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            return false;
+        }
+
+    })
+    
+     {% comment %} const nextBtn = document.querySelector('#next')
+    
+  
+  
+     nextBtn.addEventListener('click', ()=>{
+        window.location.href ="{% url 'home'%}";
+           
+
+    }) {% endcomment %}
+
+</script>
+{% endblock javascripts %}

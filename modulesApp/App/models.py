@@ -35,7 +35,7 @@ class AppPublico(models.Model):
     nombre = models.TextField()
     apellido = models.TextField()
     correo_principal = models.TextField()
-    pais = models.IntegerField(blank=True, null=True)
+    pais = models.ForeignKey(ConfTablasConfiguracion, on_delete=models.DO_NOTHING,default=None, null=True )
     telefono_principal = models.TextField()
     direccion = models.TextField()
     telegram_id = models.TextField(blank=True, null=True)

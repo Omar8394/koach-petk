@@ -1,7 +1,7 @@
 from django.urls import path, include  # add this
 from modulesApp.Security.views import login,login_view,register_view,logout_view,changePassword,\
 securitySettings,changeSecretQuestion,recovery_method, recovery_method_question,forgot_password, \
-account_recovery, testvue, testdata
+account_recovery, testvue, testdata , editProfile, images, borrarImages, rootImages, renderListasCombos
 app_name = "security"
 urlpatterns = [
     path("login/", login_view, name="login"),
@@ -16,6 +16,12 @@ urlpatterns = [
     path("account_recovery/<str:activation_key>/",account_recovery , name="account_recovery"),
     path("testvue/", testvue, name="testvue"),
     path("testdata/", testdata, name="testdata"),
+    path("editProfile/", editProfile, name='editProfile'),
+    path("images/", images, name='images'),
+    path("rootImages/", rootImages, name='rootImages'),
+    path("borrarImages/", borrarImages, name='borrarImages'),
+    path('renderListasCombos', renderListasCombos, name='renderListasCombos'),
+    
     
     
     
