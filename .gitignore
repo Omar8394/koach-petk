@@ -8,3 +8,5 @@ __pycache__*
 .vscode
 *.mo
 core/media
+.venv
+core/upload

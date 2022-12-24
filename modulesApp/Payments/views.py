@@ -4,7 +4,7 @@ import os
 import shutil
 from datetime import datetime
 from decimal import *
-from msilib.schema import PublishComponent
+#from msilib.schema import PublishComponent
 from multiprocessing import context
 
 from django.core.files.storage import FileSystemStorage

@@ -1,0 +1,3014 @@
+[
+    {"model": "App.ConfTablasConfiguracion",
+    "pk":257,
+    "fields": {
+    "desc_elemento":"Countries",
+    "fk_tabla_padre":1,
+    "tipo_elemento": "1",
+    "permite_cambios": 1,
+    "valor_elemento": "countries_iso",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 1
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":258,
+    "fields": {
+    "desc_elemento":"Andorra",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_AD",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":259,
+    "fields": {
+    "desc_elemento":"United Arab Emirates",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_AE",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":260,
+    "fields": {
+    "desc_elemento":"Afghanistan",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_AF",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":261,
+    "fields": {
+    "desc_elemento":"Antigua and Barbuda",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_AG",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":262,
+    "fields": {
+    "desc_elemento":"Anguilla",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_AI",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":263,
+    "fields": {
+    "desc_elemento":"Albania",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_AL",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":264,
+    "fields": {
+    "desc_elemento":"Armenia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_AM",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":265,
+    "fields": {
+    "desc_elemento":"Angola",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_AO",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":266,
+    "fields": {
+    "desc_elemento":"Antarctica",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_AQ",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":267,
+    "fields": {
+    "desc_elemento":"Argentina",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_AR",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":268,
+    "fields": {
+    "desc_elemento":"American Samoa",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_AS",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":269,
+    "fields": {
+    "desc_elemento":"Austria",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_AT",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":270,
+    "fields": {
+    "desc_elemento":"Australia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_AU",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":271,
+    "fields": {
+    "desc_elemento":"Aruba",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_AW",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":272,
+    "fields": {
+    "desc_elemento":"Åland Islands",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_AX",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":273,
+    "fields": {
+    "desc_elemento":"Azerbaijan",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_AZ",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":274,
+    "fields": {
+    "desc_elemento":"Bosnia and Herzegovina",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_BA",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":275,
+    "fields": {
+    "desc_elemento":"Barbados",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_BB",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":276,
+    "fields": {
+    "desc_elemento":"Bangladesh",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_BD",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":277,
+    "fields": {
+    "desc_elemento":"Belgium",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_BE",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":278,
+    "fields": {
+    "desc_elemento":"Burkina Faso",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_BF",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":279,
+    "fields": {
+    "desc_elemento":"Bulgaria",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_BG",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":280,
+    "fields": {
+    "desc_elemento":"Bahrain",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_BH",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":281,
+    "fields": {
+    "desc_elemento":"Burundi",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_BI",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":282,
+    "fields": {
+    "desc_elemento":"Benin",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_BJ",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":283,
+    "fields": {
+    "desc_elemento":"Saint Barthélemy",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_BL",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":284,
+    "fields": {
+    "desc_elemento":"Bermuda",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_BM",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":285,
+    "fields": {
+    "desc_elemento":"Brunei Darussalam",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_BN",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":286,
+    "fields": {
+    "desc_elemento":"Bolivia (Plurinational State of)",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_BO",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":287,
+    "fields": {
+    "desc_elemento":"Bonaire, Sint Eustatius and Saba",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_BQ",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":288,
+    "fields": {
+    "desc_elemento":"Brazil",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_BR",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":289,
+    "fields": {
+    "desc_elemento":"Bahamas",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_BS",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":290,
+    "fields": {
+    "desc_elemento":"Bhutan",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_BT",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":291,
+    "fields": {
+    "desc_elemento":"Bouvet Island",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_BV",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":292,
+    "fields": {
+    "desc_elemento":"Botswana",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_BW",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":293,
+    "fields": {
+    "desc_elemento":"Belarus",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_BY",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":294,
+    "fields": {
+    "desc_elemento":"Belize",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_BZ",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":295,
+    "fields": {
+    "desc_elemento":"Canada",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_CA",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":296,
+    "fields": {
+    "desc_elemento":"Cocos (Keeling) Islands",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_CC",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":297,
+    "fields": {
+    "desc_elemento":"Congo, Democratic Republic of the",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_CD",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":298,
+    "fields": {
+    "desc_elemento":"Central African Republic",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_CF",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":299,
+    "fields": {
+    "desc_elemento":"Congo",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_CG",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":300,
+    "fields": {
+    "desc_elemento":"Switzerland",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_CH",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":301,
+    "fields": {
+    "desc_elemento":"Côte d'Ivoire",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_CI",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":302,
+    "fields": {
+    "desc_elemento":"Cook Islands",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_CK",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":303,
+    "fields": {
+    "desc_elemento":"Chile",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_CL",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":304,
+    "fields": {
+    "desc_elemento":"Cameroon",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_CM",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":305,
+    "fields": {
+    "desc_elemento":"China",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_CN",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":306,
+    "fields": {
+    "desc_elemento":"Colombia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_CO",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":307,
+    "fields": {
+    "desc_elemento":"Costa Rica",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_CR",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":308,
+    "fields": {
+    "desc_elemento":"Cuba",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_CU",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":309,
+    "fields": {
+    "desc_elemento":"Cabo Verde",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_CV",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":310,
+    "fields": {
+    "desc_elemento":"Curaçao",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_CW",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":311,
+    "fields": {
+    "desc_elemento":"Christmas Island",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_CX",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":312,
+    "fields": {
+    "desc_elemento":"Cyprus",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_CY",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":313,
+    "fields": {
+    "desc_elemento":"Czechia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_CZ",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":314,
+    "fields": {
+    "desc_elemento":"Germany",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_DE",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":315,
+    "fields": {
+    "desc_elemento":"Djibouti",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_DJ",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":316,
+    "fields": {
+    "desc_elemento":"Denmark",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_DK",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":317,
+    "fields": {
+    "desc_elemento":"Dominica",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_DM",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":318,
+    "fields": {
+    "desc_elemento":"Dominican Republic",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_DO",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":319,
+    "fields": {
+    "desc_elemento":"Algeria",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_DZ",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":320,
+    "fields": {
+    "desc_elemento":"Ecuador",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_EC",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":321,
+    "fields": {
+    "desc_elemento":"Estonia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_EE",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":322,
+    "fields": {
+    "desc_elemento":"Egypt",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_EG",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":323,
+    "fields": {
+    "desc_elemento":"Western Sahara",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_EH",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":324,
+    "fields": {
+    "desc_elemento":"Eritrea",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_ER",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":325,
+    "fields": {
+    "desc_elemento":"Spain",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_ES",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":326,
+    "fields": {
+    "desc_elemento":"Ethiopia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_ET",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":327,
+    "fields": {
+    "desc_elemento":"Finland",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_FI",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":328,
+    "fields": {
+    "desc_elemento":"Fiji",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_FJ",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":329,
+    "fields": {
+    "desc_elemento":"Falkland Islands (Malvinas)",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_FK",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":330,
+    "fields": {
+    "desc_elemento":"Micronesia (Federated States of)",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_FM",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":331,
+    "fields": {
+    "desc_elemento":"Faroe Islands",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_FO",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":332,
+    "fields": {
+    "desc_elemento":"France",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_FR",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":333,
+    "fields": {
+    "desc_elemento":"Gabon",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_GA",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":334,
+    "fields": {
+    "desc_elemento":"United Kingdom of Great Britain and Northern Ireland",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_GB",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":335,
+    "fields": {
+    "desc_elemento":"Grenada",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_GD",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":336,
+    "fields": {
+    "desc_elemento":"Georgia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_GE",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":337,
+    "fields": {
+    "desc_elemento":"French Guiana",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_GF",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":338,
+    "fields": {
+    "desc_elemento":"Guernsey",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_GG",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":339,
+    "fields": {
+    "desc_elemento":"Ghana",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_GH",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":340,
+    "fields": {
+    "desc_elemento":"Gibraltar",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_GI",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":341,
+    "fields": {
+    "desc_elemento":"Greenland",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_GL",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":342,
+    "fields": {
+    "desc_elemento":"Gambia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_GM",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":343,
+    "fields": {
+    "desc_elemento":"Guinea",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_GN",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":344,
+    "fields": {
+    "desc_elemento":"Guadeloupe",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_GP",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":345,
+    "fields": {
+    "desc_elemento":"Equatorial Guinea",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_GQ",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":346,
+    "fields": {
+    "desc_elemento":"Greece",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_GR",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":347,
+    "fields": {
+    "desc_elemento":"South Georgia and the South Sandwich Islands",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_GS",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":348,
+    "fields": {
+    "desc_elemento":"Guatemala",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_GT",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":349,
+    "fields": {
+    "desc_elemento":"Guam",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_GU",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":350,
+    "fields": {
+    "desc_elemento":"Guinea-Bissau",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_GW",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":351,
+    "fields": {
+    "desc_elemento":"Guyana",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_GY",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":352,
+    "fields": {
+    "desc_elemento":"Hong Kong",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_HK",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":353,
+    "fields": {
+    "desc_elemento":"Heard Island and McDonald Islands",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_HM",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":354,
+    "fields": {
+    "desc_elemento":"Honduras",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_HN",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":355,
+    "fields": {
+    "desc_elemento":"Croatia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_HR",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":356,
+    "fields": {
+    "desc_elemento":"Haiti",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_HT",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":357,
+    "fields": {
+    "desc_elemento":"Hungary",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_HU",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":358,
+    "fields": {
+    "desc_elemento":"Indonesia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_ID",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":359,
+    "fields": {
+    "desc_elemento":"Ireland",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_IE",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":360,
+    "fields": {
+    "desc_elemento":"Israel",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_IL",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":361,
+    "fields": {
+    "desc_elemento":"Isle of Man",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_IM",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":362,
+    "fields": {
+    "desc_elemento":"India",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_IN",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":363,
+    "fields": {
+    "desc_elemento":"British Indian Ocean Territory",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_IO",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":364,
+    "fields": {
+    "desc_elemento":"Iraq",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_IQ",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":365,
+    "fields": {
+    "desc_elemento":"Iran (Islamic Republic of)",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_IR",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":366,
+    "fields": {
+    "desc_elemento":"Iceland",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_IS",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":367,
+    "fields": {
+    "desc_elemento":"Italy",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_IT",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":368,
+    "fields": {
+    "desc_elemento":"Jersey",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_JE",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":369,
+    "fields": {
+    "desc_elemento":"Jamaica",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_JM",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":370,
+    "fields": {
+    "desc_elemento":"Jordan",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_JO",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":371,
+    "fields": {
+    "desc_elemento":"Japan",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_JP",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":372,
+    "fields": {
+    "desc_elemento":"Kenya",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_KE",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":373,
+    "fields": {
+    "desc_elemento":"Kyrgyzstan",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_KG",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":374,
+    "fields": {
+    "desc_elemento":"Cambodia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_KH",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":375,
+    "fields": {
+    "desc_elemento":"Kiribati",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_KI",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":376,
+    "fields": {
+    "desc_elemento":"Comoros",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_KM",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":377,
+    "fields": {
+    "desc_elemento":"Saint Kitts and Nevis",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_KN",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":378,
+    "fields": {
+    "desc_elemento":"Korea (Democratic People's Republic of)",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_KP",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":379,
+    "fields": {
+    "desc_elemento":"Korea, Republic of",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_KR",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":380,
+    "fields": {
+    "desc_elemento":"Kuwait",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_KW",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":381,
+    "fields": {
+    "desc_elemento":"Cayman Islands",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_KY",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":382,
+    "fields": {
+    "desc_elemento":"Kazakhstan",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_KZ",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":383,
+    "fields": {
+    "desc_elemento":"Lao People's Democratic Republic",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_LA",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":384,
+    "fields": {
+    "desc_elemento":"Lebanon",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_LB",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":385,
+    "fields": {
+    "desc_elemento":"Saint Lucia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_LC",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":386,
+    "fields": {
+    "desc_elemento":"Liechtenstein",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_LI",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":387,
+    "fields": {
+    "desc_elemento":"Sri Lanka",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_LK",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":388,
+    "fields": {
+    "desc_elemento":"Liberia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_LR",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":389,
+    "fields": {
+    "desc_elemento":"Lesotho",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_LS",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":390,
+    "fields": {
+    "desc_elemento":"Lithuania",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_LT",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":391,
+    "fields": {
+    "desc_elemento":"Luxembourg",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_LU",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":392,
+    "fields": {
+    "desc_elemento":"Latvia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_LV",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":393,
+    "fields": {
+    "desc_elemento":"Libya",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_LY",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":394,
+    "fields": {
+    "desc_elemento":"Morocco",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_MA",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":395,
+    "fields": {
+    "desc_elemento":"Monaco",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_MC",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":396,
+    "fields": {
+    "desc_elemento":"Moldova, Republic of",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_MD",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":397,
+    "fields": {
+    "desc_elemento":"Montenegro",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_ME",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":398,
+    "fields": {
+    "desc_elemento":"Saint Martin (French part)",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_MF",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":399,
+    "fields": {
+    "desc_elemento":"Madagascar",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_MG",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":400,
+    "fields": {
+    "desc_elemento":"Marshall Islands",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_MH",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":401,
+    "fields": {
+    "desc_elemento":"North Macedonia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_MK",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":402,
+    "fields": {
+    "desc_elemento":"Mali",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_ML",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":403,
+    "fields": {
+    "desc_elemento":"Myanmar",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_MM",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":404,
+    "fields": {
+    "desc_elemento":"Mongolia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_MN",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":405,
+    "fields": {
+    "desc_elemento":"Macao",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_MO",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":406,
+    "fields": {
+    "desc_elemento":"Northern Mariana Islands",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_MP",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":407,
+    "fields": {
+    "desc_elemento":"Martinique",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_MQ",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":408,
+    "fields": {
+    "desc_elemento":"Mauritania",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_MR",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":409,
+    "fields": {
+    "desc_elemento":"Montserrat",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_MS",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":410,
+    "fields": {
+    "desc_elemento":"Malta",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_MT",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":411,
+    "fields": {
+    "desc_elemento":"Mauritius",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_MU",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":412,
+    "fields": {
+    "desc_elemento":"Maldives",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_MV",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":413,
+    "fields": {
+    "desc_elemento":"Malawi",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_MW",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":414,
+    "fields": {
+    "desc_elemento":"Mexico",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_MX",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":415,
+    "fields": {
+    "desc_elemento":"Malaysia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_MY",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":416,
+    "fields": {
+    "desc_elemento":"Mozambique",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_MZ",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":417,
+    "fields": {
+    "desc_elemento":"Namibia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_NA",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":418,
+    "fields": {
+    "desc_elemento":"New Caledonia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_NC",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":419,
+    "fields": {
+    "desc_elemento":"Niger",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_NE",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":420,
+    "fields": {
+    "desc_elemento":"Norfolk Island",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_NF",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":421,
+    "fields": {
+    "desc_elemento":"Nigeria",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_NG",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":422,
+    "fields": {
+    "desc_elemento":"Nicaragua",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_NI",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":423,
+    "fields": {
+    "desc_elemento":"Netherlands",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_NL",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":424,
+    "fields": {
+    "desc_elemento":"Norway",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_NO",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":425,
+    "fields": {
+    "desc_elemento":"Nepal",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_NP",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":426,
+    "fields": {
+    "desc_elemento":"Nauru",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_NR",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":427,
+    "fields": {
+    "desc_elemento":"Niue",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_NU",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":428,
+    "fields": {
+    "desc_elemento":"New Zealand",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_NZ",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":429,
+    "fields": {
+    "desc_elemento":"Oman",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_OM",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":430,
+    "fields": {
+    "desc_elemento":"Panama",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_PA",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":431,
+    "fields": {
+    "desc_elemento":"Peru",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_PE",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":432,
+    "fields": {
+    "desc_elemento":"French Polynesia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_PF",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":433,
+    "fields": {
+    "desc_elemento":"Papua New Guinea",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_PG",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":434,
+    "fields": {
+    "desc_elemento":"Philippines",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_PH",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":435,
+    "fields": {
+    "desc_elemento":"Pakistan",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_PK",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":436,
+    "fields": {
+    "desc_elemento":"Poland",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_PL",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":437,
+    "fields": {
+    "desc_elemento":"Saint Pierre and Miquelon",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_PM",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":438,
+    "fields": {
+    "desc_elemento":"Pitcairn",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_PN",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":439,
+    "fields": {
+    "desc_elemento":"Puerto Rico",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_PR",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":440,
+    "fields": {
+    "desc_elemento":"Palestine, State of",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_PS",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":441,
+    "fields": {
+    "desc_elemento":"Portugal",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_PT",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":442,
+    "fields": {
+    "desc_elemento":"Palau",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_PW",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":443,
+    "fields": {
+    "desc_elemento":"Paraguay",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_PY",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":444,
+    "fields": {
+    "desc_elemento":"Qatar",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_QA",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":445,
+    "fields": {
+    "desc_elemento":"Réunion",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_RE",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":446,
+    "fields": {
+    "desc_elemento":"Romania",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_RO",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":447,
+    "fields": {
+    "desc_elemento":"Serbia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_RS",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":448,
+    "fields": {
+    "desc_elemento":"Russian Federation",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_RU",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":449,
+    "fields": {
+    "desc_elemento":"Rwanda",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_RW",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":450,
+    "fields": {
+    "desc_elemento":"Saudi Arabia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_SA",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":451,
+    "fields": {
+    "desc_elemento":"Solomon Islands",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_SB",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":452,
+    "fields": {
+    "desc_elemento":"Seychelles",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_SC",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":453,
+    "fields": {
+    "desc_elemento":"Sudan",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_SD",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":454,
+    "fields": {
+    "desc_elemento":"Sweden",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_SE",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":455,
+    "fields": {
+    "desc_elemento":"Singapore",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_SG",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":456,
+    "fields": {
+    "desc_elemento":"Saint Helena, Ascension and Tristan da Cunha",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_SH",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":457,
+    "fields": {
+    "desc_elemento":"Slovenia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_SI",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":458,
+    "fields": {
+    "desc_elemento":"Svalbard and Jan Mayen",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_SJ",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":459,
+    "fields": {
+    "desc_elemento":"Slovakia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_SK",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":460,
+    "fields": {
+    "desc_elemento":"Sierra Leone",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_SL",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":461,
+    "fields": {
+    "desc_elemento":"San Marino",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_SM",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":462,
+    "fields": {
+    "desc_elemento":"Senegal",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_SN",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":463,
+    "fields": {
+    "desc_elemento":"Somalia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_SO",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":464,
+    "fields": {
+    "desc_elemento":"Suriname",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_SR",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":465,
+    "fields": {
+    "desc_elemento":"South Sudan",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_SS",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":466,
+    "fields": {
+    "desc_elemento":"Sao Tome and Principe",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_ST",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":467,
+    "fields": {
+    "desc_elemento":"El Salvador",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_SV",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":468,
+    "fields": {
+    "desc_elemento":"Sint Maarten (Dutch part)",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_SX",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":469,
+    "fields": {
+    "desc_elemento":"Syrian Arab Republic",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_SY",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":470,
+    "fields": {
+    "desc_elemento":"Eswatini",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_SZ",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":471,
+    "fields": {
+    "desc_elemento":"Turks and Caicos Islands",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_TC",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":472,
+    "fields": {
+    "desc_elemento":"Chad",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_TD",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":473,
+    "fields": {
+    "desc_elemento":"French Southern Territories",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_TF",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":474,
+    "fields": {
+    "desc_elemento":"Togo",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_TG",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":475,
+    "fields": {
+    "desc_elemento":"Thailand",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_TH",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":476,
+    "fields": {
+    "desc_elemento":"Tajikistan",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_TJ",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":477,
+    "fields": {
+    "desc_elemento":"Tokelau",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_TK",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":478,
+    "fields": {
+    "desc_elemento":"Timor-Leste",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_TL",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":479,
+    "fields": {
+    "desc_elemento":"Turkmenistan",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_TM",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":480,
+    "fields": {
+    "desc_elemento":"Tunisia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_TN",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":481,
+    "fields": {
+    "desc_elemento":"Tonga",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_TO",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":482,
+    "fields": {
+    "desc_elemento":"Turkey",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_TR",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":483,
+    "fields": {
+    "desc_elemento":"Trinidad and Tobago",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_TT",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":484,
+    "fields": {
+    "desc_elemento":"Tuvalu",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_TV",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":485,
+    "fields": {
+    "desc_elemento":"Taiwan, Province of China",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_TW",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":486,
+    "fields": {
+    "desc_elemento":"Tanzania, United Republic of",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_TZ",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":487,
+    "fields": {
+    "desc_elemento":"Ukraine",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_UA",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":488,
+    "fields": {
+    "desc_elemento":"Uganda",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_UG",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":489,
+    "fields": {
+    "desc_elemento":"United States Minor Outlying Islands",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_UM",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":490,
+    "fields": {
+    "desc_elemento":"United States of America",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_US",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":491,
+    "fields": {
+    "desc_elemento":"Uruguay",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_UY",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":492,
+    "fields": {
+    "desc_elemento":"Uzbekistan",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_UZ",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":493,
+    "fields": {
+    "desc_elemento":"Holy See",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_VA",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":494,
+    "fields": {
+    "desc_elemento":"Saint Vincent and the Grenadines",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_VC",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":495,
+    "fields": {
+    "desc_elemento":"Venezuela (Bolivarian Republic of)",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_VE",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":496,
+    "fields": {
+    "desc_elemento":"Virgin Islands (British)",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_VG",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":497,
+    "fields": {
+    "desc_elemento":"Virgin Islands (U.S.)",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_VI",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":498,
+    "fields": {
+    "desc_elemento":"Viet Nam",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_VN",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":499,
+    "fields": {
+    "desc_elemento":"Vanuatu",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_VU",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":500,
+    "fields": {
+    "desc_elemento":"Wallis and Futuna",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_WF",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":501,
+    "fields": {
+    "desc_elemento":"Samoa",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_WS",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":502,
+    "fields": {
+    "desc_elemento":"Yemen",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_YE",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":503,
+    "fields": {
+    "desc_elemento":"Mayotte",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_YT",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":504,
+    "fields": {
+    "desc_elemento":"South Africa",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_ZA",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":505,
+    "fields": {
+    "desc_elemento":"Zambia",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_ZM",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":506,
+    "fields": {
+    "desc_elemento":"Zimbabwe",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_ZW",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ,{"model": "App.ConfTablasConfiguracion",
+    "pk":507,
+    "fields": {
+    "desc_elemento":"Unassigned Country",
+    "fk_tabla_padre":257,
+    "tipo_elemento": "2",
+    "permite_cambios": 1,
+    "valor_elemento": "pais_unassigned",
+    "mostrar_en_combos": 1,
+    "maneja_lista": 0
+    }
+    }
+    ]

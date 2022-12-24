@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect,reverse, HttpResponseRedirect
 # Create your views here.
 from django.views import View
 from .forms import LoginForm, SignUpForm, ResetPasswordForm, RecoveryMethodForm , RecoveryMethodQuestion, \
-    RecoveryMethodEmail
+    RecoveryMethodEmail,editProfiles
 from django.contrib.auth import login, logout, update_session_auth_hash
 from .models import User, CodigoVerificacion
 from .methods import es_correo_valido,change_password,get_status_user, auth_user, is_user_exists, \
@@ -12,9 +12,14 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password, check_password
 from django.http.response import JsonResponse
-from modulesApp.App.models import ConfTablasConfiguracion
+from modulesApp.App.models import ConfTablasConfiguracion, AppPublico
 from core import settings
 from django.http import Http404
+from pathlib import Path
+from django.core.files.storage import FileSystemStorage
+import imghdr
+from django.template.loader import render_to_string
+
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -284,6 +289,154 @@ def securitySettings(request):
 def logout_view(request):
     logout(request)
     return redirect("/")
+
+
+def images(request):
+    if request.method == "POST":
+
+        myfile = request.FILES['file-input']
+
+        fs = FileSystemStorage(location=settings.UPLOAD_ROOT)
+        nombreImagen = str(request.user.id) + ".png"
+        Ruta = settings.UPLOAD_ROOT + '/user'
+        RutaUrl = settings.UPLOAD_URL + '/user'
+        try:
+
+            os.mkdir(os.path.join(Ruta))
+
+        except:
+    
+            pass
+
+        fs.delete(Ruta + '/' + nombreImagen)
+        fs.save(Ruta + '/' + nombreImagen, myfile)
+
+        ctauser = User.objects.filter(id=request.user.id).first()
+        if ctauser:
+            ctauser.url_imagen=nombreImagen
+            ctauser.save()
+
+        return JsonResponse({'mensaje': 'Changes applied successfully', 'ruta': (RutaUrl + '/' + nombreImagen)})
+
+def rootImages(request):
+    if request.method == "POST":
+
+        ctauser = User.objects.filter(id=request.user.id).first()
+
+        if (ctauser.url_imagen):
+
+            Ruta = settings.UPLOAD_URL + 'user/' + ctauser.url_imagen if ctauser else None
+            root = settings.UPLOAD_ROOT + '/user/' + ctauser.url_imagen if ctauser else None
+
+            if not os.path.exists(root):
+                Ruta = None
+
+        else:
+
+            Ruta = None
+            root = None
+
+    response = {
+        'ruta': Ruta
+    }
+
+    return JsonResponse(response)
+
+
+def borrarImages(request):
+    if request.method == "POST":
+        ctauser = User.objects.filter(id=request.user.id).first()
+        if ctauser.url_imagen and ctauser.url_imagen != '':
+
+            fs = FileSystemStorage(location=settings.UPLOAD_ROOT)
+            nombreImagen = ctauser.url_imagen
+            Ruta = settings.UPLOAD_ROOT + '/user'
+
+            fs.delete(Ruta + '/' + nombreImagen)
+
+            if ctauser:
+                ctauser.url_imagen=url_imagen=None
+                ctauser.save()
+
+            return JsonResponse({'mensaje': 'Image deleted'})
+
+        else:
+
+            return JsonResponse({'mensaje': 'There is no image to remove'})
+        
+def editProfile(request):
+    btn_next = "activo"
+    nuevo = None
+    try:
+        nuevo = AppPublico.objects.get(user_id=request.user)
+
+    except:
+        pass      
+    if not nuevo:
+        nuevo = AppPublico.objects.create()
+        nuevo.user_id = request.user
+        nuevo.save()
+
+    profile = nuevo
+    telefono = profile.telefono_principal
+    correo = profile.correo_principal
+    img = nuevo.user_id.url_imagen
+    if request.method == "POST":
+
+        form = editProfiles(request.POST, instance=profile)
+        if form.is_valid():
+            obj = form.save(commit=False)       
+            form.save()
+            messages.info(request, 'Changes applied successfully')
+            return render(request, "profilePage.html", {'form': form, 'telefono_principal': None if not telefono else telefono,
+                                                         'img': img if img and img != "" else None})
+
+        else:
+            print(form.errors)
+            messages.warning(request, 'An error has occurred!')
+            return render(request, "profilePage.html", {'form': form, 'telefono_principal': None if not telefono else telefono,
+                                                         'img': img if img and img != "" else None})
+
+    form = editProfiles(instance=profile, initial={'telefono_principal':None if not telefono else telefono,
+                                                   'correo_principal': None if not correo else correo})
+    return render(request, "profilePage.html", {'form': form,
+                                                         'telefono_principal': None if not telefono else telefono,
+                                                         'img': img if img and img != "" else None})
+    
+def renderListasCombos(request):
+
+    clave = request.POST.get('clave', None)
+    tipo = request.POST.get('tipo', None)
+    print(tipo)
+    
+    if(tipo and clave and tipo == 'TablasConfiguracion'):
+
+        lista = ConfTablasConfiguracion.obtenerHijos('countries_iso' if clave == 'pais' else '')
+
+    if(tipo and clave and tipo == 'Perfil'):
+
+        lista = Perfil.objects.all()
+
+
+    if(tipo and clave and tipo == 'Publico'):
+
+        lista = Publico.objects.all()
+
+    html = render_to_string('Planning/comboFiltro.html', {'lista': lista, 'tipo': tipo})
+
+    response = {
+
+        'lista': html
+
+    }
+
+    return JsonResponse(response)
+
+def testvue(request):
+    return render(request, "testVue.html")
+
+def testdata(request):
+    return JsonResponse({"hola":"hola mundo"})
 
             
 

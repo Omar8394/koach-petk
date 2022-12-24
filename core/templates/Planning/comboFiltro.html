@@ -1,0 +1,25 @@
+<input list="browsers" id="myBrowser" name="myBrowser" placeholder="Search..." autocomplete="off" class="form-control"/>
+<datalist id="browsers" open="open">
+       
+    {% if not tipo == 'countries' %}
+
+        {% for p in lista %}  
+            
+            {% if tipo == 'TablasConfiguracion' %}
+
+                <option id="{{ p.id_tabla }}" >{{ p.desc_elemento }}</option>
+            {% endif %}
+
+        {% endfor %} 
+    
+    {% else %}
+
+        {% for key, value in lista.items %}
+        
+            <option id="{{ key }}" >{{ value }}</option>
+        
+        {% endfor %}
+
+    {% endif %}
+
+</datalist>
