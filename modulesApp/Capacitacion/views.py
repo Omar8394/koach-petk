@@ -6,7 +6,7 @@ from django.http import HttpResponse, JsonResponse, HttpResponseForbidden
 from django.template import loader
 from django.template.loader import render_to_string
 from ..App.models import ConfTablasConfiguracion,AppPublico
-from ..Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_EvaluacionesPreguntas, capacitacion_EvaluacionesPreguntasOpciones, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos,EscalasEvaluaciones,capacitacion_ActividadEvaluaciones,capacitacion_EvaluacionesBloques 
+from ..Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_EvaluacionesPreguntas, capacitacion_EvaluacionesPreguntasOpciones, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos,EscalasEvaluaciones,capacitacion_ActividadEvaluaciones,capacitacion_EvaluacionesBloques,capacitacion_ActividadesTiempoReal 
 from ..Organizational_network.models import nodos_grupos,nodos_gruposIntegrantes,nodos_PlanFormacion
 import time, json
 from decimal import Decimal
@@ -21,6 +21,8 @@ from django.core.files.storage import FileSystemStorage
 import os
 from django.db.models import Count, Sum, FloatField
 from ..Security.models import User
+import datetime
+
 # Create your 
 # views here.
 @register.filter
@@ -112,6 +114,7 @@ def peso(id,test):
       totales=(total/100)
       print(has)
     return totales
+
 @login_required(login_url="/security/login/")
 def index(request):
     
@@ -816,7 +819,8 @@ def renderModalNewTest(request):
 def pageslessons(request):
     id=request.GET.get('id')
     actividad=capacitacion_ComponentesActividades.objects.get(pk=id).titulo
-    context = {'actividad':actividad,'id':id}
+    lessiones=capacitacion_Actividad_leccion.objects.get(fk_componenteActividad_id=id)
+    context = {'actividad':actividad,'id':lessiones.pk}
     html_template = (loader.get_template('pageslessons.html'))
     return HttpResponse(html_template.render(context, request))
 def savepages(request): 
@@ -2081,11 +2085,100 @@ def indexstudent(request):
     nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu).fk_nodogrupo
     nodoplan=nodos_PlanFormacion.objects.filter(fk_gruponodo=nodosuser) 
     print(nodoplan)
-    context = {'usuario':request.user}   
+    context = {'usuario':request.user,'plan':nodoplan}   
     html_template = (loader.get_template('indezstudent.html'))   
-    return HttpResponse(html_template.render(context, request))                      
-            
-           
+    return HttpResponse(html_template.render(context, request)) 
+
+@login_required(login_url="/login/")
+def renderstudent(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            try:
+               context = {}
+               title=False
+               if request.body:                 
+                  data = json.load(request)
+                                 
+                  if data["query"] == "":
+                     print(data)
+                     actividad=capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion_id=data['id'])
+                     context = {"actividad":actividad}
+                     html_template = (loader.get_template('renderstudent.html'))
+                     return HttpResponse(html_template.render(context, request))    
+
+                
+                   
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)       
+def verpaginas_student(request):
+    id=request.GET.get('id')
+    print(id)
+    compActividad=capacitacion_ComponentesActividades.objects.get(pk=id)
+    print(compActividad)
+    estru=capacitacion_componentesXestructura.objects.get(fk_componetesformacion=compActividad.fk_componenteformacion)
+    print(compActividad.fk_tipocomponente)
+    if str(compActividad.fk_tipocomponente) =='Leccion':
+       print('kola')
+       Leccion=capacitacion_Actividad_leccion.objects.get(fk_componenteActividad=compActividad)
+       print(Leccion.pk)
+       actividad=capacitacion_LeccionPaginas.objects.filter(fk_actividadLeccion_id=Leccion.pk)
+       print(actividad.query)
+       context = {'actividad': actividad,'id':id,'estru':estru.pk,'tipo':str(compActividad.fk_tipocomponente.desc_elemento)}
+       print(context)
+       html_template = (loader.get_template('actividad.html'))
+    elif str(compActividad.fk_tipocomponente) =='Tarea':
+         tareas=capacitacion_Actividad_tareas.objects.filter(fk_componenteActividad=compActividad)
+         context = {'actividad': tareas,'id':id,'estru':estru.pk,'tipo':str(compActividad.fk_tipocomponente.desc_elemento)}
+         print(context)
+         html_template = (loader.get_template('actividad.html'))
+    return HttpResponse(html_template.render(context, request))            
+def logUser(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            usuario=request.user
+            userpu= AppPublico.objects.get(user_id=usuario) 
+            nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu)
+            rol=usuario.fk_rol_usuario
+            print(rol)
+            try:
+                if request.body:
+                    data=json.load(request)
+                    print(data) 
+                    idA= data["pk"]
+                    idStr=data['estru']
+                    fecha = datetime.datetime.now()
+                    print(fecha)
+                    culminado = data["estado"]
+                    if culminado == 0:
+                       topico = capacitacion_ComponentesActividades.objects.get(pk=idStr).fk_componenteformacion
+                       lecciones =capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion=topico) 
+                       print('hola') 
+                       hayPrimero = False
+                       for leccion in lecciones:
+                           primer=capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=nodosuser, fk_componenteActividades=leccion)
+                           if primer.exists():
+                              hayPrimero = True
+                              break
+                       if hayPrimero == False:  
+                          print('mensaje')
+                    update = capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=nodosuser, fk_componenteActividades=idA)
+                    if update.exists():
+                       historia = update.order_by("-fecha_realizado")[0]
+                       if historia.culminado == 1 or historia.culminado == culminado:
+                          return JsonResponse({"message":"ok"}, status=200)
+                    else:
+                        historia = capacitacion_ActividadesTiempoReal()
+                        historia.fecha_realizado = fecha
+                    historia.culminado = culminado
+                    historia.fk_componenteActividades_id = idA
+                    historia.fk_nodo_Grupo_integrantes=nodosuser
+                    historia.fk_componenteXestructura_id=idStr
+                    historia.save()      
+                return JsonResponse({"message":"ok"}, status=200)                
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)     
    
    
 

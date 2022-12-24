@@ -1,0 +1,37 @@
+{% if title %} 
+<h3 class="display-4">Este componente no posee actividades</h3>
+{% endif %}
+{% for activity in actividad %}
+<li class="card-list-item " data-move="{{activity.id_componenteActividades}}">
+   <div class="card-list-item-inner 
+   {% if activity.valor_elemento == 'Actividad_leccion'%} deg-warning{% endif %}
+   {% if activity.valor_elemento == 'Actividad_Tarea'%} deg-danger{% endif %}
+   {% if activity.valor_elemento == 'Actividad_Sesiones'%}deg-info{% endif %}
+   {% if activity.valor_elemento == 'Actividad_Test'%}deg-success{% endif %}
+   ">
+   <div class="card-list-item-icon">
+   {% if activity.valor_elemento == 'Actividad_leccion'%}
+      <i class="fas fa-file-contract"></i>
+   {% endif %} 
+   {% if activity.valor_elemento == 'Actividad_Tarea'%}
+   <i class="fas fa-file-archive"></i>
+   {% endif %}
+   {% if activity.valor_elemento == 'Actividad_Sesiones'%}
+   <i class="fas fa-file-powerpoint"></i>
+   {% endif %}
+   {% if activity.valor_elemento == 'Actividad_Test'%}
+   <i class="fas fa-file-signature"></i>
+   {% endif %}
+   </div>
+      <div class="card-list-item-title">{{activity.titulo}}</div>      
+      <div class="card-list-item-actions">
+       
+         <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Programar sesion "
+         onclick="goatv('{{activity.id_componenteActividades}}')">
+         <i class="fas fa-plus"></i>
+         </button> 
+         
+      </div>
+   </div>
+</li>
+{% endfor %}

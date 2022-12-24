@@ -528,7 +528,7 @@ renderContent({{id}})
             recursoHTML = `<img src="/media/${path}"/>`
          }
          if (type === "Tipo_video") {
-            recursoHTML = `<div style="padding:52.73% 0 0 0;position:relative;"><iframe style="position:absolute;top:0;left:0;width:100%;height:100%;" src="https://www.youtube.com/embed/${path}" title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`
+            recursoHTML = `<div style="padding:52.73% 0 0 0;position:relative;"><iframe style="position:absolute;top:0;left:0;width:100%;height:100%;" src="https://www.youtube.com/embed/${path}?enablejsapi=1"  id="YouTube_video" title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`
          }
          if (type === "Recurso_vimeo") {
             recursoHTML = `<div style="padding:52.73% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/${path}" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>`

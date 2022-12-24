@@ -1,11 +1,52 @@
 {% extends "layouts/base.html" %}
-
+{% load filters%}
 {% block title %}{% endblock %} 
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}
-
-
+<style>
+	#menu ul {
+		list-style-type: none;
+		margin: 0px;
+		padding: 0px;
+		width: 250px;
+		font-family: Arial, sans-serif;
+		font-size: 11pt;
+	}
+	#menu ul li {
+		background-color: #666;
+	}
+	#menu ul li a {
+		color: #ccc;
+		text-decoration: none;
+		text-transform: uppercase;
+		display: block;
+		padding: 10px 10px 10px 20px;
+	}
+	#menu ul li a:hover {
+		background: #000;
+		border-left: 10px solid #333;
+		color: #fff;
+	}
+	@media (max-width: 768px) {
+		#mainItems {
+			Display: block;
+			
+		}
+		#divis{
+			width: 100%;
+		}
+		#diviso{
+			column-width: auto;
+			
+		}
+		#menu ul {
+			width: 300px;	
+		}
+	  }
+	
+	
+</style>	
 {% endblock stylesheets %}
 
 {% block content %}
@@ -33,21 +74,63 @@
 				</ul>
 			</div>
 			<div class="page-category">
-        		
-                   
-                   
-                    
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                   
-                 
-                      
-  
+				<div class="card">
+					<section >
+						<div class="form-group" id="groupDate">
+					 
+						   <div class="row" id="mainItems">
+							   <div id="divis" class="card " style="background-color: #1a2035 !important; color: white;">
+								<div class="card-body">
+								 <div class="section-header">
+									<h3 >Componentes</h3>
+									
+								 </div> 
+								
+								 <div id="menu">
+									{% for item  in plan  %}
+									<ul>
+										  
+									 <li>
+									 {% if not  item.fk_componentesXestructura.fk_componetesformacion_id|week:request.user %}
+									 <a id="{{item.fk_componentesXestructura.fk_componetesformacion_id}}"  >
+									 <i class="fas fa-lock mr-1" style="color: #FF0000;" >						
+									 </i>{{item.fk_componentesXestructura.fk_componetesformacion}}
+									 </a>
+									 {% else %} <a id="{{item.fk_componentesXestructura.fk_componetesformacion_id}}">
+									 <i class="fas fa-lock-open mr-1" style="color: #00ff00 ;" > 							
+									 </i>{{item.fk_componentesXestructura.fk_componetesformacion}}
+									 </a>
+									 {% endif %}
+								     </li>
+									 
+									</ul>
+									{% endfor %}
+								 </div>
+							  
+								</div>   
+								  
+								
+							   </div>
+							  
+							   <div id="diviso" class="card col-md-8 " style="background-color: #1a2035 !important; color: white;">
+								 <div class="card-body">
+									<div id="renderpro" class="col-md-12">   
+									   <h3 class="display-4">Ver Actividades</h3>
+									   
+									</div>
+									
+								</div>   
+								
+								  
+							  </div>
+						   </div>
+					 
+					   </div>
+					 </section>
+					 
+									   
+						
+			   </div>
       		</div>
 		</div>
 	</div>
@@ -59,7 +142,32 @@
 
 
 <script>
-
+let query="" 
+	
+$(document).ready(function(){
+	$("a").click(function() {
+	let ids=$(this).attr("id")
+	renderContent(ids)
+  });
+});
+const renderContent = (id)=>{
+			document.querySelector("#renderpro").classList.add("is-loading")
+			fetch("{% url 'renderstudent'%}", {
+			   ...fetchObject,
+			   body: JSON.stringify({
+				  query,
+				  id
+			   })
+			})
+			.then(async(res)=>{
+			   result = await res.text()
+			   document.querySelector("#renderpro").classList.remove("is-loading")
+			   document.querySelector("#renderpro").innerHTML = result
+			})
+ }	
+ const goatv=(id) =>{
+	window.location.href = `{% url 'verpaginas_student' %}?id=${id}`
+ }	
 </script>
 
 {% endblock javascripts %}

@@ -1,0 +1,277 @@
+{% extends "layouts/base.html" %}
+
+{% load static %}
+
+{% block title %}{% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="content">
+   <div class="page-inner animated fadeInRight">
+      <div class="page-header">
+         <h4 class="page-title">Academico</h4>
+         <ul class="breadcrumbs">
+            <li class="nav-home">
+               <a href="{% url 'home' %}">
+                  <i class="flaticon-home"></i>
+               </a>
+            </li>
+            <li class="separator">
+               <i class="flaticon-right-arrow"></i>
+            </li>
+           
+            <li class="separator">
+               <i class="flaticon-right-arrow"></i>
+            </li>
+            <li class="nav-item">
+               <a href=""></a>
+            </li>
+            <li class="separator">
+               <i class="flaticon-right-arrow"></i>
+            </li>
+            <li class="nav-item">
+               <a href=""></a>
+            </li>
+            <li class="separator">
+               <i class="flaticon-right-arrow"></i>
+            </li>
+            <li class="nav-item">
+               <a
+                  href=""></a>
+            </li>
+            <li class="separator">
+               <i class="flaticon-right-arrow"></i>
+            </li>
+            <li class="nav-item">
+               <a
+                  href=""></a>
+            </li>
+            <li class="separator">
+               <i class="flaticon-right-arrow"></i>
+            </li>
+            <li class="nav-item">
+               <a
+                  ></a>
+            </li>
+            <li class="separator">
+               <i class="flaticon-right-arrow"></i>
+            </li>
+            <li class="nav-item">
+               
+            </li>
+         </ul>
+      </div>
+      <div class="page-category">
+         <div class="card">
+            <div class="card-header">
+               
+            </div>
+            <main class="card-body">
+              
+               <div class="owl-carousel owl-theme">
+               {% if tipo == "Leccion" %}
+                {% for item in actividad %}
+                  <div class="item" id="{{item.fk_tipoContenido}}">
+                     {{item.contenido|safe}}
+                  </div>
+               
+                {% endfor %}
+               {% elif tipo == "Tarea" %}
+                {% for item in actividad %}
+                 <div class="item" id="{{item.fk_componenteActividad.fk_tipocomponente}}">
+                  {{item.path_recurso|safe}}
+                 </div>
+              
+                {% endfor %}
+               {% endif %}
+               
+                
+              
+               </div>
+              
+              
+              
+              
+            </main>
+            <div class="form-row d-flex justify-content-between">
+               
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<!-- Modal amigable -->
+<div class="modal fade" id="addNewModal" tabindex="-1" role="dialog">
+   <div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="addNewModalContent">
+
+   </div>
+</div>
+<div class="modal fade" id="modalhistoritopic" tabindex="-1" role="dialog">
+   <div class="modal-dialog  modal-dialog-centered" role="document" id="modalContenttopic">
+
+   </div>
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+<script src="https://player.vimeo.com/api/player.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+ var player
+  const onYouTubePlayerAPIReady=()=>{
+      
+      console.log('on  ready');
+      player= new YT.Player('YouTube_video');
+      
+      player.addEventListener('onReady','onPlayerReady');
+      player.addEventListener('onStateChange','onPlayerStateChange');
+     
+ } 
+function onPlayerReady(){
+   console.log('on player  ready');
+}
+function onPlayerStateChange(event){
+   console.log(event.data);
+   if(event.data == 0){
+      updateLog(1) 
+   }
+} 
+  
+   function updateLog(num){
+      return fetch("{% url 'logUser' %}", {
+         ...fetchObject,
+         body: JSON.stringify({
+            pk:"{{id}}",
+            estru:"{{estru}}",
+            estado: num
+         })
+      })
+      .then(async(res)=>{
+         result = JSON.parse(await res.text())
+         console.log(result)
+        
+      })
+   }
+   const revisar=(event)=>{
+    
+         if(event.property.name === "position"){
+            if(event.page.index === event.page.count -1){
+               updateLog(1)
+               console.log(event.page.count)
+              
+              
+               
+            }
+         }  
+      
+   }
+  
+   $('.owl-carousel').owlCarousel({
+      onChanged:revisar,
+      loop: false,
+      margin: 10,
+      nav: true,
+      responsive: {
+         0: {
+            items: 1
+         }
+      }
+   }) 
+
+   $(document).ready(function () {
+      updateLog(0).then(()=>{
+         let hijo = document.querySelector('.owl-stage')
+         const videos = []              
+         let frames = document.querySelectorAll("iframe")
+         
+         let hijos
+         if (hijo){
+            hijos=hijo.children.length
+         }
+         if (hijos == 1) {
+            tipos=hijo.children
+            for(var i = 0; i< tipos.length;i++)
+            {
+              if (tipos[i].children[0].id == 'video' || tipos[i].children[0].id == 'vimeo') 
+              {   
+              
+              // if(frames.length > 0){
+                  for(let video of frames){
+                     if(video.src.includes("vimeo")){
+                        console.log('ko')
+                         videos.push(video)
+                         setVideoSettings(videos)
+                           
+                        
+                     }
+                    
+                     else{
+                      
+                        onYouTubePlayerAPIReady()
+                        console.log('no')
+                     }
+                      
+                  }
+                                     
+              }
+              else{
+               updateLog(1)
+              }
+            }          
+         }
+        
+      })
+   }); 
+      
+
+   function setVideoSettings(array){
+      let vimeos = {}
+      array.map(async (el, index)=>{
+         vimeos[index] = new Vimeo.Player(el);
+         let duration = await vimeos[index].getDuration()
+         //console.log(duration)
+         let maxTime = duration - 0.1
+         vimeos[index].on('ended', async function () {
+            console.log('duration')
+            updateLog(1) 
+            await vimeos[index].setCurrentTime(0)
+         });
+         vimeos[index].on('timeupdate', async function (time) {
+            if(time.seconds >= maxTime){
+               await vimeos[index].pause()
+               await vimeos[index].setCurrentTime(0)
+            }
+         });
+          
+         vimeos[index].on('seeked',async function(data) {
+            var tiempo = Number(data.seconds);
+//alert(tiempo);
+            //Si tiempo es mayor de 1200 segundos, muestro el botón.
+            if(tiempo >= 1200){
+         
+              // alert('Se adelantó el vídeo');
+        // boton.style.display = 'block';
+           }
+           
+            await vimeos[index].pause()
+            await vimeos[index].setCurrentTime(0)
+               
+               // `seconds` indicates the current playback position of the video
+            
+           
+
+        });
+           
+      })
+   }
+   
+    
+</script>
+
+{% endblock javascripts %}
