@@ -2084,7 +2084,7 @@ def indexstudent(request):
     userpu= AppPublico.objects.get(user_id=usuario)  
     nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu).fk_nodogrupo
     nodoplan=nodos_PlanFormacion.objects.filter(fk_gruponodo=nodosuser) 
-    print(nodoplan)
+    print(userpu)
     context = {'usuario':request.user,'plan':nodoplan}   
     html_template = (loader.get_template('indezstudent.html'))   
     return HttpResponse(html_template.render(context, request)) 

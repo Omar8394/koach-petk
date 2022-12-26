@@ -19,24 +19,28 @@ def week(topico, usuario):
     
     rol=usuario.fk_rol_usuario
     userpu= AppPublico.objects.get(user_id=usuario)
-    
+   
     nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu)
-    
+    print(nodosuser)
     _isFree = False
     if str(rol) == 'Estudiante':
         
-        date =timezone.now()
+        date =datetime.datetime.now()
         start_week = date - datetime.timedelta(date.weekday())
         sem=datetime.timedelta(date.weekday())
         end_week = start_week + datetime.timedelta(6)
         mydate = end_week - timedelta(days=6)
-        mydate = mydate.replace(hour=00,minute=00,second=00, microsecond=00000)     
-        lastTopics = capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=nodosuser, fecha_realizado__gte=mydate,culminado=1).values('fk_componenteActividades__fk_componenteformacion').annotate(lecciones=Count('fk_componenteActividades'))    
-        
+        mydate = mydate.replace(hour=00,minute=00,second=00, microsecond=00000)
+        cant_act=capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion_id=topico)     
+        print(mydate)
+        lastTopics = capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=nodosuser, fecha_realizado__gte=mydate, culminado=1).values('fk_componenteActividades__fk_componenteformacion').annotate(lecciones=Count('fk_componenteActividades'))    
+       
         if lastTopics.exists():
+            
             if lastTopics.count() >= 2 :               
                for topic in lastTopics:      
-                  if topico == topic['fk_componenteActividades__fk_componenteformacion']:    
+                  if topico == topic['fk_componenteActividades__fk_componenteformacion'] and cant_act.count()==topic['lecciones']:    
+                    
                      return True  
        
         #         # codigo para excepciones
@@ -47,9 +51,11 @@ def week(topico, usuario):
         #                 if lesson.estado == 0:
         #                     return False
             else:
-                _isFree=True
+                for topic in lastTopics:      
+                  if topico == topic['fk_componenteActividades__fk_componenteformacion'] and cant_act.count()==topic['lecciones']:    
+                     return True 
         else:
-            _isFree=True
+            _isFree=False
     else:
         _isFree = True
     return _isFree

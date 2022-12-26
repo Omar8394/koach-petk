@@ -18,6 +18,7 @@ from django.http import Http404
 from pathlib import Path
 from django.core.files.storage import FileSystemStorage
 import imghdr
+import os
 from django.template.loader import render_to_string
 
 
