@@ -1,3 +1,4 @@
+{% load filters%}
 {% if title %} 
 <h3 class="display-4">Este componente no posee actividades</h3>
 {% endif %}
@@ -9,6 +10,11 @@
    {% if activity.valor_elemento == 'Actividad_Sesiones'%}deg-info{% endif %}
    {% if activity.valor_elemento == 'Actividad_Test'%}deg-success{% endif %}
    ">
+   {% if activity|locked:request.user %}
+   <div class="card-list-item-locked">
+      <i class="fas fa-lock"></i>
+   </div>
+   {% endif %}
    <div class="card-list-item-icon">
    {% if activity.valor_elemento == 'Actividad_leccion'%}
       <i class="fas fa-file-contract"></i>

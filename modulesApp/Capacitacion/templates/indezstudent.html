@@ -87,24 +87,7 @@
 								 </div> 
 								
 								 <div id="menu">
-									{% for item  in plan  %}
-									<ul>
-										  
-									 <li>
-									 {% if not  item.fk_componentesXestructura.fk_componetesformacion_id|week:request.user %}
-									 <a id="{{item.fk_componentesXestructura.fk_componetesformacion_id}}"  >
-									 <i class="fas fa-lock mr-1" style="color: #FF0000;" >						
-									 </i>{{item.fk_componentesXestructura.fk_componetesformacion}}
-									 </a>
-									 {% else %} <a id="{{item.fk_componentesXestructura.fk_componetesformacion_id}}">
-									 <i class="fas fa-lock-open mr-1" style="color: #00ff00 ;" > 							
-									 </i>{{item.fk_componentesXestructura.fk_componetesformacion}}
-									 </a>
-									 {% endif %}
-								     </li>
-									 
-									</ul>
-									{% endfor %}
+									
 								 </div>
 							  
 								</div>   
@@ -143,13 +126,29 @@
 
 <script>
 let query="" 
+const rendertemas = ()=>{
+	document.querySelector("#menu").classList.add("is-loading")
+	fetch("{% url 'renderstemas'%}", {
+	   ...fetchObject,
+	   body: JSON.stringify({
+		  query
+		  
+	   })
+	})
+	.then(async(res)=>{
+	   result = await res.text()
+	   document.querySelector("#menu").classList.remove("is-loading")
+	   document.querySelector("#menu").innerHTML = result
+	})
+ }
+ rendertemas() 	
+ const renderactividades = (id)=>{
 	
-$(document).ready(function(){
-	$("a").click(function() {
-	let ids=$(this).attr("id")
-	renderContent(ids)
-  });
-});
+	
+	
+	renderContent(id)
+ 
+}
 const renderContent = (id)=>{
 			document.querySelector("#renderpro").classList.add("is-loading")
 			fetch("{% url 'renderstudent'%}", {

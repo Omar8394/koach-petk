@@ -21,7 +21,7 @@ def week(topico, usuario):
     userpu= AppPublico.objects.get(user_id=usuario)
    
     nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu)
-    print(nodosuser)
+    s=0
     _isFree = False
     if str(rol) == 'Estudiante':
         
@@ -31,31 +31,69 @@ def week(topico, usuario):
         end_week = start_week + datetime.timedelta(6)
         mydate = end_week - timedelta(days=6)
         mydate = mydate.replace(hour=00,minute=00,second=00, microsecond=00000)
-        cant_act=capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion_id=topico)     
-        print(mydate)
-        lastTopics = capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=nodosuser, fecha_realizado__gte=mydate, culminado=1).values('fk_componenteActividades__fk_componenteformacion').annotate(lecciones=Count('fk_componenteActividades'))    
-       
+        cant_act=capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion_id=topico)    
+        
+        lastTopics = capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=nodosuser, fecha_realizado__gte=mydate, culminado=1).values('fk_componenteActividades__fk_componenteformacion').annotate(lecciones=Count('fk_componenteActividades')) 
+      
         if lastTopics.exists():
             
             if lastTopics.count() >= 2 :               
                for topic in lastTopics:      
                   if topico == topic['fk_componenteActividades__fk_componenteformacion'] and cant_act.count()==topic['lecciones']:    
                     
-                     return True  
-       
-        #         # codigo para excepciones
-        #         olderTopics = capacitacion_ActividadesTiempoReal.objects.filter(fk_publico=publico, fecha_realizado__lte=mydate, fk_estructura_programa__fk_estructura_padre=topico)
-        #         if olderTopics.exists():
-        #             _isFree = True
-        #             for lesson in olderTopics:
-        #                 if lesson.estado == 0:
-        #                     return False
-            else:
-                for topic in lastTopics:      
-                  if topico == topic['fk_componenteActividades__fk_componenteformacion'] and cant_act.count()==topic['lecciones']:    
                      return True 
+                 # codigo para excepciones  
+               olderTopics = capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=nodosuser, fecha_realizado__lte=mydate, fk_componenteActividades__fk_componenteformacion_id=topico)
+               print(olderTopics)
+               
+               if olderTopics.exists():
+                  _isFree = True
+                  for lesson in olderTopics:
+                      if lesson.culminado == 0:
+                            return False
+               
+        #         
+               
+            else:
+                _isFree = True
+            #    olderTopics = capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=nodosuser, fecha_realizado__lte=mydate, fk_componenteActividades__fk_componenteformacion_id=topico)
+            #    print(olderTopics)
+            #    print('ji')
+            #    if olderTopics.exists():
+            #       _isFree = True
+            #    for topic in lastTopics:      
+            #       if topico == topic['fk_componenteActividades__fk_componenteformacion'] and cant_act.count()==topic['lecciones']:    
+            #          return True 
         else:
-            _isFree=False
+            _isFree = True
+            # olderTopics = capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=nodosuser, fecha_realizado__lte=mydate, fk_componenteActividades__fk_componenteformacion_id=topico).values('fk_componenteActividades__fk_componenteformacion').annotate(lecciones=Count('fk_componenteActividades'))
+            
+            # if olderTopics.exists():
+            #    for topic in olderTopics:
+            #        if topico == topic['fk_componenteActividades__fk_componenteformacion']:    
+               
+            #           return True
+                  
+            # else:
+               
+            #      print(topico)  
+             
     else:
         _isFree = True
     return _isFree
+@register.filter(name='locked')
+def isNeeded(activity, usuario):
+    isRequired = False
+    rol=usuario.fk_rol_usuario
+    userpu= AppPublico.objects.get(user_id=usuario)
+   
+    nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu)
+    if str(rol) == 'Estudiante':
+        requisitos = capacitacion_componentesPrerequisitos.objects.filter( fk_componenteActividades=activity)
+        if requisitos.exists():
+            for requisito in requisitos:
+                visto = capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=nodosuser, fk_componenteActividades=requisito.fk_prerequisito, culminado=True)
+                if not visto.exists():
+                    isRequired=True
+                    break
+    return isRequired

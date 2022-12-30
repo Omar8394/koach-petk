@@ -63,6 +63,7 @@ urlpatterns = [
     path('EditNewparrafo/', views.EditNewparrafo, name="EditNewparrafo"),
     path('sortPreguntas/', views.sortPreguntas, name="sortPreguntas"),
     path('renderstudent/', views.renderstudent, name="renderstudent"),
+    path('renderstemas/', views.renderstemas, name="renderstemas"),
     path('logUser/', views.logUser, name="logUser"),
     path('verpaginas_student/', views.verpaginas_student, name="verpaginas_student"),
     # Scales

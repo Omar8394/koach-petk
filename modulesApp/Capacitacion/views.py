@@ -474,6 +474,7 @@ def modalAddcursos(request):
                    cursos.url=data['data']['urlProgram']         
                    cursos.titulo=data['data']['descriptionProgram']
                    cursos.creditos_peso=Decimal(data['data']['creditos'].replace(',','.'))
+                   cursos.orden_presentacion=len(componentesFormacion.objects.all()) + 1
                    cursos.Fecha_activo=data['data']['disponibleCourse']
                    cursos.Condicion=data['data']['Condicion']
                    cursos.tipo_ritmo_id=data['data']['categoryProgram']
@@ -2080,15 +2081,36 @@ def sortPreguntas(request):
 @login_required(login_url="/security/login/")
 def indexstudent(request):
     
-    usuario=request.user
-    userpu= AppPublico.objects.get(user_id=usuario)  
-    nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu).fk_nodogrupo
-    nodoplan=nodos_PlanFormacion.objects.filter(fk_gruponodo=nodosuser) 
-    print(userpu)
-    context = {'usuario':request.user,'plan':nodoplan}   
+    
+    context = {}   
     html_template = (loader.get_template('indezstudent.html'))   
     return HttpResponse(html_template.render(context, request)) 
+@login_required(login_url="/login/")
+def renderstemas(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            try:
+               context = {}
+               title=False
+               if request.body:                 
+                  data = json.load(request)
+                                 
+                  if data["query"] == "":
+                     print(data)
+                     usuario=request.user
+                     userpu= AppPublico.objects.get(user_id=usuario)  
+                     nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu).fk_nodogrupo
+                     nodoplan=nodos_PlanFormacion.objects.filter(fk_gruponodo=nodosuser) 
+                     print(userpu)
+                     context = {'usuario':request.user,'plan':nodoplan}
+                     html_template = (loader.get_template('rendertemas.html'))
+                     return HttpResponse(html_template.render(context, request))    
 
+                
+                   
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)
 @login_required(login_url="/login/")
 def renderstudent(request):
     if request.method == "POST":
