@@ -28,6 +28,8 @@ class componentesFormacion(models.Model):
     ritmo=models.IntegerField(blank=True, null=True)
     tipo_ritmo=models.ForeignKey(ConfTablasConfiguracion, on_delete=models.DO_NOTHING, default=None, null=True)
     tiene_certificad= models.BooleanField(null=True)
+    path_plantilla_certificado=models.TextField()
+    anno_semestre =models.TextField()
     def __str__(self):
         return self.titulo
 
@@ -174,3 +176,28 @@ class capacitacion_ActividadesTiempoReal(models.Model):
       fecha_realizado=models.DateField(blank=True, null=True)
       culminado=models.BooleanField(null=True)
       fk_nodo_Grupo_integrantes=models.ForeignKey(nodos_gruposIntegrantes, on_delete=models.DO_NOTHING, default=None, null=True)		
+class capacitacion_NotificacionesMensajesXactividad(models.Model):
+      id_notiMenxactividad=models.AutoField(primary_key=True)
+      fk_tipoActividad=models.SmallIntegerField(null=True) 
+      fk_actividad_componente=models.TextField(null=True)
+      MAYBECHOICES = ( ('0', 'notificacion'), ('1', 'mensaje'), )      
+      tipo= models.CharField(max_length=1, choices=MAYBECHOICES)
+      MAYBECHOICESTWO = ( ('0', 'al inicio'), ('1', 'al finalizar '), )      
+      cuando= models.CharField(max_length=1, choices=MAYBECHOICESTWO)
+      fk_notificacionActividad=models.TextField(null=True)
+class capacitacion_Certificados(models.Model):
+      id_certificado=models.AutoField(primary_key=True) 
+      fecha_certificados=models.DateField(blank=True, null=True)    
+      emitido=models.BooleanField(null=True)
+      fk_componenteXestructuras=models.ForeignKey(capacitacion_componentesXestructura, on_delete=models.DO_NOTHING, default=None, null=True) 
+      fk_nodo_Grupo_integrantes=models.ForeignKey(nodos_gruposIntegrantes, on_delete=models.DO_NOTHING, default=None, null=True)		
+	
+class capacitacion_HistoricoActividades(models.Model):
+      id_historicoactvidades=models.AutoField(primary_key=True)
+      fk_componenteXestructura=models.ForeignKey(capacitacion_componentesXestructura, on_delete=models.DO_NOTHING, default=None, null=True)	
+      MAYBECHOICES = ( ('0', 'por revisar '), ('1', 'cerrado'), )            
+      estatus_lider= models.CharField(max_length=1, choices=MAYBECHOICES)
+      fk_nodo_Grupo_integrantes=models.ForeignKey(nodos_gruposIntegrantes, on_delete=models.DO_NOTHING, default=None, null=True)     
+      datos_resumen=models.TextField(null=True)       
+      Comentarios_lider=models.TextField(null=True)
+      			

@@ -21,9 +21,10 @@ class nodos_gruposIntegrantes(models.Model):
     descripcion_comentarios=models.TextField()
     fk_nodogrupo=models.ForeignKey(nodos_grupos,on_delete=models.DO_NOTHING,default=None, null=True)
 class nodos_PlanFormacion(models.Model):
-     idnodo_planformacion= models.SmallAutoField(primary_key=True)
-     fk_gruponodo=models.ForeignKey(nodos_grupos, on_delete=models.DO_NOTHING, default=None, null=True)
-     fk_componentesXestructura= models.ForeignKey('Capacitacion.capacitacion_componentesXestructura', on_delete=models.DO_NOTHING, default=None, null=True, related_name='forma')
-     fecha_inicio=models.DateField(blank=True, null=True)
-     fk_statusplan=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name="status_plan")
-			
+    idnodo_planformacion= models.SmallAutoField(primary_key=True)
+    fk_gruponodo=models.ForeignKey(nodos_grupos, on_delete=models.DO_NOTHING, default=None, null=True)
+    fk_componentesXestructura= models.ForeignKey('Capacitacion.capacitacion_componentesXestructura', on_delete=models.DO_NOTHING, default=None, null=True, related_name='forma')
+    fecha_inicio=models.DateField(blank=True, null=True)
+    orden_presentacion=models.SmallIntegerField(null=True)		
+    fk_statusplan=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name="status_plan")
+	
