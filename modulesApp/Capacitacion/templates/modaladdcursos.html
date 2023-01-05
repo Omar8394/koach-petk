@@ -89,10 +89,27 @@
          </div>
          <div class="form-group col-6">
             <div class="custom-control custom-checkbox ml-2">
-               <input type="checkbox" class="custom-control-input" name="checkDurationC" id="checkDurationC"  {% if modelo %}{% if modelo.tiene_certificad == 1 %} checked {% endif %}{% endif %}>
+               <input type="checkbox" class="custom-control-input" name="checkDurationC" id="checkDurationC" onchange="toggle()"  {% if modelo %}{% if modelo.tiene_certificad == 1 %} checked {% endif %}{% endif %}>
                <label class="custom-control-label" for="checkDurationC">tiene certificado</label>
             </div>
          </div>
+         <div class="form-group col-6">
+         <input type="file" name="imagen" id="imagen" accept="image/*"  hidden>
+
+         <div id="preview">
+            {% if modelo.path_plantilla_certificado %}
+            <img src=""  id="imagenPerfil">
+            {% endif %}
+         </div>
+      </div>
+         <div class="form-group col-6">
+            <label for="urlProgram" class="col-form-label">Año semestre</label>
+            <input type="text" class="form-control" name="Semestre" id="Semestre"
+            placeholder="Enter a codename" required
+            value="{% if modelo %}{{ modelo.Condicion }}{% endif %}"
+            >
+         </div>
+         
        </div>
        <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-dismiss="modal"><i

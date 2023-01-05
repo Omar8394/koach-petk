@@ -429,6 +429,7 @@ def modalAddcursos(request):
         try:
             if request.body:    
                 data = json.load(request)
+                
                 print(data)
                 if data['method'] == "Editar":
                     modelo = componentesFormacion.objects.get(pk=data["id"])    
@@ -453,18 +454,22 @@ def modalAddcursos(request):
                    cursos.Condicion=data['data']['Condicion']
                    cursos.tipo_ritmo_id=data['data']['categoryProgram']
                    cursos.ritmo=data['data']['Ritmo']
+                   cursos.anno_semestre=data['data']['Semestre']
+                   
                    if 'checkDurationCB' in data['data']:
                       cursos.status_componente=1
                    else:
                       cursos.status_componente=0
                    if 'checkDurationC' in data['data']:
                       cursos.tiene_certificad=1
+                      cursos.path_plantilla_certificado=data['data']['imagen']
                    else:
                       cursos.tiene_certificad=0
                 
                    cursos.save()
                 elif data['method'] == "Create":
-                  
+                   
+                   print(data)
                    cursos=componentesFormacion()
                    relacion=capacitacion_componentesXestructura() 
                    relacion.fk_estructuraprogramas_id=data['id']
@@ -479,12 +484,15 @@ def modalAddcursos(request):
                    cursos.Condicion=data['data']['Condicion']
                    cursos.tipo_ritmo_id=data['data']['categoryProgram']
                    cursos.ritmo=data['data']['Ritmo']
+                   cursos.anno_semestre=data['data']['Semestre']
+                  
                    if 'checkDurationCB' in data['data']:
                       cursos.status_componente=1
                    else:
                       cursos.status_componente=0
                    if 'checkDurationC' in data['data']:
                       cursos.tiene_certificad=1
+                      cursos.path_plantilla_certificado=data['data']['imagen']
                    else:
                       cursos.tiene_certificad=0
                 
@@ -2202,6 +2210,25 @@ def logUser(request):
                print(e)
                return JsonResponse({"message":"error"}, status=500)     
    
+def imagesave(request):
+    if request.method == "POST":
+
+        myfile = request.FILES['imagen']
+        print(myfile)
+        Ruta = 'modulesApp\Capacitacion\plantillas_img'    
+        fs = FileSystemStorage(location='modulesApp\Capacitacion\plantillas_img')       
+        nombreImagen = str(request.user) + ".png"        
+        try:
+
+            os.mkdir(os.path.join(Ruta))
+
+        except:
+    
+            pass
+
+        fs.delete(Ruta + '/' + str(myfile))
+        fs.save(Ruta + '/' + str(myfile), myfile)
+        return JsonResponse({'mensaje': 'Changes applied successfully', 'ruta': (nombreImagen)})
    
 
            

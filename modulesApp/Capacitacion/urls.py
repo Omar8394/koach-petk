@@ -66,6 +66,7 @@ urlpatterns = [
     path('renderstemas/', views.renderstemas, name="renderstemas"),
     path('logUser/', views.logUser, name="logUser"),
     path('verpaginas_student/', views.verpaginas_student, name="verpaginas_student"),
+    path('imagesave/', views.imagesave, name="imagesave"),
     # Scales
     
 

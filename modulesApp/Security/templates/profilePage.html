@@ -228,7 +228,7 @@
 
             }else{
 
-                // $('#fileForm').submit()
+               // $('#fileForm').submit()
                 var formdata = new FormData();
                 formdata.append('file-input', file);
                 formdata.append('csrfmiddlewaretoken', '{{ csrf_token }}');
@@ -239,7 +239,7 @@
                         data : formdata,
                         processData: false,
                         contentType: false,
-                        success: function (response) {
+                         success: function (response) {
 
                             if(response.mensaje){
                                 
