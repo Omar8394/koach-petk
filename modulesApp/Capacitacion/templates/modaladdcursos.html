@@ -98,7 +98,12 @@
 
          <div id="preview">
             {% if modelo.path_plantilla_certificado %}
-            <img src=""  id="imagenPerfil">
+            <img src="/upload/plantillasimg/{{modelo.path_plantilla_certificado}}"  id="imagenPerfil">
+            {% endif %}
+         </div>
+         <div class="col" id="buttons">
+            {% if modelo.path_plantilla_certificado %}
+            <a class="btn btn-danger btn-round" onclick=borrarImage({{modelo.pk}})>Remove</a>
             {% endif %}
          </div>
       </div>
@@ -106,7 +111,7 @@
             <label for="urlProgram" class="col-form-label">Año semestre</label>
             <input type="text" class="form-control" name="Semestre" id="Semestre"
             placeholder="Enter a codename" required
-            value="{% if modelo %}{{ modelo.Condicion }}{% endif %}"
+            value="{% if modelo %}{{ modelo.anno_semestre }}{% endif %}"
             >
          </div>
          

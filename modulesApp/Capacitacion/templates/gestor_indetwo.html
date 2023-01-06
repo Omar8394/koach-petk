@@ -398,6 +398,7 @@ const openAddModulos = (id) => {
          })
          .then(() => {
             $("#addNewModale").modal("show")
+            
             const formPrograma = document.getElementById("formProgram")
             let rules = {
                resumenProgram: {
@@ -497,7 +498,7 @@ const openAddModulos = (id) => {
                          if(response.mensaje){
                              
                              
-                             document.getElementById('buttons').innerHTML = '<button class="btn btn-primary btn-round mr-2" onclick=clickImage()>Cambiar</button><button class="btn btn-danger btn-round" onclick=borrarImage()>Remove</button>'
+                             document.getElementById('buttons').innerHTML = '<button class="btn btn-primary btn-round mr-2" onclick=clickImage()>Cambiar</button>'
                              
                          }
  
@@ -525,7 +526,33 @@ const openAddModulos = (id) => {
 			
 		}
 	}  
-     
+   function borrarImage(id) {
+
+      
+
+              $.ajax({
+                  type: "POST",
+                  
+                  url: "{% url 'borrarImagenes' %}", 
+                  data : {'ids': id, 'csrfmiddlewaretoken' : '{{ csrf_token }}'},
+                  success: function (response) {
+
+                      if(response.mensaje){
+                          
+                         
+                          swal(response.mensaje)
+                          document.getElementById('preview').innerHTML = ''
+                          document.getElementById('buttons').innerHTML = ''
+                          
+                      }
+
+                  },
+                  error: function () {}
+              });
+              
+        
+
+  }     
 </script>	
 <!-- Specific Page JS goes HERE  -->
 {% endblock javascripts %}

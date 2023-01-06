@@ -2215,8 +2215,8 @@ def imagesave(request):
 
         myfile = request.FILES['imagen']
         print(myfile)
-        Ruta = 'modulesApp\Capacitacion\plantillas_img'    
-        fs = FileSystemStorage(location='modulesApp\Capacitacion\plantillas_img')       
+        Ruta = settings.UPLOAD_ROOT + '/plantillasimg'    
+        fs = FileSystemStorage(location=settings.UPLOAD_ROOT)       
         nombreImagen = str(request.user) + ".png"        
         try:
 
@@ -2229,6 +2229,31 @@ def imagesave(request):
         fs.delete(Ruta + '/' + str(myfile))
         fs.save(Ruta + '/' + str(myfile), myfile)
         return JsonResponse({'mensaje': 'Changes applied successfully', 'ruta': (nombreImagen)})
-   
+def borrarImagenes(request):
+    if request.method == "POST":
+        
+        id=request.POST.get('ids')
+        componente=componentesFormacion.objects.get(pk=id)
+        if componente.path_plantilla_certificado and componente.path_plantilla_certificado != '':
+    
+            fs = FileSystemStorage(location=settings.UPLOAD_ROOT)
+            nombreImagen = componente.path_plantilla_certificado
+            print(nombreImagen)
+            Ruta = settings.UPLOAD_ROOT + '/plantillasimg'
+
+            fs.delete(Ruta + '/' + nombreImagen)
+
+            
+            componente.path_plantilla_certificado=''
+            componente.save()
+
+            return JsonResponse({'mensaje': 'Image deleted'})
+
+        else:
+
+            return JsonResponse({'mensaje': 'There is no image to remove'})
+        
+
+       
 
            
