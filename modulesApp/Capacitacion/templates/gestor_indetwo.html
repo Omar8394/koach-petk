@@ -151,13 +151,12 @@ const openAddModulos = (id) => {
         const data = {}
         if (type){
          var x = document.getElementById("imagen")
-         console.log(x)
-         
-         var file = x.files[0];
-         console.log(file.name)
-                
-         formData.append('imagen', file.name);
-                 
+         console.log(x.value)
+         if (x.value != '' ){
+           var file = x.files[0];
+           console.log(file)    
+           formData.append('imagen', file.name);
+         }       
         }
         for (var [key, value] of formData.entries()) {
            data[key] = value
@@ -330,10 +329,7 @@ const openAddModulos = (id) => {
                   required: true
                   
                },
-               checkDurationC: {
-                  required: true
-                  
-               },
+              
             }
             commonValidator = $("#formProgram").validate({
                rules,
@@ -386,6 +382,7 @@ const openAddModulos = (id) => {
    const openEditcursos = (id,padre,pages) =>{
       editmode = true
       idSeleted = id
+      type= true
       fetch("{% url 'modaladdcursos'%}", {
          ...fetchObject,
          body: JSON.stringify({
@@ -538,6 +535,7 @@ const openAddModulos = (id) => {
                           swal(response.mensaje)
                           document.getElementById('preview').innerHTML = ''
                           document.getElementById('buttons').innerHTML = ''
+                          toggle()
                           
                       }
 
