@@ -44,8 +44,32 @@
 			width: 300px;	
 		}
 	  }
-	
-	
+	  .locked{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 2rem;
+		pointer-events: none;
+    
+		/* for "disabled" effect */
+		background:#999
+		z-index: 3200;
+		
+		
+  }
+  .div {
+	position: relative;
+  }
+   
+  .div:after {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	content: ' ';
+	background-color: rgba(0,0,0,.5);
+  }
 </style>	
 {% endblock stylesheets %}
 

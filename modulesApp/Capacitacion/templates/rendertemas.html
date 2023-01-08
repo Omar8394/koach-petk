@@ -3,16 +3,20 @@
 <ul>
 										  
 <li>
-{% if not  item.fk_componentesXestructura.fk_componetesformacion_id|week:request.user  %}
+
+
 <a onclick="renderactividades({{item.fk_componentesXestructura.fk_componetesformacion_id}})" >									 
-<i class="fas fa-lock mr-1" style="color: #FF0000 ;" > 					
-</i>{{item.fk_componentesXestructura.fk_componetesformacion}}
+    
+    {% if not  item.fk_componentesXestructura.fk_componetesformacion_id|week:request.user  %}
+    <div class="locked">
+        
+        <i class="fas fa-lock" style="color: #FD0F02;"></i>
+     </div>
+    {% endif %}	
+   				
+    {{item.fk_componentesXestructura.fk_componetesformacion}}
 </a>
-{% else %} <a onclick="renderactividades({{item.fk_componentesXestructura.fk_componetesformacion_id}})">
-<i class="fas fa-lock-open mr-1" style="color: #00ff00;" > 							
-</i>{{item.fk_componentesXestructura.fk_componetesformacion}}
-</a>
-{% endif %}
+
  </li>
 						 
 </ul>

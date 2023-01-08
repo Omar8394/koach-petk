@@ -11,7 +11,7 @@ from django.db.models import Q
 from modulesApp.Security.models import User
 from modulesApp.App.models import ConfTablasConfiguracion,AppPublico
 from modulesApp.Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_EvaluacionesPreguntas, capacitacion_EvaluacionesPreguntasOpciones, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos,EscalasEvaluaciones,capacitacion_ActividadEvaluaciones,capacitacion_EvaluacionesBloques,capacitacion_ActividadesTiempoReal 
-from modulesApp.Organizational_network.models import nodos_gruposIntegrantes
+from modulesApp.Organizational_network.models import nodos_gruposIntegrantes,nodos_PlanFormacion
 register = template.Library()
 
 @register.filter(name='week')
@@ -56,28 +56,10 @@ def week(topico, usuario):
                
             else:
                 _isFree = True
-            #    olderTopics = capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=nodosuser, fecha_realizado__lte=mydate, fk_componenteActividades__fk_componenteformacion_id=topico)
-            #    print(olderTopics)
-            #    print('ji')
-            #    if olderTopics.exists():
-            #       _isFree = True
-            #    for topic in lastTopics:      
-            #       if topico == topic['fk_componenteActividades__fk_componenteformacion'] and cant_act.count()==topic['lecciones']:    
-            #          return True 
+          
         else:
             _isFree = True
-            # olderTopics = capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=nodosuser, fecha_realizado__lte=mydate, fk_componenteActividades__fk_componenteformacion_id=topico).values('fk_componenteActividades__fk_componenteformacion').annotate(lecciones=Count('fk_componenteActividades'))
-            
-            # if olderTopics.exists():
-            #    for topic in olderTopics:
-            #        if topico == topic['fk_componenteActividades__fk_componenteformacion']:    
-               
-            #           return True
-                  
-            # else:
-               
-            #      print(topico)  
-             
+           
     else:
         _isFree = True
     return _isFree
@@ -97,3 +79,19 @@ def isNeeded(activity, usuario):
                     isRequired=True
                     break
     return isRequired
+@register.filter(name='weekend')
+def weekend(topico, usuario):
+    rol=usuario.fk_rol_usuario
+    userpu= AppPublico.objects.get(user_id=usuario)
+   
+    nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu)
+    s=0
+    _isFree = False
+    if str(rol) == 'Estudiante':
+       orden_anterior = topico.orden_presentacion - 1 
+       topico_anterior = nodos_PlanFormacion.objects.filter(fk_gruponodo=2, orden_presentacion=orden_anterior)
+       if topico_anterior.exists():
+            return False
+       else:
+          _isFree=True   
+    return _isFree   
