@@ -3,18 +3,24 @@
 <ul>
 										  
 <li>
-
-
-<a onclick="renderactividades({{item.fk_componentesXestructura.fk_componetesformacion_id}})" >									 
-    
     {% if not  item.fk_componentesXestructura.fk_componetesformacion_id|week:request.user  %}
     <div class="locked">
         
         <i class="fas fa-lock" style="color: #FD0F02;"></i>
      </div>
-    {% endif %}	
-   				
+     {% else %}
+     <div class="locked">
+        
+        <i class="fas fa-lock-open" style="color: #00FF00;"></i>
+     </div>
+   	
+      				
+<a onclick="renderactividades({{item.fk_componentesXestructura.fk_componetesformacion_id}})" >									 
     {{item.fk_componentesXestructura.fk_componetesformacion}}
+     
+    
+    {% endif %}
+    
 </a>
 
  </li>
