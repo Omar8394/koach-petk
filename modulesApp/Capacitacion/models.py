@@ -200,4 +200,20 @@ class capacitacion_HistoricoActividades(models.Model):
       fk_nodo_Grupo_integrantes=models.ForeignKey(nodos_gruposIntegrantes, on_delete=models.DO_NOTHING, default=None, null=True)     
       datos_resumen=models.TextField(null=True)       
       Comentarios_lider=models.TextField(null=True)
-      			
+class capacitacion_Examenes(models.Model):
+      id_examen =models.AutoField(primary_key=True)
+      status = ( ('0', 'iniciado'), ('1', 'aprobado'), ('2', 'reprobado'), ('3', 'en revision'), )
+      status_examen = models.CharField(max_length=1, choices=status)   
+      fk_nodo_Grupo_integrantes=models.ForeignKey(nodos_gruposIntegrantes, on_delete=models.DO_NOTHING, default=None, null=True)	
+      fecha_inicio=models.DateField(blank=True, null=True) 
+      nro_repeticiones	= models.SmallIntegerField(null=True)
+      puntuacion_obtenida = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+      comentarios=models.TextField(null=True)      
+      fecha_final=models.DateField(blank=True, null=True)
+      fk_ActividadEvaluaciones = models.ForeignKey(capacitacion_ActividadEvaluaciones, on_delete=models.DO_NOTHING, default=None, null=True)     
+class capacitacion_ExamenesResultado(models.Model):      
+      id_capacitacionExamenRespuestas=models.AutoField(primary_key=True)	
+      fk_capacitacionExamenes=models.ForeignKey(capacitacion_Examenes, on_delete=models.DO_NOTHING, default=None, null=True)
+      fk_capacitacionEvaluacionesPreguntasOpciones=models.ForeignKey(capacitacion_EvaluacionesPreguntasOpciones, on_delete=models.DO_NOTHING, default=None, null=True)
+      respuesta_correcta=models.BooleanField(null=True)
+      puntos_obtenidos=models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)

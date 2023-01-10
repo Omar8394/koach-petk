@@ -90,6 +90,7 @@ def weekend(topico, usuario):
     if str(rol) == 'Estudiante':
        orden_anterior = topico.orden_presentacion - 1 
        topico_anterior = nodos_PlanFormacion.objects.filter(fk_gruponodo=2, orden_presentacion=orden_anterior)
+       print(topico_anterior)
        if topico_anterior.exists():
             return False
        else:
