@@ -196,7 +196,9 @@ const renderContent = (id)=>{
  const goatv=(id) =>{
 	window.location.href = `{% url 'verpaginas_student' %}?id=${id}`
  }	
- 
+ const taketest=(id) =>{
+	window.location.href = `{% url 'taketesting' %}?id=${id}`
+ }	
 </script>
 
 {% endblock javascripts %}

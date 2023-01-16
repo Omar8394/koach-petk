@@ -114,7 +114,18 @@ def peso(id,test):
       totales=(total/100)
       print(has)
     return totales
-
+@register.filter
+def preguntas(bloques):
+    lista=[]
+    op=capacitacion_EvaluacionesPreguntas.objects.filter(fk_evaluacionesBloques_id=bloques)
+    
+    return op
+@register.filter
+def preguntasopciones(bloques):
+    lista=[]
+    preg=capacitacion_EvaluacionesPreguntasOpciones.objects.filter(fk_capacitacionEvaluacionesPreguntas_id=bloques)
+    
+    return preg
 @login_required(login_url="/security/login/")
 def index(request):
     
@@ -2162,6 +2173,11 @@ def verpaginas_student(request):
          context = {'actividad': tareas,'id':id,'estru':estru.pk,'tipo':str(compActividad.fk_tipocomponente.desc_elemento)}
          print(context)
          html_template = (loader.get_template('actividad.html'))
+    elif str(compActividad.fk_tipocomponente) =='Evaluacion':
+         test=capacitacion_ActividadEvaluaciones.objects.get(fk_componenteActividad=compActividad)
+         context = {'test':test}
+         print(context)
+         html_template = (loader.get_template('indestest.html'))     
     return HttpResponse(html_template.render(context, request))            
 def logUser(request):
     if request.method == "POST":
@@ -2252,8 +2268,31 @@ def borrarImagenes(request):
         else:
 
             return JsonResponse({'mensaje': 'There is no image to remove'})
-        
+def takeExam(request):        
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            try:
+               context = {}
+               title=False
+               if request.body:                 
+                  data = json.load(request)
+                  print(data['data']["ActivityId"])               
+                  if data['data']["method"] == "Show":
+                     print('kol')
+                     test=capacitacion_ActividadEvaluaciones.objects.get(pk=data['data']["ActivityId"]) 
+                     bloques=capacitacion_EvaluacionesBloques.objects.filter(fk_ActividadEvaluaciones_id=data['data']["ActivityId"])
+                     context = {'bloques':bloques,'test':test}
+                     html_template = (loader.get_template('contenidoExamen.html'))
+                     return HttpResponse(html_template.render(context, request))    
+            #    context = {}
+            #    html_template = (loader.get_template('contenidoExamen.html'))
+            #    return HttpResponse(html_template.render(context, request))    
 
+                
+                   
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)
        
 
            

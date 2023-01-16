@@ -1,0 +1,226 @@
+
+
+{% block title %}{% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+{% endblock stylesheets %}
+    
+{% block content %}
+
+	
+					
+                <style>
+                    header{
+                        text-align: center;
+                        background: #0000FF;
+                        color:#fff;
+                        padding:10px;
+                    
+                      } 
+                      section{
+                        border: 2px solid #5624d0;
+                        border-radius: 7px;
+                        padding: 10px;
+                        margin :10px 0;
+                    
+                    
+                     }  
+                </style>
+          <form action="">      
+        		<header>
+                    <h1>{{test.titulo_evaluacion}}</h1>
+                    <p>{{test.fk_componenteActividad.descripcion}}</p>										
+					<p>Calificacion Aprobar: {{test.calificacion_aprobar}}</p>
+                </header> 
+                {% for item in bloques %}	
+                <section id="p0">
+                  <div class="form-group col-md-12 d-flex flex-row  justify-content-end"> 
+       
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <button type="button" class="btn-radius btn-azul" onclick="renderModaledit({{item.id_evaluacionesBloques}},{{item.fk_ActividadEvaluaciones_id}})" style="display:block;text-align:center;text-decoration:none;color:whitesmoke;">
+                       Instrucciones <i class="fas fa-edit ml-1"></i>
+                    </button>
+                  
+                </div>
+                <div class="form-row text-center" >  
+                
+                {% for preguntas in item.id_evaluacionesBloques|preguntas %}
+                 
+                  <div class="form-group col-md-12">
+                    <label for="questionText">{{preguntas.texto_pregunta}}</label>
+             
+                  </div> 
+                 {% if preguntas.fk_tipoPregunta.desc_elemento == 'VoF' %}
+               
+                <div class="form-row col-md-12 text-center">
+                  <div class="form-group col-md-12">
+                      <table class="table table-sm table-bordered table-striped table-hover table-responsive">
+                          <thead>
+                            <tr>
+                              <th >
+                                #
+                              </th>
+                              <th class="col-md-12">
+                                  Opciones
+                              </th>                     
+                              <th>
+                                  
+                                 Verdadero
+                              </th>
+                              <th>
+                                   Falso
+
+                             </th>
+                          </tr>
+                          </thead>
+                          <tbody  id="tableMultiple" name='tableMultiple'>
+                            {% for opciones in preguntas.id_capacitacionEvaluacionesPreguntas|preguntasopciones %}
+                        <tr>
+
+                           <td>{{forloop.counter}}.</td>
+                                      <td>{{opciones.texto_opcion}}</td>
+
+                                      <td>  <input type='radio' name='tf{{opciones.texto_opcion}}' value='1' >   </td>
+                                      <td>  <input type='radio' name='tf{{opciones.texto_opcion}}' value='0' >   </td>
+
+                        </tr>
+                        {% endfor %}
+
+                             
+                          </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  {% elif preguntas.fk_tipoPregunta.desc_elemento == 'Simple'%}
+                  <div class="form-row col-md-12 text-center">
+                    <div class="form-group col-md-12">
+                        <table class="table table-sm table-bordered table-striped table-hover table-responsive">
+                            <thead>
+                                <tr>
+                                    <th >
+                                      #
+                                    </th>
+                                    <th class="col-md-12">
+                                        Opciones
+                                    </th>                     
+                                    <th>
+                                        
+
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody  id="tableMultiple" name='tableMultiple'>
+                              {% for opciones in preguntas.id_capacitacionEvaluacionesPreguntas|preguntasopciones %}
+                          <tr>
+
+                             <td>{{forloop.counter}}.</td>
+                                        <td>{{opciones.texto_opcion}}</td>
+
+                                        <td><input type='radio' name='Simple{{pregunta.pk}}' id='Simple{{opciones.pk}}' value='{{opciones.pk}}' ></td>
+                          </tr>
+                          {% endfor %}
+
+                               
+                            </tbody>
+                        </table>
+                    </div>
+                 </div>
+                 {% elif preguntas.fk_tipoPregunta.desc_elemento == 'Multiple'%}
+                 <div class="form-row col-md-12 text-center">
+                  <div class="form-group col-md-12">
+                      <table class="table table-sm table-bordered table-striped table-hover table-responsive">
+                          <thead>
+                              <tr>
+                                  <th >
+                                    #
+                                  </th>
+                                  <th>
+                                      Opciones
+                                  </th>                     
+                                  <th>
+                                      
+
+                                  </th>
+                              </tr>
+                          </thead>
+                          <tbody  id="tableMultiple" name='tableMultiple'>
+                        {% for opciones in preguntas.id_capacitacionEvaluacionesPreguntas|preguntasopciones %}
+                        <tr>
+
+                           <td>{{forloop.counter}}.</td>
+                                      <td>{{opciones.texto_opcion}}</td>
+
+                                      <td>  <input type='checkbox' name='Multiple{{opciones.pk}}' id='Multiple{{opciones.pk}}' value='{{opciones.pk}}' >   </td>
+                        </tr>
+                        {% endfor %}
+
+                             
+                          </tbody>
+                      </table>
+                  </div>
+               </div>  
+     
+                  {% endif %}
+                  {% endfor %}
+                  
+                 </div>
+                 
+                </section >  
+                {% endfor %}
+                <div class="card-footer d-flex justify-content-end">
+                  <button type="button" onclick="history.back()" class="btn-radius btn-azul" >Regresar <i class="fas fa-undo mr-2"></i></button> 
+                  <pre>     </pre>
+                  <button type="submit" value="Submit" class="btn-radius btn-azul"  >Guardar <i class="fas fa-save ml-2"></i></button>
+               
+                </div> 
+              </form>
+
+                  
+                  
+                  
+                  
+                    
+                     
+                    
+                 
+{% endblock content %}
+	
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+  let preguntas=[];
+	let respuestas=[];
+  let hayVacias=false;
+  let activ= {{actividad}}
+  let boton = document.getElementById("enviar")
+  {% for item in bloques %}	
+     var count=0;
+     {% for preguntas in item.id_evaluacionesBloques|preguntas %}
+     
+             datosPregunta={
+                
+               
+                preg : '{{ preguntas }}',
+               
+                opciones:[]
+               
+				
+          
+
+			}
+			preguntas.push(datosPregunta)
+      console.log(preguntas) 
+           			
+	{% endfor %}
+    
+
+
+     
+	{% endfor %}
+    	
+   
+  </script>  
+{% endblock javascripts %}
