@@ -2175,7 +2175,7 @@ def verpaginas_student(request):
          html_template = (loader.get_template('actividad.html'))
     elif str(compActividad.fk_tipocomponente) =='Evaluacion':
          test=capacitacion_ActividadEvaluaciones.objects.get(fk_componenteActividad=compActividad)
-         context = {'test':test}
+         context = {'test':test,'id':id}
          print(context)
          html_template = (loader.get_template('indestest.html'))     
     return HttpResponse(html_template.render(context, request))            
@@ -2269,30 +2269,19 @@ def borrarImagenes(request):
 
             return JsonResponse({'mensaje': 'There is no image to remove'})
 def takeExam(request):        
+    id=request.GET.get('id')
+    print(id)
+    test=capacitacion_ActividadEvaluaciones.objects.get(pk=id) 
+    bloques=capacitacion_EvaluacionesBloques.objects.filter(fk_ActividadEvaluaciones=test)
+    context = {'bloques':bloques,'test':test}
+    html_template = (loader.get_template('contenidoExamen.html'))
+    return HttpResponse(html_template.render(context, request))    
+def contenidoTest(request):
+   
     if request.method == "POST":
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            try:
-               context = {}
-               title=False
-               if request.body:                 
-                  data = json.load(request)
-                  print(data['data']["ActivityId"])               
-                  if data['data']["method"] == "Show":
-                     print('kol')
-                     test=capacitacion_ActividadEvaluaciones.objects.get(pk=data['data']["ActivityId"]) 
-                     bloques=capacitacion_EvaluacionesBloques.objects.filter(fk_ActividadEvaluaciones_id=data['data']["ActivityId"])
-                     context = {'bloques':bloques,'test':test}
-                     html_template = (loader.get_template('contenidoExamen.html'))
-                     return HttpResponse(html_template.render(context, request))    
-            #    context = {}
-            #    html_template = (loader.get_template('contenidoExamen.html'))
-            #    return HttpResponse(html_template.render(context, request))    
-
-                
-                   
-            except Exception as e:
-               print(e)
-               return JsonResponse({"message":"error"}, status=500)
-       
+            context = {}
+            data = json.load(request)["data"]            
+            print(data)            
 
            

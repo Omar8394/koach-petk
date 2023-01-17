@@ -69,6 +69,7 @@ urlpatterns = [
     path('imagesave/', views.imagesave, name="imagesave"),
     path('borrarImagenes/', views.borrarImagenes, name="borrarImagenes"),
     path('taketesting/', views.takeExam, name="taketesting"),
+    path('contenidoTest/', views.contenidoTest, name="contenidoTest"),
     # Scales
     
 

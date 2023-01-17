@@ -63,7 +63,7 @@
                                       <div class="center">
                                         <div class="centerB">
                                            
-                                             <button class="btn btn-primary" onclick="takeTest()"> Tomar Test </button>
+                                             <button class="btn btn-primary" onclick="takeTest({{id}})"> Tomar Test </button>
                                             
                                         </div>
                                      <br>
@@ -107,46 +107,21 @@
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 <script>
-    const takeTest = () => {
-        setLoading()
-        renderContent().then(() => {
-            stopLoading()
-			
-            })
+    
+    const takeTest = (id) => {
+        
+            window.location.href = `{% url 'taketesting' %}?id=${id}`
+        
             
         }  
         
-        async function renderContent (){
-		fetch("{% url 'taketesting' %}", {
-            ...fetchObject,
-            body: JSON.stringify({
-                data: {
-					method:'Show',
-					ActivityId:{{test.pk}}
-					///idExamen:examenId
-
-
-                }
-            }),
-        }).then(async (res) => {
-                document.getElementById("page").innerHTML= await res.text()
-			
+        
 		
 		
 
             
-            })
-            {% comment %} .then(() => {
-				const questionsForm = document.getElementById("questionsForm")
-                questionsForm.addEventListener("submit", (e) => {
-                    e.preventDefault()
-                    clickSave()
-                })   
-          
-            }) {% endcomment %}
-
-
-	   }  
+           
+	    
 </script>   
 {% endblock javascripts %}
 
