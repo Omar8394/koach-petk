@@ -6,7 +6,7 @@ from django.http import HttpResponse, JsonResponse, HttpResponseForbidden
 from django.template import loader
 from django.template.loader import render_to_string
 from ..App.models import ConfTablasConfiguracion,AppPublico
-from ..Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_EvaluacionesPreguntas, capacitacion_EvaluacionesPreguntasOpciones, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos,EscalasEvaluaciones,capacitacion_ActividadEvaluaciones,capacitacion_EvaluacionesBloques,capacitacion_ActividadesTiempoReal 
+from ..Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_EvaluacionesPreguntas, capacitacion_EvaluacionesPreguntasOpciones, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos,EscalasEvaluaciones,capacitacion_ActividadEvaluaciones,capacitacion_EvaluacionesBloques,capacitacion_ActividadesTiempoReal,capacitacion_Examenes,capacitacion_ExamenesResultado 
 from ..Organizational_network.models import nodos_grupos,nodos_gruposIntegrantes,nodos_PlanFormacion
 import time, json
 from decimal import Decimal
@@ -2271,9 +2271,32 @@ def borrarImagenes(request):
 def takeExam(request):        
     id=request.GET.get('id')
     print(id)
+    usuario=request.user
+    userpu= AppPublico.objects.get(user_id=usuario) 
+    nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu)
     test=capacitacion_ActividadEvaluaciones.objects.get(pk=id) 
     bloques=capacitacion_EvaluacionesBloques.objects.filter(fk_ActividadEvaluaciones=test)
-    context = {'bloques':bloques,'test':test}
+    teststart=capacitacion_Examenes.objects.filter(fk_nodo_Grupo_integrantes=nodosuser,fk_ActividadEvaluaciones=test)
+    if not teststart.exists():
+       Examen=capacitacion_Examenes.objects.create()
+       Examen.fecha_inicio=datetime.datetime.now()
+       Examen.fk_nodo_Grupo_integrantes=nodosuser
+       Examen.fk_ActividadEvaluaciones=test
+       Examen.nro_repeticiones=1
+       Examen.status_examen=0 
+       time=None
+       if test.duracion != None:
+                   
+          time=Examen.fecha_inicio+ datetime.timedelta(0,(test.duracion*60))
+          time=time.strftime("%b %d %Y %H:%M:%S")
+                 
+
+
+       Examen.save()
+    else:
+        Examen=capacitacion_Examenes.objects.get(fk_nodo_Grupo_integrantes=nodosuser,fk_ActividadEvaluaciones=test).pk   
+    context = {'bloques':bloques,'test':test,'examen_id':Examen}
+    print(context)
     html_template = (loader.get_template('contenidoExamen.html'))
     return HttpResponse(html_template.render(context, request))    
 def contenidoTest(request):
@@ -2282,6 +2305,27 @@ def contenidoTest(request):
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             context = {}
             data = json.load(request)["data"]            
-            print(data)            
-
-           
+            print(data)
+            if data["method"] == "Save":
+                respuestas=data["respuestas"] 
+                if respuestas:
+                    total=0 
+                    examen=capacitacion_Examenes.objects.get(pk=data['examenesid'])          
+                    for resp in respuestas:
+                        opcionRespuesta=capacitacion_ExamenesResultado.objects.create()
+                        opcion=capacitacion_EvaluacionesPreguntasOpciones.objects.get(pk=resp['opcionID'])
+                        opcionRespuesta.fk_capacitacionEvaluacionesPreguntasOpciones=opcion
+                        opcionRespuesta.fk_capacitacionExamenes=examen
+                        pregunta=capacitacion_EvaluacionesPreguntas.objects.get(pk=resp['idPregunta'])
+                        print(pregunta)
+                        if(resp['tipoPregunta']=='Simple'):
+                            print('ola')
+                            if(opcion.respuesta_correcta):
+                               print(opcion.respuesta_correcta)                                   
+                               examen.puntuacion_obtenida=examen.puntuacion_obtenida+pregunta.puntos_pregunta
+                    opcionRespuesta.save()
+                    examen.status_examen=3
+                    examen.fecha_final=datetime.datetime.now()
+                    examen.save()
+            return JsonResponse({"message": "Perfect"})         
+          

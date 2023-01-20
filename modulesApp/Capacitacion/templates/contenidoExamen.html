@@ -142,7 +142,7 @@
                    <td>{{forloop.counter}}.</td>
                               <td>{{opciones.texto_opcion}}</td>
 
-                              <td><input type='radio' name='Simple{{opciones.id_capacitacionEvaluacionesPreguntasOpciones}}' id='Simple{{opciones.id_capacitacionEvaluacionesPreguntasOpciones}}' value='{{opciones.id_capacitacionEvaluacionesPreguntasOpciones}}' ></td>
+                              <td><input type='radio' name='Simple{{preguntas.id_capacitacionEvaluacionesPreguntas}}' id='Simple{{opciones.id_capacitacionEvaluacionesPreguntasOpciones}}' value='{{opciones.id_capacitacionEvaluacionesPreguntasOpciones}}' ></td>
                 </tr>
                 {% endfor %}
 
@@ -176,7 +176,7 @@
                  <td>{{forloop.counter}}.</td>
                             <td>{{opciones.texto_opcion}}</td>
 
-                            <td>  <input type='checkbox' name='Multiple{{opciones.id_capacitacionEvaluacionesPreguntasOpciones}}' id='Multiple{{opciones.id_capacitacionEvaluacionesPreguntasOpciones}}' value='{{opciones.id_capacitacionEvaluacionesPreguntasOpciones}}' >   </td>
+                            <td>  <input type='checkbox' name='Multiple{{preguntas.id_capacitacionEvaluacionesPreguntas}}' id='Multiple{{opciones.id_capacitacionEvaluacionesPreguntasOpciones}}' value='{{opciones.id_capacitacionEvaluacionesPreguntasOpciones}}' >   </td>
               </tr>
               {% endfor %}
 
@@ -213,29 +213,44 @@
   let preguntas=[];
 	let respuestas=[];
   let hayVacias=false;
-  
-   // let activ= {{actividad}}
+  let examenid={{examen_id}}
+  let activ= {{test.pk}}
    // let boton = document.getElementById("enviar")
     	
     {% for item in bloques %}
      var count=0;
 	 {% for  preguntas in item.id_evaluacionesBloques|preguntas  %}
-   {% for opciones in preguntas.id_capacitacionEvaluacionesPreguntas|preguntasopciones %}
-             datosPregunta={
-                
-                actividad: '{{ item.fk_ActividadEvaluaciones_id}}',
-                preg : '{{ preguntas }}',
-                oppk: '{{ opciones.id_capacitacionEvaluacionesPreguntasOpciones }}',
-                tipo:'{{preguntas.fk_tipoPregunta.desc_elemento}}',
-                opciones:[]
-               
-				
-          
+  
+   datosPregunta={
+      
+      actividad: '{{ item.fk_ActividadEvaluaciones_id}}',
+      preg : '{{ preguntas }}',      
+      ids:'{{preguntas.id_capacitacionEvaluacionesPreguntas }}',
+      tipo:'{{preguntas.fk_tipoPregunta.desc_elemento}}',
+      opciones:[]
+     
 
-			}
-			preguntas.push(datosPregunta)
-      {% endfor %}    
-           			
+
+
+}
+preguntas.push(datosPregunta)
+{% for opciones in preguntas.id_capacitacionEvaluacionesPreguntas|preguntasopciones %}
+datosOpciones={
+      
+      actividad: '{{ item.fk_ActividadEvaluaciones_id}}',
+      preg : '{{ preguntas }}',
+      oppk: '{{ opciones.id_capacitacionEvaluacionesPreguntasOpciones }}',
+      ids:'{{ preguntas.id_capacitacionEvaluacionesPreguntas }}',
+      
+     
+
+
+
+}
+preguntas[ count ].opciones.push(datosOpciones)
+			
+{% endfor %}
+count++;      			
 	{% endfor %}
     
 
@@ -252,14 +267,16 @@
       preguntas.forEach(function(item, index, object) {
     
                         if(item.tipo =="Simple"){
-                            const select=document.querySelector(`input[name="Simple${item.oppk}"]:checked`);
-    
-                            if( select!=null){
+                            
+                            const select=document.querySelector(`input[name="Simple${item.ids}"]:checked`);
+                            console.log(select) 
+                            if( select!=null ){
                                 var	datos={
                                         
                                         opcionID:select.value,
-                                        bloques:item.bloque,
-                                        pregu:item.id, 
+                                        isCorrect:false,
+                                        idPregunta:item.ids,
+                                        tipoPregunta:item.tipo
                                        
     
     
@@ -272,23 +289,22 @@
     
                                 hayVacias=true;
                             }
-    
+                         
                           }
-                        })
-   
-                      } 
-                          {% comment %} if(item.tipo=="Multiple"){
+                       
+                          if(item.tipo=="Multiple"){
 					
                             item.opciones.forEach(function(opciones, index, object) {
-                              console.log(`Multiple${opciones.id}`)
-                              const elemento=document.getElementById(`Multiple${opciones.id}`)
+                              console.log(`Multiple${opciones.oppk}`)
+                              const elemento=document.getElementById(`Multiple${opciones.oppk}`)
               
                               if(elemento.checked ==true){
                               var	datos={
                                 opcionID:elemento.value,
                                 isCorrect:false,
-                                idRelacional:null,
-                                idpadre:null
+                                idPregunta:item.ids,                           
+                                tipoPregunta:item.tipo
+                               
                                 
               
               
@@ -304,21 +320,20 @@
                                  });
               
               
-                        //} {% endcomment %}
-                        {% comment %} if(item.tipo=="VoF"){
+                        } 
+                     if(item.tipo=="VoF"){
 					
                           item.opciones.forEach(function(opciones, index, object) {
-                          const select=document.querySelector(`input[name="tf${opciones.id}"]:checked`);
+                         
+                         
+                          const select=document.querySelector(`input[name="tf${opciones.oppk}"]:checked`);
                          
                          if( select!=null){
                                var	datos={
-                                 opcionID:opciones.id,
-                                 isCorrect:select.value==1?true:false,
-                                 idRelacional:null,
-                                 idpadre:null,
-                                 idPregunta:item.id,
-                                 tipoPregunta:5,
-                                 bloques:item.bloque
+                                 opcionID:opciones.oppk,
+                                 isCorrect:select.value==1?true:false, 
+                                 idPregunta:item.ids,                             
+                                 tipoPregunta:item.tipo
            
            
                                
@@ -333,11 +348,13 @@
                             }
            
                    
-                              });
+                            });
            
            
-                     } {% endcomment %}
-                           
+                     } 
+                    })
+   
+                  }         
                                              
      
                 async function saveTest(form){
@@ -382,8 +399,8 @@
      
                              method:'Save',
                              respuestas:respuestas,
-                            // idact: activ,
-
+                             idact: activ,
+                             examenesid:examenid
                             
                          }
                     
