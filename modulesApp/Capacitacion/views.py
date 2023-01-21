@@ -2314,15 +2314,30 @@ def contenidoTest(request):
                     for resp in respuestas:
                         opcionRespuesta=capacitacion_ExamenesResultado.objects.create()
                         opcion=capacitacion_EvaluacionesPreguntasOpciones.objects.get(pk=resp['opcionID'])
+                     
                         opcionRespuesta.fk_capacitacionEvaluacionesPreguntasOpciones=opcion
                         opcionRespuesta.fk_capacitacionExamenes=examen
                         pregunta=capacitacion_EvaluacionesPreguntas.objects.get(pk=resp['idPregunta'])
-                        print(pregunta)
+                        
                         if(resp['tipoPregunta']=='Simple'):
-                            print('ola')
+                            
                             if(opcion.respuesta_correcta):
-                               print(opcion.respuesta_correcta)                                   
+                               print('si')  
+                               opcionRespuesta.puntos_obtenidos=pregunta.puntos_pregunta                         
                                examen.puntuacion_obtenida=examen.puntuacion_obtenida+pregunta.puntos_pregunta
+                        if(resp['tipoPregunta']=='VoF'):
+                            opcionRespuesta.respuesta_correcta=resp['isCorrect'] 
+                            opcionRespuesta.puntos_obtenidos=opcion.porc_respuesta
+                            
+                        opcionRespuesta.save() 
+                        if(resp['tipoPregunta']=='VoF'):   
+                            if opcion.respuesta_correcta==opcionRespuesta.respuesta_correcta:
+                              
+                               examen.puntuacion_obtenida=examen.puntuacion_obtenida+opcion.porc_respuesta
+                        if(resp['tipoPregunta']=='Multiple'):
+                             
+                             examen.puntuacion_obtenida=examen.puntuacion_obtenida+opcion.porc_respuesta
+
                     opcionRespuesta.save()
                     examen.status_examen=3
                     examen.fecha_final=datetime.datetime.now()
