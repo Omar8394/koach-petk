@@ -117,14 +117,14 @@ def peso(id,test):
 @register.filter
 def preguntas(bloques):
     lista=[]
-    op=capacitacion_EvaluacionesPreguntas.objects.filter(fk_evaluacionesBloques_id=bloques)
+    op=capacitacion_EvaluacionesPreguntas.objects.filter(fk_evaluacionesBloques_id=bloques).order_by('orden')
     
     return op
 @register.filter
 def preguntasopciones(bloques):
     lista=[]
     preg=capacitacion_EvaluacionesPreguntasOpciones.objects.filter(fk_capacitacionEvaluacionesPreguntas_id=bloques)
-    
+    print(preg)
     return preg
 @login_required(login_url="/security/login/")
 def index(request):
@@ -2274,7 +2274,7 @@ def takeExam(request):
     usuario=request.user
     userpu= AppPublico.objects.get(user_id=usuario) 
     nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu)
-    test=capacitacion_ActividadEvaluaciones.objects.get(pk=id) 
+    test=capacitacion_ActividadEvaluaciones.objects.get(fk_componenteActividad_id=id) 
     bloques=capacitacion_EvaluacionesBloques.objects.filter(fk_ActividadEvaluaciones=test)
     teststart=capacitacion_Examenes.objects.filter(fk_nodo_Grupo_integrantes=nodosuser,fk_ActividadEvaluaciones=test)
     if not teststart.exists():
@@ -2284,6 +2284,7 @@ def takeExam(request):
        Examen.fk_ActividadEvaluaciones=test
        Examen.nro_repeticiones=1
        Examen.status_examen=0 
+       Examen.puntuacion_obtenida=0
        time=None
        if test.duracion != None:
                    
@@ -2326,14 +2327,24 @@ def contenidoTest(request):
                                opcionRespuesta.puntos_obtenidos=pregunta.puntos_pregunta                         
                                examen.puntuacion_obtenida=examen.puntuacion_obtenida+pregunta.puntos_pregunta
                         if(resp['tipoPregunta']=='VoF'):
+                            
                             opcionRespuesta.respuesta_correcta=resp['isCorrect'] 
                             opcionRespuesta.puntos_obtenidos=opcion.porc_respuesta
-                            
+                        if(resp['tipoPregunta']=='Multiple'):
+                           
+                            if(str(opcion.pk) == resp['opcionID']):
+                                print('kola')
+                                opcionRespuesta.puntos_obtenidos=opcion.porc_respuesta   
                         opcionRespuesta.save() 
-                        if(resp['tipoPregunta']=='VoF'):   
+                        if(resp['tipoPregunta']=='VoF'): 
+                            print(opcion.respuesta_correcta)  
                             if opcion.respuesta_correcta==opcionRespuesta.respuesta_correcta:
-                              
+                               print('si') 
                                examen.puntuacion_obtenida=examen.puntuacion_obtenida+opcion.porc_respuesta
+                            
+                            else:
+                                   opcionRespuesta.puntos_obtenidos = 0
+                                   print('no')
                         if(resp['tipoPregunta']=='Multiple'):
                              
                              examen.puntuacion_obtenida=examen.puntuacion_obtenida+opcion.porc_respuesta
