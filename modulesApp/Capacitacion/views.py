@@ -126,6 +126,12 @@ def preguntasopciones(bloques):
     preg=capacitacion_EvaluacionesPreguntasOpciones.objects.filter(fk_capacitacionEvaluacionesPreguntas_id=bloques)
     print(preg)
     return preg
+@register.filter
+def verdadero_Falso(id):
+    
+    preg=capacitacion_EvaluacionesPreguntasOpciones.objects.get(pk=id).respuesta_correcta
+    print(preg)
+    return preg
 @login_required(login_url="/security/login/")
 def index(request):
     
@@ -2323,28 +2329,28 @@ def contenidoTest(request):
                         if(resp['tipoPregunta']=='Simple'):
                             
                             if(opcion.respuesta_correcta):
-                               print('si')  
+                                 
                                opcionRespuesta.puntos_obtenidos=pregunta.puntos_pregunta                         
                                examen.puntuacion_obtenida=examen.puntuacion_obtenida+pregunta.puntos_pregunta
                         if(resp['tipoPregunta']=='VoF'):
-                            
-                            opcionRespuesta.respuesta_correcta=resp['isCorrect'] 
-                            opcionRespuesta.puntos_obtenidos=opcion.porc_respuesta
+                          if capacitacion_EvaluacionesPreguntasOpciones.objects.filter(pk=resp['opcionID'],respuesta_correcta=resp['isCorrect']).exists():   
+                             opcionRespuesta.respuesta_correcta=resp['isCorrect'] 
+                             opcionRespuesta.puntos_obtenidos=opcion.porc_respuesta
                         if(resp['tipoPregunta']=='Multiple'):
                            
                             if(str(opcion.pk) == resp['opcionID']):
-                                print('kola')
+                                
                                 opcionRespuesta.puntos_obtenidos=opcion.porc_respuesta   
                         opcionRespuesta.save() 
                         if(resp['tipoPregunta']=='VoF'): 
-                            print(opcion.respuesta_correcta)  
-                            if opcion.respuesta_correcta==opcionRespuesta.respuesta_correcta:
+                           
+                            print(opcionRespuesta.respuesta_correcta)
+                            print(opcion.respuesta_correcta)
+                            if opcion.respuesta_correcta==opcionRespuesta.respuesta_correcta :
                                print('si') 
                                examen.puntuacion_obtenida=examen.puntuacion_obtenida+opcion.porc_respuesta
                             
-                            else:
-                                   opcionRespuesta.puntos_obtenidos = 0
-                                   print('no')
+                            
                         if(resp['tipoPregunta']=='Multiple'):
                              
                              examen.puntuacion_obtenida=examen.puntuacion_obtenida+opcion.porc_respuesta

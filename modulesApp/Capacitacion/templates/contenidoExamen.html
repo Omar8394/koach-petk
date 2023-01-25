@@ -106,8 +106,8 @@
                  <td>{{forloop.counter}}.</td>
                             <td>{{opciones.texto_opcion}}</td>
 
-                            <td>  <input type='radio' name='tf{{opciones.id_capacitacionEvaluacionesPreguntasOpciones}}' value='1' >   </td>
-                            <td>  <input type='radio' name='tf{{opciones.id_capacitacionEvaluacionesPreguntasOpciones}}' value='0' >   </td>
+                            <td>  <input type='radio' name='tf{{opciones.id_capacitacionEvaluacionesPreguntasOpciones}}' value='1'>   </td>
+                            <td>  <input type='radio' name='tf{{opciones.id_capacitacionEvaluacionesPreguntasOpciones}}' value='0'>   </td>
 
               </tr>
               {% endfor %}
@@ -331,7 +331,7 @@ count++;
                        if( selecto!=null){
                              var	datos={
                                opcionID:opciones.oppk,
-                               isCorrect:selecto.value==1?true:false, 
+                               isCorrect:selecto.value==1?true:false,  
                                idPregunta:opciones.ids,                             
                                tipoPregunta:item.tipo
          
