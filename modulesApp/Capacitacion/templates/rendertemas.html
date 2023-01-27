@@ -3,7 +3,7 @@
 <ul>
 										  
 <li>
-    {% if not  item.fk_componentesXestructura.fk_componetesformacion_id|week:request.user  %}
+    {% if not  item.fk_componentesXestructura.fk_componetesformacion|week:request.user  %}
     <div class="locked">
         
         <i class="fas fa-lock" style="color: #FD0F02;"></i>

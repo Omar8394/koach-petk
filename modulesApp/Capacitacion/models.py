@@ -217,3 +217,4 @@ class capacitacion_ExamenesResultado(models.Model):
       fk_capacitacionEvaluacionesPreguntasOpciones=models.ForeignKey(capacitacion_EvaluacionesPreguntasOpciones, on_delete=models.DO_NOTHING, default=None, null=True)
       respuesta_correcta=models.BooleanField(null=True)
       puntos_obtenidos=models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+      respuesta_parrafo=models.TextField(null=True)
