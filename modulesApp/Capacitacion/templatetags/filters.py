@@ -16,7 +16,7 @@ register = template.Library()
 
 @register.filter(name='week')
 def week(topico, usuario):
-   
+    
     rol=usuario.fk_rol_usuario
     userpu= AppPublico.objects.get(user_id=usuario)
    
@@ -37,14 +37,14 @@ def week(topico, usuario):
         
         if lastTopics.exists():
             
-            if lastTopics.count() >= 2 :               
+            if lastTopics.count() >= 2 : 
+                            
                for topic in lastTopics:      
-                  if topico == topic['fk_componenteActividades__fk_componenteformacion'] and cant_act.count()==topic['lecciones']:    
-                    
+                  if topico.pk == topic['fk_componenteActividades__fk_componenteformacion'] and cant_act.count()==topic['lecciones']:    
+                     print(topic['fk_componenteActividades__fk_componenteformacion'] )
                      return True 
                  # codigo para excepciones  
                olderTopics = capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=nodosuser, fecha_realizado__lte=mydate, fk_componenteActividades__fk_componenteformacion_id=topico)
-               print(olderTopics)
                
                if olderTopics.exists():
                   _isFree = True
@@ -55,30 +55,16 @@ def week(topico, usuario):
         #         
                
             else:
-               
-                  _isFree=True 
+               if weekend(topico, usuario):
+                 _isFree=True 
+               else:  
+                 _isFree=False
                 
         else:
-                print('ko')
-                orden_anterior = topico.orden_presentacion - 1 
-                
-                topico_anterior = nodos_PlanFormacion.objects.filter(fk_gruponodo=2, orden_presentacion=orden_anterior)
-                print(topico_anterior[0].fk_componentesXestructura.fk_componetesformacion)
-                if topico_anterior.exists():
-                   lista_examenes=capacitacion_ActividadEvaluaciones.objects.filter(fk_componenteActividad__fk_componenteformacion=topico_anterior[0].fk_componentesXestructura.fk_componetesformacion) 
-                   print(lista_examenes)
-                   if lista_examenes.exists():
-                      #vamos a revisar que todos esten aprobados, con solo haber uno reprobado debe bloquearse
-                      for test in lista_examenes:
-                          actividad = test.id_ActividadEvaluaciones
-                          test_aprobados = capacitacion_Examenes.objects.filter(fk_nodo_Grupo_integrantes=nodosuser,fk_ActividadEvaluaciones_id=actividad,puntuacion_obtenida__gte=actividad.calificacion_aprobar)
-                          if test_aprobados.exists():
-                            _isFree=True
-                          else:
-                            return False
-                else:
-                  _isFree = True
-           
+           if weekend(topico, usuario):
+              _isFree=True 
+           else:  
+              _isFree=False 
     else:
         _isFree = True
     return _isFree
@@ -102,16 +88,34 @@ def isNeeded(activity, usuario):
 def weekend(topico, usuario):
     rol=usuario.fk_rol_usuario
     userpu= AppPublico.objects.get(user_id=usuario)
-   
+    
     nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu)
-    s=0
+    
+    
     _isFree = False
     if str(rol) == 'Estudiante':
        orden_anterior = topico.orden_presentacion - 1 
+       print(orden_anterior)
        topico_anterior = nodos_PlanFormacion.objects.filter(fk_gruponodo=2, orden_presentacion=orden_anterior)
-       print(topico_anterior)
+      
        if topico_anterior.exists():
-            return False
+          lista_examenes=capacitacion_ActividadEvaluaciones.objects.filter(fk_componenteActividad__fk_componenteformacion=topico_anterior[0].fk_componentesXestructura.fk_componetesformacion) 
+          
+          if lista_examenes.exists():
+                    
+             for test in lista_examenes:
+                
+                 actividad = test.id_ActividadEvaluaciones
+                 
+                 test_aprobados = capacitacion_Examenes.objects.filter(fk_nodo_Grupo_integrantes_id=nodosuser.pk,fk_ActividadEvaluaciones_id=actividad,puntuacion_obtenida__gte=test.calificacion_aprobar)
+                 print(test_aprobados)
+                 if test_aprobados.exists():
+                    _isFree=True
+                 else:
+                    return False
+          else:
+              _isFree = False  
        else:
-          _isFree=True   
+             _isFree = True          
+       print(_isFree)      
     return _isFree   

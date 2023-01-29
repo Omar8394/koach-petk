@@ -2281,6 +2281,7 @@ def takeExam(request):
     userpu= AppPublico.objects.get(user_id=usuario) 
     nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu)
     test=capacitacion_ActividadEvaluaciones.objects.get(fk_componenteActividad_id=id) 
+    estru=capacitacion_componentesXestructura.objects.get(fk_componetesformacion=test.fk_componenteActividad.fk_componenteformacion)
     bloques=capacitacion_EvaluacionesBloques.objects.filter(fk_ActividadEvaluaciones=test)
     teststart=capacitacion_Examenes.objects.filter(fk_nodo_Grupo_integrantes=nodosuser,fk_ActividadEvaluaciones=test)
     if not teststart.exists():
@@ -2300,10 +2301,19 @@ def takeExam(request):
 
 
        Examen.save()
+       historia = capacitacion_ActividadesTiempoReal()
+       historia.fecha_realizado = datetime.datetime.now()
+       historia.culminado = 0
+       historia.fk_componenteActividades = test.fk_componenteActividad
+       historia.fk_componenteXestructura = estru
+       historia.fk_nodo_Grupo_integrantes= nodosuser
+       historia.save()
+       
     else:
         Examen=capacitacion_Examenes.objects.get(fk_nodo_Grupo_integrantes=nodosuser,fk_ActividadEvaluaciones=test).pk   
+       
     context = {'bloques':bloques,'test':test,'examen_id':Examen}
-    print(context)
+   
     html_template = (loader.get_template('contenidoExamen.html'))
     return HttpResponse(html_template.render(context, request))    
 def contenidoTest(request):
@@ -2359,5 +2369,29 @@ def contenidoTest(request):
                     examen.status_examen=3
                     examen.fecha_final=datetime.datetime.now()
                     examen.save()
+                    
+                    if examen.puntuacion_obtenida>=examen.fk_ActividadEvaluaciones.calificacion_aprobar:
+                        estado=True
+                    else:
+                        estado=False
+                    log=capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=examen.fk_nodo_Grupo_integrantes, fk_componenteActividades=examen.fk_ActividadEvaluaciones.fk_componenteActividad)
+                    esUpdate =True
+                    if log.exists():
+                        if esUpdate ==True:
+                            new=capacitacion_ActividadesTiempoReal.objects.get(pk=log[0].pk)
+                            if new.culminado == 0:
+                            # new.fecha = timezone.now()
+                                new.culminado = estado
+                                new.save()
+                        else:
+                                log.delete()
+                                historia = capacitacion_ActividadesTiempoReal()
+                                historia.fecha_realizado = datetime.datetime.now()
+                                historia.culminado = estado
+                                historia.fk_componenteActividades = examen.fk_ActividadEvaluaciones.fk_componenteActividad
+                                historia.fk_nodo_Grupo_integrantes = examen.fk_nodo_Grupo_integrantes
+                                historia.fk_componenteXestructura = capacitacion_componentesXestructura.objects.get(fk_componetesformacion=examen.fk_ActividadEvaluaciones.fk_componenteActividad.fk_componenteformacion)
+                                historia.save()  
+                
             return JsonResponse({"message": "Perfect"})         
           
