@@ -33,12 +33,12 @@ def week(topico, usuario):
         mydate = mydate.replace(hour=00,minute=00,second=00, microsecond=00000)
         cant_act=capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion=topico)    
         
-        lastTopics = capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=nodosuser, fecha_realizado__gte=mydate, culminado=1).values('fk_componenteActividades__fk_componenteformacion').annotate(lecciones=Count('fk_componenteActividades')) 
+        lastTopics = capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=nodosuser, fecha_realizado__gte=mydate).values('fk_componenteActividades__fk_componenteformacion').annotate(lecciones=Count('fk_componenteActividades')) 
         
         if lastTopics.exists():
             
             if lastTopics.count() >= 2 : 
-                            
+                           
                for topic in lastTopics:      
                   if topico.pk == topic['fk_componenteActividades__fk_componenteformacion'] and cant_act.count()==topic['lecciones']:    
                      print(topic['fk_componenteActividades__fk_componenteformacion'] )
@@ -61,6 +61,7 @@ def week(topico, usuario):
                  _isFree=False
                 
         else:
+           print('mo')
            if weekend(topico, usuario):
               _isFree=True 
            else:  
@@ -102,7 +103,7 @@ def weekend(topico, usuario):
           lista_examenes=capacitacion_ActividadEvaluaciones.objects.filter(fk_componenteActividad__fk_componenteformacion=topico_anterior[0].fk_componentesXestructura.fk_componetesformacion) 
           
           if lista_examenes.exists():
-                    
+             print('no')        
              for test in lista_examenes:
                 
                  actividad = test.id_ActividadEvaluaciones
@@ -112,6 +113,7 @@ def weekend(topico, usuario):
                  if test_aprobados.exists():
                     _isFree=True
                  else:
+                    
                     return False
           else:
               _isFree = False  
