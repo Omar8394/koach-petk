@@ -2289,7 +2289,7 @@ def takeExam(request):
        Examen.fecha_inicio=datetime.datetime.now()
        Examen.fk_nodo_Grupo_integrantes=nodosuser
        Examen.fk_ActividadEvaluaciones=test
-       Examen.nro_repeticiones=1
+       Examen.nro_repeticiones=0
        Examen.status_examen=0 
        Examen.puntuacion_obtenida=0
        time=None
@@ -2364,16 +2364,24 @@ def contenidoTest(request):
                         if(resp['tipoPregunta']=='Multiple'):
                              
                              examen.puntuacion_obtenida=examen.puntuacion_obtenida+opcion.porc_respuesta
-
+                    print(examen.puntuacion_obtenida)                 
                     opcionRespuesta.save()
-                    examen.status_examen=3
+                    if examen.puntuacion_obtenida>=examen.fk_ActividadEvaluaciones.calificacion_aprobar:
+                        
+                        examen.status_examen=1
+                    else:
+                        
+                        examen.status_examen=2
                     examen.fecha_final=datetime.datetime.now()
                     examen.save()
                     
                     if examen.puntuacion_obtenida>=examen.fk_ActividadEvaluaciones.calificacion_aprobar:
                         estado=True
+                        examen.status_examen=1
                     else:
                         estado=False
+                        examen.status_examen=2
+                    examen.save()    
                     log=capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=examen.fk_nodo_Grupo_integrantes, fk_componenteActividades=examen.fk_ActividadEvaluaciones.fk_componenteActividad)
                     esUpdate =True
                     if log.exists():
@@ -2394,4 +2402,14 @@ def contenidoTest(request):
                                 historia.save()  
                 
             return JsonResponse({"message": "Perfect"})         
-          
+def viewresult_test(request):
+    id=request.GET.get('id')
+    print(id)
+    usuario=request.user
+    userpu= AppPublico.objects.get(user_id=usuario) 
+    nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu)
+    test=capacitacion_Examenes.objects.get(pk=id,fk_nodo_Grupo_integrantes=nodosuser)
+    context = {'test':test,'id':test.fk_ActividadEvaluaciones.fk_componenteActividad_id}
+   
+    html_template = (loader.get_template('ver_resultados_test.html'))
+    return HttpResponse(html_template.render(context, request))        

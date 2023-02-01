@@ -357,7 +357,7 @@ count++;
                   }         
                                              
      
-                async function saveTest(form){
+                async function saveTest(form,id){
 
                     fetch("{% url 'contenidoTest' %}", {
                                 ...fetchObject,
@@ -375,6 +375,7 @@ count++;
                                 alerta(1)
                                 stopLoading()
                                 
+                                window.location.href = `{% url 'viewresult_test' %}?id=${id}`
                             })
                             .then(() => {
                              
@@ -404,7 +405,7 @@ count++;
                             
                          }
                     
-                         saveTest(form);
+                         saveTest(form,examenid);
      
                     }
             

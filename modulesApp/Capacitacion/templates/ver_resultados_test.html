@@ -1,0 +1,126 @@
+{% extends "layouts/base.html" %}
+{% load filters%}
+{% block title %}{% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+	<div class="content">
+		<div class="page-inner">
+			<div class="page-header">
+				<h4 class="page-title">Test</h4>
+				<ul class="breadcrumbs">
+					<li class="nav-home">
+						<a href="{% url 'Dashboard' %}">
+							<i class="flaticon-home"></i>
+						</a>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					
+				</ul>
+			</div>
+			<div class="page-category">
+        	<div id="page"> 	
+                <style>
+                    .center {
+                    margin: auto;
+                    width: 70%;
+                    
+                    padding: 10px;
+                    }
+        
+                    .centerB {
+                    margin: auto;
+                    width: 100%;
+                    text-align: center;
+                    
+                    padding: 10px;
+                    }
+                    h4{
+                        text-align: center;
+        
+                    }
+                    h2{
+                        text-align: center;
+        
+                    }
+        
+                </style>
+            
+                    <div class="page-category col-md-12 d-flex flex-column justify-content-center">
+                        <div class="d-flex justify-content-center mt-2"> 
+                           
+                                <div class="card" style="width: 30rem;">
+                                    <div class="card-header" style="background-color: #1a2035 !important;
+                                    color: white;">
+                                        <h2>Test Finalizado</h2>
+                                    </div>
+                                    <div class="card-body" >
+                                        <div class="center">
+                                        <div class="centerB">
+                                            {% if test.status_examen == '2' %}
+											<button class="btn btn-success" onclick="retakeTest({{id}})" type="button"  > Retomar Test</button>
+											{% endif %}
+                                        </div>
+											
+									
+                                     <br>
+                                     <br>        
+                                     <p>
+                                      <b>Usuario:</b>: {{test.fk_nodo_Grupo_integrantes.fk_public}}
+                                        <br>
+                                        <b>Puntaje Alcanzado</b>: {{test.puntuacion_obtenida}}
+                                      <br>
+                                      
+                                      <b>Status</b>:{% if test.status_examen == '1' %} Aprobado{% endif %} {% if test.status_examen == '2' %}Reprobado{% endif %}
+                                     
+                                      <br>
+                                     
+                                      <b>  Numero de repeticiones </b>: {{test.nro_repeticiones}}
+                                      <br>                                     
+                                     </p>
+                                    </div>
+                                    
+        
+                                     
+        
+                                     
+                                
+                     </div>
+                     
+                    </div> 
+                </div> 
+            </div>
+      		</div>
+		</div>
+	</div>
+    
+{% endblock content %}
+	
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+    const retakeTest = (id) => {
+           
+        
+        
+            window.location.href = `{% url 'taketesting' %}?id=${id}`
+        
+            
+        
+    }       
+    
+        
+        
+		
+		
+
+            
+           
+	    
+</script>   
+{% endblock javascripts %}
