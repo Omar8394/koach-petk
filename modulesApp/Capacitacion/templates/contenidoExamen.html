@@ -196,7 +196,7 @@
       <div class="card-footer d-flex justify-content-end">
         <button type="button" onclick="history.back()" class="btn-radius btn-azul" >Regresar <i class="fas fa-undo mr-2"></i></button> 
         <pre>     </pre>
-        <button type="button" onclick="clickSave()" class="btn-radius btn-azul"  >Guardar <i class="fas fa-save ml-2"></i></button>
+        <button type="button" onclick="clickSave()" class="btn-radius btn-azul">Guardar <i class="fas fa-save ml-2"></i></button>
      
       </div> 
     </form>	
@@ -401,7 +401,8 @@ count++;
                              method:'Save',
                              respuestas:respuestas,
                              idact: activ,
-                             examenesid:examenid
+                             examenesid:examenid,
+                             tipo:'{{tipos}}'
                             
                          }
                     

@@ -2276,44 +2276,69 @@ def borrarImagenes(request):
             return JsonResponse({'mensaje': 'There is no image to remove'})
 def takeExam(request):        
     id=request.GET.get('id')
-    print(id)
-    usuario=request.user
+    method=request.GET.get('method',None)
+    usuario=request.user 
     userpu= AppPublico.objects.get(user_id=usuario) 
     nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu)
-    test=capacitacion_ActividadEvaluaciones.objects.get(fk_componenteActividad_id=id) 
+    test=capacitacion_ActividadEvaluaciones.objects.get(fk_componenteActividad_id=id)    
     estru=capacitacion_componentesXestructura.objects.get(fk_componetesformacion=test.fk_componenteActividad.fk_componenteformacion)
     bloques=capacitacion_EvaluacionesBloques.objects.filter(fk_ActividadEvaluaciones=test)
-    teststart=capacitacion_Examenes.objects.filter(fk_nodo_Grupo_integrantes=nodosuser,fk_ActividadEvaluaciones=test)
-    if not teststart.exists():
-       Examen=capacitacion_Examenes.objects.create()
-       Examen.fecha_inicio=datetime.datetime.now()
-       Examen.fk_nodo_Grupo_integrantes=nodosuser
-       Examen.fk_ActividadEvaluaciones=test
+    tipo=''
+    print(method)
+    if method:
+       tipo='retake'
+       print(tipo)
+       Examen=capacitacion_Examenes.objects.get(pk=test.pk)
+       Examen.status_examen=0
        Examen.nro_repeticiones=0
-       Examen.status_examen=0 
        Examen.puntuacion_obtenida=0
-       time=None
-       if test.duracion != None:
-                   
-          time=Examen.fecha_inicio+ datetime.timedelta(0,(test.duracion*60))
-          time=time.strftime("%b %d %Y %H:%M:%S")
-                 
-
-
+       Examen.fecha_inicio=datetime.datetime.now() 
+       Examen.fecha_final=None    
+       resultados=capacitacion_ExamenesResultado.objects.filter(fk_capacitacionExamenes=Examen)       
+       resultados.delete()       
        Examen.save()
-       historia = capacitacion_ActividadesTiempoReal()
+       historia = capacitacion_ActividadesTiempoReal.objects.get(fk_nodo_Grupo_integrantes=nodosuser,fk_componenteActividades = test.fk_componenteActividad,fk_componenteXestructura = estru)
        historia.fecha_realizado = datetime.datetime.now()
        historia.culminado = 0
        historia.fk_componenteActividades = test.fk_componenteActividad
        historia.fk_componenteXestructura = estru
        historia.fk_nodo_Grupo_integrantes= nodosuser
        historia.save()
-       
     else:
-        Examen=capacitacion_Examenes.objects.get(fk_nodo_Grupo_integrantes=nodosuser,fk_ActividadEvaluaciones=test).pk   
+        tipo='Save'  
+        print(tipo)  
+        print(method)          
+        teststart=capacitacion_Examenes.objects.filter(fk_nodo_Grupo_integrantes=nodosuser,fk_ActividadEvaluaciones=test)
+        if not teststart.exists():
+           Examen=capacitacion_Examenes.objects.create()
+           Examen.fecha_inicio=datetime.datetime.now()
+           Examen.fk_nodo_Grupo_integrantes=nodosuser
+           Examen.fk_ActividadEvaluaciones=test
+           Examen.nro_repeticiones=0
+           Examen.status_examen=0 
+           Examen.puntuacion_obtenida=0
+           time=None
+           if test.duracion != None:
+                   
+              time=Examen.fecha_inicio+ datetime.timedelta(0,(test.duracion*60))
+              time=time.strftime("%b %d %Y %H:%M:%S")
+                 
+
+
+           Examen.save()
+           historia = capacitacion_ActividadesTiempoReal()
+           historia.fecha_realizado = datetime.datetime.now()
+           historia.culminado = 0
+           historia.fk_componenteActividades = test.fk_componenteActividad
+           historia.fk_componenteXestructura = estru
+           historia.fk_nodo_Grupo_integrantes= nodosuser
+           historia.save()
        
-    context = {'bloques':bloques,'test':test,'examen_id':Examen}
-   
+        else:
+           Examen=capacitacion_Examenes.objects.get(fk_nodo_Grupo_integrantes=nodosuser,fk_ActividadEvaluaciones=test)   
+       
+    context = {'bloques':bloques,'test':test,'examen_id': Examen.pk,'tipos':tipo}
+    print(context)
     html_template = (loader.get_template('contenidoExamen.html'))
     return HttpResponse(html_template.render(context, request))    
 def contenidoTest(request):
@@ -2374,7 +2399,8 @@ def contenidoTest(request):
                         examen.status_examen=2
                     examen.fecha_final=datetime.datetime.now()
                     examen.save()
-                    
+                    if data['tipo'] == 'retake':
+                       examen.nro_repeticiones= examen.nro_repeticiones+1
                     if examen.puntuacion_obtenida>=examen.fk_ActividadEvaluaciones.calificacion_aprobar:
                         estado=True
                         examen.status_examen=1
