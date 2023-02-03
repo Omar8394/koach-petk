@@ -45,10 +45,11 @@ def week(topico, usuario):
             if lastTopics.count() >= int(data['max']) : 
                print('hui')            
                for topic in lastTopics:      
-                  if topico.pk == topic['fk_componenteActividades__fk_componenteformacion'] and cant_act.count()==topic['lecciones']:    
+                  if topico.pk == topic['fk_componenteActividades__fk_componenteformacion'] :    
                      print('asi')
                      print(topic['fk_componenteActividades__fk_componenteformacion'] )
                      return True 
+                  
                  # codigo para excepciones  
                olderTopics = capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=nodosuser, fecha_realizado__lte=mydate, fk_componenteActividades__fk_componenteformacion_id=topico)
                
