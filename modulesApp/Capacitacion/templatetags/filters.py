@@ -22,12 +22,14 @@ def week(topico, usuario):
     userpu= AppPublico.objects.get(user_id=usuario)
     rango=ConfSettings_Atributo.objects.get(valor_setting='avance_temas')
     data=json.loads(rango.rangovalor_setting)
-    print(data['max'])
+    print(int(data['max']))
+    print(rango.status_setting)
     nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu)
     s=0
     _isFree = False
     if str(rol) == 'Estudiante':
-        
+      if rango.status_setting == 1:
+        print ('tesres') 
         date =datetime.datetime.now()
         start_week = date - datetime.timedelta(date.weekday())
         sem=datetime.timedelta(date.weekday())
@@ -40,7 +42,7 @@ def week(topico, usuario):
         print(lastTopics)
         if lastTopics.exists():
             
-            if lastTopics.count() >= 2 : 
+            if lastTopics.count() >= int(data['max']) : 
                print('hui')            
                for topic in lastTopics:      
                   if topico.pk == topic['fk_componenteActividades__fk_componenteformacion'] and cant_act.count()==topic['lecciones']:    
@@ -70,6 +72,8 @@ def week(topico, usuario):
               _isFree=True 
            else:  
               _isFree=False 
+      else: 
+       _isFree = True          
     else:
         _isFree = True
     return _isFree

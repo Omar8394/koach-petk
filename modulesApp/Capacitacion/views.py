@@ -2289,8 +2289,7 @@ def takeExam(request):
        tipo='retake'
        print(tipo)
        Examen=capacitacion_Examenes.objects.get(pk=test.pk)
-       Examen.status_examen=0
-       Examen.nro_repeticiones=0
+       Examen.status_examen=0       
        Examen.puntuacion_obtenida=0
        Examen.fecha_inicio=datetime.datetime.now() 
        Examen.fecha_final=None    
