@@ -2193,7 +2193,7 @@ def verpaginas_student(request):
                  if item.puntuacion_obtenida>=test.calificacion_aprobar:
                     test_app=True 
                         
-         context = {'test':test,'id':id,'test_app':test_app,'Examen':Examen[0]}
+         context = {'test':test,'id':id,'test_app':test_app}
          print(context)
          html_template = (loader.get_template('indestest.html'))     
     return HttpResponse(html_template.render(context, request))            
