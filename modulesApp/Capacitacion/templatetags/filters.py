@@ -131,3 +131,28 @@ def weekend(topico, usuario):
              _isFree = True          
        print(_isFree)      
     return _isFree   
+@register.filter(name='nextActivity')
+def nextActivity(activity, user):
+   
+    tema=capacitacion_ComponentesActividades.objects.get(pk=activity)
+    
+    nextPosicion=tema.orden_presentacion + 1
+    nextActivity = capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion=tema.fk_componenteformacion, orden_presentacion=nextPosicion)
+    if nextActivity.exists():
+        
+            return None
+    else:
+            return None
+    return nextActivity[0]  
+@register.filter(name='previousActivity')
+def previousActivity(activity, user):
+    temas=capacitacion_ComponentesActividades.objects.get(pk=activity)
+    print(temas)
+    nextPosicion=temas.orden_presentacion - 1
+    prevActivity = capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion=temas.fk_componenteformacion, orden_presentacion=nextPosicion)
+    if prevActivity.exists():
+        if isNeeded(prevActivity[0],user):
+            return None
+    else:
+            return None
+    return prevActivity[0]

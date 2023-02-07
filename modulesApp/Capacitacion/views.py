@@ -2181,7 +2181,19 @@ def verpaginas_student(request):
          html_template = (loader.get_template('actividad.html'))
     elif str(compActividad.fk_tipocomponente) =='Evaluacion':
          test=capacitacion_ActividadEvaluaciones.objects.get(fk_componenteActividad=compActividad)
-         context = {'test':test,'id':id}
+         test_app=False
+         
+         usuario=request.user 
+         userpu= AppPublico.objects.get(user_id=usuario) 
+         nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu)
+         Examen=capacitacion_Examenes.objects.filter(fk_nodo_Grupo_integrantes=nodosuser,fk_ActividadEvaluaciones=test)   
+         if Examen.exists():
+             for item in Examen:
+                
+                 if item.puntuacion_obtenida>=test.calificacion_aprobar:
+                    test_app=True 
+                        
+         context = {'test':test,'id':id,'test_app':test_app,'Examen':Examen[0]}
          print(context)
          html_template = (loader.get_template('indestest.html'))     
     return HttpResponse(html_template.render(context, request))            

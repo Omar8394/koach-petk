@@ -112,6 +112,12 @@ class capacitacion_ActSesiones_programar(models.Model):
       fecha_inicio=models.DateField(blank=True, null=True)
       datos_sesion = models.TextField(null=True)
       fecha_finalizacion=models.DateField(blank=True, null=True)
+      duracion=models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+      hora_inicio=models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+      gmt_horainternacional=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.DO_NOTHING,default=None, null=True,related_name="fk_hora_sesiones")
+      recurrente=	models.BooleanField(null=True)
+      datos_recurrencia=models.TextField(null=True)
+      Excepciones=models.TextField(null=True)
 class EscalasEvaluaciones(models.Model):      	
       id_escalaEvaluaciones= models.AutoField(primary_key=True)
       Descripcion= models.TextField(null=True)
@@ -218,3 +224,10 @@ class capacitacion_ExamenesResultado(models.Model):
       respuesta_correcta=models.BooleanField(null=True)
       puntos_obtenidos=models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
       respuesta_parrafo=models.TextField(null=True)
+class capacitacion_SesionesRealizadas(models.Model):
+      pk_capacitacionSesionsesRealizadas= models.AutoField(primary_key=True) 
+      fk_sesionesProgramadas=models.ForeignKey(capacitacion_ActSesiones_programar, on_delete=models.DO_NOTHING, default=None, null=True)
+      tema_tratado= models.TextField(null=True)
+      comentario= models.TextField(null=True)
+      fecha_sesion=models.DateField(blank=True, null=True)
+      fk_usuario_sesion=models.ForeignKey(capacitacion_ActividadesTiempoReal, on_delete=models.DO_NOTHING, default=None, null=True)
