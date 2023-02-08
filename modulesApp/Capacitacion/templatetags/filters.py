@@ -140,7 +140,7 @@ def nextActivity(activity, user):
     nextActivity = capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion=tema.fk_componenteformacion, orden_presentacion=nextPosicion)
     if nextActivity.exists():
         
-            return None
+            return nextActivity[0]
     else:
             return None
     return nextActivity[0]  

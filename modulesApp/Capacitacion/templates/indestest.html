@@ -107,19 +107,21 @@
         
                                      </p>
                                      {% if  test_app  %}
+                                     {% for item in Examen %}
                                      <p>
-                                        <b>Usuario:</b>: {{Examen.fk_nodo_Grupo_integrantes.fk_public}}
+                                        <b>Usuario:</b>: {{item.fk_nodo_Grupo_integrantes.fk_public}}
                                           <br>
-                                          <b>Puntaje Alcanzado</b>: {{Examen.puntuacion_obtenida}}
+                                          <b>Puntaje Alcanzado</b>: {{item.puntuacion_obtenida}}
                                         <br>
                                         
-                                        <b>Status</b>:{% if Examen.status_examen == '1' %} Aprobado{% endif %} {% if test.status_examen == '2' %}Reprobado{% endif %}
+                                        <b>Status</b>:{% if item.status_examen == '1' %} Aprobado{% endif %} {% if item.status_examen == '2' %}Reprobado{% endif %}
                                        
                                         <br>
                                        
-                                        <b>  Numero de repeticiones </b>: {{Examen.nro_repeticiones}}
+                                        <b>  Numero de repeticiones </b>: {{item.nro_repeticiones}}
                                         <br>                                     
                                        </p>
+                                       {% endfor %}
                                        {% endif %}
                                     </div>
                                     

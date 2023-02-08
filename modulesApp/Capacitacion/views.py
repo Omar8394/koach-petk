@@ -2187,13 +2187,15 @@ def verpaginas_student(request):
          userpu= AppPublico.objects.get(user_id=usuario) 
          nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu)
          Examen=capacitacion_Examenes.objects.filter(fk_nodo_Grupo_integrantes=nodosuser,fk_ActividadEvaluaciones=test)   
+         print(Examen)
+         print('lo')
          if Examen.exists():
              for item in Examen:
                 
                  if item.puntuacion_obtenida>=test.calificacion_aprobar:
                     test_app=True 
                         
-         context = {'test':test,'id':id,'test_app':test_app}
+         context = {'test':test,'id':id,'test_app':test_app,'Examen':Examen}
          print(context)
          html_template = (loader.get_template('indestest.html'))     
     return HttpResponse(html_template.render(context, request))            
