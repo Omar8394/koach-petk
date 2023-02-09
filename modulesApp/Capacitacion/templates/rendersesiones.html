@@ -44,25 +44,52 @@
          <label for="keyForum">Fecha finalizar</label>
          <input type="date" class="form-control" name="datetimeFinal" id="datetimeFinal" placeholder="Fecha final" value="{{ pro_sesion.fecha_finalizacion|date:'Y-m-d'}}" required >
       </div>
-        <div id="renderList" class="form-group col-md-6">   
+      <div class="form-group col-md-6">
+         <label for="keyForum">Uso Horario</label>
+         <select class="form-control" name="Grupo" id="Grupo" required>
+            <option value="null" disabled {% if not pro_sesion %}selected{% endif %}>Seleccione una opcion</option>
+            {% for item in usos_horarios %}
+           
+            <option value="{{item.id_tabla}}"  {% if pro_sesion.fk_grupoNodo_id == item.if_gruponodo %}selected{% endif %} >{{item.desc_elemento}}</option>
+            
+            {% endfor%}
+            </select>
+      </div>
+      <div class="form-group col-md-6">
+         <label for="idForum">Duracion En Horas</label>
+         <input type="text" class="form-control" name="idur" id="idur" placeholder="Ingrese Duracion"  value="{{ pro_sesion.datos_sesion|jsonsesiontwo}}" required>
+      </div>
+      <div class="form-group col-md-6">
+         <label for="keyForum">Hora inicio</label>
+         <input type="text" class="form-control" name="hora_init" id="Hora_init" placeholder="Hora inicio"  value="{{ pro_sesion.datos_sesion|jsonsesionfive}}" required>
+      </div>
+      <div class="form-group col-6">
+         <div class="custom-control custom-checkbox ml-2">
+            <input type="checkbox" class="custom-control-input" name="checkDurationC" id="checkDurationC" onchange="toggle()">
+            <label class="custom-control-label" for="checkDurationC">Recurrencia</label>
+         </div>
+          
               
-        <div id="renderList" class="form-group col-md-6" >   
-         <label for="categoryProgram" class="col-form-label">Tipo de Ritmo</label>
-         <select class="form-control" name="categoryProgram" id="categoryProgram" required
-         >
-         <option value="null" disabled {% if not pro_sesion %}selected{% endif %}>Seleccione una opcion</option>
-         {% for item in categorias %}
-         {%if item.mostrar_en_combos == 1%}
-         <option value="{{item.id_tabla}}" {% if pro_sesion.datos_sesion|jsonsesionthre == item.id_tabla %}selected{% endif %}>{{item.desc_elemento}}</option>
-         {%endif%}
-         {% endfor%}
-         </select>       
-         <label for="urlProgram" class="col-form-label">Ritmo</label>
-         <input type="text" class="form-control" name="Ritmo" id="Ritmo"
-         placeholder="Enter a codename" required
-         value="{{ pro_sesion.datos_sesion|jsonsesionfour }}" >     
-        </div>       
-        </div>  
+            <div id="renderList" class="form-group col-md-6" hidden>   
+             <label for="categoryProgram" class="col-form-label">Tipo de Ritmo</label>
+             <select class="form-control" name="categoryProgram" id="categoryProgram" required>
+             <option value="null" disabled {% if not pro_sesion %}selected{% endif %}>Seleccione una opcion</option>
+             {% for item in categorias %}
+             {%if item.mostrar_en_combos == 1%}
+             <option value="{{item.id_tabla}}" {% if pro_sesion.datos_sesion|jsonsesionthre == item.id_tabla %}selected{% endif %}>{{item.desc_elemento}}</option>
+             {%endif%}
+             {% endfor%}
+             </select>  
+            </div>  
+            <div id="renderListo" class="form-group col-md-6" hidden            >  
+             <label for="urlProgram" class="col-form-label">Ritmo</label>
+             <input type="text" class="form-control" name="Ritmo" id="Ritmo"
+             placeholder="Enter a codename" required
+             value="{{ pro_sesion.datos_sesion|jsonsesionfour }}" >     
+            </div>       
+           
+      
+        
        
     </div>
  </div>

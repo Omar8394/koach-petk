@@ -131,6 +131,21 @@ const updateModel = (url, method, data, id, ed) => {
 	})
  }
  
-	
+ const toggle = () => {
+		
+	const toggle = document.getElementById("checkDurationC")
+	const renderList = document.getElementById("renderList")
+	const renderListo = document.getElementById("renderListo")
+	if (toggle.checked){
+		renderList.hidden= false
+		renderListo.hidden= false
+		
+	}
+	else{
+		renderList.hidden= true
+		renderListo.hidden= true
+		
+	}
+}  	
 </script>
 {% endblock javascripts %}

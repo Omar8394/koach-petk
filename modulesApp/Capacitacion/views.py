@@ -1410,7 +1410,8 @@ def rendersesiones(request):
                 
                 data = json.load(request)
                 nodos=nodos_grupos.objects.filter(fk_grupoNodo_padre_id=1)                
-                ponente=AppPublico.objects.filter(user_id__fk_rol_usuario_id=90)
+                ponente=AppPublico.objects.filter(user_id__fk_rol_usuario_id=110)
+                usos_horarios=ConfTablasConfiguracion.obtenerHijos(valor="Zonas_horarias")
                 pro_sesion=None
                 categorias = ConfTablasConfiguracion.obtenerHijos(valor="Ritmo_Capacitacion")
                 print(ponente)
@@ -1426,7 +1427,7 @@ def rendersesiones(request):
                     html_template = (loader.get_template('rendersesionestipouno.html'))
                     return HttpResponse(html_template.render(context, request))
                 elif data["query"] == "" and data["tipo"] == 1:
-                    context = {'categorias':categorias,'nodo':nodos,'ponente':ponente,'pro_sesion':pro_sesion}
+                    context = {'categorias':categorias,'nodo':nodos,'ponente':ponente,'pro_sesion':pro_sesion,'usos_horarios':usos_horarios}
                     html_template = (loader.get_template('rendersesiones.html'))
                     return HttpResponse(html_template.render(context, request))
                      
