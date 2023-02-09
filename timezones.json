@@ -1,0 +1,1524 @@
+[
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":508,
+    "fields": {
+      "desc_elemento":"Zonas Horarias",
+      "fk_tabla_padre":1,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Zonas_horarias",
+      "mostrar_en_combos": 0,
+      "maneja_lista": 1
+      }
+    
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":509,
+    "fields": {
+      "desc_elemento":"(UTC-12:00) International Date Line West",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Dateline Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+    
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":510,
+    "fields": {
+      "desc_elemento":"(UTC-11:00) Coordinated Universal Time-11",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "UTC-11",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":511,
+    "fields": {
+      "desc_elemento":"(UTC-10:00) Hawaii",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Hawaiian Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":512,
+    "fields": {
+      "desc_elemento":"(UTC-09:00) Alaska",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Alaskan Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":513,
+    "fields": {
+      "desc_elemento":"(UTC-08:00) Baja California",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Pacific Standard Time (Mexico)",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":514,
+    "fields": {
+      "desc_elemento":"(UTC-07:00) Pacific Daylight Time (US & Canada)",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Pacific Daylight Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":515,
+    "value": "Pacific Standard Time",
+    "fields": {
+      "desc_elemento":"(UTC-08:00) Pacific Standard Time (US & Canada)",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "PST",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+    
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":516,
+    "fields": {
+      "desc_elemento":"(UTC-07:00) Arizona",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "US Mountain Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":517,
+    "fields": {
+      "desc_elemento":"(UTC-07:00) Chihuahua, La Paz, Mazatlan",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Mountain Standard Time (Mexico)",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":518,
+    "fields": {
+      "desc_elemento":"(UTC-07:00) Mountain Time (US & Canada)",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Mountain Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+   
+
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":519,
+    "fields": {
+      "desc_elemento":"(UTC-06:00) Central America",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Central America Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+    
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":520,
+    "fields": {
+      "desc_elemento":"(UTC-06:00) Central Time (US & Canada)",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Central Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+    
+      
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":521,
+    "fields": {
+      "desc_elemento":"(UTC-06:00) Guadalajara, Mexico City, Monterrey",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Central Standard Time (Mexico)",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+    
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":522,
+    "fields": {
+      "desc_elemento":"(UTC-06:00) Saskatchewan",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Canada Central Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":523,
+    "fields": {
+      "desc_elemento":"(UTC-05:00) Bogota, Lima, Quito",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "SA Pacific Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+    
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":524,
+    "fields": {
+      "desc_elemento":"(UTC-05:00) Eastern Time (US & Canada)",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Eastern Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+    
+  
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":525,
+    "fields": {
+      "desc_elemento":"(UTC-04:00) Eastern Daylight Time (US & Canada)",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Eastern Daylight Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":526,
+    "fields": {
+      "desc_elemento":"(UTC-05:00) Indiana (East)",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "US Eastern Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":527,
+    "fields": {
+      "desc_elemento":"(UTC-04:30) Caracas",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Venezuela Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":528,
+    "fields": {
+      "desc_elemento":"(UTC-04:00) Asuncion",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Paraguay Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":529,
+    "fields": {
+      "desc_elemento":"(UTC-04:00) Atlantic Time (Canada)",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Atlantic Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+    
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":530,
+    "fields": {
+      "desc_elemento":"(UTC-04:00) Cuiaba",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Central Brazilian Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+    
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":531,
+    "fields": {
+      "desc_elemento":"(UTC-04:00) Georgetown, La Paz, Manaus, San Juan",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "SA Western Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+     
+     
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":532,
+    "fields": {
+      "desc_elemento":"(UTC-04:00) Santiago",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Pacific SA Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":533,
+    "fields": {
+      "desc_elemento":"(UTC-03:30) Newfoundland",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Newfoundland Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+  
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":534,
+    "fields": {
+      "desc_elemento":"(UTC-03:00) Brasilia",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "E. South America Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":535,
+    "fields": {
+      "desc_elemento":"(UTC-03:00) Buenos Aires",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Argentina Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":536,
+    "fields": {
+      "desc_elemento":"(UTC-03:00) Cayenne, Fortaleza",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "SA Eastern Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":537,
+    "fields": {
+      "desc_elemento":"(UTC-03:00) Greenland",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Greenland Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":538,
+    "fields": {
+      "desc_elemento":"(UTC-03:00) Montevideo",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Montevideo Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+    
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":539,
+    "fields": {
+      "desc_elemento":"(UTC-03:00) Salvador",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Bahia Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":540,
+    "fields": {
+      "desc_elemento":"(UTC-02:00) Coordinated Universal Time-02",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "UTC-02",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":541,
+    "fields": {
+      "desc_elemento":"(UTC-02:00) Mid-Atlantic - Old",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Mid-Atlantic Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":542,
+    "fields": {
+      "desc_elemento":"(UTC-01:00) Azores",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Azores Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":543,
+    "fields": {
+      "desc_elemento":"(UTC-01:00) Cape Verde Is.",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Cape Verde Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":544,
+    "fields": {
+      "desc_elemento":"(UTC) Casablanca",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Morocco Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":545,
+    "fields": {
+      "desc_elemento":"(UTC) Coordinated Universal Time",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "UTC",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":546,
+    "fields": {
+      "desc_elemento":"(UTC) Edinburgh, London",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "GMT Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":547,
+    "fields": {
+      "desc_elemento":"(UTC+01:00) Edinburgh, London",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "British Summer Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":548,
+    "fields": {
+      "desc_elemento":"(UTC) Dublin, Lisbon",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "GMT Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":549,
+    "fields": {
+      "desc_elemento":"(UTC) Monrovia, Reykjavik",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Greenwich Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":550,
+    "fields": {
+      "desc_elemento":"(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "W. Europe Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+
+     
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":551,
+    "fields": {
+      "desc_elemento":"(UTC+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Central Europe Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+    
+    
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":552,
+    "fields": {
+      "desc_elemento":"(UTC+01:00) Brussels, Copenhagen, Madrid, Paris",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Romance Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":553,
+    "fields": {
+      "desc_elemento":"(UTC+01:00) Sarajevo, Skopje, Warsaw, Zagreb",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Central European Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":554,
+    "fields": {
+      "desc_elemento":"(UTC+01:00) West Central Africa",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "W. Central Africa Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":555,
+    "fields": {
+      "desc_elemento":"(UTC+01:00) Windhoek",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Namibia Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":556,
+    "fields": {
+      "desc_elemento":"(UTC+02:00) Athens, Bucharest",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "GTB Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+    
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":557,
+    "fields": {
+      "desc_elemento":"(UTC+02:00) Beirut",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Middle East Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":558,
+    "fields": {
+      "desc_elemento":"(UTC+02:00) Cairo",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Egypt Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":559,
+    "fields": {
+      "desc_elemento":"(UTC+02:00) Damascus",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Syria Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":560,
+    "fields": {
+      "desc_elemento":"(UTC+02:00) E. Europe",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "E. Europe Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+    
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":561,
+    "fields": {
+      "desc_elemento":"(UTC+02:00) Harare, Pretoria",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "South Africa Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+  
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":562,
+    "fields": {
+      "desc_elemento":"(UTC+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "FLE Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+    
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":563,
+    "fields": {
+      "desc_elemento":"(UTC+03:00) Istanbul",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Turkey Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":564,
+    "fields": {
+      "desc_elemento":"(UTC+02:00) Jerusalem",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Israel Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":565,
+    "fields": {
+      "desc_elemento":"(UTC+02:00) Tripoli",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Libya Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+    
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":566,
+    "fields": {
+      "desc_elemento":"(UTC+03:00) Amman",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Jordan Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+  
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":567,
+    "fields": {
+      "desc_elemento":"(UTC+03:00) Baghdad",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Arabic Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":568,
+    "fields": {
+      "desc_elemento":"(UTC+02:00) Kaliningrad",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Kaliningrad Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":569,
+    "fields": {
+      "desc_elemento":"(UTC+03:00) Kuwait, Riyadh",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Arab Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+    
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":570,
+    "fields": {
+      "desc_elemento":"(UTC+03:00) Nairobi",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "E. Africa Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista":0
+      }
+  
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":571,
+    "fields": {
+      "desc_elemento":"(UTC+03:00) Moscow, St. Petersburg, Volgograd, Minsk",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Moscow Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":572,
+    "fields": {
+      "desc_elemento":"(UTC+04:00) Samara, Ulyanovsk, Saratov",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Samara Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":573,
+    "fields": {
+      "desc_elemento":"(UTC+03:30) Tehran",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Iran Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":574,
+    "fields": {
+      "desc_elemento":"(UTC+04:00) Abu Dhabi, Muscat",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Arabian Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+  
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":575,
+    "fields": {
+      "desc_elemento":"(UTC+04:00) Baku",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Azerbaijan Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":576,
+    "fields": {
+      "desc_elemento":"(UTC+04:00) Port Louis",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Mauritius Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":577,
+    "fields": {
+      "desc_elemento":"(UTC+04:00) Tbilisi",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Georgian Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":578,
+    "fields": {
+      "desc_elemento":"(UTC+04:00) Yerevan",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Caucasus Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 1
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":579,
+    "fields": {
+      "desc_elemento":"(UTC+04:30) Kabul",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Afghanistan Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":580,
+    "fields": {
+      "desc_elemento":"(UTC+05:00) Ashgabat, Tashkent",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "West Asia Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":581,    
+    "fields": {
+      "desc_elemento":"(UTC+05:00) Yekaterinburg",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Yekaterinburg Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":582,
+    "fields": {
+      "desc_elemento":"(UTC+05:00) Islamabad, Karachi",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Pakistan Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":583,
+    "fields": {
+      "desc_elemento":"(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "India Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":584,
+    "fields": {
+      "desc_elemento":"(UTC+05:30) Sri Jayawardenepura",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Sri Lanka Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":585,
+    "fields": {
+      "desc_elemento":"(UTC+05:45) Kathmandu",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Nepal Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":586,
+    "fields": {
+      "desc_elemento":"(UTC+06:00) Nur-Sultan (Astana)",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Central Asia Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":587,
+    "fields": {
+      "desc_elemento":"(UTC+06:00) Dhaka",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Bangladesh Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+    
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":588,
+    "fields": {
+      "desc_elemento":"(UTC+06:30) Yangon (Rangoon)",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Myanmar Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":589,
+    "fields": {
+      "desc_elemento":"(UTC+07:00) Bangkok, Hanoi, Jakarta",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "SE Asia Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+  
+    
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":590,
+    "fields": {
+      "desc_elemento":"(UTC+07:00) Novosibirsk",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "N. Central Asia Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":591,
+    "fields": {
+      "desc_elemento":"(UTC+08:00) Beijing, Chongqing, Hong Kong, Urumqi",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "China Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":592,
+    "fields": {
+      "desc_elemento":"(UTC+08:00) Krasnoyarsk",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "North Asia Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":593,
+    "fields": {
+      "desc_elemento":"(UTC+08:00) Kuala Lumpur, Singapore",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Singapore Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":594,
+    "fields": {
+      "desc_elemento":"(UTC+08:00) Perth",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "W. Australia Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":595,
+    "fields": {
+      "desc_elemento":"(UTC+08:00) Taipei",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Taipei Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":596,
+    "fields": {
+      "desc_elemento":"(UTC+08:00) Ulaanbaatar",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Ulaanbaatar Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":597,
+    "fields": {
+      "desc_elemento":"(UTC+08:00) Irkutsk",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "North Asia East Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":598,
+    "fields": {
+      "desc_elemento":"(UTC+09:00) Osaka, Sapporo, Tokyo",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Japan Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":599,
+    "fields": {
+      "desc_elemento":"(UTC+09:00) Seoul",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Korea Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+    
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":600,
+    "fields": {
+      "desc_elemento":"(UTC+09:30) Adelaide",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Cen. Australia Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+    
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":601,
+    "fields": {
+      "desc_elemento":"(UTC+09:30) Darwin",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "AUS Central Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 1
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":602,
+    "fields": {
+      "desc_elemento":"(UTC+10:00) Brisbane",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "E. Australia Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+    
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":603,
+    "fields": {
+      "desc_elemento":"(UTC+10:00) Canberra, Melbourne, Sydney",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "AUS Eastern Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":604,
+    "fields": {
+      "desc_elemento":"(UTC+10:00) Guam, Port Moresby",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "West Pacific Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":605,
+    "fields": {
+      "desc_elemento":"(UTC+10:00) Hobart",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Tasmania Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":606,
+    "fields": {
+      "desc_elemento":"(UTC+09:00) Yakutsk",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Yakutsk Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":607,
+    "fields": {
+      "desc_elemento":"(UTC+11:00) Solomon Is., New Caledonia",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Central Pacific Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista":0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":608,
+    "fields": {
+      "desc_elemento":"(UTC+11:00) Vladivostok",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Vladivostok Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":609,
+    "fields": {
+      "desc_elemento":"(UTC+12:00) Auckland, Wellington",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "New Zealand Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":610,
+    "fields": {
+      "desc_elemento":"(UTC+12:00) Coordinated Universal Time+12",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "UTC+12",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":611,
+    "fields": {
+      "desc_elemento":"(UTC+12:00) Fiji",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Fiji Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":612,
+    "fields": {
+      "desc_elemento":"(UTC+12:00) Magadan",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Magadan Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+  
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":613,
+    "fields": {
+      "desc_elemento":"(UTC+12:00) Petropavlovsk-Kamchatsky - Old",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Kamchatka Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+    
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":614,
+    "fields": {
+      "desc_elemento":"(UTC+13:00) Nuku'alofa",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Tonga Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  },
+  {
+    "model": "App.ConfTablasConfiguracion",
+    "pk":615,
+    "fields": {
+      "desc_elemento":"(UTC+13:00) Samoa",
+      "fk_tabla_padre":508,
+      "tipo_elemento": "1",
+      "permite_cambios": 1,
+      "valor_elemento": "Samoa Standard Time",
+      "mostrar_en_combos": 1,
+      "maneja_lista": 0
+      }
+   
+  }
+]
