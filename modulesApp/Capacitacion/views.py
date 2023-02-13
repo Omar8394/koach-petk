@@ -1389,13 +1389,14 @@ def programarsesiones(request):
     pro_sesion=None
     title=0
     actividad=capacitacion_Actividad_Sesiones.objects.get(fk_componenteActividad_id=id)
+    categorias = ConfTablasConfiguracion.obtenerHijos(valor="Ritmo_Capacitacion")
     try: 
         pro_sesion=capacitacion_ActSesiones_programar.objects.get(id_capacitacionActividadSesiones=actividad)  
         title=1           
     except capacitacion_ActSesiones_programar.DoesNotExist:
         pro_sesion = None
         
-    context = {'padre':actividad.fk_componenteActividad.fk_componenteformacion_id,'pro_sesion':pro_sesion,'title':title,'actividad':actividad,'id':id}
+    context = {'categorias':categorias,'padre':actividad.fk_componenteActividad.fk_componenteformacion_id,'pro_sesion':pro_sesion,'title':title,'actividad':actividad,'id':id}
     print(context)
     html_template = (loader.get_template('programarsesiones.html'))
     return HttpResponse(html_template.render(context, request))           
@@ -1451,9 +1452,7 @@ def savesesionprogramas(request):
                   obj={}
                   datos = {}
                   obj["lugar"]= data['data']['linkForum']
-                  obj["tema"]= data['data']['idForum']
-                  obj["ritmo"]= data['data']['Ritmo']
-                  obj["tipo_ritmo"]= data['data']['categoryProgram']
+                  obj["tema"]= data['data']['idForum']                 
                   if 'keyForum' in data['data']:
                       obj["key"]=data['data']['keyForum']
                   programar.append(obj or 0)
@@ -1468,6 +1467,12 @@ def savesesionprogramas(request):
                   programar.status_sesion=ConfTablasConfiguracion.objects.get(valor_elemento="Status_activo")                   
                   programar.fecha_finalizacion=data['data']['datetimeFinal']
                   programar.id_capacitacionActividadSesiones_id=data['id']
+                  programar.duracion=data['data']['idur']
+                  programar.hora_inicio=data['data']['hora_init']
+                  programar.gmt_horainternacional=ConfTablasConfiguracion.objects.get(pk=data['data']['uso']) 
+                  if data['data']['checkDurationC']:
+                     programar.recurrente=1 
+                     programar.datos_recurrencia='op' 
                   programar.save()
                   return JsonResponse({"message":"ok"})
                elif data["method"] == "Edit":

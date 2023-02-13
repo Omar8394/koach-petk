@@ -58,7 +58,12 @@ let semaforo={{title}}
 let query = ""	
 let tipe = {{actividad.modalidad}}
 let pk = {{actividad.pk}}
-let edita='{{pro_sesion.pk}}'	
+let edita='{{pro_sesion.pk}}'
+const arrayLoco = [{% for cal in categorias %}{ id: "{{cal.id_tabla}}", descripcion: "{{cal.desc_elemento}}" }, {% endfor %}]
+let hashObj = arrayLoco.reduce(function (acc, e) {
+	acc[e.id] = e.descripcion
+	return acc
+}, {})
 const renderContent = (id,tipo)=>{
 	document.querySelector("main.card-body").classList.add("is-loading")
 	fetch("{% url 'rendersesiones'%}", {
@@ -133,19 +138,27 @@ const updateModel = (url, method, data, id, ed) => {
  
  const toggle = () => {
 		
-	const toggle = document.getElementById("checkDurationC")
-	const renderList = document.getElementById("renderList")
-	const renderListo = document.getElementById("renderListo")
+	const toggle = document.getElementById("checkDurationC")	
+	const finalizar = document.getElementById("renderListotwo")
+	
 	if (toggle.checked){
-		renderList.hidden= false
-		renderListo.hidden= false
+		
+		finalizar.hidden=false
 		
 	}
 	else{
-		renderList.hidden= true
-		renderListo.hidden= true
+		
+		finalizar.hidden=true
 		
 	}
-}  	
+}  
+function habilita(form){
+	const toggle = document.getElementById(form).disabled= false
+}
+function cambiar_comb() {
+    const renderList = document.getElementById("categoryProgram").value
+	const render = hashObj[renderList]
+	
+}      	
 </script>
 {% endblock javascripts %}
