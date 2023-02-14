@@ -94,7 +94,63 @@ def jsonsesionfour(datos):
   if   'datos_sesion' in data :
      return data['datos_sesion'][0]['ritmo']
   else:
-      return ""      
+      return "" 
+@register.filter  
+def jsonsesionfive(datos):
+    if datos==None or datos=="" or datos=={}:
+       return ""
+    tlf=None
+    data = json.loads(datos)
+
+  
+    if data==None or data=="" or data=={}:
+       return ""
+    if 'datos_recurrencia' in data :
+       return data['datos_recurrencia'][0]['lugar']
+    else:
+      return ""   
+@register.filter  
+def jsonsesionfi(datos):
+    if datos==None or datos=="" or datos=={}:
+       return ""
+    tlf=None
+    data = json.loads(datos)
+
+  
+    if data==None or data=="" or data=={}:
+       return ""
+    if 'datos_recurrencia' in data :
+       return data['datos_recurrencia'][0]['Recurrencia']
+    else:
+      return ""
+@register.filter  
+def jsonsesionfisi(datos):
+    if datos==None or datos=="" or datos=={}:
+       return ""
+    tlf=None
+    data = json.loads(datos)
+
+  
+    if data==None or data=="" or data=={}:
+       return ""
+    if 'datos_recurrencia' in data :
+       return data['datos_recurrencia'][0]['finaliza_vuelta']
+    else:
+      return "" 
+@register.filter  
+def jsonsesionseis(datos):
+    if datos==None or datos=="" or datos=={}:
+       return ""
+    tlf=None
+    data = json.loads(datos)
+
+  
+    if data==None or data=="" or data=={}:
+       return ""
+    if 'datos_recurrencia' in data :
+       return data['datos_recurrencia'][0]['finaliza']
+    else:
+      return ""              
 @register.filter
 def hashijos(id):
     lista=[]
@@ -1470,9 +1526,20 @@ def savesesionprogramas(request):
                   programar.duracion=data['data']['idur']
                   programar.hora_inicio=data['data']['hora_init']
                   programar.gmt_horainternacional=ConfTablasConfiguracion.objects.get(pk=data['data']['uso']) 
-                  if data['data']['checkDurationC']:
-                     programar.recurrente=1 
-                     programar.datos_recurrencia='op' 
+                  if 'checkDurationC' in data['data']:
+                      programartwo=[]
+                      objtwo={}
+                      datostwo = {}
+                      objtwo["lugar"]= data['data']['categoryProgram']
+                      objtwo["Recurrencia"]= data['data']['Ritmo'] 
+                      if 'finalizar' in data['data']:
+                          objtwo["finaliza"]=data['data']['finalizar']
+                      if 'finalizar_vez'in data['data']: 
+                          objtwo["finaliza_vuelta"]=data['data']['finalizar_vez']    
+                      programartwo.append(objtwo or 0)
+                      datostwo['datos_recurrencia']=programartwo 
+                      programar.recurrente=1 
+                      programar.datos_recurrencia=json.dumps(datostwo) 
                   programar.save()
                   return JsonResponse({"message":"ok"})
                elif data["method"] == "Edit":
@@ -1482,9 +1549,7 @@ def savesesionprogramas(request):
                     obj={}
                     datos = {}
                     obj["lugar"]= data['data']['linkForum']
-                    obj["tema"]= data['data']['idForum']
-                    obj["ritmo"]= data['data']['Ritmo']
-                    obj["tipo_ritmo"]= data['data']['categoryProgram']
+                    obj["tema"]= data['data']['idForum']                   
                     if 'keyForum' in data['data']:
                         obj["key"]=data['data']['keyForum']
                     programar.append(obj or 0)
@@ -1512,7 +1577,29 @@ def testinit(request):
     tipos_pre=ConfTablasConfiguracion.objects.filter(fk_tabla_padre=padre[0].id_tabla)
     context = {'test':test,'has':has, 'tipos_pre':tipos_pre}
     html_template = (loader.get_template('testinit.html'))
-    return HttpResponse(html_template.render(context, request)) 
+    return HttpResponse(html_template.render(context, request))
+def renderrepeats(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest': 
+         try:
+            if request.body:
+                data = json.load(request)               
+                if data["query"] == "save" : 
+                    print(data)
+                    pro_sesion=capacitacion_ActSesiones_programar.objects.get(id_capacitacionActividadSesiones_id=data['ids'])  
+                    categorias = ConfTablasConfiguracion.obtenerHijos(valor="Ritmo_Capacitacion")
+                    context = {'categorias':categorias}
+                    html_template = (loader.get_template('renderepeats.html'))
+                    return HttpResponse(html_template.render(context, request)) 
+                elif data["query"] == "edit":
+                    pro_sesion=capacitacion_ActSesiones_programar.objects.get(id_capacitacionActividadSesiones_id=data['ids'])  
+                    categorias = ConfTablasConfiguracion.obtenerHijos(valor="Ritmo_Capacitacion")
+                    context = {'categorias':categorias,'pro_sesion':pro_sesion}
+                    html_template = (loader.get_template('renderepeats.html'))
+                    return HttpResponse(html_template.render(context, request)) 
+         except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)             
 def rendertest(request):
     if request.method == "POST":
         if request.headers.get('x-requested-with') == 'XMLHttpRequest': 

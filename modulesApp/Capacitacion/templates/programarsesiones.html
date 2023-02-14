@@ -54,6 +54,7 @@
 {% block javascripts %}
 <script>
 let padre={{padre}}
+let rev = '{{pro_sesion.recurrente}}'
 let semaforo={{title}}	
 let query = ""	
 let tipe = {{actividad.modalidad}}
@@ -79,6 +80,15 @@ const renderContent = (id,tipo)=>{
 	   document.querySelector("main.card-body").classList.remove("is-loading")
 	   document.querySelector("main.card-body").innerHTML = result
 	   
+	   const toggle = document.getElementById("checkDurationC")	
+	
+	
+	if (toggle.checked){
+		
+		renderRepeat('edit',pk)
+	}
+		
+	  
 	})
  }
  renderContent(pk,tipe)
@@ -93,7 +103,7 @@ formActividad.addEventListener('submit', (e)=>{
 	const data = {}
 	for (var [key, value] of formData.entries()) {
 	   data[key] = value
-	   
+	   console.log(data[key])
 	} 
 	updateModel("{% url 'savesesionprogramas'%}", "Create", data, pk,null)
       .then(async (res) => {
@@ -136,20 +146,33 @@ const updateModel = (url, method, data, id, ed) => {
 	})
  }
  
+ const renderRepeat = (tipo,id)=>{
+	document.querySelector("#renderListotwo").classList.add("is-loading")
+	fetch("{% url 'renderrepeats'%}", {
+	   ...fetchObject,
+	   body: JSON.stringify({
+		  query:tipo,
+		  ids:id
+	   })
+	})
+	.then(async(res)=>{
+	   result = await res.text()
+	   document.querySelector("#renderListotwo").classList.remove("is-loading")
+	   document.querySelector("#renderListotwo").innerHTML = result
+	})
+ }
+
  const toggle = () => {
-		
+	
 	const toggle = document.getElementById("checkDurationC")	
-	const finalizar = document.getElementById("renderListotwo")
+	
 	
 	if (toggle.checked){
 		
-		finalizar.hidden=false
-		
+		renderRepeat('save',null)
 	}
 	else{
-		
-		finalizar.hidden=true
-		
+		document.getElementById("renderListotwo").innerHTML=''
 	}
 }  
 function habilita(form){
@@ -159,6 +182,7 @@ function cambiar_comb() {
     const renderList = document.getElementById("categoryProgram").value
 	const render = hashObj[renderList]
 	
-}      	
+}
+ 	
 </script>
 {% endblock javascripts %}

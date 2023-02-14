@@ -1,0 +1,33 @@
+<div class="form-group col-6">
+    <label for="categoryProgram" class="col-form-label">Recurrencia</label>
+    <select class="form-control" name="categoryProgram" id="categoryProgram" onchange="cambiar_comb()" required>
+    <option value="null" disabled {% if not pro_sesion %}selected{% endif %}>Seleccione una opcion</option>
+    {% for item in categorias %}
+    {%if item.mostrar_en_combos == 1%}
+    <option value="{{item.id_tabla}}" {% if pro_sesion.datos_recurrencia|jsonsesionfive == item.id_tabla %}selected{% endif %}>{{item.desc_elemento}}</option>
+    {%endif%}
+    {% endfor%}
+    </select> 
+    </div>
+    <div class="form-group col-6">
+    <label for="urlProgram" class="col-form-label">Repetir cada</label>
+    <input type="text" class="form-control" name="Ritmo" id="Ritmo"
+    placeholder="Enter a codename"  value="{{ pro_sesion.datos_recurrencia|jsonsesionfi}}" required
+    >  
+    </div>
+    <div class="form-group col-6">
+      
+    <label for="urlProgram" class="col-form-label">finalizar</label>
+    <input type="radio"  name="radioC" id="radioC" onClick="habilita('finalizar')">  
+    <input type="date" class="form-control" name="finalizar" id="finalizar"
+    placeholder="Enter a codename" required
+    value="" disabled>
+    </div>
+    <div class="form-group col-6">
+    <label for="urlProgram" class="col-form-label">finalizar al cabo</label>
+    <input type="radio"  name="radioC" id="radioC" onClick="habilita('finalizar_vez')"> 
+    <input type="number" class="form-control" name="finalizar_vez" id="finalizar_vez"
+    placeholder="Enter a codename" 
+    value="{{ pro_sesion.datos_recurrencia|jsonsesionfisi}}" disabled>
+    </div>
+ </div>

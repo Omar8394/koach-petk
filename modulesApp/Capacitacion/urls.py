@@ -71,6 +71,7 @@ urlpatterns = [
     path('taketesting/', views.takeExam, name="taketesting"),
     path('contenidoTest/', views.contenidoTest, name="contenidoTest"),
     path('viewresult_test/', views.viewresult_test, name="viewresult_test"),
+    path('renderrepeats/', views.renderrepeats, name="renderrepeats"),
     # Scales
     
 
