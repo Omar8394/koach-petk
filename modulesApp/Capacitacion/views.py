@@ -40,7 +40,7 @@ def jsonsesion(datos):
   else:
       return ""
 @register.filter
-def jsonsesionfive(datos):
+def jsonsesionfives(datos):
   if datos==None or datos=="" or datos=={}:
     return ""
   tlf=None
@@ -867,7 +867,7 @@ def getModalNewtest(request):
                         test.nro_repeticiones=data['data']['repeatstest']
                         test.point_in_use=data['data']['point_use']
                         test.titulo_evaluacion=data['data']['descriptionActivity']
-                        test .save()                       
+                        test.save()                       
                         return JsonResponse({"message":"ok"})
             except Exception as e:
                print(e)
@@ -1512,9 +1512,7 @@ def savesesionprogramas(request):
                   if 'keyForum' in data['data']:
                       obj["key"]=data['data']['keyForum']
                   programar.append(obj or 0)
-                  datos['datos_sesion']=programar
-                  programar=capacitacion_ActSesiones_programar() 
-                  programar.fecha_inicio=data['data']['datetimeForum']                  
+                  datos['datos_sesion']=programar                               
                   programar=capacitacion_ActSesiones_programar() 
                   programar.fecha_inicio=data['data']['datetimeForum']
                   programar.datos_sesion=json.dumps(datos)
@@ -1523,8 +1521,8 @@ def savesesionprogramas(request):
                   programar.status_sesion=ConfTablasConfiguracion.objects.get(valor_elemento="Status_activo")                   
                   programar.fecha_finalizacion=data['data']['datetimeFinal']
                   programar.id_capacitacionActividadSesiones_id=data['id']
-                  programar.duracion=data['data']['idur']
-                  programar.hora_inicio=data['data']['hora_init']
+                  programar.duracion=Decimal(data['data']['idur'].replace(',','.'))
+                  programar.hora_inicio=Decimal(data['data']['hora_init'].replace(',','.'))
                   programar.gmt_horainternacional=ConfTablasConfiguracion.objects.get(pk=data['data']['uso']) 
                   if 'checkDurationC' in data['data']:
                       programartwo=[]
@@ -1534,8 +1532,12 @@ def savesesionprogramas(request):
                       objtwo["Recurrencia"]= data['data']['Ritmo'] 
                       if 'finalizar' in data['data']:
                           objtwo["finaliza"]=data['data']['finalizar']
+                      else:
+                          objtwo["finaliza"]=None    
                       if 'finalizar_vez'in data['data']: 
                           objtwo["finaliza_vuelta"]=data['data']['finalizar_vez']    
+                      else:
+                          objtwo["finaliza_vuelta"]=None
                       programartwo.append(objtwo or 0)
                       datostwo['datos_recurrencia']=programartwo 
                       programar.recurrente=1 
@@ -1562,9 +1564,37 @@ def savesesionprogramas(request):
                     programar.status_sesion=ConfTablasConfiguracion.objects.get(valor_elemento="Status_activo")                   
                     programar.fecha_finalizacion=data['data']['datetimeFinal']
                     programar.id_capacitacionActividadSesiones_id=data['ed']
+                    programar.duracion=Decimal(data['data']['idur'].replace(',','.'))
+                    programar.hora_inicio=Decimal(data['data']['hora_init'].replace(',','.'))
+                    programar.gmt_horainternacional=ConfTablasConfiguracion.objects.get(pk=data['data']['uso']) 
+                    if 'checkDurationC' in data['data']:
+                      programartwo=[]
+                      objtwo={}
+                      datostwo = {}
+                      objtwo["lugar"]= data['data']['categoryProgram']
+                      objtwo["Recurrencia"]= data['data']['Ritmo'] 
+                      if 'finalizar' in data['data']:
+                          objtwo["finaliza"]=data['data']['finalizar']
+                      else:
+                          objtwo["finaliza"]=None    
+                      if 'finalizar_vez'in data['data']: 
+                          objtwo["finaliza_vuelta"]=data['data']['finalizar_vez']    
+                      else:
+                          objtwo["finaliza_vuelta"]=None
+                      programartwo.append(objtwo or 0)
+                      datostwo['datos_recurrencia']=programartwo 
+                      programar.recurrente=1 
+                      programar.datos_recurrencia=json.dumps(datostwo)
                     programar.save()
                     print(data)
                     return JsonResponse({"message":"ok"})
+               elif data["method"] == "Exepcion":
+                   programaredit=capacitacion_ComponentesActividades.objects.get(pk=data['id'])
+                   sesion=capacitacion_Actividad_Sesiones.objects.get(fk_componenteActividad=programaredit)
+                   programasesion=capacitacion_ActSesiones_programar.objects.get(id_capacitacionActividadSesiones=sesion)
+                  
+                   print(data)
+                   return JsonResponse({"message":"ok"})
           except Exception as e:
                print(e)
                return JsonResponse({"message":"error"}, status=500) 
@@ -1586,7 +1616,7 @@ def renderrepeats(request):
                 data = json.load(request)               
                 if data["query"] == "save" : 
                     print(data)
-                    pro_sesion=capacitacion_ActSesiones_programar.objects.get(id_capacitacionActividadSesiones_id=data['ids'])  
+                   
                     categorias = ConfTablasConfiguracion.obtenerHijos(valor="Ritmo_Capacitacion")
                     context = {'categorias':categorias}
                     html_template = (loader.get_template('renderepeats.html'))
@@ -2216,10 +2246,11 @@ def renderstemas(request):
                   if data["query"] == "":
                      print(data)
                      usuario=request.user
-                     userpu= AppPublico.objects.get(user_id=usuario)  
+                     userpu= AppPublico.objects.get(user_id=usuario)
+                     print(userpu) 
                      nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu).fk_nodogrupo
                      nodoplan=nodos_PlanFormacion.objects.filter(fk_gruponodo=nodosuser) 
-                     print(userpu)
+                     
                      context = {'usuario':request.user,'plan':nodoplan}
                      html_template = (loader.get_template('rendertemas.html'))
                      return HttpResponse(html_template.render(context, request))    
@@ -2290,7 +2321,13 @@ def verpaginas_student(request):
                         
          context = {'test':test,'id':id,'test_app':test_app,'Examen':Examen}
          print(context)
-         html_template = (loader.get_template('indestest.html'))     
+         html_template = (loader.get_template('indestest.html')) 
+    elif str(compActividad.fk_tipocomponente) =='Sesiones':
+         sesiones=capacitacion_Actividad_Sesiones.objects.get(fk_componenteActividad=compActividad)
+         programar=capacitacion_ActSesiones_programar.objects.get(id_capacitacionActividadSesiones=sesiones)
+         context = {'programar': programar,'sesiones':sesiones,'id':id,'estru':estru.pk,'tipo':str(compActividad.fk_tipocomponente.desc_elemento)}
+         print(context)
+         html_template = (loader.get_template('student_sesiones.html'))         
     return HttpResponse(html_template.render(context, request))            
 def logUser(request):
     if request.method == "POST":

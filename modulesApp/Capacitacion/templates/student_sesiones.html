@@ -1,0 +1,148 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}{% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+	<div class="content">
+		<div class="page-inner">
+			<div class="page-header">
+				<h4 class="page-title">Sesiones</h4>
+				<ul class="breadcrumbs">
+					<li class="nav-home">
+						<a href="{% url 'Dashboard' %}">
+							<i class="flaticon-home"></i>
+						</a>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>				
+					
+				</ul>
+			</div>
+			<div class="page-category">
+            <h2>Sesion: {{sesiones.titulo}}</h2>
+            <h3>Es recurrente: {% if programar.recurrente %}Si{% else %}No{% endif %}</h3> 
+            <div class="section-header">
+               <div class="form-group col-md-12 d-flex flex-row  justify-content-end">                 
+                  <a class="btn-radius btn-azul " onclick="clickSave()" style="display:block;text-align:center;text-decoration:none;color:whitesmoke;"><span>Confirmar Asistencia</span></a>
+                </div>
+            </div>
+        		<div class="form-row">
+              
+                    <div class="form-group col-md-6">
+                       <label for="datetimeForum">Fecha inicio</label>
+                       <input type="date" class="form-control" name="datetimeForum" id="datetimeForum" placeholder="Fecha inicio"   value="{{ programar.fecha_inicio|date:'Y-m-d'}}" required >
+                    </div>
+                    <div class="form-group col-md-6">
+                       <label for="keyForum">Fecha finalizar</label>
+                       <input type="date" class="form-control" name="datetimeFinal" id="datetimeFinal" placeholder="Fecha final" value="{{ programar.fecha_finalizacion|date:'Y-m-d'}}" required >
+                    </div>
+                     <div class="form-group col-md-6">
+                        <label for="linkForum">Link</label>
+                        <input type="text" class="form-control" name="linkForum" id="linkForum" placeholder="Ingrese Lugar"   value="{{ programar.datos_sesion|jsonsesion}}" required>
+                     </div>
+                     <div class="form-group col-md-6">
+                       <label for="idForum">Tema</label>
+                       <input type="text" class="form-control" name="idForum" id="idForum" placeholder="Ingrese Tema"  value="{{ programar.datos_sesion|jsonsesiontwo}}" required>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    
+                     <div class="form-group col-md-6">
+                        <label for="keyForum">Key</label>
+                        <input type="text" class="form-control" name="keyForum" id="keyForum" placeholder="Enter the key"  value="{{ programar.datos_sesion|jsonsesionfives}}" required>
+                     </div>
+                     
+                       <div class="form-group col-md-6">
+                          <label for="idForum">Director Ponente</label>
+                          <input type="text" class="form-control" name="key" id="key" placeholder="Enter the key"  value="{{ programar.director_ponente}}" required>
+                       </div>
+                       <div class="form-group col-md-6">
+                          <label for="keyForum">Grupo</label>
+                          <input type="text" class="form-control" name="keyFo" id="keyFo" placeholder="Enter the key"  value="{{ programar.fk_grupoNodo.Descripcion}}" required>
+                       </div>
+                      
+                       <div class="form-group col-md-6">
+                          <label for="keyForum">Uso Horario</label>
+                          <input type="text" class="form-control" name="keyForu" id="keyForu" placeholder="Enter the key"  value="{{ programar.gmt_horainternacional}}" required>
+                       </div>
+                       <div class="form-group col-md-6">
+                          <label for="idForum">Duracion En Horas</label>
+                          <input type="text" class="form-control" name="idur" id="idur" placeholder="Ingrese Duracion"  value="{{ programar.duracion}}" required>
+                       </div>
+                       <div class="form-group col-md-6">
+                          <label for="keyForum">Hora inicio</label>
+                          <input type="text" class="form-control" name="hora_init" id="Hora_init" placeholder="Hora inicio"  value="{{ programar.hora_inicio}}" required>
+                       </div>
+                       
+                  </div>	
+  
+      		</div>
+		</div>
+	</div>
+
+{% endblock content %}
+	
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+   function updateLog(num){
+      return fetch("{% url 'logUser' %}", {
+         ...fetchObject,
+         body: JSON.stringify({
+            pk:"{{id}}",
+            estru:"{{estru}}",
+            estado: num
+         })
+      })
+      .then(async(res)=>{
+         result = JSON.parse(await res.text())
+         console.log(result)
+        
+      })
+   }
+   function updatesesion(tipo){
+      
+      return fetch("{% url 'savesesionprogramas'%}", {
+         ...fetchObject,
+         body: JSON.stringify({
+            method:tipo,
+            ids:"{{id}}"
+         })
+        
+     })
+     .then(async (res) => {
+         
+      result = JSON.parse(await res.text())
+      console.log(result)
+        
+         
+        
+     })
+    
+   }
+   async function clickSave ()  {
+       let guardar=true;
+       const save = await alertaMensajitos(6,'Por Favor confirme su asistencia', 'Continue de igual manera?')
+       if(!save){
+         guardar=false;
+         updatesesion('Exepcion')
+       
+       return;
+       }
+       if(guardar){
+         
+         updateLog(0)
+         
+       }
+     
+         
+       
+      }
+   
+</script>  
+{% endblock javascripts %}
