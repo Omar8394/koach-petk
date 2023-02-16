@@ -6,7 +6,7 @@ from django.http import HttpResponse, JsonResponse, HttpResponseForbidden
 from django.template import loader
 from django.template.loader import render_to_string
 from ..App.models import ConfTablasConfiguracion,AppPublico
-from ..Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_EvaluacionesPreguntas, capacitacion_EvaluacionesPreguntasOpciones, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos,EscalasEvaluaciones,capacitacion_ActividadEvaluaciones,capacitacion_EvaluacionesBloques,capacitacion_ActividadesTiempoReal,capacitacion_Examenes,capacitacion_ExamenesResultado 
+from ..Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_EvaluacionesPreguntas, capacitacion_EvaluacionesPreguntasOpciones, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos,EscalasEvaluaciones,capacitacion_ActividadEvaluaciones,capacitacion_EvaluacionesBloques,capacitacion_ActividadesTiempoReal,capacitacion_Examenes,capacitacion_ExamenesResultado,capacitacion_NotificacionesMensajesXactividad
 from ..Organizational_network.models import nodos_grupos,nodos_gruposIntegrantes,nodos_PlanFormacion
 import time, json
 from decimal import Decimal
@@ -2582,3 +2582,31 @@ def viewresult_test(request):
    
     html_template = (loader.get_template('ver_resultados_test.html'))
     return HttpResponse(html_template.render(context, request))        
+def getModalNewnotifi(request):            
+   if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            context = {}
+            modelo = {}
+            try:
+                if request.body:
+                    data = json.load(request)
+                    
+                    if data["method"] == "Show":
+                       print(data)
+                       context = {}
+                       html_template = (loader.get_template('modalAddnotifi.html'))
+                       return HttpResponse(html_template.render(context, request))            
+                    elif data["method"] == "Create":
+                        print(data)
+                        notifi=capacitacion_NotificacionesMensajesXactividad.objects.create()
+                        notifi.cuando=data['data']['modalidad_Cuando']
+                        notifi.tipo=data['data']['modalidad']
+                        notifi.fk_actividad_componente=data['id']
+                        notifi.fk_tipoActividad=capacitacion_ComponentesActividades.objects.get(pk=data['id']).fk_tipocomponente
+                        #print(capacitacion_ComponentesActividades.objects.get(pk=data['id']).fk_tipocomponente)
+                        # notifi.fk_notificacionActividad
+                        notifi.save()
+                        return JsonResponse({"message": "ok"})
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)

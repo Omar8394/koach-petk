@@ -184,7 +184,7 @@ class capacitacion_ActividadesTiempoReal(models.Model):
       fk_nodo_Grupo_integrantes=models.ForeignKey(nodos_gruposIntegrantes, on_delete=models.DO_NOTHING, default=None, null=True)		
 class capacitacion_NotificacionesMensajesXactividad(models.Model):
       id_notiMenxactividad=models.AutoField(primary_key=True)
-      fk_tipoActividad=models.SmallIntegerField(null=True) 
+      fk_tipoActividad=models.ForeignKey(ConfTablasConfiguracion,on_delete=models.CASCADE,default=None, null=True) 
       fk_actividad_componente=models.TextField(null=True)
       MAYBECHOICES = ( ('0', 'notificacion'), ('1', 'mensaje'), )      
       tipo= models.CharField(max_length=1, choices=MAYBECHOICES)

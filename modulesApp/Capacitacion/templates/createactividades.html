@@ -80,6 +80,11 @@
 	 
 		</div>
 	 </div>
+	 <div class="modal fade" id="addNewModalis" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="addNewModalContentis">
+	 
+		</div>
+	 </div>
 {% endblock content %}
 	
 <!-- Specific Page JS goes HERE  -->
@@ -1004,6 +1009,59 @@
 		});
 		return button.render();
 	 }
+	 const renderModalNewNotifi = (id) => {
+		idSeleted=id
+		tipo=null
+		editmode = false
+		return fetch("{% url 'getModalNewnotifi'%}", {
+		   ...fetchObject,
+		   body: JSON.stringify({
+			  method: "Show",
+			  id
+			  
+		   })
+		})
+		   .then(async (res) => {
+			  document.getElementById("addNewModalContentis").innerHTML = await res.text()
+		   })
+		   .then(() => {
+			  $("#addNewModalis").modal("show")
+			  const formPrograma = document.getElementById("formProgramas")
+			  let rules = {
+				modalidad:{
+					required: true
+				 },
+			
+				 modalidad_Cuando:{
+					required: true
+				 }
+			  }
+			  commonValidator = $("#formProgramas").validate({
+				rules,
+				highlight: function (element) {
+				   $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+				},
+				success: function (element) {
+				   $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+				},
+			 });
 
+			
+			 formPrograma.addEventListener("submit", (e) => {
+				e.preventDefault()
+				if($("#formProgramas").valid()){
+				   setLoading()
+				   clickSave(formPrograma, "{% url 'getModalNewnotifi'%}")
+					  .then(() => {
+						 $("#addNewModalis").modal("hide")
+						 //renderContent(idSeleted)
+						 stopLoading()
+						 
+					  })
+	
+				}
+			 })
+		   })
+	 }
 </script>
 {% endblock javascripts %}

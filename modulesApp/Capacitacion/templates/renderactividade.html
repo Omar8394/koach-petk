@@ -27,8 +27,12 @@
       <div class="card-list-item-title">{{activity.titulo}}</div>      
       <div class="card-list-item-actions">
          <button type="button" class="btn btn-icon btn-sm btn-success ml-1 handle" data-toggle="tooltip"
-          data-placement="top" title="Mover">
-          <i class="fas fa-arrows-alt"></i>
+         data-placement="top" title="Mover">
+         <i class="fas fa-arrows-alt"></i>
+         </button>
+         <button type="button" class="btn btn-icon btn-sm btn-success ml-1 handle" data-toggle="tooltip"
+         title="Notificacion/opcional" onclick="renderModalNewNotifi('{{activity.id_componenteActividades}}')">
+          <i class="fas fa-fax"></i>
           </button>
          <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Editar"
          onclick="EditActivity('{{activity.id_componenteActividades}}','{{padre}}','{{activity.valor_elemento}}')">
