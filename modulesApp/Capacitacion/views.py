@@ -8,6 +8,7 @@ from django.template.loader import render_to_string
 from ..App.models import ConfTablasConfiguracion,AppPublico
 from ..Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_EvaluacionesPreguntas, capacitacion_EvaluacionesPreguntasOpciones, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos,EscalasEvaluaciones,capacitacion_ActividadEvaluaciones,capacitacion_EvaluacionesBloques,capacitacion_ActividadesTiempoReal,capacitacion_Examenes,capacitacion_ExamenesResultado,capacitacion_NotificacionesMensajesXactividad
 from ..Organizational_network.models import nodos_grupos,nodos_gruposIntegrantes,nodos_PlanFormacion
+from ..Comunication.models import Comunication_MsjPredeterminado,Boletin_Info 
 import time, json
 from decimal import Decimal
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -2593,19 +2594,43 @@ def getModalNewnotifi(request):
                     
                     if data["method"] == "Show":
                        print(data)
-                       context = {}
+                       tipo=''
+                       notifi=capacitacion_NotificacionesMensajesXactividad.objects.filter(fk_actividad_componente=data['id'])
+                       print(notifi)
+                       if notifi.exists():
+                           tipo=capacitacion_NotificacionesMensajesXactividad.objects.get(fk_actividad_componente=data['id'])
+                           context = {'tipo':tipo}
+                       else:
+                           
+                           context = {}   
+                       print(context)
                        html_template = (loader.get_template('modalAddnotifi.html'))
                        return HttpResponse(html_template.render(context, request))            
                     elif data["method"] == "Create":
                         print(data)
-                        notifi=capacitacion_NotificacionesMensajesXactividad.objects.create()
-                        notifi.cuando=data['data']['modalidad_Cuando']
-                        notifi.tipo=data['data']['modalidad']
-                        notifi.fk_actividad_componente=data['id']
-                        notifi.fk_tipoActividad=capacitacion_ComponentesActividades.objects.get(pk=data['id']).fk_tipocomponente
-                        #print(capacitacion_ComponentesActividades.objects.get(pk=data['id']).fk_tipocomponente)
-                        # notifi.fk_notificacionActividad
-                        notifi.save()
+                        notifis=capacitacion_NotificacionesMensajesXactividad.objects.filter(fk_actividad_componente=data['id'])
+                        if notifis.exists():
+                           notifiedit=capacitacion_NotificacionesMensajesXactividad.objects.get(fk_actividad_componente=data['id'])
+                           notifiedit.cuando=data['data']['modalidad_Cuando']
+                           notifiedit.tipo=data['data']['modalidad'] 
+                           if data['data']['modalidad'] == 0:
+                              mensaje=Comunication_MsjPredeterminado.objects.filter(tipo_msj='mensaje') 
+                              if mensaje.exists():                               
+                                 notifiedit.fk_notificacionActividad=mensaje[0].pk
+                           notifiedit.save()
+                        else:    
+                         notifi=capacitacion_NotificacionesMensajesXactividad.objects.create()
+                         notifi.cuando=data['data']['modalidad_Cuando']
+                         notifi.tipo=data['data']['modalidad']
+                         notifi.fk_actividad_componente=data['id']
+                         notifi.fk_tipoActividad=capacitacion_ComponentesActividades.objects.get(pk=data['id']).fk_tipocomponente
+                         #print(capacitacion_ComponentesActividades.objects.get(pk=data['id']).fk_tipocomponente)
+                         if data['data']['modalidad'] == 0:
+                            mensaje=Comunication_MsjPredeterminado.objects.filter(tipo_msj='mensaje') 
+                            if mensaje.exists():                               
+                               notifi.fk_notificacionActividad=mensaje[0].pk
+                             
+                         notifi.save()
                         return JsonResponse({"message": "ok"})
             except Exception as e:
                print(e)
