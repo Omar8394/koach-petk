@@ -22,6 +22,7 @@ from django.core.files.storage import FileSystemStorage
 import os
 from django.db.models import Count, Sum, FloatField
 from ..Security.models import User
+from .methods import finalizar_componente,verifylast
 import datetime
 
 # Create your 
@@ -2334,7 +2335,8 @@ def logUser(request):
     if request.method == "POST":
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             usuario=request.user
-            userpu= AppPublico.objects.get(user_id=usuario) 
+            userpu= AppPublico.objects.get(user_id=usuario)
+            print(userpu) 
             nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu)
             rol=usuario.fk_rol_usuario
             print(rol)
@@ -2371,7 +2373,9 @@ def logUser(request):
                     historia.fk_componenteActividades_id = idA
                     historia.fk_nodo_Grupo_integrantes=nodosuser
                     historia.fk_componenteXestructura_id=idStr
-                    historia.save()      
+                    historia.save()
+                        
+                    finalizar_componente(userpu,idStr)  
                 return JsonResponse({"message":"ok"}, status=200)                
             except Exception as e:
                print(e)
@@ -2492,6 +2496,7 @@ def contenidoTest(request):
             context = {}
             data = json.load(request)["data"]            
             print(data)
+            usuario=AppPublico.objects.get(user_id=request.user)
             if data["method"] == "Save":
                 respuestas=data["respuestas"] 
                 if respuestas:
@@ -2570,7 +2575,11 @@ def contenidoTest(request):
                                 historia.fk_nodo_Grupo_integrantes = examen.fk_nodo_Grupo_integrantes
                                 historia.fk_componenteXestructura = capacitacion_componentesXestructura.objects.get(fk_componetesformacion=examen.fk_ActividadEvaluaciones.fk_componenteActividad.fk_componenteformacion)
                                 historia.save()  
-                
+                    if examen.puntuacion_obtenida>=examen.fk_ActividadEvaluaciones.calificacion_aprobar:
+                       if verifylast(examen) == examen.fk_ActividadEvaluaciones.fk_componenteActividad:                                    
+                          if finalizar_componente(usuario,capacitacion_componentesXestructura.objects.get(fk_componetesformacion=examen.fk_ActividadEvaluaciones.fk_componenteActividad.fk_componenteformacion).pk):
+                              deletehistori=capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=examen.fk_nodo_Grupo_integrantes, fk_componenteActividades__fk_componenteformacion = examen.fk_ActividadEvaluaciones.fk_componenteActividad.fk_componenteformacion)
+                              deletehistori.delete()
             return JsonResponse({"message": "Perfect"})         
 def viewresult_test(request):
     id=request.GET.get('id')
