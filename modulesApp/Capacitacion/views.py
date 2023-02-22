@@ -6,7 +6,7 @@ from django.http import HttpResponse, JsonResponse, HttpResponseForbidden
 from django.template import loader
 from django.template.loader import render_to_string
 from ..App.models import ConfTablasConfiguracion,AppPublico
-from ..Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_EvaluacionesPreguntas, capacitacion_EvaluacionesPreguntasOpciones, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos,EscalasEvaluaciones,capacitacion_ActividadEvaluaciones,capacitacion_EvaluacionesBloques,capacitacion_ActividadesTiempoReal,capacitacion_Examenes,capacitacion_ExamenesResultado,capacitacion_NotificacionesMensajesXactividad
+from ..Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_EvaluacionesPreguntas, capacitacion_EvaluacionesPreguntasOpciones, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos,EscalasEvaluaciones,capacitacion_ActividadEvaluaciones,capacitacion_EvaluacionesBloques,capacitacion_ActividadesTiempoReal,capacitacion_Examenes,capacitacion_ExamenesResultado,capacitacion_NotificacionesMensajesXactividad,capacitacion_HistoricoActividades
 from ..Organizational_network.models import nodos_grupos,nodos_gruposIntegrantes,nodos_PlanFormacion
 from ..Comunication.models import Comunication_MsjPredeterminado,Boletin_Info 
 import time, json
@@ -2578,8 +2578,29 @@ def contenidoTest(request):
                     if examen.puntuacion_obtenida>=examen.fk_ActividadEvaluaciones.calificacion_aprobar:
                        if verifylast(examen) == examen.fk_ActividadEvaluaciones.fk_componenteActividad:                                    
                           if finalizar_componente(usuario,capacitacion_componentesXestructura.objects.get(fk_componetesformacion=examen.fk_ActividadEvaluaciones.fk_componenteActividad.fk_componenteformacion).pk):
+                              fecha_ini=capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=examen.fk_nodo_Grupo_integrantes,culminado=1,fk_componenteActividades__fk_componenteformacion=examen.fk_ActividadEvaluaciones.fk_componenteActividad.fk_componenteformacion).order_by('fk_componenteActividades')[0].fecha_realizado
+                              fecha_fin=capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=examen.fk_nodo_Grupo_integrantes,culminado=1,fk_componenteActividades__fk_componenteformacion=examen.fk_ActividadEvaluaciones.fk_componenteActividad.fk_componenteformacion).order_by('-fk_componenteActividades')[0].fecha_realizado
+                              programar=[]
+                              obj={}
+                              datos = {}
+                              obj["fecha_ini"]=str(fecha_ini) 
+                              obj["fecha_fin"]=str(fecha_fin)              
+                              obj["tema"]=str(examen.fk_ActividadEvaluaciones.fk_componenteActividad.fk_componenteformacion_id)
+                              programar.append(obj or 0)
+                              datos['datos_resumen']=programar
+                              print(datos)
+                              historial=capacitacion_HistoricoActividades.objects.create()
+                              historial.fk_componenteXestructura=capacitacion_componentesXestructura.objects.get(fk_componetesformacion=examen.fk_ActividadEvaluaciones.fk_componenteActividad.fk_componenteformacion)
+                              historial.fk_nodo_Grupo_integrantes=examen.fk_nodo_Grupo_integrantes
+                              historial.datos_resumen=json.dumps(datos)
+                              historial.estatus_lider=0
+                              historial.save()
                               deletehistori=capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=examen.fk_nodo_Grupo_integrantes, fk_componenteActividades__fk_componenteformacion = examen.fk_ActividadEvaluaciones.fk_componenteActividad.fk_componenteformacion)
                               deletehistori.delete()
+                            #   deleteop=capacitacion_ExamenesResultado.objects.filter(fk_capacitacionExamenes=examen)
+                            #   deleteop.delete()
+                            #   deletetest=capacitacion_Examenes.objects.filter(fk_nodo_Grupo_integrantes=examen.fk_nodo_Grupo_integrantes,fk_ActividadEvaluaciones=examen)
+                            #   deletetest.delete()          
             return JsonResponse({"message": "Perfect"})         
 def viewresult_test(request):
     id=request.GET.get('id')

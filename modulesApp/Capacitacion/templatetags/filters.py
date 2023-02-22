@@ -10,7 +10,7 @@ from django.core import serializers
 from django.db.models import Q
 from modulesApp.Security.models import User
 from modulesApp.App.models import ConfTablasConfiguracion,AppPublico
-from modulesApp.Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_EvaluacionesPreguntas, capacitacion_EvaluacionesPreguntasOpciones, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos,EscalasEvaluaciones,capacitacion_ActividadEvaluaciones,capacitacion_EvaluacionesBloques,capacitacion_ActividadesTiempoReal,capacitacion_Examenes 
+from modulesApp.Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_EvaluacionesPreguntas, capacitacion_EvaluacionesPreguntasOpciones, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos,EscalasEvaluaciones,capacitacion_ActividadEvaluaciones,capacitacion_EvaluacionesBloques,capacitacion_ActividadesTiempoReal,capacitacion_Examenes,capacitacion_HistoricoActividades  
 from modulesApp.Organizational_network.models import nodos_gruposIntegrantes,nodos_PlanFormacion
 from modulesApp.App.models import ConfSettings,ConfSettings_Atributo
 register = template.Library()
@@ -68,6 +68,7 @@ def week(topico, usuario):
                  _isFree=False
                 
         else:
+        #    historial=capacitacion_HistoricoActividades.objects.filter() 
            print('mo')
            if weekend(topico, usuario):
               _isFree=True 
@@ -156,3 +157,16 @@ def previousActivity(activity, user):
     else:
             return None
     return prevActivity[0]
+def json(datos):
+  if datos==None or datos=="" or datos=={}:
+    return ""
+  tlf=None
+  data = json.loads(datos)
+
+  
+  if data==None or data=="" or data=={}:
+      return ""
+  if   'datos_resumen' in data :
+     return data['datos_resumen'][0]['tema']
+  else:
+      return ""
