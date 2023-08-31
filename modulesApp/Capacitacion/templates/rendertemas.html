@@ -1,9 +1,10 @@
 {% load filters%}
+{% if plan %}
 {% for item  in plan  %}
 <ul>
 										  
 <li>
-    {% if not  item.fk_componentesXestructura.fk_componetesformacion|week:request.user  %}
+    {% if not  item.fk_componentesXestructura|week:request.user  %}
     <div class="locked">
         
         <i class="fas fa-lock" style="color: #FD0F02;"></i>
@@ -27,3 +28,12 @@
 						 
 </ul>
 {% endfor %}
+{% else %}
+<div class="locked">
+    
+    <i class="fas fa-lock" style="color: #FD0F02;"></i>
+    <div>{{aviso}}</div>
+    
+</div>
+
+{% endif %}

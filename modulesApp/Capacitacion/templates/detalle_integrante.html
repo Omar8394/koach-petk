@@ -1,0 +1,93 @@
+<div class="row">
+    <div class="col-lg-4 col-xlg-3 col-md-5">
+        <div class="card">
+            <div class="card-body">
+                <center class="mt-4"> 
+                    
+                        <div class="image-upload">
+                            <div class="row">
+                                <div class="col">
+                                    <label for="file-input">
+                                        {%if img%}
+                                        <img src="/upload/user/{{img}}" class="rounded-circle border" style="cursor: pointer;" width="150" id="imagenPerfil">
+                                        {%else%}
+                                        <img src="/static/assets/img/default-user-icon.png" class="rounded-circle border" style="cursor: pointer;" width="150" id="imagenPerfil">
+        
+                                        {%endif%}
+                                       
+                                        
+                                    </label>  
+                                    <input id="file-input" name="file-input" type="file" style="display: none;" accept="image/*" />
+                                </div>
+                            </div>
+                           
+                        </div> 
+
+
+                    <h4 class="card-title my-2">
+                        {{email}}
+                    </h4>
+                    <button type="button" onclick="regresar()" class="btn-radius btn-azul" >Regresar <i class="fas fa-undo mr-2"></i></button> 
+                </center>
+            </div>
+            <div>
+                <hr> </div>
+            
+        </div>
+    </div>
+
+
+    <div class="col-lg-8 col-xlg-9 col-md-7">
+        <div class="card">
+            <div class="card-header bg-dark2">
+                <span class="h1 text-white d-flex justify-content-center">Historial</span>
+            </div>
+            <div class="card-body m-0 p-0">
+                
+                    
+                        <div class="resultado">
+                              
+                               {% for activity in historia %}
+<li class="card-list-item-content deg-primary" >
+  
+   
+   
+      <div class="card-list-item-title">Actividad: {{activity.fk_componenteActividades}}</div>      
+   
+      
+      <label  >Fecha: {{activity.fecha_realizado}}</label>
+      
+      {% if activity.culminado == 1 %}
+      <label  >Status: culminado</label>
+     
+      {% endif %}
+      <label  >Tipo Actividad:{{activity.fk_componenteActividades.fk_tipocomponente}}</label>
+</li>
+{% endfor %}
+{% for activity in historia_resumen %}
+<li class="card-list-item-content deg-primary" >
+  
+   
+   
+      <div class="card-list-item-title">Actividad: {{activity.datos_resumen|jsonhistory:"ultima_Actividad"}}</div>      
+   
+      
+      <label  >Fecha Inicio: {{activity.datos_resumen|jsonhistory:"fecha_ini"}}</label>
+      
+      
+      <label  >Status: culminado</label>
+     
+      
+      <label  >Fecha Finalizacion:{{activity.datos_resumen|jsonhistory:"fecha_fin"}}</label>
+</li>
+{% endfor %}                      
+                                
+                              
+                            </div>
+                        
+                    
+                 
+            </div>
+        </div>
+    </div>
+</div>                        

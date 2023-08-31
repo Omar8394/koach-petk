@@ -1,0 +1,8 @@
+<label for="resumen" class="col-form-label">Motivo Desincorporacion</label>
+
+<select class="form-control" id="resumen" name="resumen" required>
+   <option value="null" disabled {% if not grupos %} selected {% endif %}>Select an option</option>
+   {% for item in motivo %}
+   <option value="{{item.pk}}"  {% if grupos.status_grupo_id == item.pk %} selected {% endif %} >{{item.desc_elemento}}</option>
+   {% endfor %}
+</select>

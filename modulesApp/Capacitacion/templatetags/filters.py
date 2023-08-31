@@ -20,29 +20,24 @@ def week(topico, usuario):
     
     rol=usuario.fk_rol_usuario
     userpu= AppPublico.objects.get(user_id=usuario)
-    rango=ConfSettings_Atributo.objects.get(valor_setting='avance_temas')
-    data=json.loads(rango.rangovalor_setting)
-    print(int(data['max']))
-    print(rango.status_setting)
-    nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu)
-    s=0
+    rango=ConfSettings_Atributo.objects.get(valor_setting='avance_temas')   
+    datos=json.loads(rango.rangovalor_setting)
+    nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu)   
     _isFree = False
     if str(rol) == 'Estudiante':
       if rango.status_setting == 1:
-        print ('tesres') 
+        
         date =datetime.datetime.now()
         start_week = date - datetime.timedelta(date.weekday())
         sem=datetime.timedelta(date.weekday())
         end_week = start_week + datetime.timedelta(6)
         mydate = end_week - timedelta(days=6)
-        mydate = mydate.replace(hour=00,minute=00,second=00, microsecond=00000)
-        cant_act=capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion=topico)    
-        print(cant_act.count())
+        mydate = mydate.replace(hour=00,minute=00,second=00, microsecond=00000)       
         lastTopics = capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=nodosuser, fecha_realizado__gte=mydate).values('fk_componenteActividades__fk_componenteformacion').annotate(lecciones=Count('fk_componenteActividades')) 
-        print(lastTopics)
+        
         if lastTopics.exists():
             
-            if lastTopics.count() >= int(data['max']) : 
+            if lastTopics.count() >= int(datos['max']) : 
                print('hui')            
                for topic in lastTopics:      
                   if topico.pk == topic['fk_componenteActividades__fk_componenteformacion'] :    
@@ -51,7 +46,7 @@ def week(topico, usuario):
                      return True 
                   
                  # codigo para excepciones  
-               olderTopics = capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=nodosuser, fecha_realizado__lte=mydate, fk_componenteActividades__fk_componenteformacion_id=topico)
+               olderTopics = capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=nodosuser, fecha_realizado__lte=mydate, fk_componenteActividades__fk_componenteformacion_id=topico.fk_componetesformacion)
                
                if olderTopics.exists():
                   _isFree = True
@@ -62,17 +57,22 @@ def week(topico, usuario):
         #         
                
             else:
-               if weekend(topico, usuario):
+               if weekend(topico.fk_componetesformacion, usuario):
                  _isFree=True 
                else:  
                  _isFree=False
                 
         else:
-        #    historial=capacitacion_HistoricoActividades.objects.filter() 
-           print('mo')
-           if weekend(topico, usuario):
+           historial=capacitacion_HistoricoActividades.objects.filter(fk_componenteXestructura=topico)
+           if historial.exists():
+              tema=jsons(historial[0].datos_resumen)
+              if topico.fk_componetesformacion_id == int(tema):
+                 _isFree=True 
+             
+           else:
+            if weekend(topico.fk_componetesformacion, usuario):
               _isFree=True 
-           else:  
+            else:  
               _isFree=False 
       else: 
        _isFree = True          
@@ -97,54 +97,109 @@ def isNeeded(activity, usuario):
     return isRequired
 @register.filter(name='weekend')
 def weekend(topico, usuario):
-    print('kola')
+    print('koal')
+    print(topico)
     rol=usuario.fk_rol_usuario
-    userpu= AppPublico.objects.get(user_id=usuario)
-    
+    userpu= AppPublico.objects.get(user_id=usuario)    
     nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu)
-    
+    grupo=nodosuser.fk_nodogrupo
+    rango=ConfSettings_Atributo.objects.get(valor_setting='avance_temas') 
+    print(rango)  
+    datos=json.loads(rango.rangovalor_setting)
+    date =datetime.datetime.now()
+    start_week = date - datetime.timedelta(date.weekday())
+    em=datetime.timedelta(date.weekday())
+    end_week = start_week + datetime.timedelta(6)
+    mydate = end_week - timedelta(days=6)
+    mydate = mydate.replace(hour=00,minute=00,second=00, microsecond=00000)
     
     _isFree = False
     if str(rol) == 'Estudiante':
-       orden_anterior = topico.orden_presentacion - 1 
+       semanatest=capacitacion_Examenes.objects.filter(fk_nodo_Grupo_integrantes=nodosuser,fecha_final__gte=mydate) 
        
-       topico_anterior = nodos_PlanFormacion.objects.filter(fk_gruponodo=2, orden_presentacion=orden_anterior)
-      
-       if topico_anterior.exists():
-          lista_examenes=capacitacion_ActividadEvaluaciones.objects.filter(fk_componenteActividad__fk_componenteformacion=topico_anterior[0].fk_componentesXestructura.fk_componetesformacion) 
-          
-          if lista_examenes.exists():
-             print('no')        
-             for test in lista_examenes:
-                
-                 actividad = test.id_ActividadEvaluaciones
-                 
-                 test_aprobados = capacitacion_Examenes.objects.filter(fk_nodo_Grupo_integrantes_id=nodosuser.pk,fk_ActividadEvaluaciones_id=actividad,puntuacion_obtenida__gte=test.calificacion_aprobar)
-                 print(test_aprobados)
-                 if test_aprobados.exists():
-                    _isFree=True
-                 else:
-                    
-                    return False
+       print(datos['max'])
+       if semanatest.exists():
+          if semanatest.count() >= int(datos['max']):
+            _isFree = False
           else:
-              _isFree = False  
-       else:
+              orden_anterior = topico.orden_presentacion - 1 
+       
+              topico_anterior = nodos_PlanFormacion.objects.filter(fk_gruponodo=grupo, orden_presentacion=orden_anterior)
+      
+              if topico_anterior.exists():
+                 lista_examenes=capacitacion_ActividadEvaluaciones.objects.filter(fk_componenteActividad__fk_componenteformacion=topico_anterior[0].fk_componentesXestructura.fk_componetesformacion) 
+                 print('huuyi')
+                 if lista_examenes.exists():
+                    print('no')        
+                    for test in lista_examenes:
+                
+                        actividad = test.id_ActividadEvaluaciones
+                 
+                        test_aprobados = capacitacion_Examenes.objects.filter(fk_nodo_Grupo_integrantes_id=nodosuser.pk,fk_ActividadEvaluaciones_id=actividad,puntuacion_obtenida__gte=test.calificacion_aprobar)
+                        print(test_aprobados)
+                        if test_aprobados.exists():
+                           _isFree=True
+                        else:
+                    
+                           return False
+                 else:
+                   _isFree = False  
+              else:
+                _isFree = True          
+    
+       else:    
+          orden_anterior = topico.orden_presentacion - 1 
+       
+          topico_anterior = nodos_PlanFormacion.objects.filter(fk_gruponodo=grupo, orden_presentacion=orden_anterior)
+      
+          if topico_anterior.exists():
+             lista_examenes=capacitacion_ActividadEvaluaciones.objects.filter(fk_componenteActividad__fk_componenteformacion=topico_anterior[0].fk_componentesXestructura.fk_componetesformacion) 
+             print('huuyi')
+             if lista_examenes.exists():
+                print('no')        
+                for test in lista_examenes:
+                
+                    actividad = test.id_ActividadEvaluaciones
+                 
+                    test_aprobados = capacitacion_Examenes.objects.filter(fk_nodo_Grupo_integrantes_id=nodosuser.pk,fk_ActividadEvaluaciones_id=actividad,puntuacion_obtenida__gte=test.calificacion_aprobar)
+                    print(test_aprobados)
+                    if test_aprobados.exists():
+                       _isFree=True
+                    else:
+                    
+                       return False
+             else:
+               _isFree = False  
+          else:
              _isFree = True          
        print(_isFree)      
     return _isFree   
 @register.filter(name='nextActivity')
-def nextActivity(activity, user):
-   
-    tema=capacitacion_ComponentesActividades.objects.get(pk=activity)
-    
-    nextPosicion=tema.orden_presentacion + 1
-    nextActivity = capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion=tema.fk_componenteformacion, orden_presentacion=nextPosicion)
+def nextActivity(activity, tems):
+    print(tems)  
+    tem=''
+         
+    componente=capacitacion_ComponentesActividades.objects.get(pk=activity,fk_componenteformacion=tems)
+    print(componente)
+    nextPosicion=componente.orden_presentacion + 1
+    nextActivity = capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion=tems, orden_presentacion=nextPosicion)
+    print(nextActivity)
     if nextActivity.exists():
-        
-            return nextActivity[0]
+        tem=nextActivity[0]
+           
     else:
-            return None
-    return nextActivity[0]  
+      temass= componentesFormacion.objects.filter(pk=tems.pk)
+      print(temass)
+      if temass.exists():
+         tem_orden=temass[0].orden_presentacion + 1
+         temasA=capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion__orden_presentacion=tem_orden)
+         print(tem_orden)
+         if temasA.exists(): 
+            tem= temasA[0] 
+           
+      
+    print(tem)   
+    return tem  
 @register.filter(name='previousActivity')
 def previousActivity(activity, user):
     temas=capacitacion_ComponentesActividades.objects.get(pk=activity)
@@ -157,7 +212,7 @@ def previousActivity(activity, user):
     else:
             return None
     return prevActivity[0]
-def json(datos):
+def jsons(datos):
   if datos==None or datos=="" or datos=={}:
     return ""
   tlf=None
@@ -170,3 +225,5 @@ def json(datos):
      return data['datos_resumen'][0]['tema']
   else:
       return ""
+
+  

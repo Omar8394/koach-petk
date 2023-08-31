@@ -20,10 +20,10 @@
          onclick="openEditProseso('{{item.id_estructura}}','{{item.fk_estructura_padre_id}}','{{page}}')">
          <i class="fas fa-edit"></i>
          </button>
-         <button type="button" class="btn btn-icon btn-sm btn-warning ml-1" data-toggle="tooltip"
-         data-placement="top" title="Ir" onclick="opengounits('{{item.id_estructura}}')">
+         <a class="btn btn-icon btn-sm btn-warning ml-1" data-toggle="tooltip"
+         data-placement="top" title="Ir" href="{% url 'capacitaciontwo' velemento=item.valor_elemento url=item.url idActividad=item.id_estructura %}">
          <i class="fas fa-door-open"></i>
-         </button>
+         </a>
          <button type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip" data-placement="top"
          title="Delete" onclick="openDeleteProseso('{{item.id_estructura}}','{{item.fk_estructura_padre_id}}','{{page}}')">
          <i class="fas fa-trash-alt"></i>

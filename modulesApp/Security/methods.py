@@ -5,7 +5,8 @@ from .models import User,CodigoVerificacion
 from django.contrib.auth import update_session_auth_hash, authenticate
 from datetime import datetime, timedelta
 from modulesApp.Comunication.methods import create_mail, send_mail
-from modulesApp.App.models import ConfTablasConfiguracion
+from modulesApp.App.models import ConfTablasConfiguracion, AppPublico
+import json
 
 def es_correo_valido(correo):
     expresion_regular = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"
@@ -174,3 +175,17 @@ def get_Random_Code(lenght, onlyNumber = False, onlyMayus = True):
     except Exception as e:
         code = "error no generate code "+e.__str__()
     return code
+def create_publico(email,user):
+    correo = {}
+    correo['emailPrincipal'] = email
+    correo['emailAlternativo'] = ""
+    telefono = {}
+    telefono['telefonoPrincipal'] = ""
+    telefono['telefonoAlternativo'] = ""
+    publico = AppPublico.objects.create(nombre="",
+                           apellido="", direccion="",
+                           correo_principal=json.dumps(correo),
+                           telefono_principal=json.dumps(telefono),
+                           telegram_id="",
+                           user_id=user, pais_id=507)
+    return publico

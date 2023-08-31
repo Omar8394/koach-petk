@@ -1,0 +1,21 @@
+<div class="form-group col-md-6">
+    <label for="linkForum">Nodo</label>
+    <select class="form-control" name="categoryProgram" id="categoryProgram" onchange="cambiar_combs()" required >
+        <option value={% if elegido %}{{elegido.if_gruponodo}}
+        
+        {% else %}'null'
+        {% endif %}>{% if elegido %}{{elegido.Descripcion}}
+        
+        {% else %}Select a option
+        {% endif %}</option>
+        {% if not elegido %}
+        {% for item in grupo %}
+                     
+        <option value={{item.if_gruponodo}} id="opProgram">{{item.Descripcion}}</option>
+               
+     {% endfor%}
+        
+        {% endif %}
+          
+     </select>      
+ </div>

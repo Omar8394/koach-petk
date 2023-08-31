@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from modulesApp.App.models import ConfTablasConfiguracion
+from django.conf import settings
 # Create your models here.
 class User(AbstractUser):
     def get_default_status():
@@ -31,3 +32,9 @@ class CodigoVerificacion(models.Model):
     key_expires = models.DateTimeField()
     usuario = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
     tipo_verificacion = models.ForeignKey(ConfTablasConfiguracion, on_delete=models.DO_NOTHING, related_name='tipo_verificacion')
+class Log_Transacciones(models.Model):
+    Id_log=models.AutoField(primary_key=True)
+    fk_transaccion=models.ForeignKey(ConfTablasConfiguracion, on_delete=models.DO_NOTHING, related_name='tipo_transaccion', null=True)
+    fecha_transaccion=models.DateField(blank=True, null=True)
+    fk_Cta_usuario=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, blank=True, null=True)
+    datos_transaccion=models.TextField(blank=True)

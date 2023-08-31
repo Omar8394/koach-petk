@@ -27,10 +27,10 @@
           title="Delete" onclick="openDeletecursos('{{item.fk_componetesformacion.pk}}','{{item.fk_estructuraprogramas_id}}','{{page}}')">
           <i class="fas fa-trash-alt"></i>
           </button>
-          <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Edit"
-          onclick="openaddactividades('{{item.fk_componetesformacion.pk}}')">
+          <a class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Edit"
+          href="{% url 'createactividades' velemento=item.fk_componetesformacion.codigo_componente url=item.fk_estructuraprogramas.url idActividad=item.fk_componetesformacion.pk %}">
           <i class="fas fa-plus"></i>
-          </button>
+           </a>
           </div>
          </div>
        </div>

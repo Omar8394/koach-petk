@@ -1,0 +1,467 @@
+<!-- Specific Page CSS goes HERE  -->
+{% extends "layouts/base.html" %}
+{% block stylesheets %}{% endblock stylesheets %}
+{% load i18n %}
+{% block content %}
+
+	<div class="content">
+		<div class="page-inner">
+			<div class="page-header">
+				<h4 class="page-title">Starter page</h4>
+				<ul class="breadcrumbs">
+					<li class="nav-home">
+						<a href="{% url 'Dashboard' %}">
+							<i class="flaticon-home"></i>
+						</a>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<span>Module name</span>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<a href="#">Page 1</a>
+					</li>
+				</ul>
+			</div>
+			<div class="page-category">
+        		
+                
+                    <div class="form-row d-flex justify-content-center">
+                        <div class="card mt-3" style="width: 80rem;" >
+                           
+                            <div class="card-body" id="tabQuestions">
+                                <div class="form-row text-center">
+                                    <div class="form-group col-md-12">
+                                        <div class="table-responsive">
+                                            <table class="table table-borderless table-striped table-hover text-center table-component-like ">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            N°
+                                                        </th>
+                                                        <th>
+                                                           Nombre 
+                                                        </th>
+                                                        <th>
+                                                          Correo
+                                                        </th>
+                                                       
+                                                        <th>
+                                                            Acciones
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody  id="tableContent">
+                                                {% for grupo in matriculasList %}
+                                               
+                                                <tr>
+                                                    {% if  grupo.idpublico|verifica_existe_nodo %}
+                                                    <td>
+                                                        {{grupo.idpublico}}
+                                                    </td>
+    
+    
+                                                    <td>
+                                                        {% if not grupo.nombre%}
+                                                        Aun no ha configurado su perfil
+                                                        {% else %}
+                                                        {{grupo.nombre}} {{grupo.apellido}}
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                         {{grupo.correo_principal|jsonmail}}
+                                                    </td>
+                                               
+
+                                                <td>
+                                                    <div class="btn-group" role="group">
+                                                
+                                            
+                                                 <button onclick="chooseModal('{{gruposi}}','{{grupo.idpublico}}')"   type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Transferir a otro grupo" >
+                                                   
+                                                    <i class="fas fa-exchange-alt"></i>
+                                                 </button>
+                                                
+
+                                                
+                                                    </div>
+                                                 </td>
+                                                 {% endif %}
+                                                </tr>
+                                                
+                                                {% endfor %}
+												 
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+										<div class="card-footer">
+                              
+                               
+        
+											<nav aria-label="Page navigation example">
+												<ul class="pagination justify-content-center">
+												{% if matriculasList.has_previous %}
+													<li class="page-item">
+														<a class="page-link" href="?page=1">&laquo; First</a>
+					
+													</li>
+													<li class="page-item">
+														<a class="page-link" href="?page={{ matriculasList.previous_page_number }}">Previous</a>
+													</li>
+												{% else %}
+													<li class="page-item disabled">
+														<a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+													</li>
+												{% endif %}
+										
+												{% if matriculasList.number|add:'-4' > 1 %}
+													<li class="page-item">
+														<a class="page-link" href="?page={{ matriculasList.number|add:'-5' }}">&hellip;</a>
+													</li>
+												{% endif %}
+										
+												{% for i in matriculasList.paginator.page_range %}
+													{% if matriculasList.number == i %}
+													<li class="page-item active" aria-current="page">
+														<span class="page-link">
+															{{ i }}
+															<span class="sr-only">(current)</span>
+														</span>
+													</li>
+													{% elif i > matriculasList.number|add:'-5' and i < matriculasList.number|add:'5' %}
+													<li class="page-item">
+														<a class="page-link" href="?page={{ i }}">{{ i }}</a>
+													</li>
+													{% endif %}
+												{% endfor %}
+										
+												{% if matriculasList.paginator.num_pages > matriculasList.number|add:'4' %}
+													<li class="page-item">
+													   <a class="page-link" href="?page={{ matriculasList.number|add:'5' }}">&hellip;</a>
+													</li>
+												{% endif %}
+										
+												{% if matriculasList.has_next %}
+													<li class="page-item">
+														<a class="page-link" href="?page={{ matriculasList.next_page_number }}">Next</a>
+													</li>
+													<li class="page-item">
+														<a class="page-link" href="?page={{ matriculasList.paginator.num_pages }}">Last &raquo;</a>
+													</li>
+					
+												{% else %}
+													<li class="page-item disabled">
+														<a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+													</li>
+												{% endif %}
+												</ul>
+											</nav>
+					
+											
+										</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+  
+      		</div>
+		</div>
+	</div>
+    <div class="modal fade" id="addNewModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="addNewModalContent">
+	 
+		</div>
+	 </div>
+     <div class="modal fade" id="addNewModals" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="addNewModalContents">
+	 
+		</div>
+	 </div>
+	 <div class="modal fade" id="addNewModales" tabindex="-1" role="dialog">
+		<div class="modal-dialog  modal-dialog-centered" role="document" id="addNewModalContentes">
+	 
+		</div>
+	 </div>
+{% endblock content %}
+	
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+    let grupo='{{gruposi}}'
+    let editmode = false
+	let query=''
+	const chooseModal = async (id,integrante) => {
+		
+		await opentransfer(id,integrante)
+		let url
+       
+        url = "{% url 'RenderListasnodos'%}"
+        
+		await renderLista(url)
+		 
+	 } 
+	const opentransfer = (id,integrante) => {
+		editmode = false
+        idSeleted=id
+        tipos=integrante
+		return fetch("{% url 'security:Modaltransfersec'%}", {
+		   ...fetchObject,
+		   body: JSON.stringify({
+			method:"Show",
+            grupo_id:grupo,
+            integra:integrante
+			
+		 })
+			   
+		})
+		   .then(async (res) => {
+			  document.getElementById("addNewModalContentes").innerHTML = await res.text()
+		   })
+		   .then(() => {
+			  $("#addNewModales").modal("show")
+			  const formPrograma = document.getElementById("formActividad")
+			  formPrograma.addEventListener("submit", (e) => {
+				e.preventDefault()
+				if($("#formActividad").valid()){
+				   setLoading()
+				   clickSave(formPrograma, "{% url 'security:Modaltransfersec' %}")
+					  .then(() => {
+						 $("#addNewModales").modal("hide")
+						 stopLoading()
+						 location.reload()
+					  })
+	
+				}
+			 })  
+			 
+			 
+			
+			 
+		   })
+	 }	
+	const openstatus = (id,integrante) => {
+		editmode = false
+        idSeleted=id
+        tipos=integrante
+		fetch("{% url 'Modalstatus'%}", {
+		   ...fetchObject,
+		   body: JSON.stringify({
+			method:"Show",
+            grupo_id:grupo,
+            integra:integrante
+			
+		 })
+			   
+		})
+		   .then(async (res) => {
+			  document.getElementById("addNewModalContents").innerHTML = await res.text()
+		   })
+		   .then(() => {
+			  $("#addNewModals").modal("show")
+			  const formPrograma = document.getElementById("formActividad")
+			  let rules = {
+				resumen: {
+					required: true
+					
+				 },
+				 resumendatos: {
+					required: true
+					
+				 },
+				 
+
+			  }
+			  commonValidator = $("#formActividad").validate({
+				 rules,
+				 highlight: function (element) {
+					$(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+				 },
+				 success: function (element) {
+					$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+				 },
+			  });
+			  formPrograma.addEventListener("submit", (e) => {
+				e.preventDefault()
+				if($("#formActividad").valid()){
+				   setLoading()
+				   clickSave(formPrograma, "{% url 'Modalstatus' %}")
+					  .then(() => {
+						 $("#addNewModals").modal("hide")
+						 stopLoading()
+						 location.reload()
+					  })
+	
+				}
+			 })
+			 
+		   })
+	 }
+	const openAdddatos = (id,integrante) => {
+		editmode = false
+        idSeleted=id
+        tipos=integrante
+		fetch("{% url 'ModalAdddatos'%}", {
+		   ...fetchObject,
+		   body: JSON.stringify({
+			method:"Show",
+            grupo_id:grupo,
+            integra:integrante
+			
+		 })
+			   
+		})
+		   .then(async (res) => {
+			  document.getElementById("addNewModalContent").innerHTML = await res.text()
+		   })
+		   .then(() => {
+			  $("#addNewModal").modal("show")
+			  const formPrograma = document.getElementById("formActividad")
+			  let rules = {
+				resumen: {
+					required: true
+					
+				 },
+				 resumendatos: {
+					required: true
+					
+				 },
+				 
+
+			  }
+			  commonValidator = $("#formActividad").validate({
+				 rules,
+				 highlight: function (element) {
+					$(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+				 },
+				 success: function (element) {
+					$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+				 },
+			  });
+			  formPrograma.addEventListener("submit", (e) => {
+				e.preventDefault()
+				if($("#formActividad").valid()){
+				   setLoading()
+				   clickSave(formPrograma, "{% url 'ModalAdddatos' %}")
+					  .then(() => {
+						 $("#addNewModal").modal("hide")
+						 stopLoading()
+						 location.reload()
+					  })
+	
+				}
+			 })
+			 
+		   })
+	 }
+     const updateModel = (url, method, data, id, tipo) => {
+		return fetch(url, {
+		   ...fetchObject,
+		   body: JSON.stringify({
+			  method,
+			  data,
+			  id, 
+              tipo
+			  
+		   })
+		})
+	 }
+	 const clickSave = (formElement, url) => {
+		const formData = new FormData(formElement);
+		const data = {}
+
+		for (var [key, value] of formData.entries()) {
+		   data[key] = value
+		}
+		if (editmode) {
+		   return updateModel(url, "Update", data, idSeleted, tipos)
+			  .then(async (res) => {
+				 const text = JSON.parse(await res.text())
+				 if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+				 else  makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+
+			  })
+		}
+		else {
+		   return updateModel(url, "Create", data, idSeleted, tipos)
+			  .then(async (res) => {
+				 const text = JSON.parse(await res.text())
+				 if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+				 else  makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+
+			  })
+		}
+	   
+	 }
+	 
+   
+    
+    
+
+
+const render = ()=>{
+	document.querySelector("#status").classList.add("is-loading")
+	fetch("{% url 'renderstat'%}", {
+	   ...fetchObject,
+	   body: JSON.stringify({
+		  method:'Show'
+		  
+	   })
+	})
+	.then(async(res)=>{
+	   result = await res.text()
+	   document.querySelector("#status").classList.remove("is-loading")
+	   document.querySelector("#status").innerHTML = result
+	})
+ }
+ const renderLista = (url,id)=>{
+	
+	return fetch(url, {
+	    ...fetchObject,
+         body: JSON.stringify({
+            method: "Show",
+			pk:id,
+         })
+      })
+         .then(async (res) => {
+            document.getElementById("sectionDetailed").innerHTML = await res.text()
+         })
+         
+ }
+ const renderListavarias = (id)=>{
+	
+	 fetch("{% url 'RenderListasnodos'%}", {
+	    ...fetchObject,
+         body: JSON.stringify({
+            method: "Hijos",
+			pk:id,
+			
+         })
+      })
+         .then(async (res) => {
+            document.getElementById("sectionDetailed").innerHTML = await res.text()
+         })
+         
+ }
+ function cambiar_comb() {
+    
+	const varia= document.getElementById("categoryProgram").value;
+	 renderListavarias(varia)
+	
+	//const url= '/professors/micombobox/?valor='+varia;
+	///fetch(url)
+	///.then( function(result) {
+	//	return result.text();
+	////})
+	///.then( function(result){
+	//	document.getElementById("categoriasProcess").innerHTML=result;    
+	//});
+
+} 
+</script>    
+{% endblock javascripts %}

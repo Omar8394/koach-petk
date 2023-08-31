@@ -6,25 +6,27 @@ from django.http import HttpResponse, JsonResponse, HttpResponseForbidden
 from django.template import loader
 from django.template.loader import render_to_string
 from ..App.models import ConfTablasConfiguracion,AppPublico
-from ..Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_EvaluacionesPreguntas, capacitacion_EvaluacionesPreguntasOpciones, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos,EscalasEvaluaciones,capacitacion_ActividadEvaluaciones,capacitacion_EvaluacionesBloques,capacitacion_ActividadesTiempoReal,capacitacion_Examenes,capacitacion_ExamenesResultado,capacitacion_NotificacionesMensajesXactividad,capacitacion_HistoricoActividades
+from ..Capacitacion.models import Estructuraprograma, capacitacion_ActSesiones_programar, capacitacion_Actividad_Sesiones, capacitacion_Actividad_leccion, capacitacion_Actividad_tareas, capacitacion_ComponentesActividades, capacitacion_EvaluacionesPreguntas, capacitacion_EvaluacionesPreguntasOpciones, capacitacion_LeccionPaginas, capacitacion_Recursos,capacitacion_componentesXestructura,componentesFormacion,capacitacion_Tag,capacitacion_TagRecurso,capacitacion_componentesPrerequisitos,EscalasEvaluaciones,capacitacion_ActividadEvaluaciones,capacitacion_EvaluacionesBloques,capacitacion_ActividadesTiempoReal,capacitacion_Examenes,capacitacion_ExamenesResultado,capacitacion_NotificacionesMensajesXactividad,capacitacion_HistoricoActividades,capacitacion_tiempoxevaluaciones
 from ..Organizational_network.models import nodos_grupos,nodos_gruposIntegrantes,nodos_PlanFormacion
-from ..Comunication.models import Comunication_MsjPredeterminado,Boletin_Info 
+from ..Comunication.models import Comunication_MsjPredeterminado,Boletin_Info,Entrenamiento_Post 
 import time, json
+import sys
 from decimal import Decimal
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.template.defaulttags import register
 from django.contrib.auth.decorators import login_required
 from core import settings
 from pathlib import Path
+from django.db.models import Q
 import uuid
 import mimetypes
 from django.core.files.storage import FileSystemStorage
 import os
 from django.db.models import Count, Sum, FloatField
 from ..Security.models import User
-from .methods import finalizar_componente,verifylast
+from .methods import finalizar_componente,verifylast,week
 import datetime
-
+TITULOPUBLIC = {'id_nodoGrupo_Integrantes':'#', 'fk_public': 'Usuario',  'fecha_inicio': 'fecha inicio', 'ultima_actividad': 'ultima actividad'}
 # Create your 
 # views here.
 @register.filter
@@ -190,6 +192,81 @@ def verdadero_Falso(id):
     preg=capacitacion_EvaluacionesPreguntasOpciones.objects.get(pk=id).respuesta_correcta
     print(preg)
     return preg
+@register.filter
+def initial_fecha(id): 
+    init ='No iniciado'
+    inicio=capacitacion_HistoricoActividades.objects.filter(fk_nodo_Grupo_integrantes_id=id)
+    if inicio.exists():       
+       data = json.loads(inicio.order_by('fk_componenteXestructura')[0].datos_resumen)
+       if data==None or data=="" or data=={}:
+          return ""
+       if  'datos_resumen' in data :
+            init= data['datos_resumen'][0]['fecha_ini']
+       
+    else:
+        inicio_real=capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes_id=id) 
+        if inicio_real.exists():  
+           init=inicio_real.order_by('fecha_realizado')[0].fecha_realizado
+         
+    return init  
+@register.filter
+def last_atv(id): 
+    init ='No iniciado'
+    inicio=capacitacion_HistoricoActividades.objects.filter(fk_nodo_Grupo_integrantes_id=id)
+    if inicio.exists():       
+       data = json.loads(inicio.order_by('-fk_componenteXestructura')[0].datos_resumen)
+       if data==None or data=="" or data=={}:
+          init ='No iniciado'
+       if  'datos_resumen' in data :
+            ultima=capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes_id=id) 
+            if ultima.exists(): 
+               
+               init=ultima.order_by('-fecha_realizado')[0].fk_componenteActividades
+            else:   
+               init=data['datos_resumen'][0]['ultima_Actividad']
+            
+       
+    else:
+        inicio_real=capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes_id=id) 
+        if inicio_real.exists():  
+           init=inicio_real.order_by('-fecha_realizado')[0].fk_componenteActividades
+         
+    return init  
+@register.filter  
+def jsonhistory(datos,tipo):
+    if datos==None or datos=="" or datos=={}:
+       return ""
+    tlf=None
+    data = json.loads(datos)
+
+  
+    if data==None or data=="" or data=={}:
+       return ""
+    if 'datos_resumen' in data :
+       return data['datos_resumen'][0][tipo]
+    else:
+      return ""
+@register.filter  
+def busca_test(pk):
+    esta=None
+    test=capacitacion_ActividadEvaluaciones.objects.filter(fk_componenteActividad_id=pk)
+    if test.exists():
+       esta=test[0].pk
+    else:
+        esta=None  
+    return esta 
+@register.filter  
+def has_time(pk):
+    print(pk)
+    esta=False
+    test=capacitacion_tiempoxevaluaciones.objects.filter(fk_evaluacion_id=pk)
+    print(test)
+    if test.exists():
+       esta=True
+    else:
+        esta=False
+    print(esta)      
+    return esta             
 @login_required(login_url="/security/login/")
 def index(request):
     
@@ -386,11 +463,12 @@ def modalAddproceso(request):
                print(e)
                return JsonResponse({"message":"error"}, status=500)
 @login_required(login_url="/security/login/") 
-def indextwo(request):
-    id=request.GET.get('id')
-   
-    context = {'id':id}
-    print(context)
+def indextwo(request,velemento,url,idActividad):
+    id=idActividad
+    urls=url
+    elemento=velemento
+    context = {'id':id,'url':urls,'elemento':elemento}
+    #print(context)
     html_template = (loader.get_template('gestor_indetwo.html'))
     
     return HttpResponse(html_template.render(context, request))
@@ -406,8 +484,9 @@ def getcontentunits(request):
                 print(data)
                 lista=[]
                 if data["query"] == "":
-                   units=Estructuraprograma.objects.filter(fk_estructura_padre_id=data['pk'],valor_elemento="Module")
-                   antesesor=Estructuraprograma.objects.get(pk=data['pk'],valor_elemento="Process")
+                   print(data['urls']) 
+                   units=Estructuraprograma.objects.filter(fk_estructura_padre_id=data['pk'],url=data['urls'],valor_elemento="Module")
+                   antesesor=Estructuraprograma.objects.get(pk=data['pk'],valor_elemento=data["valor"],url=data['urls'])
                    print(antesesor.Titulo)
                    if units.exists(): 
                       paginator = Paginator(units, data["limit"])
@@ -526,9 +605,9 @@ def modalAddcursos(request):
                    cursos.titulo=data['data']['descriptionProgram']
                    cursos.creditos_peso=Decimal(data['data']['creditos'].replace(',','.'))
                    cursos.Fecha_activo=data['data']['disponibleCourse']
-                   cursos.Condicion=data['data']['Condicion']
-                   cursos.tipo_ritmo_id=data['data']['categoryProgram']
-                   cursos.ritmo=data['data']['Ritmo']
+                   #cursos.Condicion=data['data']['Condicion']
+                   #cursos.tipo_ritmo_id=data['data']['categoryProgram']
+                   #cursos.ritmo=data['data']['Ritmo']
                    cursos.anno_semestre=data['data']['Semestre']
                    
                    if 'checkDurationCB' in data['data']:
@@ -556,9 +635,9 @@ def modalAddcursos(request):
                    cursos.creditos_peso=Decimal(data['data']['creditos'].replace(',','.'))
                    cursos.orden_presentacion=len(componentesFormacion.objects.all()) + 1
                    cursos.Fecha_activo=data['data']['disponibleCourse']
-                   cursos.Condicion=data['data']['Condicion']
-                   cursos.tipo_ritmo_id=data['data']['categoryProgram']
-                   cursos.ritmo=data['data']['Ritmo']
+                   #cursos.Condicion=data['data']['Condicion']
+                  # cursos.tipo_ritmo_id=data['data']['categoryProgram']
+                   #cursos.ritmo=data['data']['Ritmo']
                    cursos.anno_semestre=data['data']['Semestre']
                   
                    if 'checkDurationCB' in data['data']:
@@ -634,9 +713,20 @@ def getcomponentsxestructura(request):
         except Exception as e:
                print(e)
                return JsonResponse({"message":"error"}, status=500) 
-def createactividades(request):
-    id=request.GET.get('id')  
-    context = {"id":id}
+def createactividades(request,velemento,url,idActividad):
+    user = request.user
+    rol=user.fk_rol_usuario 
+    id=idActividad
+    urls=url
+    elemento=velemento
+    title='Vacio'
+    publico=AppPublico.objects.get(user_id=user) 
+    titulo=componentesFormacion.objects.filter(codigo_componente=elemento,pk=id,url=urls)
+    if titulo.exists():
+        title=titulo[0].titulo
+    grupos=nodos_grupos.objects.filter(fk_liderGrupo=publico,status_grupo=60) 
+    print(grupos)                    
+    context = {"id":id,"grupos":grupos,'url':urls,'elemento':elemento,'titulo':title}
     html_template = (loader.get_template('createactividades.html'))
     return HttpResponse(html_template.render(context, request))
 def renderactividades(request):
@@ -649,7 +739,7 @@ def renderactividades(request):
                 data = json.load(request)
                 print(data)
                 if data["query"] == "":
-                    actividad=capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion_id=data['id']).order_by('orden_presentacion')
+                    actividad=capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion_id=data['id'],url=data['urls']).order_by('orden_presentacion')
                     print(actividad)
                     if actividad.exists():
                        context = {"actividad":actividad,'padre':data['id']}
@@ -1164,6 +1254,12 @@ def comboboxpro(request):
     
     valor=request.GET.get('valor')
     tipo=request.GET.get('tipo')
+    post=request.GET.get('edita_post' or None)
+    edita=''
+    print(post)
+    if post is not None:
+       edita=Entrenamiento_Post.objects.get(pk=post) 
+       
     hay=False
     print(valor)
     print(tipo)
@@ -1171,7 +1267,7 @@ def comboboxpro(request):
         hay=1
     elif tipo == "atv":
         hay=2    
-    data = {'opsion2': metodo_llenar_combo(valor,tipo),'hay':hay}
+    data = {'opsion2': metodo_llenar_combo(valor,tipo),'hay':hay,'edita':edita}
     print(data)
     html_template = (loader.get_template('comboboxpro.html'))
     return HttpResponse(html_template.render(data, request))
@@ -2230,10 +2326,24 @@ def sortPreguntas(request):
 #vistas para el estudiante             
 @login_required(login_url="/security/login/")
 def indexstudent(request):
-    
-    
-    context = {}   
-    html_template = (loader.get_template('indezstudent.html'))   
+    nodoplan=None
+                     
+    usuario=request.user
+    userpu= AppPublico.objects.get(user_id=usuario)
+    print(userpu) 
+    nodosuser=nodos_gruposIntegrantes.objects.filter(fk_public=userpu)
+    if nodosuser.exists():
+       nodoplan=nodos_PlanFormacion.objects.filter(fk_gruponodo=nodosuser[0].fk_nodogrupo) 
+       if nodoplan.exists():
+          print(nodoplan)
+          context = {}
+          html_template = (loader.get_template('indezstudent.html')) 
+       else:
+          context = {}   
+          html_template = (loader.get_template('page-404._aviso.html'))          
+    else:
+       context = {}   
+       html_template = (loader.get_template('page-404._aviso.html'))   
     return HttpResponse(html_template.render(context, request)) 
 @login_required(login_url="/login/")
 def renderstemas(request):
@@ -2247,13 +2357,19 @@ def renderstemas(request):
                                  
                   if data["query"] == "":
                      print(data)
+                     nodoplan=None
+                     
                      usuario=request.user
                      userpu= AppPublico.objects.get(user_id=usuario)
                      print(userpu) 
-                     nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu).fk_nodogrupo
-                     nodoplan=nodos_PlanFormacion.objects.filter(fk_gruponodo=nodosuser) 
-                     
-                     context = {'usuario':request.user,'plan':nodoplan}
+                     nodosuser=nodos_gruposIntegrantes.objects.filter(fk_public=userpu)
+                     if nodosuser.exists():
+                        nodoplan=nodos_PlanFormacion.objects.filter(fk_gruponodo=nodosuser[0].fk_nodogrupo) 
+                        print(nodoplan)
+                        context = {'usuario':request.user,'plan':nodoplan}
+                     else:
+                       
+                        context = {'usuario':request.user,'plan':nodoplan}
                      html_template = (loader.get_template('rendertemas.html'))
                      return HttpResponse(html_template.render(context, request))    
 
@@ -2285,24 +2401,24 @@ def renderstudent(request):
                print(e)
                return JsonResponse({"message":"error"}, status=500)       
 def verpaginas_student(request):
-    id=request.GET.get('id')
-    print(id)
-    compActividad=capacitacion_ComponentesActividades.objects.get(pk=id)
-    print(compActividad)
-    estru=capacitacion_componentesXestructura.objects.get(fk_componetesformacion=compActividad.fk_componenteformacion)
-    print(compActividad.fk_tipocomponente)
+  id=request.GET.get('id')
+  print(id)
+  compActividad=capacitacion_ComponentesActividades.objects.get(pk=id)    
+  estru=capacitacion_componentesXestructura.objects.get(fk_componetesformacion=compActividad.fk_componenteformacion)    
+  print('titi')
+  if week(estru,request.user,compActividad):
     if str(compActividad.fk_tipocomponente) =='Leccion':
        print('kola')
        Leccion=capacitacion_Actividad_leccion.objects.get(fk_componenteActividad=compActividad)
        print(Leccion.pk)
        actividad=capacitacion_LeccionPaginas.objects.filter(fk_actividadLeccion_id=Leccion.pk)
        print(actividad.query)
-       context = {'actividad': actividad,'id':id,'estru':estru.pk,'tipo':str(compActividad.fk_tipocomponente.desc_elemento)}
+       context = {'actividad': actividad,'id':id,'tema':estru.fk_componetesformacion,'estru':estru.pk,'tipo':str(compActividad.fk_tipocomponente.desc_elemento)}
        print(context)
        html_template = (loader.get_template('actividad.html'))
     elif str(compActividad.fk_tipocomponente) =='Tarea':
          tareas=capacitacion_Actividad_tareas.objects.filter(fk_componenteActividad=compActividad)
-         context = {'actividad': tareas,'id':id,'estru':estru.pk,'tipo':str(compActividad.fk_tipocomponente.desc_elemento)}
+         context = {'actividad': tareas,'id':id,'tema':estru.fk_componetesformacion,'estru':estru.pk,'tipo':str(compActividad.fk_tipocomponente.desc_elemento)}
          print(context)
          html_template = (loader.get_template('actividad.html'))
     elif str(compActividad.fk_tipocomponente) =='Evaluacion':
@@ -2321,16 +2437,20 @@ def verpaginas_student(request):
                  if item.puntuacion_obtenida>=test.calificacion_aprobar:
                     test_app=True 
                         
-         context = {'test':test,'id':id,'test_app':test_app,'Examen':Examen}
+         context = {'test':test,'id':id,'test_app':test_app,'Examen':Examen,'tema':estru.fk_componetesformacion,'estru':estru.pk}
          print(context)
          html_template = (loader.get_template('indestest.html')) 
     elif str(compActividad.fk_tipocomponente) =='Sesiones':
          sesiones=capacitacion_Actividad_Sesiones.objects.get(fk_componenteActividad=compActividad)
          programar=capacitacion_ActSesiones_programar.objects.get(id_capacitacionActividadSesiones=sesiones)
-         context = {'programar': programar,'sesiones':sesiones,'id':id,'estru':estru.pk,'tipo':str(compActividad.fk_tipocomponente.desc_elemento)}
+         context = {'programar': programar,'sesiones':sesiones,'id':id,'tema':estru.fk_componetesformacion,'estru':estru.pk,'tipo':str(compActividad.fk_tipocomponente.desc_elemento)}
          print(context)
          html_template = (loader.get_template('student_sesiones.html'))         
-    return HttpResponse(html_template.render(context, request))            
+  else:
+      context={}
+      html_template = (loader.get_template('page-aviso.html')) 
+  return HttpResponse(html_template.render(context, request))
+            
 def logUser(request):
     if request.method == "POST":
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
@@ -2349,7 +2469,15 @@ def logUser(request):
                     fecha = datetime.datetime.now()
                     print(fecha)
                     culminado = data["estado"]
-                    if culminado == 0:
+                    historial=capacitacion_HistoricoActividades.objects.filter(fk_componenteXestructura_id=data['estru'])
+                    if historial.exists():
+                     datos=json.loads(historial[0].datos_resumen)
+                     print(datos)
+                     tema=datos['datos_resumen'][0]['tema']
+                     if int(tema) ==capacitacion_ComponentesActividades.objects.get(pk=idStr).fk_componenteformacion_id: 
+                         print('no')
+                    else:
+                      if culminado == 0:
                        topico = capacitacion_ComponentesActividades.objects.get(pk=idStr).fk_componenteformacion
                        lecciones =capacitacion_ComponentesActividades.objects.filter(fk_componenteformacion=topico) 
                        print('hola') 
@@ -2361,21 +2489,21 @@ def logUser(request):
                               break
                        if hayPrimero == False:  
                           print('mensaje')
-                    update = capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=nodosuser, fk_componenteActividades=idA)
-                    if update.exists():
-                       historia = update.order_by("-fecha_realizado")[0]
-                       if historia.culminado == 1 or historia.culminado == culminado:
-                          return JsonResponse({"message":"ok"}, status=200)
-                    else:
-                        historia = capacitacion_ActividadesTiempoReal()
-                        historia.fecha_realizado = fecha
-                    historia.culminado = culminado
-                    historia.fk_componenteActividades_id = idA
-                    historia.fk_nodo_Grupo_integrantes=nodosuser
-                    historia.fk_componenteXestructura_id=idStr
-                    historia.save()
+                      update = capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=nodosuser, fk_componenteActividades=idA)
+                      if update.exists():
+                        historia = update.order_by("-fecha_realizado")[0]
+                        if historia.culminado == 1 or historia.culminado == culminado:
+                           return JsonResponse({"message":"ok"}, status=200)
+                      else:
+                         historia = capacitacion_ActividadesTiempoReal()
+                         historia.fecha_realizado = fecha
+                      historia.culminado = culminado
+                      historia.fk_componenteActividades_id = idA
+                      historia.fk_nodo_Grupo_integrantes=nodosuser
+                      historia.fk_componenteXestructura_id=idStr
+                      historia.save()
                         
-                    finalizar_componente(userpu,idStr)  
+                      finalizar_componente(userpu,idStr)  
                 return JsonResponse({"message":"ok"}, status=200)                
             except Exception as e:
                print(e)
@@ -2425,11 +2553,13 @@ def borrarImagenes(request):
             return JsonResponse({'mensaje': 'There is no image to remove'})
 def takeExam(request):        
     id=request.GET.get('id')
+    print(id)
     method=request.GET.get('method',None)
     usuario=request.user 
     userpu= AppPublico.objects.get(user_id=usuario) 
     nodosuser=nodos_gruposIntegrantes.objects.get(fk_public=userpu)
     test=capacitacion_ActividadEvaluaciones.objects.get(fk_componenteActividad_id=id)    
+    print(test.pk)
     estru=capacitacion_componentesXestructura.objects.get(fk_componetesformacion=test.fk_componenteActividad.fk_componenteformacion)
     bloques=capacitacion_EvaluacionesBloques.objects.filter(fk_ActividadEvaluaciones=test)
     tipo=''
@@ -2437,7 +2567,8 @@ def takeExam(request):
     if method:
        tipo='retake'
        print(tipo)
-       Examen=capacitacion_Examenes.objects.get(pk=test.pk)
+       Examen=capacitacion_Examenes.objects.get(fk_ActividadEvaluaciones=test
+                                                )
        Examen.status_examen=0       
        Examen.puntuacion_obtenida=0
        Examen.fecha_inicio=datetime.datetime.now() 
@@ -2585,7 +2716,9 @@ def contenidoTest(request):
                               datos = {}
                               obj["fecha_ini"]=str(fecha_ini) 
                               obj["fecha_fin"]=str(fecha_fin)              
-                              obj["tema"]=str(examen.fk_ActividadEvaluaciones.fk_componenteActividad.fk_componenteformacion_id)
+                              obj["tema"]=str(examen.fk_ActividadEvaluaciones.fk_componenteActividad.fk_componenteformacion)
+                              obj["ultima_Actividad"]=str(examen.fk_ActividadEvaluaciones.fk_componenteActividad)
+                              obj["nota"]=str(examen.puntuacion_obtenida)
                               programar.append(obj or 0)
                               datos['datos_resumen']=programar
                               print(datos)
@@ -2665,3 +2798,267 @@ def getModalNewnotifi(request):
             except Exception as e:
                print(e)
                return JsonResponse({"message":"error"}, status=500)
+def getModalinstru(request):            
+   if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            context = {}
+            modelo = {}
+            try:
+                if request.body:
+                    data = json.load(request)                    
+                    if data["method"] == "Show": 
+                       print(data) 
+                       bloques=capacitacion_EvaluacionesBloques.objects.get(pk=data['id']) 
+                       context = {'bloques':bloques}  
+                       
+                       html_template = (loader.get_template('Modalinstru.html'))
+                       return HttpResponse(html_template.render(context, request))                      
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500) 
+@login_required(login_url="/security/login/")
+def indexHistory(request):
+    
+    user = request.user
+    rol=user.fk_rol_usuario
+    persona=AppPublico.objects.get(user_id=user)  
+    context = {}
+   
+    if str(rol) == "Lider" :
+       grupos=nodos_grupos.objects.filter(fk_liderGrupo=persona)                          
+       if grupos.exists():
+          integrantes=nodos_gruposIntegrantes.objects.filter(fk_nodogrupo__fk_liderGrupo=persona)  
+          context = {'keys' : TITULOPUBLIC,'plan': paginas(request, integrantes),'grupos':grupos,'integrantes':integrantes}
+                        
+          html_template = (loader.get_template('Historial.html'))
+    elif  str(rol) == "Estudiante" : 
+          integrantes=nodos_gruposIntegrantes.objects.filter(fk_public=persona)  
+          context = {'keys' : TITULOPUBLIC,'plan': paginas(request, integrantes),'rol':str(rol)}
+                       
+          html_template = (loader.get_template('Historial.html'))
+    else:
+        html_template = (loader.get_template('page-403.html'))
+    return HttpResponse(html_template.render(context, request))
+
+                  
+def Renderdetalle(request):            
+   if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            context = {}
+            modelo = {}
+            try:
+                if request.body:
+                    data = json.load(request)                    
+                    if data["query"] == "": 
+                       print(data)                                             
+                       persona=AppPublico.objects.get(pk=data['id'])
+                       print(persona)
+                       integrante=nodos_gruposIntegrantes.objects.get(fk_public=persona)
+                       integrante_historia=capacitacion_ActividadesTiempoReal.objects.filter(fk_nodo_Grupo_integrantes=integrante)
+                       integrante_resumen=capacitacion_HistoricoActividades.objects.filter(fk_nodo_Grupo_integrantes=integrante)
+                       img = persona.user_id.url_imagen
+                       mail=persona.user_id.email
+                       context = {'img': img if img and img != "" else None,'historia':integrante_historia,'historia_resumen':integrante_resumen,'email':mail}                      
+                       html_template = (loader.get_template('detalle_integrante.html'))
+                       return HttpResponse(html_template.render(context, request))                      
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)                                               
+def paginas(request, obj, range = 5):
+    
+    page = request.GET.get('page', 1) if request.GET else request.POST.get('page', 1)
+    # print(request.GET.get('page') if request.GET.get('page') else "nada get")
+    # print(request.POST.get('page') if request.POST.get('page') else "nada post")
+
+    paginator = Paginator(obj, sys.maxsize if range and range == 'TODOS' else range if range else 5)
+    # paginator = Paginator(obj, sys.maxsize if range and range == 'ALL' else range if range else 5)
+
+    try:
+
+        pages = paginator.page(page)
+        # print(page)
+
+    except PageNotAnInteger:
+        # print("error 1")
+        pages = paginator.page(1)
+
+    except EmptyPage:
+        # print("error 2")
+        pages = paginator.page(paginator.num_pages)
+
+    return pages           
+def paginarhistory(request):
+    
+    
+    
+    filtro = request.POST.get('filtro', None)    
+    nodo = request.POST.get('nodo', None)
+       
+    plan = nodos_gruposIntegrantes.objects.all()
+        
+
+   
+
+    if filtro:
+
+        filtro = filtro.strip()
+        plan = plan.filter(Q(fk_public__nombre__icontains=filtro) | Q(fk_public__user_id__username__icontains=filtro) )
+    if nodo:        
+        plan = plan.filter(fk_nodogrupo_id=nodo)
+    
+    
+    
+
+    pagina = render_to_string('paginashistory.html', {'plan': paginas(request, plan, 5)})
+    tabla = render_to_string('contenidotablahistory.html', {'keys' : TITULOPUBLIC,'plan': paginas(request, plan, 5) })
+
+    
+
+    response = {
+        'paginas': pagina,
+        'contenido' : tabla
+    }
+
+    return JsonResponse(response)
+def getModalPublicar(request):            
+   if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            context = {}
+            modelo = {}
+            try:
+                if request.body:
+                    data = json.load(request)
+                    if data["method"] == "Show":
+                       print(data)
+                       siexiste=""
+                       publicacion=capacitacion_tiempoxevaluaciones.objects.filter(fk_evaluacion_id=data['id'])
+                       if publicacion.exists():
+                          siexiste=publicacion[0]
+                       else:
+                          siexiste=""
+                       context={'publica':siexiste}        
+                       html_template = (loader.get_template('ModalPublicartest.html'))
+                       return HttpResponse(html_template.render(context, request))            
+                    
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)
+def savetestpublicar(request):
+     if request.method == "POST":
+          if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            context = {}
+            modelo = {}
+            try:
+                if request.body:
+                    data = json.load(request)['data']
+                    print(data)
+                    if data['method']== 'Create':
+                       test=capacitacion_ActividadEvaluaciones.objects.get(pk=data['pk'])
+                       hijos = data["hijos"]
+                       if hijos:
+                          print(hijos)
+                               
+                          for newOpcion in hijos:
+                                
+                              Opcion=capacitacion_tiempoxevaluaciones()
+                              Opcion.Desde=newOpcion['Opciondesde'] 
+                              Opcion.Hasta=newOpcion['Opcionhasta']       
+                              Opcion.fk_evaluacion=test
+                              Opcion.fk_nodos_id=newOpcion['id'] 
+                              Opcion.save() 
+                       print(data)
+                       return JsonResponse({"message":"ok"})
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)          
+def RenderListaspublicar(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest': 
+         try:
+            if request.body:
+                user = request.user
+                rol=user.fk_rol_usuario 
+                print(rol) 
+                context={}
+                title=False
+                data = json.load(request)
+                grupos=""
+                if data["method"] == "Show":
+                    if str(rol) == 'Lider':
+                       print('hola') 
+                       publico=AppPublico.objects.get(user_id=user) 
+                       print(user)
+                       grupos=nodos_grupos.objects.filter(fk_liderGrupo=publico,status_grupo=60) 
+                       print(grupos)
+                       context = {'grupo':grupos}
+                       html_template = (loader.get_template('combolidernodo.html'))
+                       return HttpResponse(html_template.render(context, request)) 
+                    else:
+                      print(data)
+                      grupos=nodos_grupos.objects.filter(fk_grupoNodo_padre_id=None,status_grupo=60)
+                      print(grupos)
+                      context = {'grupo':grupos}
+                      html_template = (loader.get_template('comboboxnodo.html'))
+                      return HttpResponse(html_template.render(context, request)) 
+                elif data['method'] == "Hijos":
+                    print(data)
+                    grupos=nodos_grupos.objects.filter(fk_grupoNodo_padre_id=data['pk'])
+                    print(grupos)
+                    if grupos.exists():
+                        
+                       context = {'grupo':grupos}
+                    else:
+                       hijo=nodos_grupos.objects.filter(if_gruponodo=data['pk'])
+                       context = {'grupo':hijo,'elegido':hijo[0]}
+                    html_template = (loader.get_template('comboboxnodo.html'))
+                    return HttpResponse(html_template.render(context, request))
+         except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)
+@login_required(login_url="/login/")
+def Edittestpublicar(request):
+    if request.method == "POST":
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            
+            try:
+                context = {}
+                data = json.load(request)["data"]   
+                
+                if "delete" in data:
+                    print(data)
+                   
+                    actividad=capacitacion_tiempoxevaluaciones.objects.get(pk=data['id'])
+                    print(actividad)
+                    actividad.delete()
+                    return JsonResponse({"message": "Deleted"})
+                if "idFind" in data:
+                    print(data)
+                    
+                    childs = capacitacion_tiempoxevaluaciones.objects.filter(fk_evaluacion_id=data["idFind"])
+                    listaChilds = list(childs.values())
+                    print(listaChilds)
+                    return JsonResponse({ "childs":listaChilds}, safe=False)
+                
+                if data["method"] == "Update":
+                    print(data)
+                    test=capacitacion_ActividadEvaluaciones.objects.get(pk=data['pk'])
+                    childs=capacitacion_tiempoxevaluaciones.objects.filter(fk_evaluacion_id=test.pk)
+                    hijos = data["hijos"]
+                    if hijos:
+                            
+                       childs.delete()
+                                
+                       for newOpcion in hijos:
+                                
+                           Opcion=capacitacion_tiempoxevaluaciones()
+                           Opcion.Desde=newOpcion['Opciondesde'] 
+                           Opcion.Hasta=newOpcion['Opcionhasta']       
+                           Opcion.fk_evaluacion_id=test.pk
+                           Opcion.fk_nodos_id=newOpcion['id'] 
+                           Opcion.save() 
+                    
+                
+                    return JsonResponse({"message": "ok"})
+            except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)           

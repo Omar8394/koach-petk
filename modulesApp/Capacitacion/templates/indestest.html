@@ -60,9 +60,10 @@
                        {% endif %}
                        {% endwith %}
                       
-                      {% with nextLesson=id|nextActivity:request.user %}
-                       {% if nextLesson %}
+                      {% with nextLesson=id|nextActivity:tema %}
+                       {% if nextLesson  %}
                        <a class="btn btn-primary ml-2" href="{% url 'verpaginas_student' %}?id={{nextLesson.pk}}">Siguiente<i class="fas fa-arrow-right ml-2"></i></a>
+                       
                        {% endif %}
                        {% endwith %}
                     </div>

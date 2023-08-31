@@ -1,0 +1,71 @@
+<div id="renderList" >  
+{% for item in data %}
+
+    <li id="pos{{activity.id_componenteXestructura}}" class="card-list-item-content deg-primary"> 
+        <div class="card-list-item-icon">
+           <i class="fas fa-pencil-ruler"></i>
+        </div>
+        <div class="card-list-item-subtitle">{{item.fk_componetesformacion}}</div>         
+        <div class="card-list-item-actions">
+        <div class="btn-group" role="group">         
+        <a class="btn btn-icon btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="copiar" id="copiar"
+        onclick="ajax_up('{{item.id_componenteXestructura}}')" >
+        <i class="fas fa-copy mt-2"></i>
+        </a>  
+       </div>
+       </div>
+    </li> 
+
+
+{% endfor %}
+<div class="card-footer">
+    <nav class="col-6 m-2" aria-label="Page navigation example">
+        <ul class="pagination justify-content-end">
+           {% if data.has_previous %}
+           <li class="page-item">
+              <a class="page-link" onclick="goToTable(1)" href="#">First</a>
+              
+           </li>
+           <li class="page-item">
+              
+              
+              <a class="page-link" href="#" onclick="goToTable('{{ data.previous_page_number }}')"><i class="fas fa-arrow-left"></i></a>
+           </li>
+           {% endif %}
+           
+           {% if data.number|add:'-4' > 1 %}
+           <li class="page-item"><a class="page-link" onclick="goToTable(`{{ data.number|add:'-5' }}`)" href="#">&hellip;</a></li>
+           {% endif %}
+           
+           {% for i in data.paginator.page_range %}
+           {% if data.number == i %}
+           <li class="page-item active" aria-current="page">
+              <span class="page-link">
+                 {{ i }}
+                 <span class="sr-only">(current)</span>
+              </span>
+           </li>
+           {% elif i > data.number|add:'-5' and i < data.number|add:'5' %} <li class="page-item"><a
+              class="page-link" onclick="goToTable('{{i}}')" href="#">{{ i }}</a></li>
+              {% endif %}
+              {% endfor %}
+              
+              {% if data.paginator.num_pages > data.number|add:'4' %}
+              <li class="page-item"><a class="page-link" onclick="goToTable(`{{ data.number|add:'5' }}`)" href="#">&hellip;</a></li>
+              {% endif %}
+     
+              {% if data.has_next %}
+              <li class="page-item">
+                 <a class="page-link" onclick="goToTable('{{ data.next_page_number }}')" href="#"><i class="fas fa-arrow-right"></i></a>
+              </li>
+              <li class="page-item">
+                 <a class="page-link" onclick="goToTable('{{ data.paginator.num_pages }}')" href="#">Last</a>
+              </li>
+              
+              {% endif %}
+           </ul>
+        </nav>
+     
+    </div>
+</div> 
+</div>  

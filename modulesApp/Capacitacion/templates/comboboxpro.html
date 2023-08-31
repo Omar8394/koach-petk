@@ -4,7 +4,7 @@
 <option value=null> Seleccione una Opcion </option>
 {% for items in opsion2 %}
 
-<option value={{items.fk_componetesformacion_id}}> {{ items.fk_componetesformacion}}</option>
+<option value={{items.fk_componetesformacion_id}}{% if edita.fk_topico_id == items.fk_componetesformacion_id %} selected {% endif %} > {{ items.fk_componetesformacion}}</option>
 
 
 {% endfor %}
@@ -12,7 +12,7 @@
 <option value=null> Seleccione una Opcion </option>
 {% for items in opsion2 %}
 
-<option value={{items.id_componenteActividades}}> {{ items.titulo}}</option>
+<option value={{items.id_componenteActividades}}{% if edita.fk_topico_id == items.id_componenteActividades %} selected {% endif %} >{{ items.titulo}}</option>
 
 
 {% endfor %}
@@ -20,7 +20,7 @@
 <option value=null> Seleccione una Opcion </option>
 {% for items in opsion2 %}
 
-<option value={{items.id_estructura}}> {{ items.descripcion }}</option>
+<option value={{items.id_estructura}} {% if edita.fk_modulo_id == items.id_estructura %} selected {% endif %}> {{ items.Titulo }}</option>
 
 
 {% endfor %}

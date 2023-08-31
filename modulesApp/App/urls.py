@@ -28,8 +28,12 @@ urlpatterns = [
     path('App/settings/modalAddSetting/', views.getModalSetting, name="modalAddSetting"),
     path('App/settings/deletesetting/', views.deletehijos, name="deletesetting"),
     path('App/settings/editsetting/', views.edithijos, name="editsetting"),
-    
-
+    path('App/settings/managepersons/', views.managepersons, name="managepersons"),
+    path('App/settings/unlockPublic/', views.unlockPublic, name='unlockPublic'),
+    path('App/settings/lockPublic/', views.lockPublic, name='lockPublic'),
+    path('App/settings/listaRol/', views.listaRol, name='listaRol'),
+    path('App/settings/setRole/', views.setRole, name='setRole'),
+    path('App/settings/paginar/', views.paginar, name='paginar'),
     #Security Settings
     
 

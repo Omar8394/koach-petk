@@ -1026,6 +1026,44 @@
 	  </div>
 	</div>
 </div>
+{% elif  rol == 'Interesado' %}
+	<div class="content">
+		<div class="panel-header">
+	<div class="top_container">
+		<!-- header section strats -->
+		
+		<section class="hero_section ">
+		  <div class="hero-container container">
+			<div class="hero_detail-box">
+			  
+			  <h3>
+				Bienvenido <br>
+				{{user}}
+			  </h3>
+			  <h1>
+				Capacitacion
+			  </h1>
+			  <div class="hero_btn-continer">
+				<a href="{% url 'capacitacion_student' %}" class="call_to-btn btn_white-border">
+				  <span>
+					ir
+				  </span>
+				  <img src="{% static 'assets/img/right-arrow.png' %}" alt="" class="img-fluid">
+				</a>
+			  </div>
+			 
+			</div>
+			
+			<div class="hero_img-container">
+			  <div>
+				<img src="{% static 'assets/img/hero.png' %}" alt="" class="img-fluid">
+			  </div>
+			</div>
+		  </div>
+		</section>
+	  </div>
+	</div>
+</div>
 {% endif %}
 <div class="modal fade" id="boletinModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 	<div id="boletinModalContent" class="modal-dialog  modal-dialog-centered" role="document" style=" max-width:80% ;">

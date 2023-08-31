@@ -1,0 +1,54 @@
+<div class="modal-content">
+    <div class="modal-header">
+       <h5 class="modal-title">Registrar Envios</h5>
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+       </button>
+    </div>
+    <form id="formActividad" class="form">
+       <div class="modal-body">
+          <div id="sectionGeneral">
+             <div class="form-row">
+                <div class="form-group col-md-6">
+                   <label for="descriptionActivity" class="col-form-label">Link del Post</label>
+                   <input type="text" class="form-control" name="descriptionActivity" id="descriptionActivity"
+                      placeholder="Enter a title" required value="{{edita.link_post }}">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="estatusLesson">Escuela</label>
+                  <select class="form-control" id="Escuela" name="Escuela"  onchange="cambiar_comb()">
+                     <option value="null" disabled {% if not grupos %} selected {% endif %}>Select an option</option>
+                     {% for item in escuela %}
+                     <option value="{{item.id_estructura}}"  {% if edita.id_post == item.id_estructura %} selected {% endif %} >{{item.Titulo}}</option>
+                     {% endfor %}
+                  </select>
+                </div>
+             </div>
+            
+          </div>
+          <div class="form-row">
+           
+            <div class="form-group col-md-6">
+               <label for="estatusLesson">Modulo</label>
+                  <select class="form-control" id="Modulo" name="Modulo" onchange="cambiar_combtwo()">
+                    
+                  </select>
+            </div>
+            <div class="form-group col-md-6">
+               <label for="estatusLesson">Componente/tema</label>
+                  <select class="form-control" id="estatusLesson" name="estatusLesson" required>
+                    
+                  </select>
+            </div>
+         </div>
+        
+       
+         
+       </div>
+       <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                class="fas fa-arrow-left mr-2"></i>Back</button>
+          <button type="submit" class="btn btn-primary">Save<i class="fas fa-save ml-2"></i></button>
+       </div>
+    </form>
+ </div>

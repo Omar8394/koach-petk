@@ -8,13 +8,15 @@ def index(request):
     if request.user.is_authenticated:
         return redirect("Dashboard")
     context = {'mess':'Cristo me escuchas'}
+    print(context)
     context['segment'] = 'index'
     html_template = loader.get_template( 'index.html' )
     return HttpResponse(html_template.render(context, request))
 
 @login_required(login_url='/security/login/')
-@permission_required('App.view_confmisfavoritos', login_url="/security/login/")
+#@permission_required('App.view_confmisfavoritos', login_url="/security/login/")
 def Dashboard(request):
+    print(request)
     usuario=request.user
     rol=usuario.fk_rol_usuario
     print(rol)

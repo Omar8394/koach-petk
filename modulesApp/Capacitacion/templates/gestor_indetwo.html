@@ -60,7 +60,9 @@ imagen{
 {% endblock content %}
 {% block javascripts %}
 <script>
-    let id = {{id}}
+    let id = '{{id}}'
+    let elemento='{{elemento}}'
+    let url= '{{url}}'
     let editmode = false
     let savemode= false
     let type=false
@@ -76,7 +78,9 @@ imagen{
                query,
                page,
                limit,
-               pk:id
+               pk:id,
+               valor:elemento,
+               urls:url
             })
          })
          .then(async(res)=>{
@@ -452,10 +456,7 @@ const openAddModulos = (id) => {
       window.location.href = `{% url 'relation' %}?id=${id}`
                    
    }
-   const openaddactividades = (id) =>{
-      window.location.href = `{% url 'createactividades' %}?id=${id}`
-                   
-   }
+  
    $(document).on('change', "#imagen", function(e){
       if(this.files && this.files[0]){
          /* Creamos la Imagen*/

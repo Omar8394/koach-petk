@@ -1,0 +1,234 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% block title %}{% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<style>
+  
+    
+       .buscar{
+       position: relative;
+       padding: 8px;
+       
+       }
+       .buscar input{
+       width: 0px;
+       height: 40px;
+       padding: 0 20px;
+       font-size: 18px;
+       color: black;
+       outline: none;
+       border: 1px solid silver;
+       border-radius: 30px;
+       transition: all 0.6s ease;
+       }
+       .btn-sear{
+       width: 55px;
+       height: 55px;
+       line-height: 55px;
+       position: absolute;
+       top: 0px;
+       right: 0px;
+       background-color: #440080;
+       line-height: 55px;
+       text-align: center;
+       color: whitesmoke;
+       font-size: 20px;
+       border-radius: 50%;
+       cursor: pointer;
+       }
+       .buscar:hover input{
+       width: 190px;
+       
+       
+       }
+       .buscar input:focus{
+       
+           width: 190px;
+       }
+       .buscar select:focus{
+       
+        width: 190px;
+    }
+    .buscar:hover select{
+        width: 190px;
+        
+        
+        }
+       
+
+
+
+</style>
+
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+	<div class="content">
+		<div class="page-inner">
+			<div class="page-header">
+				<h4 class="page-title">Historial</h4>
+				<ul class="breadcrumbs">
+					<li class="nav-home">
+						<a href="{% url 'Dashboard' %}">
+							<i class="flaticon-home"></i>
+						</a>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<span>Capacitacion</span>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<a href="#">Historial</a>
+					</li>
+				</ul>
+			</div>
+			<div class="page-category">
+                
+        		<div id="box" class="box">
+                
+<div class="card">
+   <div class="container d-flex mx-0 px-0">
+      {% if rol == 'Lider' or rol == 'Admin' %}       
+       {% include 'filtrohistory.html' %} 
+      {% endif %}
+      
+
+  </div>
+   <div id="boxes" class="box">
+       <div class="form-row text-center">
+           <div class="form-group col-md-12">
+               <div class="table-responsive">
+                  <table class="table table-hover table-striped table-borderless table-component-like text-center" id="tablaContenido">
+
+                   {% include 'contenidotablahistory.html'  with plan=plan  %}
+                  </table>
+                  </div> 
+           </div> 
+       </div>                 
+   </div>
+   <div class="card-footer" id="paginas"> 
+
+       {% include 'paginashistory.html' with plan=plan %}  
+
+  </div> 
+</div>    
+                
+            </div>
+               
+					
+  
+      		</div>
+		</div>
+	</div>
+
+{% endblock content %}
+	
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+    
+    let editmode = false
+    let savemode= false
+    let type=false
+    let query = ""
+    let selectedId = ""
+    let limit = 4
+    let page =""
+    
+      const renderdetalle = (id)=>{
+         document.querySelector("#box").classList.add("is-loading")
+         fetch("{% url 'Renderdetalle'%}", {
+            ...fetchObject,
+            body: JSON.stringify({
+               query,
+               id
+            })
+         })
+         .then(async(res)=>{
+            result = await res.text()
+            document.querySelector("#box").classList.remove("is-loading")
+            document.querySelector("#box").innerHTML = result
+         })
+      }
+     
+    
+ //paginaciones
+$('#paginas').on('click', ".page-link", function(e){
+   e.preventDefault();
+   let page = $(this).attr('href').replace ( /[^\d.]/g, '' );
+   setLoading()
+   $.ajax({
+       type: "POST",
+       url: "{% url 'paginarhistory' %}", 
+       data : {    
+           page : page, 
+           filtro : $('#search_box').val(), 
+           
+           nodo: $('#idStatus').val(), 
+           
+           
+           csrfmiddlewaretoken: '{{ csrf_token }}',
+       },
+       success: function (response) {
+
+           document.getElementById('paginas').innerHTML = response.paginas;
+           document.getElementById('tablaContenido').innerHTML = response.contenido;
+           // console.log(response.contenido)
+           stopLoading()
+
+       },
+       error: function () {
+           stopLoading()
+       }
+   });
+
+}); 
+ //metodos para filtro
+let t;    
+function myCallback()
+{
+    let txt = $('#search_box').val();
+    setLoading()
+    $.ajax({
+        type: "POST",
+        url: "{% url 'paginarhistory' %}", 
+        data : {    
+            filtro : txt,
+            
+            nodo: $('#idStatus').val(), 
+            
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+        },
+        success: function (response) {
+
+            document.getElementById('paginas').innerHTML = response.paginas;
+            document.getElementById('tablaContenido').innerHTML = response.contenido;
+            // // console.log(response.contenido)
+            stopLoading()
+
+        },
+        error: function () {
+            stopLoading()
+        }
+    });
+}  
+$(document).ready(function () {
+   $('#Filter').click(function (e) {  
+      myCallback()
+   });
+   
+})  
+const regresar = ()=>{
+    location.reload()
+}     
+</script>
+{% endblock javascripts %}

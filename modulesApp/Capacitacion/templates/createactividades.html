@@ -38,6 +38,9 @@
 
 					<div class="row">
 						<div class="card col-12" style="background-color: #1a2035 !important; color: white;">
+							
+							<h3 >Componente: {{titulo}}</h3>
+							
 							<div class="section-header">
 								<h3 >Nueva actividad</h3> 
                               <div onclick="openAddActivity('{{id}}')" class="btn btn-icon btn-success btn-round add-btn btn-card-lg">
@@ -85,28 +88,41 @@
 	 
 		</div>
 	 </div>
+	 <div class="modal fade" id="addNewModals" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="addNewModalContents">
+	 
+		</div>
+	 </div>
 {% endblock content %}
 	
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 <script>
-	let ids={{id}}
+	let ids='{{id}}'
+	let url='{{url}}'
+	let elemento='{{elemento}}'
     let query = ""
-	
+	let tablaPreguntas = []
 	let editmode = false
 	let queryResource = ""
     let selectedId = ""
     let recursosArray = []
     let selectedResources = []
     let bankPage = 1
-   
+    const arraytipopre = [{% for tipo in grupos %}{ id: "{{tipo.if_gruponodo}}", descripcion: "{{tipo.Descripcion}}" }, {% endfor %}]
+    let hashObj = arraytipopre.reduce(function (acc, e) {
+        acc[e.id] = e.descripcion
+        return acc
+    }, {})
 	const renderContent = (id)=>{
 		document.querySelector("#resultado").classList.add("is-loading")
 		fetch("{% url 'renderactividades'%}", {
 		   ...fetchObject,
 		   body: JSON.stringify({
 			  query,
-			  id
+			  id,
+			  urls:url,
+			  valor:elemento
 		   })
 		})
 		.then(async(res)=>{
@@ -1063,5 +1079,442 @@
 			 })
 		   })
 	 }
+	 const renderModalPublicar = (id,urs) => {
+		idSeleted=id
+		tipo=null
+		editmode = false
+		return fetch("{% url 'getModalPublicar'%}", {
+		   ...fetchObject,
+		   body: JSON.stringify({
+			  method: "Show",
+			  id
+			  
+		   })
+		})
+		   .then(async (res) => {
+			  document.getElementById("addNewModalContents").innerHTML = await res.text()
+		   })
+		   .then(() => {
+			  $("#addNewModals").modal("show")
+			  const formPrograma = document.getElementById("formpublicar")
+			 
+
+			
+			 formPrograma.addEventListener("submit", (e) => {
+				e.preventDefault()
+				
+				   setLoading()
+				   clickguardar(urs,idSeleted)
+					  .then(() => {
+						$("#addNewModals").modal("hide")
+						renderContent(idSeleted)
+						stopLoading()
+						 
+					  })
+	
+				
+			 })
+		   })
+	 }
+	 const renderListavarias = (id)=>{
+	
+		fetch("{% url 'RenderListaspublicar'%}", {
+		   ...fetchObject,
+			body: JSON.stringify({
+			   method: "Hijos",
+			   pk:id,
+			   
+			})
+		 })
+			.then(async (res) => {
+			   document.getElementById("sectionDetailed").innerHTML = await res.text()
+			})
+			
+	}
+	function cambiar_comb() {
+	   
+	   const varia= document.getElementById("categoryProgram").value;
+		renderListavarias(varia)
+	   
+	   //const url= '/professors/micombobox/?valor='+varia;
+	   ///fetch(url)
+	   ///.then( function(result) {
+	   //	return result.text();
+	   ////})
+	   ///.then( function(result){
+	   //	document.getElementById("categoriasProcess").innerHTML=result;    
+	   //});
+   
+   }
+   const renderLista = (url,id)=>{
+	
+	return fetch(url, {
+	    ...fetchObject,
+         body: JSON.stringify({
+            method: "Show",
+			pk:id,
+         })
+      })
+         .then(async (res) => {
+            document.getElementById("sectionDetailed").innerHTML = await res.text()
+         })
+         
+ }
+   const ModalPublicar = async (id,urls) => {
+	
+	await renderModalPublicar(id,urls)
+	let url
+   
+	url = "{% url 'RenderListaspublicar'%}"
+	
+	await renderLista(url)
+	 
+ }
+ var nextinput = 0;
+const addoptions= async () =>{
+	
+	let datos = {
+		Opciondesde: document.getElementById("disponibledesde").value,
+		Opcionhasta: document.getElementById("disponiblehasta").value,	
+		OpcionNodos: hashObj[document.getElementById("categoryProgram").value],
+		id:document.getElementById("categoryProgram").value,
+		actions: `
+		<div class="btn-group" role="group">
+			<button onclick="borrarItem(${tablaPreguntas.length}) type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
+				<i class="fas fa-trash-alt"></i>
+			</button>
+		</div>`
+	}  
+	tablaPreguntas.push(datos)
+	actualizarLista()
+
+}
+ function actualizarLista() {   
+	let contenido = "";
+	tablaPreguntas.map((dato, index) => {
+		
+		//console.log(dato)
+		let fila =
+			`<tr>
+				<td>
+					${dato.OpcionNodos}
+				</td>
+					
+				<td>
+					${dato.Opciondesde}
+				</td>
+				<td>
+					${dato.Opcionhasta}
+				</td>
+				<td>
+					<div class="btn-group" role="group">
+						<button onclick="borrarItemSimple(${index})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
+							<i class="fas fa-trash-alt"></i>
+						</button>
+					</div>
+				</td>              
+			</tr>`
+		contenido += fila;
+	})
+	$('#tablepublicar').html(contenido);
+	//tableContentSimple.innerHTML = contenido;
+	}
+	function CargarModalOpciones(){
+		
+		$("#addRow").click(function () {
+			event.preventDefault()
+	
+	
+	
+			for(const element of tablaPreguntas ){
+	
+				if(element.Opcionnodo==hashObj[document.getElementById("categoryProgram").value]){
+	
+				//alertaMensajitos(5,'Invalid description',"There is already a question with the same text")
+				makeMessage(4, "{% translate 'Descripcion invalida' %}", "{% translate 'Ya hay una pregunta igual' %}", 'fa fa-exclamation-triangle')
+				return
+	
+				}
+	
+	
+			}
+		
+	
+			let datos = {
+				Opciondesde: document.getElementById("disponibledesde").value,
+		        Opcionhasta: document.getElementById("disponiblehasta").value,
+		        Opcionnodo: document.getElementById("categoryProgram").value,
+		
+				id:tablaPreguntas.length,
+				actions: `
+				<div class="btn-group" role="group">
+					<button onclick="borrarItem(${tablaPreguntas.length})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
+						<i class="fas fa-trash-alt"></i>
+					</button>
+				</div>`
+			}
+	
+			tablaPreguntas.push(datos)
+		
+			actualizarLista()
+	
+		})
+	
+	}	
+	function borrarItemSimple(id) {
+		tablaPreguntas.splice(id, 1)
+		
+		
+		actualizarLista()
+		
+		
+	}
+	const updatePublicar = (form,idviejo, url) => {
+		fetch(url, {
+			...fetchObject,
+			body: JSON.stringify({
+				data: {
+					...form,
+					idviejo
+				}
+			}),
+		})
+			.then(async (res) => {
+				stopLoading()
+	
+				let result = JSON.parse(await res.text())
+				if (result.message === "Error") {
+					makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+				}
+				if (result.message === "ok") {
+					makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+				//limpiarModalOpciones(padr)
+				
+			
+				
+				
+				}
+				
+			})
+			
+	}
+	async function clickguardar (url,id)  {
+            
+		setLoading()
+		
+		
+			
+		const metodo=editmode?'Update':'Create'
+		  
+		form = {
+		   
+		   method:metodo,
+		   hijos: tablaPreguntas,
+	       pk:id,
+		
+	
+		
+		}
+		if (editmode) {
+			console.log(form)
+			console.log('form')
+	
+			updatePublicar(form,id,url)
+		}
+		else {
+			createPublicar(form,url)
+		}            
+		
+	}
+	const createPublicar = (form,url) => {
+		fetch(url, {
+			...fetchObject,
+			body: JSON.stringify({
+			   data: form
+			}),
+		})
+		.then(async (res) => {
+			
+	
+			let result = JSON.parse(await res.text())
+			if (result.message === "Error") {
+				makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+			}
+			if (result.message === "No") {
+				makeMessage(4, "{% translate 'Error' %}", "{% translate 'el puntaje de esta pregunta excede el total de puntos del bloque' %}", 'fa fa-exclamation-triangle')
+			 }
+			 if (result.message === "ok") {
+				makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+				
+			 }
+			
+			
+		})
+	
+	}
+	const EditModalPublicar= async (id) => {
+		setLoading()
+        await ModalPublicar(id,"{% url 'Edittestpublicar' %}")	
+        stopLoading()
+		
+		editmode= true 
+		selectedId = id
+		let url
+		url = "{% url 'Edittestpublicar' %}"  
+		fetch(url, {
+			...fetchObject,
+			body: JSON.stringify({
+				data: {
+					idFind: id
+					 
+				}
+			}),
+		})
+		.then(async (res) => {
+		tablaPreguntas.splice(tablaPreguntas.length,0)
+		
+		tablaPreguntas=[]
+		
+		console.log('clean')
+		
+		let PreguntaDatos = JSON.parse(await res.text())
+		
+		let listaLoca = PreguntaDatos.childs
+		if(listaLoca){
+			
+				listaLoca.map((el)=>{
+					console.log(el)
+					let datos = {
+						Opciondesde:el.Desde,
+		                Opcionhasta:el.Hasta ,
+		                OpcionNodos:hashObj[el.fk_nodos_id] ,		
+						id:el.fk_nodos_id,
+						
+						actions: `
+						<div class="btn-group" role="group">
+							<button onclick="openDeletePublicar(${el.id_tiempoxevaluaciones},${selectedId})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
+								<i class="fas fa-trash-alt"></i>
+							</button>
+						</div>`
+					}
+					tablaPreguntas.push(datos)
+					actualizarListaeditable(el.id_tiempoxevaluaciones,selectedId)        
+				}) 
+				
+		
+				        
+			
+			
+					   
+		
+			
+		}	
+		})
+		.then(async (res) => {
+			var formQuestion = document.getElementById("formpublicar")
+				   
+			formQuestion.addEventListener("submit", (e) => {
+				
+	
+				
+			 })
+		
+			   
+		})
+		}
+		const openDeletePublicar = async (id,padre) => {
+			//alert(type)
+			const elimino = await alerta(3)
+			//  console.log(type)
+			if (elimino) {
+				setLoading()
+			
+				let urlDelete=''
+			 
+				urlDelete = "{% url 'Edittestpublicar' %}"
+					
+				
+				const res = await matarPregunta(id, urlDelete,padre)
+				if (res) {
+					stopLoading()
+					
+					makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro Eliminado Satisfactoriamente' %}", "fa fa-check")
+						
+					
+				
+				}
+				else {
+					stopLoading()
+			
+					makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+				}
+			}
+			}
+			const matarPregunta = (id, url,padre) => {
+					
+			
+				return fetch(url, {
+					...fetchObject,
+					body: JSON.stringify({
+						data: {
+							delete: true,
+							method:'',
+							id
+						}
+					}),
+				})
+					.then(async (res) => {
+						let result = JSON.parse(await res.text())
+						if (result.message === "Error") {
+							return false
+						}
+						return true
+					})
+					.then((result) => {
+						$("#addNewModals").modal("hide")
+						renderContent(padre)
+						return result
+						
+					})
+			}
+			function actualizarListaeditable(id,padre) { 
+				let father = padre  
+				let contenido = "";
+				tablaPreguntas.map((dato, index) => {
+					
+					//console.log(dato)
+					let fila =
+						`<tr>
+							<td>
+								${dato.OpcionNodos}
+							</td>
+								
+							<td>
+								${dato.Opciondesde}
+							</td>
+							<td>
+								${dato.Opcionhasta}
+							</td>
+							<td>
+								<div class="btn-group" role="group">
+									<button onclick="openDeletePublicar(${id},${father})" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Delete" >
+										<i class="fas fa-trash-alt"></i>
+									</button>
+								</div>
+							</td>              
+						</tr>`
+					contenido += fila;
+				})
+				$('#tablepublicar').html(contenido);
+				//tableContentSimple.innerHTML = contenido;
+				}
+				function limpiarModalOpciones(id){
+					tablaPreguntas=[]
+					tablaPreguntas.splice(0,tablaPreguntas.length)
+					editmode = false
+					
+					
+				
+				}				
 </script>
 {% endblock javascripts %}

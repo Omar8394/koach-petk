@@ -1,0 +1,25 @@
+
+<div class="card">
+    <div class="container d-flex mx-0 px-0">
+                
+        {% include 'filtrohistory.html' %} 
+
+       
+
+   </div>
+    <div id="boxes" class="box">
+        <div class="form-row text-center">
+            <div class="form-group col-md-12">
+                <div class="table-responsive">
+                   
+                    {% include 'contenidotablahistory.html'  with plan=plan  %}
+                </div> 
+            </div> 
+        </div>                 
+    </div>
+    <div class="card-footer" id="paginas"> 
+
+        {% include 'paginashistory.html' with plan=plan %}  
+
+   </div> 
+</div>

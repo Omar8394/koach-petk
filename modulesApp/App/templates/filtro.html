@@ -1,0 +1,16 @@
+<style>
+    input[type=search]::-webkit-search-cancel-button {
+    -webkit-appearance: searchfield-cancel-button;
+}
+</style>
+<div class="form-group">
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text">
+                <i class="fas fa-search"></i>
+            </span>
+        </div>
+        <!-- <input id="search_box" type="search" name="search_box"  placeholder="Search..." class="form-control" value="{{ search }}" {% if search %}autofocus{% endif %}> -->
+        <input id="search_box" type="search" name="search_box"  placeholder="Buscar..." class="form-control" value="{{ search }}" {% if search %}autofocus{% endif %}>
+    </div>
+</div>

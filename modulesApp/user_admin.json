@@ -1,0 +1,18 @@
+
+[
+    {
+          "model": "Security.User",
+          "pk": 1,
+          "fields": {
+            "fk_rol_usuario": 110,
+            "fk_pregunta_secreta": "",
+            "intentos_fallidos": 0,
+            "fecha_ult_cambio":1,
+            "respuesta_secreta":"Padre",
+            "fk_status_cuenta":56,
+            "dias_cambio":90,
+            "url_imagen":""
+            
+          }
+    }
+]

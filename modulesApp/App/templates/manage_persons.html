@@ -1,0 +1,542 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}{% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+{% endblock stylesheets %} 
+{% block content %}
+
+	<div class="content" id="contenedor">
+		<div class="page-inner animated fadeInRight">
+			<div class="page-header">
+				<!-- <h4 class="page-title">Public</h4> -->
+				<h4 class="page-title">Publico</h4>
+				<ul class="breadcrumbs">
+					<li class="nav-home">
+						<a href="{% url 'home' %}">
+							<i class="flaticon-home"></i>
+						</a>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<a href="">Configuración</a>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<!-- <a href=".">Public</a> -->
+						<a href=".">Publico</a>
+					</li>
+				</ul>
+			</div>
+            <div class="container d-flex mx-0 px-0">
+                
+                 {% include 'filtro.html' %} 
+
+                
+
+            </div>
+			<div class="page-category" id="prueba">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="form-row">
+                            <div class="form-group d-flex">
+
+                                <!-- <h2 class="card-text mt-2">List of public</h2> -->
+                                <h2 class="card-text mt-2">Lista de Publicos</h2>
+
+                            </div>
+                            
+                            <div class="pr-2 d-flex ml-auto">
+                                <div class="btn-group">
+                                    <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="icon icon-sm icon-gray">
+                                            <span class="fas fa-cog"></span>
+                                        </span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-xs dropdown-menu-right" id="rangosTablas">
+                                        <!-- <h5 class="dropdown-header text-center font-weight-bold">Records per Pages</h5> -->
+                                        <h5 class="dropdown-header text-center font-weight-bold">Registros por Paginas</h5>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-center active" href="#">5</a>
+                                        <a class="dropdown-item text-center" href="#">10</a>
+                                        <a class="dropdown-item text-center" href="#">20</a>
+                                        <a class="dropdown-item text-center" href="#">50</a>
+                                        <a class="dropdown-item text-center" href="#">100</a>
+                                        <a class="dropdown-item text-center" href="#">TODOS</a>
+                                        <!-- <a class="dropdown-item text-center" href="#">ALL</a> -->
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped table-borderless table-component-like text-center" id="tablaContenido">
+
+                                {% include 'contenidoTablaPublic.html' with plan=plan tipo=tipo  %}
+
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer" id="paginas"> 
+
+                         {% include 'paginas.html' with plan=plan %}  
+
+                    </div> 
+                </div>           
+      		</div>
+		</div>
+	</div>
+
+    {% comment %} {% include 'planning/mensajes.html' %} {% endcomment %}
+
+
+    <div class="modal fade" tabindex="-1" id="myModal" role="dialog" aria-hidden="true">
+        <div id="addNewModalContent" class="modal-dialog modal-dialog-centered" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Cambiar rol</h5>
+                    <!-- <h5 class="modal-title">Set role</h5> -->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    
+                    <select class="form-control" id="roles">
+
+                    </select>
+                    <input type="hidden">
+
+                </div>
+
+                <div class="modal-footer mt-3">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-arrow-left mr-2"></i>Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="botonGuardar"><i class="fas fa-save mr-2"></i>Guardar</button>
+                    <!-- <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-arrow-left mr-2"></i>Close</button>
+                    <button type="button" class="btn btn-primary" id="botonGuardar"><i class="fas fa-save mr-2"></i>Save</button> -->
+                </div>
+
+            </div>
+            
+        </div>
+    </div>
+
+{% endblock content %}
+	
+<!-- Specific Page JS goes HERE  planning-->
+{% block javascripts %}
+
+
+
+<script>
+
+        
+
+    const bloquear = (id) => {
+
+        swal({
+                title: "Are you sure?",
+                text: "Do you want to lock this user?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+
+        }).then((willDelete) => {
+
+                if(willDelete){
+                    setLoading()
+                    $.ajax({
+                        type: "POST",
+                        url: "{% url urlRemove %}",
+                        data: {
+                            'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            'id': id,
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            if(data.mensaje && data.mensaje === 'self' || data.mensaje === 'verification')
+                                
+                                swal({
+                                        title: "Alert?",
+                                        text: data.mensaje === 'self'?"You can't look your account?":"This account needs to be verified",
+                                        icon: "warning",})
+
+                            else
+
+                                $('#paginas').find('.active').find('.page-link').trigger('click')
+
+                            stopLoading()
+                            
+                        },
+                        failure: function () {
+                            swal("failure");
+                            stopLoading()
+                        }
+                    });
+
+                }
+            });
+        } 
+    const desbloquear = (id) => {
+
+        swal({
+                title: "Are you sure?",
+                text: "Do you want to unlock this user?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+
+        }).then((willDelete) => {
+
+                if(willDelete){
+                    setLoading()
+                    $.ajax({
+                        type: "POST",
+                        url: "{% url urlEdit %}",
+                        data: {
+                            'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            'id': id,
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            $('#paginas').find('.active').find('.page-link').trigger('click')
+                            stopLoading()
+                            
+                        },
+                        failure: function () {
+                            swal("failure");
+                            stopLoading()
+                        }
+                    });
+
+                }
+            });
+        } 
+
+    const modalRol = (id) => {
+    
+        setLoading()
+        $.ajax({
+            type: "POST",
+            data: {
+                id: id,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+
+            },
+            url: "{% url 'listaRol' %}",
+            success: function (response) {
+
+                if(response.html && response.html === 'self')
+                                
+                    swal({
+                        title: "Alerta?",
+                        text: "No puedes cambiar tu propio rol?",
+                        // title: "Alert?",
+                        // text: "You can't set your role?",
+                        icon: "warning",})
+
+                else if(response.html && response.html === 'noPublic')
+
+                    swal({
+                        // title: "Alert?",
+                        // text: "This user shuld fill at least his name on profile settings first",
+                        title: "Alerta?",
+                        text: "Este usuario deberia colocar por lo menos su nombre en su perfil de usuario",
+                        icon: "warning",})
+
+                else if(response.html && response.html === 'noUser'){
+
+                    swal({
+                        // title: "Alert?",
+                        // text: "This user is not logged in yet",
+                        title: "Alerta?",
+                        text: "Este usuario aun no ha iniciado sesion",
+                        icon: "warning",})
+
+                }else{
+                    
+                    document.getElementById('roles').innerHTML = response.html;
+                    $("#myModal").modal('show');
+                    $("#myModal input").val(id);
+
+                }
+                stopLoading()
+
+            },
+            error: function (response) {
+                console.log(response.responseJSON.errors)
+                stopLoading()
+            }
+        });
+
+    } 
+        
+//paginaciones
+$('#paginas').on('click', ".page-link", function(e){
+    e.preventDefault();
+    let page = $(this).attr('href').replace ( /[^\d.]/g, '' );
+    setLoading()
+    $.ajax({
+        type: "POST",
+        url: "{% url 'paginar' %}", 
+        data : {    
+            page : page, 
+            filtro : $('#search_box').val(), 
+            tipo: "Public",
+            fecha1: $('#fecha1').val(), 
+            fecha2: $('#fecha2').val(), 
+            orden: orden,
+            rango : $("#rangosTablas a.active").text(),
+            tipoOrden: tipoOrden,
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+        },
+        success: function (response) {
+
+            document.getElementById('paginas').innerHTML = response.paginas;
+            document.getElementById('tablaContenido').innerHTML = response.contenido;
+            // console.log(response.contenido)
+            stopLoading()
+
+        },
+        error: function () {
+            stopLoading()
+        }
+    });
+
+}); 
+
+//metodos para filtro
+let t;    
+    function myCallback()
+    {
+        let txt = $('#search_box').val();
+        setLoading()
+        $.ajax({
+            type: "POST",
+            url: "{% url 'paginar' %}", 
+            data : {    
+                filtro : txt, 
+                tipo: "Public",
+                fecha1: $('#fecha1').val(), 
+                fecha2: $('#fecha2').val(), 
+                rango : $("#rangosTablas a.active").text(),
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function (response) {
+
+                document.getElementById('paginas').innerHTML = response.paginas;
+                document.getElementById('tablaContenido').innerHTML = response.contenido;
+                // // console.log(response.contenido)
+                stopLoading()
+
+            },
+            error: function () {
+                stopLoading()
+            }
+        });
+    }
+
+$(document).ready(function () {
+    $('#search_box').keyup(function (e) {  
+
+        if (e.keyCode === 13) {
+
+            if (t){
+                
+                clearTimeout( t );
+                t = null;
+                myCallback();
+            }
+
+        }
+
+        else
+
+            if ( t )
+            {
+                clearTimeout( t );
+                t = setTimeout( myCallback, 1000 );
+            }
+            else
+            {
+                t = setTimeout( myCallback, 1000 );
+            }
+
+        return false;
+    });
+    
+})
+//llama boton x
+document.getElementById('search_box').addEventListener('input', function(e) { 
+    if(e.currentTarget.value == "") {
+        myCallback();
+    }
+})
+
+
+let orden="", tipoOrden="";
+
+//metodos para ordenar las tablas por columna
+$("#tablaContenido").on('click', "th", function(e){
+
+    if($(this).attr("id"))
+        var ord=""
+    if($("#tablaContenido").hasClass("descendiente"))
+
+        $('#tablaContenido').removeClass('descendiente');
+
+    else{
+        ord="-"
+        $('#tablaContenido').addClass('descendiente');
+    }
+
+    orden = $(this).attr("id")
+    tipoOrden = ord
+    if(orden === 'telefonos' || orden === 'idpublico' || orden === 'correos') orden = 'Publico__'+orden
+    if(orden === 'fk_rol_usuario' || orden === 'fk_status_cuenta') orden = 'CtaUsuario__'+orden+'__desc_elemento'
+    if(orden === 'username' || orden === 'date_joined') orden = 'user__'+orden
+    // let page = $('#paginas .page-item.active').children('a').attr('href').replace ( /[^\d.]/g, '' );
+    setLoading()
+    $.ajax({
+        type: "POST",
+        url: "{% url 'paginar' %}", 
+        data : {    
+            orden: orden,
+            page: $("li.page-item.active").children().text(),
+            tipoOrden: tipoOrden,
+            filtro : $('#search_box').val(), 
+            tipo: "Public",
+            fecha1: $('#fecha1').val(), 
+            fecha2: $('#fecha2').val(), 
+            rango : $("#rangosTablas a.active").text(),
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+        },
+        success: function (response) {
+
+            document.getElementById('paginas').innerHTML = response.paginas;
+            document.getElementById('tablaContenido').innerHTML = response.contenido;
+            // console.log(response.contenido)
+            stopLoading()
+
+        },
+        error: function () {
+            stopLoading()
+        }
+    });
+
+});
+
+
+
+//metodo guardar y validar 
+$('#myModal').on('click', '#botonGuardar', function (e) {
+    let rolSlected = $('#myModal select option:selected').val()
+    let id = $('#myModal input').val()
+    setLoading()
+    $.ajax({
+        type: "POST",
+        url: "{% url 'setRole' %}",
+        data : {
+            id: id,
+            rol: rolSlected,
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+        },
+        dataType: "json",
+        success: function (response) {
+
+            if(!response.mensaje){
+                $('#paginas').find('.active').find('.page-link').trigger('click')
+                $('#myModal').modal('hide')
+
+            }
+            stopLoading()
+            
+        },
+        failure: function () {
+            swal("failure");
+            stopLoading()
+        }
+    });
+})
+
+//metodo para filtrar fechas
+$(document).on('change', "#fecha2, #fecha1", function (e) {
+    console.log($(this).val())
+    setLoading()
+    $.ajax({
+        type: "POST",
+        url: "{% url 'paginar' %}", 
+        data : {    
+            fecha1: $('#fecha1').val(), 
+            fecha2: $('#fecha2').val(), 
+            filtro : $('#search_box').val(), 
+            tipo: "Public",
+            rango : $("#rangosTablas a.active").text(),
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+        },
+        success: function (response) {
+
+            document.getElementById('paginas').innerHTML = response.paginas;
+            document.getElementById('tablaContenido').innerHTML = response.contenido;
+            // console.log(response.contenido)
+            stopLoading()
+
+        },
+        error: function () {
+            stopLoading()
+        }
+    });
+
+})
+
+//rangos tablas
+$(document).on('click', "#rangosTablas a", function(e){
+    e.preventDefault();
+    $("#rangosTablas a.active").removeClass('active')
+    $(this).addClass('active'),
+    setLoading()
+    $.ajax({
+            type: "POST",
+            url: "{% url 'paginar' %}", 
+            data : {    
+            rango : $(this).text(), 
+            page: $("li.page-item.active").children().text(),
+            orden: orden,
+            tipoOrden: tipoOrden,
+            filtro : $('#search_box').val(), 
+            tipo: 'Public',
+            fecha1: $('#fecha1').val(), 
+            fecha2: $('#fecha2').val(), 
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+        },
+        success: function (response) {
+
+            document.getElementById('paginas').innerHTML = response.paginas;
+            document.getElementById('tablaContenido').innerHTML = response.contenido;
+            $("#tablaContenido #"+(orden?orden:"nombre_empresa")+" span."+(tipoOrden === ""?"der":"izq")).css("opacity", "1")
+            stopLoading()
+
+        },
+        error: function () {
+            stopLoading()
+        }
+    });
+
+}); 
+
+</script>
+
+{% endblock javascripts %}

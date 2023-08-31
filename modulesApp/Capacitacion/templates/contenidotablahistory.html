@@ -1,0 +1,47 @@
+
+    <thead id="tablaHead">
+        <tr>
+            {% for key, value in keys.items %}
+
+                <th id={{ key }} class={% if key == orden %}descendiente{% endif %}>{{ value }}</th>
+
+            {% endfor %}
+
+            <!-- <th>Action</th> -->
+            <th>Accion</th>
+
+        </tr>
+    </thead>
+    <tbody  id="tableContent">
+        {% for grupo in plan %} 
+    <tr>
+            
+        <td>
+           {{grupo.pk}}
+        </td>
+
+
+        <td>
+            {{grupo.fk_public}}
+        </td>
+        <td>
+        {{grupo.fk_public_id|initial_fecha}}
+        </td>
+        <td>
+            {{grupo.fk_public_id|last_atv}}
+        </td>
+        <td>
+            <button onclick="renderdetalle('{{grupo.fk_public_id}}')" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="informacion detallada" >
+                           
+                <i class="fas fa-check-circle"></i>
+             </button>
+        </td>
+    </tr>
+    {% empty %}
+
+            <!-- <tr><td colspan="100%"><h2>No matching records found</h2></td></tr>  -->
+            <tr><td colspan="100%"><h2>No se ha encontrado ningun registro</h2></td></tr> 
+    {% endfor %}
+    </tbody>
+  
+

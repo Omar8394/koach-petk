@@ -42,7 +42,7 @@
                    >
              </div>
           </div>
-          <div class="form-row">
+          {% comment %} <div class="form-row">
             <div class="form-group col-12">
                <label for="urlProgram" class="col-form-label">Condicion</label>
                <input type="text" class="form-control" name="Condicion" id="Condicion"
@@ -50,9 +50,9 @@
                   value="{% if modelo %}{{ modelo.Condicion }}{% endif %}"
                   >
             </div>
-         </div>
+         </div> {% endcomment %}
          
-          <div class="form-row">
+          {% comment %} <div class="form-row">
             <div class="form-group col-12">
                <label for="categoryProgram" class="col-form-label">Tipo de Ritmo</label>
                <select class="form-control" name="categoryProgram" id="categoryProgram" required
@@ -65,8 +65,8 @@
                   {% endfor%}
                </select>
             </div>
-         </div>
-         <div class="form-row">
+         </div> {% endcomment %}
+         {% comment %} <div class="form-row">
             <div class="form-group col-12">
                <label for="urlProgram" class="col-form-label">Ritmo</label>
                <input type="text" class="form-control" name="Ritmo" id="Ritmo"
@@ -74,7 +74,7 @@
                   value="{% if modelo %}{{ modelo.ritmo }}{% endif %}"
                   >
             </div>
-         </div>
+         </div> {% endcomment %}
          <div class="form-group col-6">
             <label for="diponibleCourse" class="col-form-label">Fecha</label>
             <input type="date" class="form-control" name="disponibleCourse" id="disponibleCourse" required

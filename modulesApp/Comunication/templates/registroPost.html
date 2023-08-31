@@ -1,0 +1,607 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% block title %}{% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<style>
+.lista{
+	text-decoration: none;
+	list-style:none;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	position: relative;
+	width: 100%;
+ }
+ 
+ .lista-item{
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+ }
+ .lista-item-inner{
+	color: #fff;
+	padding: 15px;
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-radius: 0.25rem;
+	box-shadow: 2px 2px 10px #000;
+	background: #1a2035;
+	/* background: linear-gradient(0deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 22%, rgba(0, 212, 255, 1) 100%) */
+ }
+ .lista-item > ul > li{
+	width: 100%;
+ }
+ .lista-item > ul{
+	padding: 0 1rem;
+	list-style: none;
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	flex-direction: column;
+	gap: 0.5rem;
+ }
+ .lista-item-close{
+	height: 0 !important;
+	padding: 0 !important;
+	display: none !important;
+	width: 0 !important;
+ }
+ .lista-item-content{
+	margin: 5px;
+	gap: 1.5rem;
+	display: flex;
+	align-items:center;
+	justify-content: space-between;
+	position: relative;
+	height: 100%;
+	padding: 15px;
+	border-radius: 0.25rem;
+	box-shadow: 2px 2px 10px #0005;
+	background: #09b1db;
+	transition: transform 0.1s linear, outline 0.1s linear
+ }
+ .lista-item-content:hover{
+	transform: scale(1.01);
+	outline: 0.5px solid #00000050;
+ }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+	<div class="content">
+		<div class="page-inner">
+			<div class="page-header">
+				<h4 class="page-title">Starter page</h4>
+				<ul class="breadcrumbs">
+					<li class="nav-home">
+						<a href="{% url 'Dashboard' %}">
+							<i class="flaticon-home"></i>
+						</a>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<span>Module name</span>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<a href="#">Page 1</a>
+					</li>
+				</ul>
+			</div>
+			<div class="page-category">
+			<div class="card" id="renderizado">
+                <div class="card">
+                    <div class="section-header">
+                        <h3 class="section-title">Registrar Links</h3>
+                        <div onclick="openAddenvio()" class="btn btn-icon btn-success btn-round add-btn btn-card-lg">
+                           <i class="fas fa-plus"></i>
+                    </div>
+                  </div> 
+                </div>
+                <div class="card-body m-0 p-0" >
+                    <div id="wrapp">
+                        
+                            
+                        
+                    </div>
+                </div>
+			</div>
+      		</div>
+		</div>
+	</div>
+	<div class="modal fade" id="addNewModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="addNewModalContent">
+	 
+		</div>
+	 </div>
+{% endblock content %}
+	
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+	let editmode = false
+	let query=''
+	let limit =5 
+    let page =""
+    const openAddenvio = () => {
+		editmode = false
+		fetch("{% url 'modalAddenvios'%}", {
+		   ...fetchObject,
+		   body: JSON.stringify({
+			method:"Show"
+			
+		 })
+			   
+		})
+		   .then(async (res) => {
+			  document.getElementById("addNewModalContent").innerHTML = await res.text()
+		   })
+		   .then(() => {
+			  $("#addNewModal").modal("show")
+			  const formPrograma = document.getElementById("formActividad")
+			  let rules = {
+				descriptionActivity: {
+					required: true
+					
+				 },
+				 urlActivity: {
+					required: true
+					
+				 },
+				 disponibleLesson: {
+					required: true
+					
+				 },
+				 estatusLesson: {
+					required: true
+					
+				 },
+				 Director: {
+					required: true
+					
+				 },
+				 Ubicacion: {
+					required: true
+					
+				 },
+
+			  }
+			 
+			
+	
+			  commonValidator = $("#formActividad").validate({
+				 rules,
+				 highlight: function (element) {
+					$(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+				 },
+				 success: function (element) {
+					$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+				 },
+			  });
+			 
+			  formPrograma.addEventListener("submit", (e) => {
+				e.preventDefault()
+				if($("#formActividad").valid()){
+				   setLoading()
+				
+				   clickSave(formPrograma, "{% url 'modalAddenvios' %}")
+				   .then(() => {
+					  $("#addNewModal").modal("hide")
+					  stopLoading()
+					  renderContent(page,limit)
+				   })
+	
+				}
+			 })
+			 
+		   })
+        }
+		function cambiar_comb() {
+    
+			const varia= document.getElementById("Escuela").value;
+			
+			document.getElementById("Modulo").innerHTML=" ";
+			const url= `/capacitacion/comboboxpro/?valor=${varia}&tipo=modulos`;
+			fetch(url)
+		   
+			.then(async(result)=>{
+				resulta = await result.text()
+				document.getElementById("Modulo").innerHTML=resulta;    
+			});
+	
+		} 
+		function cambiar_combtwo() {
+    
+			const varia= document.getElementById("Modulo").value;
+			
+			document.getElementById("estatusLesson").innerHTML=" ";
+			const url= `/capacitacion/comboboxpro/?valor=${varia}&tipo=componente`;
+			fetch(url)
+		   
+			.then(async(result)=>{
+				resulta = await result.text()
+				document.getElementById("estatusLesson").innerHTML=resulta;    
+			});
+	
+		} 
+		const updateModel = (url, method, data, id,tipo) => {
+			return fetch(url, {
+			   ...fetchObject,
+			   body: JSON.stringify({
+				  method,
+				  data,
+				  id,
+				  tipo
+			   })
+			})
+		 }
+		 const clickSave = (formElement, url) => {
+			const formData = new FormData(formElement);
+			const data = {}
+	
+			for (var [key, value] of formData.entries()) {
+			   data[key] = value
+			}
+			if (editmode) {
+			   return updateModel(url, "Update", data, idSeleted,tipos)
+				  .then(async (res) => {
+					 const text = JSON.parse(await res.text())
+					 if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+					 else  makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+	
+				  })
+			}
+			else {
+				return updateModel(url, "Create", data, null,null)
+				   .then(async (res) => {
+					  const text = JSON.parse(await res.text())
+					  if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+					  else  makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+	 
+				   })
+			 }
+			
+		  }
+		  const renderContent = (page,limit)=>{
+			document.querySelector("#wrapp").classList.add("is-loading")
+			fetch("{% url 'RenderPost'%}", {
+			   ...fetchObject,
+			   body: JSON.stringify({
+				  query,
+				  page,
+				  limit
+				  
+			   })
+			})
+			.then(async(res)=>{
+			   result = await res.text()
+			   document.querySelector("#wrapp").classList.remove("is-loading")
+			   document.querySelector("#wrapp").innerHTML = result
+			})
+		 }
+		 renderContent(page,limit)
+		 const openeditpost = (id) => {
+			editmode = true
+			idSeleted=id
+			tipos='edita_hijos'
+			fetch("{% url 'modalAddenvios'%}", {
+			   ...fetchObject,
+			   body: JSON.stringify({
+				method:"Editar",
+				pk:id
+				
+				
+			 })
+				   
+			})
+			   .then(async (res) => {
+				  document.getElementById("addNewModalContent").innerHTML = await res.text()
+			   })
+			   .then(() => {
+				  $("#addNewModal").modal("show")
+				  const formPrograma = document.getElementById("formActividad")
+				  let rules = {
+					descriptionActivity: {
+						required: true
+						
+					 },
+					 urlActivity: {
+						required: true
+						
+					 },
+					 disponibleLesson: {
+						required: true
+						
+					 },
+					 estatusLesson: {
+						required: true
+						
+					 },
+					 Director: {
+						required: true
+						
+					 },
+					 Ubicacion: {
+						required: true
+						
+					 },
+	
+				  }
+				  commonValidator = $("#formActividad").validate({
+					 rules,
+					 highlight: function (element) {
+						$(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+					 },
+					 success: function (element) {
+						$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+					 },
+				  });
+				  const varia= document.getElementById("Escuela").value;
+			      
+				  document.getElementById("Modulo").innerHTML=" ";
+			      const url= `/capacitacion/comboboxpro/?valor=${varia}&tipo=modulos&edita_post=${idSeleted}`;
+			      fetch(url)
+		   
+			     .then(async(result)=>{
+				      resulta = await result.text()
+				        
+			      });
+				 
+				  formPrograma.addEventListener("submit", (e) => {
+					e.preventDefault()
+					if($("#formActividad").valid()){
+					   setLoading()
+					   clickSave(formPrograma, "{% url 'modalAddenvios' %}")
+						  .then(() => {
+							 $("#addNewModal").modal("hide")
+							 stopLoading()
+							 renderContent(page,limit)
+						  })
+		
+					}
+				 })
+				 
+			   })
+		 }
+		 const openDeletegrupos = async (id) =>{
+			const elimino = await alerta(3)
+			if(elimino){
+			   fetch("{% url 'modalAddenvios'%}", {
+				  ...fetchObject,
+				  body: JSON.stringify({
+					 method: "Delete",
+					 id
+				  })
+			   })
+			   .then(async (res) => {
+				  const text = JSON.parse(await res.text())
+				  if (text.message == "error")  makeMessage(4, "{% translate 'Notificacion' %}", "{% translate 'un error ha occurrido y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+		 
+				  else makeMessage(1, "{% translate 'Notificacion' %}", "{% translate 'Archivo eliminado satisfactoriamente' %}", 'fas fa-trash-alt')
+			   })
+			   .then(()=>{
+				renderContent(page,limit)
+			   })
+			}
+		 }	 
+		 const goToTables =  async (Page)  => {
+			const contenedorLista = document.getElementById("renderList")
+			
+			const resultado = await  renderContent(Page,limit)
+			   contenedorLista.innerHTML = resultado
+		 
+		 
+		 }
+		 new Sortable(document.querySelector("#wrapp"), {
+			handle: '.handle',
+			animation: 150,
+			chosenClass: "seleccionado",
+			ghostClass: "fantasma",
+			dragClass: "drag",
+			onEnd: function (evt) {
+			   let arreglo = []
+			   evt.to.children.forEach(element => arreglo.push(element.dataset.move));
+			   move(arreglo)
+			},
+		 });
+		 const move = (data) => {
+
+			setLoading()
+			fetch("{% url 'modalAddenvios'%}", {
+			   ...fetchObject,
+			   body: JSON.stringify({
+				  
+				  method:"sort",
+				  data
+			   })
+			})
+			
+			.then(async (res) => {
+			   const text = JSON.parse(await res.text())
+			   if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+			   else makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro ordenado' %}", "fa fa-check")
+			   renderContent(page,limit) 
+			   stopLoading()
+			})
+		   
+	  
+		 } 
+		 const programar_envio = (datos)=>{
+		   
+			document.querySelector("#renderizado").classList.add("is-loading")
+			fetch("{% url 'programar_post'%}", {
+			   ...fetchObject,
+			   body: JSON.stringify({
+				  query,
+				  padr:datos,
+				  
+			   })
+			})
+			.then(async(res)=>{
+			   result = await res.text()
+			   document.querySelector("#renderizado").classList.remove("is-loading")
+			   document.querySelector("#renderizado").innerHTML = result
+			   let type=document.getElementById("receptor").value
+			   if (type != 'null'){
+				document.querySelector("#sectionDetailed").classList.add("is-loading")
+			    fetch("{% url 'renderTipocombo'%}", {
+			    ...fetchObject,
+			    body: JSON.stringify({
+				  tipo:type,
+				  
+				  
+			   })
+			 })
+			 .then(async(res)=>{
+			   result = await res.text()
+			   document.querySelector("#sectionDetailed").classList.remove("is-loading")
+			   document.querySelector("#sectionDetailed").innerHTML = result
+			 })
+			   }
+			})
+		 }
+		 $(document).on('click', "#programar ", function(e){
+			let checks = document.querySelectorAll('.lista-item')
+            let idDeleteCh={}
+            let indice=0
+            //Cliclo for para obtener los checkbox selecionados
+            checks.forEach((e)=>{
+                
+                   
+                idDeleteCh["clave"+indice]=e.id
+                indice+=1
+                
+				
+            });
+			console.log(idDeleteCh)
+			programar_envio(idDeleteCh)
+			
+		   })
+		 const regresar = ()=>{
+			location.reload()
+		}
+		$(document).on('change', "#receptor ", function(e){
+			//alert($(this).val())
+			//tipo=document.getElementById("receptor").value
+			document.querySelector("#sectionDetailed").classList.add("is-loading")
+			fetch("{% url 'renderTipocombo'%}", {
+			   ...fetchObject,
+			   body: JSON.stringify({
+				  tipo:$(this).val(),
+				  page,
+				  limit
+				  
+				  
+			  })
+			})
+			.then(async(res)=>{
+			   result = await res.text()
+			   document.querySelector("#sectionDetailed").classList.remove("is-loading")
+			   document.querySelector("#sectionDetailed").innerHTML = result
+			})
+		})
+		
+		$(document).on('click', "#selectall ", function(e){
+			
+            
+				if  ($('#selectall:checked')){
+					
+					$('.valor').prop('checked', this.checked)
+					
+					
+					
+				}else {
+					
+					   $('.valor').prop('checked', false) 
+					   
+				}
+			 
+		})
+const renderListavarias = (id)=>{
+	
+	 fetch("{% url 'renderTipocombo'%}", {
+	    ...fetchObject,
+         body: JSON.stringify({
+			tipo: 2,
+            query: "Hijos",
+			pk:id,
+			
+         })
+      })
+         .then(async (res) => {
+            document.getElementById("sectionDetailed").innerHTML = await res.text()
+         })
+         
+ }
+ function cambiar_combs() {
+    
+	const varia= document.getElementById("categoryProgram").value;
+	 renderListavarias(varia)
+	
+	
+} 
+const save_envio = (datos,tipouno,tipodos,tipos)=>{
+		 
+	document.querySelector("#renderizado").classList.add("is-loading")
+	fetch("{% url 'programar_post'%}", {
+	   ...fetchObject,
+	   body: JSON.stringify({
+		  query:"Save",
+		  receptores:datos,
+		  tiempo:tipouno,
+		  reps:tipodos,
+		  tipo:tipos
+	   })
+	})
+	.then(async(res)=>{
+		const text = JSON.parse(await res.text())
+		if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+		else  makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+		document.querySelector("#renderizado").classList.remove("is-loading")
+		location.reload()
+	})
+ }
+$(document).on('click', "#savepost", function(e){
+	
+	const receptor= document.getElementById("receptor").value;
+	const tipo=document.getElementById("Director").value	
+	const record=document.getElementById("idForum").value
+ if (receptor == 'Publico')	{
+
+	let checks = document.querySelectorAll('.valor')
+					let idDeleteCh={}
+					let indice=0
+					//Cliclo for para obtener los checkbox selecionados
+					checks.forEach((e)=>{
+						
+						if (e.checked == true ){
+							
+							idDeleteCh["clave"+indice]=e.value
+							indice+=1
+						}
+						
+					});
+					save_envio(idDeleteCh,tipo,record,'publico')
+				}
+if (receptor == 'Nodos')	{
+	const combo= document.getElementById("categoryProgram").value;
+					
+   save_envio(combo,tipo,record,'nodos')
+}				
+									
+
+})
+       </script>
+{% endblock javascripts %}

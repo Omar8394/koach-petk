@@ -1,0 +1,104 @@
+
+    <thead id="tablaHead">
+        <tr>
+            {% for key, value in keys.items %}
+
+                <th id={{ key }} class={% if key == orden %}descendiente{% endif %}>{{ value }}</th>
+
+            {% endfor %}
+
+            <!-- <th>Action</th> -->
+            <th>Accion</th>
+
+        </tr>
+    </thead>
+    <tbody>  
+        {% for p in plan %}  
+
+            <tr>
+                
+                {% if search and p.idpublico|tostring|matches:search %}
+
+                    <td>{{ p.idpublico }}</td>
+                
+                {% else %}
+
+                    <td>{{p.idpublico}}</td>
+
+                {% endif %}
+                
+                {% if search and p.user.username|tostring|matches:search %}
+
+                    <td>{{ p.nombre|tostring|replaces:search|safe }}</td>
+                
+                {% else %}
+
+                    <td>{{p.nombre}}</td>
+
+                {% endif %}
+
+                
+                
+              
+                
+                {% if search and p.telefono_principal|tostringJson:'telefonoPrincipal'|tostring|matches:search %}
+
+                    <td>{{ p.telefono_principal|tostringJson:'telefonoPrincipal'|tostring|replaces:search|safe }}</td>
+                
+                {% else %}
+
+                    <td>{{p.telefono_principal|tostringJson:'telefonoPrincipal'|tostring}}</td>
+
+                {% endif %}
+                
+                {% if search and p.correo_principal|tostringJson:'emailPrincipal'|tostring|matches:search %}
+
+                    <td>{{ p.correo_principal|tostringJson:'emailPrincipal'|tostring|tostring|replaces:search|safe }}</td>
+                
+                {% else %}
+
+                    <td>{{p.correo_principal|tostringJson:'emailPrincipal'|tostring}}</td>
+
+                {% endif %}
+                
+                {% if search and p.user_id.fk_rol_usuario.desc_elemento|tostring|matches:search %}
+
+                <td>{{ p.user_id.fk_rol_usuario.desc_elemento|tostring|replaces:search|safe }}</td>
+            
+            {% else %}
+
+                <td>{{p.user_id.fk_rol_usuario.desc_elemento}}</td>
+
+            {% endif %}
+                
+                <td>
+
+                    {% if  p.user_id.fk_status_cuenta.valor_elemento|tostring == 'user_active_unverified' or p.user_id.fk_status_cuenta.valor_elemento|tostring == 'user_active' %}
+                                         
+                        <!-- <button onclick="bloquear({{  p.Publico.idpublico }})" class="btn btn-icon btn-sm btn-danger ml-1" title="Loock account"><i class="fas fa-lock"></i></button> -->
+                        <button onclick="bloquear({{  p.idpublico }})" class="btn btn-icon btn-sm btn-danger ml-1" title="Bloquear cuenta"><i class="fas fa-lock"></i></button>
+                    
+                    {% else %}
+
+                        <!-- <button onclick="desbloquear({{  p.Publico.idpublico }})" class="btn btn-icon btn-sm btn-success ml-1" title="Unloock account"><i class="fas fa-lock-open"></i></button> -->
+                        <button onclick="desbloquear({{  p.idpublico }})" class="btn btn-icon btn-sm btn-success ml-1" title="Desbloquear cuenta"><i class="fas fa-lock-open"></i></button>
+
+                    {% endif %}
+
+                    <!-- <button onclick="modalRol({{  p.Publico.idpublico }})" class="btn btn-icon btn-sm btn-primary ml-1" title="Set role"><i class="fas fa-user-tag"></i></button> -->
+                    <button onclick="modalRol({{  p.idpublico }})" class="btn btn-icon btn-sm btn-primary ml-1" title="Cambiar rol"><i class="fas fa-user-tag"></i></button>
+
+                </td>  
+
+            </tr>
+
+        {% empty %}
+
+            <!-- <tr><td colspan="100%"><h2>No matching records found</h2></td></tr>  -->
+            <tr><td colspan="100%"><h2>No se ha encontrado ningun registro</h2></td></tr> 
+
+        {% endfor %} 
+        
+        <tr><td>{{ plan }}</td></tr> 
+
+    </tbody>  

@@ -12,7 +12,7 @@ urlpatterns = [
     # path('', views.index, name='home'),
     path('', views.index, name='capacitacion'),
     path('capacitacion_student', views.indexstudent, name='capacitacion_student'),
-    path('saveunits/', views.indextwo, name='capacitaciontwo'),
+    path('saveunits/<str:velemento>/<str:url>/<int:idActividad>/', views.indextwo, name='capacitaciontwo'),
     path('contenido_programas/', views.getcontentprogrmas, name='contenido_programas'),
     path('contenido_unidades/', views.getcontentunits, name='contenido_unidades'),
     path('contenido_cursos/', views.getcontentcursos, name='contenido_cursos'),
@@ -25,7 +25,7 @@ urlpatterns = [
     path('relation/', views.relation_componente, name='relation'),
     path('update_estrutura/', views.update_estrutura, name='update_estrutura'),
     path('componentsxestructura/', views.getcomponentsxestructura, name='componentsxestructura'),
-    path('createactividades/', views.createactividades, name='createactividades'),
+    path('createactividades/<str:velemento>/<str:url>/<int:idActividad>/', views.createactividades, name='createactividades'),
     path('renderactividades/', views.renderactividades, name='renderactividades'),
     path('modalChooseActivity/', views.getModalChooseActivities, name='modalChooseActivity'),
     path('modalNewLesson/', views.getModalNewLesson, name="modalNewLesson"),
@@ -72,6 +72,14 @@ urlpatterns = [
     path('contenidoTest/', views.contenidoTest, name="contenidoTest"),
     path('viewresult_test/', views.viewresult_test, name="viewresult_test"),
     path('renderrepeats/', views.renderrepeats, name="renderrepeats"),
+    path('getModalinstru/', views.getModalinstru, name="getModalinstru"),
+    path('indexHistory/', views.indexHistory, name="indexHistory"),    
+    path('Renderdetalle/', views.Renderdetalle, name="Renderdetalle"),
+    path('paginarhistory/', views.paginarhistory, name="paginarhistory"),
+    path('getModalPublicar/', views.getModalPublicar, name="getModalPublicar"),
+    path('RenderListapublicar', views.RenderListaspublicar, name="RenderListaspublicar"),
+    path('savetestpublicar', views.savetestpublicar, name="savetestpublicar"),
+    path('Edittestpublicar', views.Edittestpublicar, name="Edittestpublicar"),
     # Scales
     
 

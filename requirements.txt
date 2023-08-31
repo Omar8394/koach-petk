@@ -1,7 +1,9 @@
-django==3.2.6
-mysqlclient==2.1.0
+# django==3.2.6
+# mysqlclient==2.1.0
 Unipath==1.1
 django-ckeditor==6.4.1
 whitenoise==6.1.0
 django-environ==0.8.1 
 Pillow==9.2.0
+
+mod_wsgi

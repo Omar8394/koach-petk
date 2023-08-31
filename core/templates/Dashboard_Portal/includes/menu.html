@@ -18,7 +18,7 @@
                         
                         <!-- no borrar le da un margin-bottom -->
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item mb-2" ><i class="fas fa-door-open mr-1"></i> Actul/Datos</a>
+                        <a class="dropdown-item mb-2" href="{% url 'indexHistory' %}"><i class="fas fa-door-open mr-1"></i>Revisar/Historial</a>
                         <!-- endblock -->
                     </li>
 
@@ -57,10 +57,10 @@
                 <ul class="dropdown-menu mt-2" aria-labelledby="registraseDropdown">
                     <div class="div-caret"></div>
                     <li>
-                        <a class="dropdown-item mt-2" href="#"><i class="fas fa-user-circle mr-1"></i> Matricula </a>
+                        <a class="dropdown-item mt-2" href="{% url 'Registro_enviopost' %}"><i class="fas fa-user-circle mr-1"></i>Administrar envio de mensajes</a>
                         
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item mb-2" href="{% url 'home' %}"><i class="fas fa-door-open mr-1"></i>Otras Opciones </a>
+                        <a class="dropdown-item mb-2" href=""><i class="fas fa-door-open mr-1"></i>Otras Opciones </a>
                     </li>
 
                 </ul>
@@ -93,10 +93,10 @@
                 <ul class="dropdown-menu mt-2" aria-labelledby="capacitacion3Dropdown">
                     <div class="div-caret"></div>
                     <li>
-                        <a class="dropdown-item mt-2" href="#"><i class="fas fa-user-circle mr-1"></i> Entrenamiento</a>
+                        <a class="dropdown-item mt-2" href="{% url 'index_nodos' %}"><i class="fas fa-user-circle mr-1"></i>Administrar Nodos</a>
                         
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#"><i class="fas fa-cog mr-1"></i> Cursos Dinamicos</a>
+                        <a class="dropdown-item" href="{% url 'mapamundi_nodos' %}"><i class="fas fa-cog mr-1"></i>Ver Nodos </a>
                         
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item mb-2" href="{% url 'home' %}"><i class="fas fa-door-open mr-1"></i>Otras Opciones </a>

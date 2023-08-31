@@ -1,0 +1,703 @@
+{% extends "layouts/base.html" %}
+{% load i18n %}
+{% block title %}{% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+	<div class="content">
+		<div class="page-inner">
+			<div class="page-header">
+				<h4 class="page-title">Starter page</h4>
+				<ul class="breadcrumbs">
+					<li class="nav-home">
+						<a href="{% url 'Dashboard' %}">
+							<i class="flaticon-home"></i>
+						</a>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<span>Module name</span>
+					</li>
+					<li class="separator">
+						<i class="flaticon-right-arrow"></i>
+					</li>
+					<li class="nav-item">
+						<a href="#">Page 1</a>
+					</li>
+				</ul>
+			</div>
+			<div class="page-category">
+        		
+                
+                    <div class="form-row d-flex justify-content-center">
+                        <div class="card mt-3" style="width: 80rem;" >
+                            <div class="card-header">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 d-flex justify-content-start">
+                                        <h2>Grupo: {{titulo}}</h2>
+                                    </div>
+                                  
+                                </div> 
+								<div class="dropdown" id="panelBuscar">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        <i class="glyphicon glyphicon-search"></i> Filtrar
+                                       
+                                    </button>
+	                                <div class="dropdown-menu" id="drop1">
+                                        <div class="panel">
+                                            <div class="panel-body">
+                                                <form id="buscar" name="buscar" method="POST" action=".">
+                                                 {% csrf_token %} 
+												 <table style="width:100%">
+													<tr>
+                                                        <td class="p-2">Personas</td>
+                                                        <td></td>
+                                                        <td class="p-2">
+                                                           
+                                                            <input   type="text"  id="PersonId" name="PersonId" value="" >
+                    
+                                                        </td>
+                                                        <td class="p-2">
+                                                         <span class="fas fa-search"></span> 
+                                                        </td>
+                                                        
+                                                    </tr>
+													<tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td class="p-2">
+                                                            
+                                                            <div class="btn-group" role="group">
+                                                                <input type="submit" class="btn btn-primary" value="Filter" >
+                                                                &nbsp;
+                                                                <input type="button" onclick="reload()" class="btn btn-default ml-1" value="Clean">
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+												</table>	
+												</form>
+                                            </div>
+                                        </div>                  
+                                    </div>
+								</div>
+                                <h2>Agregar integrantes</h2>  
+                                <div class="form-row">
+                                        
+                                   
+                                    
+                                    <div class="form-group col-md-6 d-flex justify-content">
+                                        <div class="d-flex ml-3">
+                                    
+                                    
+                                            <a href="#" id="SelectAll" class="btn btn-default"><strong>Inscribir Todos</strong><input type="checkbox" name="tema" data-idchecked="0" id="selectall" class="ml-2"></a>
+                                        
+                                          
+                                        </div>   
+                                     
+                                   
+                                </div>
+								<div class="form-group col-md-6 d-flex justify-content-end">
+									<div class="d-flex ml-3">
+								
+								
+										<a href="{% url 'plan_nodo' grupo=elemento %}" id="plan" class="btn btn-default"><strong>Agregar plan</strong></a>
+									
+									  
+									</div>   
+								 
+							   
+							</div>
+                                </div>                                    
+                            </div>
+                            <div class="card-body" id="tabQuestions">
+                                <div class="form-row text-center">
+                                    <div class="form-group col-md-12">
+                                        <div class="table-responsive">
+                                            <table class="table table-borderless table-striped table-hover text-center table-component-like ">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            N°
+                                                        </th>
+                                                        <th>
+                                                           Nombre 
+                                                        </th>
+                                                        <th>
+                                                          Ubicacion
+                                                        </th>
+                                                        <th>
+                                                          Inscrito
+                                                        </th>
+                                                        <th>
+                                                            Acciones
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody  id="tableContent">
+                                                {% for grupo in matriculasList %}
+                                                <tr>
+													{% if grupo.idpublico|verifi_integrante:gruposi %}
+                                                    <td>
+                                                        {{grupo.idpublico}}
+                                                    </td>
+    
+    
+                                                <td>
+                                                    {{grupo}}
+                                                </td>
+                                                <td>
+                                                    {{grupo.pais}}
+                                                </td>
+                                                <td> <input type="checkbox"  name="tema" data-idchecked="{{grupo.idpublico}}" value="{{grupo.idpublico}}" id="tema" class="valor" {% if grupo.idpublico|verificar_inscripcion %}
+                                                
+                                                
+                                                 checked{% endif %}> </td> 
+                                               
+    
+
+                                                <td>
+                                                    <div class="btn-group" role="group">
+                                                 {% if grupo.idpublico|verificar_inscripcion %}
+                                                 <button onclick="openAdddatos('{{gruposi}}','{{grupo.idpublico}}')" type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip"  data-placement="top" title="Datos Adicionales">
+                                                    <i class="fas fa-edit"></i>
+                                                 </button>
+                                              
+                                            
+                                                 <button onclick="chooseModal('{{gruposi}}','{{grupo.idpublico}}')"   type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Transferir a otro grupo">
+                                                   
+                                                    <i class="fas fa-exchange-alt"></i>
+                                                 </button>
+												 <button onclick="openstatus('{{gruposi}}','{{grupo.idpublico}}')" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Desactivar integrante" >
+                                                   
+                                                    <i class="fas fa-check-circle"></i>
+                                                 </button>
+
+                                                  {% else %}
+                                                  <button onclick="openAdddatos('{{gruposi}}','{{grupo.idpublico}}')" type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip"  data-placement="top" title="Datos Adicionales" disabled>
+                                                    <i class="fas fa-edit"></i>
+                                                 </button>
+                                              
+                                            
+                                                 <button  type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Transferir a otro grupo" disabled>
+                                                   
+                                                    <i class="fas fa-exchange-alt"></i>
+                                                 </button>
+                                                 <button onclick="openstatus('{{gruposi}}','{{grupo.idpublico}}')" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Desactivar integrante" disabled>
+                                                   
+                                                    <i class="fas fa-check-circle"></i>
+                                                 </button>
+
+                                                  {% endif %}
+                                                    </div>
+                                                 </td>
+												 
+												 
+												 {% else %}
+												 {% if not grupo.idpublico|verifis %}
+												 
+												 
+												
+												 <td>
+													{{grupo.idpublico}}
+												</td>
+
+
+											<td>
+												{{grupo}}
+											</td>
+											<td>
+												{{grupo.pais}}
+											</td>
+											<td> <input type="checkbox"  name="tema" data-idchecked="{{grupo.idpublico}}" value="{{grupo.idpublico}}" id="tema" class="valor" {% if grupo.idpublico|verificar_inscripcion %}
+											
+											
+											 checked{% endif %}> </td> 
+										   
+
+
+											<td>
+												<div class="btn-group" role="group">
+											 {% if grupo.idpublico|verificar_inscripcion %}
+											 <button onclick="openAdddatos('{{gruposi}}','{{grupo.idpublico}}')" type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip"  data-placement="top" title="Datos Adicionales">
+												<i class="fas fa-edit"></i>
+											 </button>
+										  
+										
+											 <button  type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Transferir a otro grupo">
+											   
+												<i class="fas fa-exchange-alt"></i>
+											 </button>
+											 <button onclick="openstatus('{{gruposi}}','{{grupo.idpublico}}')" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Desactivar integrante" >
+											   
+												<i class="fas fa-check-circle"></i>
+											 </button>
+
+											  {% else %}
+											  <button onclick="openAdddatos('{{gruposi}}','{{grupo.idpublico}}')" type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip"  data-placement="top" title="Datos Adicionales" disabled>
+												<i class="fas fa-edit"></i>
+											 </button>
+										  
+										
+											 <button  type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Transferir a otro grupo" disabled>
+											   
+												<i class="fas fa-exchange-alt"></i>
+											 </button>
+											 <button onclick="openstatus('{{gruposi}}','{{grupo.idpublico}}')" type="button" class="btn btn-icon btn-sm btn-danger ml-1" data-toggle="tooltip"  data-placement="top" title="Desactivar integrante" disabled>
+											   
+												<i class="fas fa-check-circle"></i>
+											 </button>
+
+											  {% endif %}
+												</div>
+											 </td>
+											 {% endif %}
+											 {% endif %} 
+                                                </tr>
+                                                {% endfor %}
+												 
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+										<div class="card-footer">
+                              
+                               
+        
+											<nav aria-label="Page navigation example">
+												<ul class="pagination justify-content-center">
+												{% if matriculasList.has_previous %}
+													<li class="page-item">
+														<a class="page-link" href="?page=1">&laquo; First</a>
+					
+													</li>
+													<li class="page-item">
+														<a class="page-link" href="?page={{ matriculasList.previous_page_number }}">Previous</a>
+													</li>
+												{% else %}
+													<li class="page-item disabled">
+														<a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+													</li>
+												{% endif %}
+										
+												{% if matriculasList.number|add:'-4' > 1 %}
+													<li class="page-item">
+														<a class="page-link" href="?page={{ matriculasList.number|add:'-5' }}">&hellip;</a>
+													</li>
+												{% endif %}
+										
+												{% for i in matriculasList.paginator.page_range %}
+													{% if matriculasList.number == i %}
+													<li class="page-item active" aria-current="page">
+														<span class="page-link">
+															{{ i }}
+															<span class="sr-only">(current)</span>
+														</span>
+													</li>
+													{% elif i > matriculasList.number|add:'-5' and i < matriculasList.number|add:'5' %}
+													<li class="page-item">
+														<a class="page-link" href="?page={{ i }}">{{ i }}</a>
+													</li>
+													{% endif %}
+												{% endfor %}
+										
+												{% if matriculasList.paginator.num_pages > matriculasList.number|add:'4' %}
+													<li class="page-item">
+													   <a class="page-link" href="?page={{ matriculasList.number|add:'5' }}">&hellip;</a>
+													</li>
+												{% endif %}
+										
+												{% if matriculasList.has_next %}
+													<li class="page-item">
+														<a class="page-link" href="?page={{ matriculasList.next_page_number }}">Next</a>
+													</li>
+													<li class="page-item">
+														<a class="page-link" href="?page={{ matriculasList.paginator.num_pages }}">Last &raquo;</a>
+													</li>
+					
+												{% else %}
+													<li class="page-item disabled">
+														<a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+													</li>
+												{% endif %}
+												</ul>
+											</nav>
+					
+											
+										</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+  
+      		</div>
+		</div>
+	</div>
+    <div class="modal fade" id="addNewModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="addNewModalContent">
+	 
+		</div>
+	 </div>
+     <div class="modal fade" id="addNewModals" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="addNewModalContents">
+	 
+		</div>
+	 </div>
+	 <div class="modal fade" id="addNewModales" tabindex="-1" role="dialog">
+		<div class="modal-dialog  modal-dialog-centered" role="document" id="addNewModalContentes">
+	 
+		</div>
+	 </div>
+{% endblock content %}
+	
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+    let grupo='{{gruposi}}'
+    let editmode = false
+	let query=''
+	const chooseModal = async (id,integrante) => {
+		
+		await opentransfer(id,integrante)
+		let url
+       
+        url = "{% url 'RenderListasnodos'%}"
+        
+		await renderLista(url)
+		 
+	 } 
+	const opentransfer = (id,integrante) => {
+		editmode = false
+        idSeleted=id
+        tipos=integrante
+		return fetch("{% url 'Modaltransfer'%}", {
+		   ...fetchObject,
+		   body: JSON.stringify({
+			method:"Show",
+            grupo_id:grupo,
+            integra:integrante
+			
+		 })
+			   
+		})
+		   .then(async (res) => {
+			  document.getElementById("addNewModalContentes").innerHTML = await res.text()
+		   })
+		   .then(() => {
+			  $("#addNewModales").modal("show")
+			  const formPrograma = document.getElementById("formActividad")
+			  formPrograma.addEventListener("submit", (e) => {
+				e.preventDefault()
+				if($("#formActividad").valid()){
+				   setLoading()
+				   clickSave(formPrograma, "{% url 'Modaltransfer' %}")
+					  .then(() => {
+						 $("#addNewModales").modal("hide")
+						 stopLoading()
+						 location.reload()
+					  })
+	
+				}
+			 })  
+			 
+			 
+			
+			 
+		   })
+	 }	
+	const openstatus = (id,integrante) => {
+		editmode = false
+        idSeleted=id
+        tipos=integrante
+		fetch("{% url 'Modalstatus'%}", {
+		   ...fetchObject,
+		   body: JSON.stringify({
+			method:"Show",
+            grupo_id:grupo,
+            integra:integrante
+			
+		 })
+			   
+		})
+		   .then(async (res) => {
+			  document.getElementById("addNewModalContents").innerHTML = await res.text()
+		   })
+		   .then(() => {
+			  $("#addNewModals").modal("show")
+			  const formPrograma = document.getElementById("formActividad")
+			  let rules = {
+				resumen: {
+					required: true
+					
+				 },
+				 resumendatos: {
+					required: true
+					
+				 },
+				 
+
+			  }
+			  commonValidator = $("#formActividad").validate({
+				 rules,
+				 highlight: function (element) {
+					$(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+				 },
+				 success: function (element) {
+					$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+				 },
+			  });
+			  formPrograma.addEventListener("submit", (e) => {
+				e.preventDefault()
+				if($("#formActividad").valid()){
+				   setLoading()
+				   clickSave(formPrograma, "{% url 'Modalstatus' %}")
+					  .then(() => {
+						 $("#addNewModals").modal("hide")
+						 stopLoading()
+						 location.reload()
+					  })
+	
+				}
+			 })
+			 
+		   })
+	 }
+	const openAdddatos = (id,integrante) => {
+		editmode = false
+        idSeleted=id
+        tipos=integrante
+		fetch("{% url 'ModalAdddatos'%}", {
+		   ...fetchObject,
+		   body: JSON.stringify({
+			method:"Show",
+            grupo_id:grupo,
+            integra:integrante
+			
+		 })
+			   
+		})
+		   .then(async (res) => {
+			  document.getElementById("addNewModalContent").innerHTML = await res.text()
+		   })
+		   .then(() => {
+			  $("#addNewModal").modal("show")
+			  const formPrograma = document.getElementById("formActividad")
+			  let rules = {
+				resumen: {
+					required: true
+					
+				 },
+				 resumendatos: {
+					required: true
+					
+				 },
+				 
+
+			  }
+			  commonValidator = $("#formActividad").validate({
+				 rules,
+				 highlight: function (element) {
+					$(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+				 },
+				 success: function (element) {
+					$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+				 },
+			  });
+			  formPrograma.addEventListener("submit", (e) => {
+				e.preventDefault()
+				if($("#formActividad").valid()){
+				   setLoading()
+				   clickSave(formPrograma, "{% url 'ModalAdddatos' %}")
+					  .then(() => {
+						 $("#addNewModal").modal("hide")
+						 stopLoading()
+						 location.reload()
+					  })
+	
+				}
+			 })
+			 
+		   })
+	 }
+     const updateModel = (url, method, data, id, tipo) => {
+		return fetch(url, {
+		   ...fetchObject,
+		   body: JSON.stringify({
+			  method,
+			  data,
+			  id, 
+              tipo
+			  
+		   })
+		})
+	 }
+	 const clickSave = (formElement, url) => {
+		const formData = new FormData(formElement);
+		const data = {}
+
+		for (var [key, value] of formData.entries()) {
+		   data[key] = value
+		}
+		if (editmode) {
+		   return updateModel(url, "Update", data, idSeleted, tipos)
+			  .then(async (res) => {
+				 const text = JSON.parse(await res.text())
+				 if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+				 else  makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+
+			  })
+		}
+		else {
+		   return updateModel(url, "Create", data, idSeleted, tipos)
+			  .then(async (res) => {
+				 const text = JSON.parse(await res.text())
+				 if (text.message == "error") makeMessage(4, "{% translate 'Error' %}", "{% translate 'Ha ocurrido un error y no se pudo procesar su solicitud' %}", 'fa fa-exclamation-triangle')
+				 else  makeMessage(1, "{% translate 'Muy Bien!' %}", "{% translate 'Registro guardado' %}", "fa fa-check")
+
+			  })
+		}
+	   
+	 }
+	 
+    $('#selectall').click(function(){
+            
+        if  ($('#selectall:checked')){
+            
+            $('.valor').prop('checked', this.checked)
+            let checks = document.querySelectorAll('.valor')
+            let idDeleteCh={}
+            let indice=0
+            //Cliclo for para obtener los checkbox selecionados
+            checks.forEach((e)=>{
+                
+                if (e.checked == true ){
+                    
+                    idDeleteCh["clave"+indice]=e.value
+                    indice+=1
+                }
+				
+            });
+            console.log(idDeleteCh)
+            console.log(indice)
+            enviarcheck(idDeleteCh)
+            
+            
+        }else {
+			
+               $('.valor').prop('checked', false) 
+			   
+        }
+    }) 
+    
+    
+
+function enviarcheck (id){
+    setLoading()
+
+    $.ajax({
+        type: "POST",
+        url: "{% url 'saveintegrantes' %}",
+        data: {
+          
+
+            
+            'padr':JSON.stringify(id),
+            'grupo':grupo,
+            'csrfmiddlewaretoken': '{{ csrf_token }}',
+
+        },
+        dataType: "json",
+        success: function (response) {
+        if(response.status === "OK") { 
+            //alerta(11)
+            location.reload()
+            stopLoading()
+            
+        }
+        
+        },
+        failure: function () {
+            swal("failure");
+        }
+        
+    });
+    
+} 
+const toggle = () => {
+	
+	const toggle = document.getElementById("checkDurationC")	
+	
+	
+	if (toggle.checked){
+		
+		render()
+	}
+	else{
+		document.getElementById("status").innerHTML=''
+	}
+}
+const render = ()=>{
+	document.querySelector("#status").classList.add("is-loading")
+	fetch("{% url 'renderstat'%}", {
+	   ...fetchObject,
+	   body: JSON.stringify({
+		  method:'Show'
+		  
+	   })
+	})
+	.then(async(res)=>{
+	   result = await res.text()
+	   document.querySelector("#status").classList.remove("is-loading")
+	   document.querySelector("#status").innerHTML = result
+	})
+ }
+ const renderLista = (url,id)=>{
+	
+	return fetch(url, {
+	    ...fetchObject,
+         body: JSON.stringify({
+            method: "Show",
+			pk:id,
+         })
+      })
+         .then(async (res) => {
+            document.getElementById("sectionDetailed").innerHTML = await res.text()
+         })
+         
+ }
+ const renderListavarias = (id)=>{
+	
+	 fetch("{% url 'RenderListasnodos'%}", {
+	    ...fetchObject,
+         body: JSON.stringify({
+            method: "Hijos",
+			pk:id,
+			
+         })
+      })
+         .then(async (res) => {
+            document.getElementById("sectionDetailed").innerHTML = await res.text()
+         })
+         
+ }
+ function cambiar_comb() {
+    
+	const varia= document.getElementById("categoryProgram").value;
+	 renderListavarias(varia)
+	
+	//const url= '/professors/micombobox/?valor='+varia;
+	///fetch(url)
+	///.then( function(result) {
+	//	return result.text();
+	////})
+	///.then( function(result){
+	//	document.getElementById("categoriasProcess").innerHTML=result;    
+	//});
+
+} 
+</script>    
+{% endblock javascripts %}

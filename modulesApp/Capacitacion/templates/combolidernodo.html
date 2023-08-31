@@ -1,0 +1,13 @@
+<label  class="col-form-label">grupo</label>
+<select class="form-control" name="categoryProgram" id="categoryProgram"  required >
+    <option value= "null"> selecione una opcion</option>
+    
+    {% for item in grupo %}
+                 
+    <option value={{item.if_gruponodo}} id='grupo' name='{{item.Descripcion}}'>{{item.Descripcion}}</option>
+           
+ {% endfor%}
+    
+    
+      
+ </select>

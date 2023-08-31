@@ -1,0 +1,64 @@
+<div class="form-group col-md-6 d-flex justify-content">
+    <div class="d-flex ml-3">
+
+
+        <a href="#" id="SelectAll" class="btn btn-default"><strong>Inscribir Todos</strong><input type="checkbox" name="tema" data-idchecked="0" id="selectall" class="ml-2"></a>
+    
+      
+    </div>   
+</div>  
+<div class="card-body" id="tabQuestions">
+    <div class="form-row text-center">
+        <div class="form-group col-md-12">
+            <div class="table-responsive">
+                  <table id="optionsta{{id}}" class="table table-sm table-bordered table-striped table-hover table-responsive">
+                    <thead class="form-group col-md-12">
+                        <tr>
+                            <th>
+                                N°
+                            </th>
+                            <th>
+                                Nombre
+                            </th>
+                            
+                        
+                            <th>
+                                Accion
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody  id="table">
+                        {% for item in publico  %}
+                           <tr id="itemPregunta{{pregunta.pk}}" >
+                                                    <td>
+                                                        {{item.idpublico}}
+                                                    </td>
+    
+    
+                                                <td>
+                                                    {{item.nombre}} {{item.apellido}}
+                                                </td>
+                                                <td>
+                                                    <input type="checkbox"  name="tema" data-idchecked="{{item.idpublico}}" value="{{item.idpublico}}" id="tema" class="valor" >
+                                                </td>
+                                               
+    
+                                               
+                                               
+    
+                                                </tr>
+                                               
+                                                {% endfor %}                        
+                    </tbody>
+                </table>
+               
+            </div>
+        </div>  
+    </div>
+</div>    
+       
+   
+    
+    
+   
+

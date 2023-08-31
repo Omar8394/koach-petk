@@ -1647,6 +1647,110 @@
                     "datos_adicional":"",
                     "tipo_dato":0
                   }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":111,
+                  "fields": {
+                    "desc_elemento": "Motivo Desincorporacion",
+                    "fk_tabla_padre": 1,
+                    "tipo_elemento": "1",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Motivo_Desincorpora",
+                    "mostrar_en_combos": 0,
+                    "maneja_lista": 1,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":112,
+                  "fields": {
+                    "desc_elemento": "Cambio de Residencia",
+                    "fk_tabla_padre": 111,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Motivo_Cambio",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":113,
+                  "fields": {
+                    "desc_elemento": "Motivos Personales",
+                    "fk_tabla_padre": 111,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Motivo_Personal",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":114,
+                  "fields": {
+                    "desc_elemento": "Interesado",
+                    "fk_tabla_padre": 107,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Interesado",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":115,
+                  "fields": {
+                    "desc_elemento": "Tipo de transaccion",
+                    "fk_tabla_padre": 1,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Tp_transaccion",
+                    "mostrar_en_combos": 0,
+                    "maneja_lista": 1,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":116,
+                  "fields": {
+                    "desc_elemento": "Cambio de rol",
+                    "fk_tabla_padre": 115,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Cambio_rol",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
+                },
+                {
+                  "model": "App.ConfTablasConfiguracion",
+                  "pk":117,
+                  "fields": {
+                    "desc_elemento": "Cambio Contraseña",
+                    "fk_tabla_padre": 115,
+                    "tipo_elemento": "2",
+                    "permite_cambios": 1,
+                    "valor_elemento": "Cambio_contraseña",
+                    "mostrar_en_combos": 1,
+                    "maneja_lista": 0,
+                    "datos_adicional":"",
+                    "tipo_dato":0
+                  }
                 }
-
 ]

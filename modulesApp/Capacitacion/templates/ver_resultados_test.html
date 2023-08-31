@@ -63,7 +63,7 @@
                                         <div class="center">
                                         <div class="centerB">
                                             {% if test.status_examen == '2' %}
-											<button class="btn btn-success" onclick="retakeTest({{id}})" type="button"  > Retomar Test</button>
+											<button class="btn btn-success" onclick="retakeTest({{id}},'retake')" type="button"  > Retomar Test</button>
 											{% endif %}
                                         </div>
 											
@@ -104,12 +104,11 @@
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 <script>
-    const retakeTest = (id) => {
+    const retakeTest = (id,tipo) => {
            
         
         
-            window.location.href = `{% url 'taketesting' %}?id=${id}
-            `
+            window.location.href = `{% url 'taketesting' %}?id=${id}&method=${tipo}`
         
             
         

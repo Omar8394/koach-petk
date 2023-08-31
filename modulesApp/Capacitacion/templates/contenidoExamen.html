@@ -63,7 +63,7 @@
           &nbsp;
           &nbsp;
           &nbsp;
-          <button type="button" class="btn-radius btn-azul" onclick="renderModaledit({{item.id_evaluacionesBloques}},{{item.fk_ActividadEvaluaciones_id}})" style="display:block;text-align:center;text-decoration:none;color:whitesmoke;">
+          <button type="button"  class="btn-radius btn-azul" onclick="openinstru({{item.id_evaluacionesBloques}})" style="display:block;text-align:center;text-decoration:none;color:whitesmoke;">
              Instrucciones <i class="fas fa-edit ml-1"></i>
           </button>
         
@@ -204,7 +204,11 @@
       		</div>
 		</div>
 	</div>
-
+  <div class="modal fade" id="addNewModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="addNewModalContent">
+	 
+		</div>
+	 </div>
 {% endblock content %}
 	
 <!-- Specific Page JS goes HERE  -->
@@ -411,7 +415,26 @@ count++;
                     }
             
      
-        }         
+        } 
+        const openinstru = (id) =>{
+
+          fetch("{% url 'getModalinstru'%}", {
+             ...fetchObject,
+             body: JSON.stringify({
+                method:"Show",
+                id
+             })
+          })
+             .then(async (res) => {
+                document.getElementById("addNewModalContent").innerHTML = await res.text()
+             })
+             .then(() => {
+                $("#addNewModal").modal("show")
+                
+               
+               
+             })
+       }                 
 </script>
 {% endblock javascripts %}
 

@@ -1,0 +1,102 @@
+<div class="card" id="renderList">
+<div class="form-group col-md-12 d-flex justify-content-end">
+   <div class="d-flex ml-3">
+
+
+      <a  id="programar" class="btn btn-default"><strong>Programar Envios</strong></a>
+   
+     
+   </div>   
+ 
+
+</div>  
+
+{% for item in data %} 
+  
+ 						
+  
+<li class="lista-item" data-move="{{item.id_post}}" id="{{item.id_post}}">
+   <div class="lista-item-inner 
+   
+   ">
+   <div class="card-list-item-icon">
+ 
+      <i class="fas fa-file-contract"></i>
+ 
+   </div>
+      <div class="card-list-item-title">{{item.link_post}}</div>      
+      <div class="card-list-item-actions">
+         <button type="button" class="btn btn-icon btn-sm btn-success ml-1 handle" data-toggle="tooltip"
+         data-placement="top" title="Mover">
+         <i class="fas fa-arrows-alt"></i>
+         </button>
+         <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Editar LINKS"
+         onclick="openeditpost('{{item.id_post}}')">
+         <i class="fas fa-edit"></i>
+         </button>
+         <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Eliminar LINKS"
+         onclick="openDeletegrupos('{{item.id_post}}')">
+         <i class="fas fa-trash"></i>
+         </button>
+         <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Programar envio"
+         onclick="">
+         <i class="fas fa-plus-circle"></i>
+         </button>
+      </div>
+   </div>
+         
+</li>
+  
+  					
+{% endfor %} 
+</ul>
+<div class="card-footer">
+   <nav class="col-6 m-2" aria-label="Page navigation example">
+       <ul class="pagination justify-content-end">
+          {% if data.has_previous %}
+          <li class="page-item">
+             <a class="page-link" onclick="goToTables(1)" href="#">First</a>
+             
+          </li>
+          <li class="page-item">
+             
+             
+             <a class="page-link" href="#" onclick="goToTables('{{ data.previous_page_number }}')"><i class="fas fa-arrow-left"></i></a>
+          </li>
+          {% endif %}
+          
+          {% if data.number|add:'-4' > 1 %}
+          <li class="page-item"><a class="page-link" onclick="goToTables(`{{ data.number|add:'-5' }}`)" href="#">&hellip;</a></li>
+          {% endif %}
+          
+          {% for i in data.paginator.page_range %}
+          {% if data.number == i %}
+          <li class="page-item active" aria-current="page">
+             <span class="page-link">
+                {{ i }}
+                <span class="sr-only">(current)</span>
+             </span>
+          </li>
+          {% elif i > data.number|add:'-5' and i < data.number|add:'5' %} <li class="page-item"><a
+             class="page-link" onclick="goToTables('{{i}}')" href="#">{{ i }}</a></li>
+             {% endif %}
+             {% endfor %}
+             
+             {% if data.paginator.num_pages > data.number|add:'4' %}
+             <li class="page-item"><a class="page-link" onclick="goToTables(`{{ data.number|add:'5' }}`)" href="#">&hellip;</a></li>
+             {% endif %}
+    
+             {% if data.has_next %}
+             <li class="page-item">
+                <a class="page-link" onclick="goToTables('{{ data.next_page_number }}')" href="#"><i class="fas fa-arrow-right"></i></a>
+             </li>
+             <li class="page-item">
+                <a class="page-link" onclick="goToTables('{{ data.paginator.num_pages }}')" href="#">Last</a>
+             </li>
+             
+             {% endif %}
+          </ul>
+       </nav>
+    
+   </div>  
+</div>  

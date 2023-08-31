@@ -3,14 +3,41 @@ from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
 import sys
-from ..App.models import ConfMisfavoritos,ConfSettings,ConfSettings_Atributo,ConfTablasConfiguracion
+from ..App.models import ConfMisfavoritos,ConfSettings,ConfSettings_Atributo,ConfTablasConfiguracion,AppPublico
 from ..Capacitacion.models import EscalasEvaluaciones,EscalasCalificacion
 from django.shortcuts import render
 from django.template.defaulttags import register
 from django.http.response import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+import re
+import datetime
+from ..Security.models import User,Log_Transacciones
+from django.template.loader import render_to_string
+from django.utils.dateparse import parse_datetime
 # Create your views here.
+TITULOPUBLIC = {'idpublico':'#', 'nombre': 'Usuario',  'telefono_principal': 'Telefono Principal', 'correo_principal': 'Email Principal', 'Rol_usuario': 'Rol'}
+@register.filter
+def get_attr(dictionary, key):
+    return(getattr(dictionary, key))
+
+@register.filter
+def get_list(dictionary, key):
+    return dictionary[key-1]
+
+@register.filter
+def replaces(value, key):
+    txt = re.search(key, value, flags = re.IGNORECASE)
+    print(txt)
+    return re.sub(key, '<b style="background-color:#c0ffc8;">%s</b>' %txt[0], value, flags = re.IGNORECASE, count =1)
+
+@register.filter
+def matches(value, key):
+    return re.search(key, value, flags = re.IGNORECASE) != None
+
+@register.filter
+def tostring(value):
+    return str(value)
 @register.filter
 def hasprefer(id):
    lista=[] 
@@ -71,6 +98,13 @@ def jsonrango(datos):
      return data['max']
   else:
       return ""
+@register.filter
+def tostringJson(value, key):
+    try:
+        txt = json.loads(value)
+        return txt[key] if txt[key] else ""
+    except:
+        return ""  
 def mostrarfavoritos(request): 
     context = {}
 
@@ -564,3 +598,178 @@ def componentTabla(request):
             print(context)
         return render(request,'tabla.html', context)
     return
+def managepersons(request):
+    search_query = request.GET.get('search_box', "")
+    program = AppPublico.objects.all()
+    return render(request,"manage_persons.html",{'plan': paginas(request, program), 'keys' : TITULOPUBLIC, 'urlEdit': 'unlockPublic', 'urlRemove': 'lockPublic', 'search':search_query, 'tipo':'Public', 'segment':'settings'}) 
+def paginas(request, obj, range = 5):
+    
+    page = request.GET.get('page', 1) if request.GET else request.POST.get('page', 1)
+    # print(request.GET.get('page') if request.GET.get('page') else "nada get")
+    # print(request.POST.get('page') if request.POST.get('page') else "nada post")
+
+    paginator = Paginator(obj, sys.maxsize if range and range == 'TODOS' else range if range else 5)
+    # paginator = Paginator(obj, sys.maxsize if range and range == 'ALL' else range if range else 5)
+
+    try:
+
+        pages = paginator.page(page)
+        # print(page)
+
+    except PageNotAnInteger:
+        # print("error 1")
+        pages = paginator.page(1)
+
+    except EmptyPage:
+        # print("error 2")
+        pages = paginator.page(paginator.num_pages)
+
+    return pages
+
+def unlockPublic(request):
+    print(request.user.pk)
+    # code = str(Methods.getVerificationLink(request.user.email, 1))
+
+    if request.method == "POST":  
+
+        try:
+
+            id=request.POST.get('id')
+
+            ctauserPu = AppPublico.objects.get(idpublico=id).user_id_id
+            ctauser=User.objects.filter(pk=ctauserPu)
+
+            ctauser.update(fk_status_cuenta_id= ConfTablasConfiguracion.objects.get(valor_elemento='user_active').id_tabla)
+
+            # messages.info(request, 'Public Unlocked Successfully')
+            return JsonResponse({"mensaje" : "exito"})
+
+        except:
+
+            return JsonResponse({"mensaje" : "Error, try again later"})
+def lockPublic(request):
+    print(request.user.pk)
+    if request.method == "POST":  
+
+        try:
+
+            id=request.POST.get('id')
+            ctauserPu = AppPublico.objects.get(idpublico=id).user_id_id
+            ctauser=User.objects.filter(pk=ctauserPu)
+            if str(request.user.pk) != str(id) and ctauser[0].fk_status_cuenta.valor_elemento != 'status_verification':
+                print(request.user.pk)
+                ctauser.update(fk_status_cuenta_id= ConfTablasConfiguracion.objects.get(valor_elemento='user_account_blocked').id_tabla)
+                # messages.info(request, 'Public Locked Successfully')
+                return JsonResponse({"mensaje" : "exito"})
+
+            else:
+
+                return JsonResponse({"mensaje" : "self" if ctauser[0].fk_status_cuenta.valor_elemento != 'status_verification' else 'verification'})
+
+
+        except:
+
+            return JsonResponse({"mensaje" : "Error, try again later"})
+def listaRol(request):
+    
+    if request.method == "POST":  
+
+        id = request.POST.get('id', None)
+        users= AppPublico.objects.get(user_id_id=request.user.pk)
+        if str(users.pk) != str(id):
+
+            publico = AppPublico.objects.get(idpublico=id)
+
+            if publico and publico.nombre:
+
+                extension = AppPublico.objects.get(pk=publico.pk)
+
+                if extension and extension.user_id:
+
+                    roles = ConfTablasConfiguracion.obtenerHijos('Roles')
+                    html = render_to_string('listaRoles.html', {'lista': roles, 'activo': extension.user_id.fk_rol_usuario.desc_elemento})
+                    return JsonResponse({'html': html}) 
+
+                else:
+
+                    return JsonResponse({'html': 'noUser'}) 
+
+            else:
+
+                return JsonResponse({'html': 'noPublic'}) 
+        else:
+
+            return JsonResponse({'html': 'self'}) 
+
+def setRole(request):
+    
+    if request.method == "POST":  
+
+        id = request.POST.get('id', None)
+        rol = request.POST.get('rol', None)
+        publico = AppPublico.objects.get(idpublico=id)
+        cuenta = User.objects.get(pk=publico.pk)
+        cuenta.fk_rol_usuario = ConfTablasConfiguracion.objects.get(id_tabla=rol)
+        cuenta.save()
+        log=Log_Transacciones.objects.create()
+        log.fecha_transaccion=datetime.datetime.now()
+        log.fk_transaccion_id=ConfTablasConfiguracion.objects.get(valor_elemento="Cambio_rol").pk
+        log.fk_Cta_usuario=request.user
+        log.save()
+        return JsonResponse({'html': 'self'}) 
+def paginar(request):
+    
+    public = request.POST.get('id', None)
+    tipo = request.POST.get('tipo', None)
+    filtro = request.POST.get('filtro', None)
+    orden = request.POST.get('orden', None)
+    tipoOrden = request.POST.get('tipoOrden', "")
+    fecha1 = request.POST.get('fecha1', None)
+    fecha2 = request.POST.get('fecha2', None)
+    rango = request.POST.get('rango', None)
+
+    if tipo and tipo == 'Public':
+        
+        plan = AppPublico.objects.all()
+        # extension = ExtensionUsuario.objects.select_related().all()
+        # for ext in extension:
+        #     if ext.CtaUsuario:
+        #         print(ext.Publico.nombre)
+
+   
+
+    if filtro:
+
+        filtro = filtro.strip()
+
+       
+        if tipo and tipo == 'Public':
+            
+            plan = plan.filter(Q(idpublico__icontains=filtro) | Q(user_id__username__icontains=filtro) | Q(user_id__fk_rol_usuario__desc_elemento__icontains=filtro) | Q(correo_principal__icontains=filtro) | Q(telefono_principal__icontains=filtro) | Q(user_id__fk_status_cuenta__desc_elemento__icontains=filtro))
+            
+       
+   
+    if(orden):
+
+        plan = plan.order_by(tipoOrden + orden)
+
+
+
+    # test = Perfil.objects.get(idperfil=55)
+    # print(getattr(test, 'idperfil'))
+    # # print(pagina)
+    
+    
+    if tipo and tipo == 'Public':
+
+        pagina = render_to_string('paginas.html', {'plan': paginas(request, plan, rango)})
+        tabla = render_to_string('contenidoTablaPublic.html', {'plan': paginas(request, plan, rango), 'keys' : TITULOPUBLIC, 'urlEdit': 'unlockPublic', 'urlRemove': 'lockPublic', 'search':filtro, 'orden':orden, 'tipoOrden': tipoOrden, 'tipo': 'Public'})
+
+    
+
+    response = {
+        'paginas': pagina,
+        'contenido' : tabla
+    }
+
+    return JsonResponse(response)                

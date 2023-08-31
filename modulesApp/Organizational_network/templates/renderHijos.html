@@ -1,0 +1,39 @@
+   
+<ul>
+    {% for item in grupos %}  
+    <li class="lista-item-content 
+    deg-info">               
+       <div class="card-list-item-icon">               
+          <i class="fas fa-file-contract"></i>               
+       </div>
+          <div class="card-list-item-title">{{item.Descripcion}}</div>      
+          <div class="card-list-item-actions">
+             <button type="button" id="sortableBtn{{item.if_gruponodo}}"  class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Agregar paginas"
+             onclick="showChilds('{{item.if_gruponodo}}')">
+             <i class="fas fa-eye"></i>
+             </button>
+             <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Agregar paginas"
+             onclick="openAddgruposHijos('{{item.if_gruponodo}}')">
+             <i class="fas fa-plus"></i>
+             </button>
+             <a  class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Agregar integrantes"
+             href="{% url 'Grupos_integrantes' elemento=item.valor_elemento %}">
+             <i class="fas fa-user mr-1"></i>
+             </a>
+             <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Editar Grupos"
+             onclick="openeditgruposHijos('{{item.if_gruponodo}}')">
+             <i class="fas fa-edit"></i>
+             </button>
+             <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Eliminar Grupo"
+             onclick="openDeletegrupos('{{item.if_gruponodo}}')">
+             <i class="fas fa-trash"></i>
+             </button>
+          </div>                  
+         
+         </li>
+      
+         <div   id="hijos{{item.if_gruponodo}}"></div>
+     
+    {% endfor %} 
+  </ul>   
+  

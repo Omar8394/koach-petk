@@ -13,6 +13,7 @@ import os
 from unipath import Path
 from django.contrib.messages import constants as messages
 import environ
+
 from django.utils.translation import gettext_lazy as _
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -166,7 +167,7 @@ INSTALLED_APPS = [
     'modulesApp.Helping',
     'modulesApp.Planning',
     'modulesApp.Payments',
-    'modulesApp.Organizational_network',
+    'modulesApp.Organizational_network',   
 ]
 
 MIDDLEWARE = [

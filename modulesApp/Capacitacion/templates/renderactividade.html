@@ -55,10 +55,24 @@
          </button> 
         
          {% elif activity.valor_elemento == 'Actividad_Test'%}
-         <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Programar sesion "
+         <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="Programar TEST "
          onclick="test('{{activity.id_componenteActividades}}')">
          <i class="fas fa-plus"></i>
+         </button>
+         {% with test=activity.id_componenteActividades|busca_test %}
+         <button type="button" class="btn btn-icon btn-sm btn-info ml-1" data-toggle="tooltip" data-placement="top" title="PUBLICAR TEST"
+         
+         onclick=
+         {% if not test|has_time %}
+         "ModalPublicar('{{activity.id_componenteActividades|busca_test}}','{% url 'savetestpublicar' %}')"
+         {% else %}
+         "EditModalPublicar('{{activity.id_componenteActividades|busca_test}}')"
+         
+         {% endif %}
+         >
+         <i class="fas fa-print"></i>
          </button> 
+         {% endwith %}
          {% endif %}
       </div>
    </div>

@@ -1,0 +1,49 @@
+<form id="Post_envio">
+<div class="form-row">
+    <div class="form-group col-md-6">
+       <label for="tipo_receptor">Tipo receptor</label>
+       <select class="form-control" name="receptor" id="receptor" required>
+        <option value="null" >Seleccione una opcion</option>
+       
+        
+        <option value="Publico" {% if programado.tipo_receptor|jsonspost == "Publico" %}selected{% endif %}>Publico(una persona en especifico)</option>
+        <option value="Nodos" {% if programado.tipo_receptor|jsonspost == "Nodos" %}selected{% endif %}>Nodo</option>
+        
+      
+        </select>
+    </div>
+   
+     <div class="form-group col-md-6">
+        <label for="linkForum">Recordar Cada</label>
+        <select class="form-control" name="Director" id="Director" required>
+            <option value="null" disabled {% if not pro_sesion %}selected{% endif %}>Seleccione una opcion</option>
+            {% for item in frecuencia %}
+            
+            <option value="{{item.pk}}" {% if programado.tipo_recordatorio_id == item.pk %}selected{% endif %}>{{item.desc_elemento}}</option>
+            
+            {% endfor%}
+            </select>
+     </div>
+     <div class="form-group col-md-12">
+      <div id="sectionDetailed">
+
+      </div>
+     </div>
+     <div class="form-group col-md-12">
+       <label for="idForum">Numero de veces</label>
+       <input type="text" class="form-control" name="idForum" id="idForum" placeholder="Ingrese numero de repeticiones"  value="{{ programado.tiempo_recordatorio}}" required>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a onclick="regresar()" class="btn btn-danger" data-dismiss="modal"><i
+          class="fas fa-arrow-left mr-2"></i>REGRESAR</a>
+    <button type="button" id="savepost" class="btn btn-primary">GUARDAR<i class="fas fa-save ml-2"></i></button>
+ </div>
+</form>    
+
+      
+     
+           
+               
+            
+   

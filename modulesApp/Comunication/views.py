@@ -11,15 +11,39 @@ import shutil
 from core import settings
 from django.core.files.storage import FileSystemStorage
 from datetime import datetime
-
-from .models import Boletin_Info
+from django.core.paginator import Paginator
+from .models import Boletin_Info,Entrenamiento_Post,Entrenamiento_Post_Envio_personas,Entrenamiento_Post_Envio
+from ..Capacitacion.models import Estructuraprograma,capacitacion_componentesXestructura,componentesFormacion
+from ..App.models import ConfTablasConfiguracion,AppPublico
 from .forms import BoletinForm
 from django.contrib.auth.decorators import login_required
+from ..Organizational_network.models import nodos_grupos 
+from django.template.defaulttags import register
+
+
 # from rest_framework.decorators import authentication_classes, permission_classes
 
 
 # Create your views here.
+@register.filter
+def jsonspost(datos): 
+   
 
+  if datos==None or datos=="" or datos=={}:
+    return ""
+  tlf=None
+  data = json.loads(datos)
+  print(data['receptores'][0]['Nodos'])
+  
+  if data==None or data=="" or data=={}:
+      return ""
+  if   'receptores' in data :
+     if data['receptores'][0]['Nodos']:
+         return "Nodos"
+     elif data['receptores'][0]['Publico']:
+          return "Publico"
+  else:
+      return ""
 # codigo para crear-actualizar-mostrar boletin-info
 
 
@@ -286,3 +310,213 @@ def emailTest(request):
     send_mail(create_mail("tadifred@gmail.com", "Account Registration Link", "base_email_template_pro.html",
                                         context))
     return HttpResponse("fine")
+def Registro_enviopost(request):
+    
+    context = {}
+    html_template = loader.get_template( 'registroPost.html' )
+    return HttpResponse(html_template.render(context, request))
+def modalAddenvios(request):
+    if request.method == "POST":
+       if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        
+        try:
+            if request.body:    
+                data = json.load(request)
+                
+                print(data)
+                if data['method'] == "Show":
+                    escuela=Estructuraprograma.objects.filter(valor_elemento='Process')
+                    context = {'escuela':escuela}
+                    html_template = (loader.get_template('ModalAddenvio.html'))
+                    return HttpResponse(html_template.render(context, request))
+                elif data['method'] == "Editar":
+                     edita=Entrenamiento_Post.objects.get(pk=data['pk'])
+                     escuela=Estructuraprograma.objects.filter(valor_elemento='Process')
+                     context = {'edita':edita,'escuela':escuela}
+                     html_template = (loader.get_template('ModalAddenvio.html'))
+                     return HttpResponse(html_template.render(context, request))
+                elif data['method'] == "Create":
+                     print(data)
+                     save_post=Entrenamiento_Post.objects.create()
+                     save_post.link_post=data['data']['descriptionActivity']
+                     save_post.fk_escuela_id=data['data']['Escuela']
+                     save_post.fk_modulo_id=data['data']['Modulo']
+                     save_post.fk_topico_id=data['data']['estatusLesson']
+                     save_post.orden=len(Entrenamiento_Post.objects.all()) + 1
+                     save_post.save()
+                     return JsonResponse({"message":"ok"})
+                elif data['method'] == 'Update':
+                     print(data)  
+                     edita_post=Entrenamiento_Post.objects.get(pk=data['id'])
+                     edita_post.link_post=data['data']['descriptionActivity']
+                     edita_post.fk_escuela_id=data['data']['Escuela']
+                     edita_post.fk_modulo_id=data['data']['Modulo']
+                     edita_post.fk_topico_id==data['data']['estatusLesson']                    
+                     edita_post.save()
+                     return JsonResponse({"message":"ok"}) 
+                elif data["method"] == "sort":
+                     print(data)
+                     paginas=Entrenamiento_Post.objects.all()
+                     i = 1
+                     for d in data['data']:
+                         if d != None:
+                            pagina = paginas.get(id_post=d)
+                            pagina.orden = i
+                            i = i + 1
+                            pagina.save()
+                     return JsonResponse({"message":"ok"}, status=200)
+                elif data['method'] == 'Delete':
+                     print(data)  
+                     delete_post=Entrenamiento_Post.objects.get(pk=data['id'])
+                     delete_post.delete()
+                     return JsonResponse({"message":"ok"})  
+        except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)
+def RenderPost(request):
+    if request.method == "POST":
+       if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        
+        try:
+            if request.body:    
+                data = json.load(request)
+                lista=[]
+                if data["query"] == "":
+                   grupos=Entrenamiento_Post.objects.all().order_by('orden')
+                   
+                   paginator = Paginator(grupos, data["limit"])
+                   lista = paginator.get_page(data["page"])
+                   page = data["page"]
+                   limit = data["limit"]      
+                  
+                   context = {"grupos":grupos,"page": page,"limit": limit,'data':lista}
+                   html_template = (loader.get_template('renderPost.html'))
+                   return HttpResponse(html_template.render(context, request)) 
+                           
+        except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)        
+def programar_post(request):
+    if request.method == "POST":
+       if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        
+        try:
+            if request.body:    
+                data = json.load(request)
+                print(data)
+                lista=[]
+                if data["query"] == "":
+                   programar='' 
+                   programado=Entrenamiento_Post_Envio.objects.all() 
+                   if programado.exists():
+                      programar=programado[0] 
+                   frecuencia=ConfTablasConfiguracion.obtenerHijos('Ritmo_Capacitacion')
+                   context = {'frecuencia':frecuencia,'programado':programar}
+                   print(context)
+                   html_template = (loader.get_template('Post_envio.html'))
+                   return HttpResponse(html_template.render(context, request)) 
+                elif data['query'] == "Save":
+                    
+                   programado=Entrenamiento_Post_Envio.objects.all() 
+                   if programado.exists():
+                    programado.delete()
+                    programar=[]
+                    datosjson=""
+                    obj={}
+                    datos = {}
+                    if data['tipo']=='publico':                   
+                       obj["Nodos"]="" 
+                       obj["Publico"]=data['receptores']            
+                    
+                       programar.append(obj or 0)
+                       datos['receptores']=programar
+                       print(data)                  
+                    elif data['tipo'] =='nodos':  
+                       obj["Nodos"]=data['receptores'] 
+                       obj["Publico"]=""            
+                    
+                       programar.append(obj or 0)
+                       datos['receptores']=programar
+                       print(data)
+                    
+                    todos=Entrenamiento_Post.objects.all()
+                    for item in todos:
+                        post=Entrenamiento_Post_Envio.objects.create()
+                        post.fk_post_id=item.id_post
+                        post.tipo_recordatorio_id=data['tiempo']
+                        post.tiempo_recordatorio=data['reps']
+                        post.tipo_receptor=json.dumps(datos)
+                        post.save()
+                    return JsonResponse({"message":"ok"})
+                   else:
+                    programar=[]
+                    datosjson=""
+                    obj={}
+                    datos = {}
+                    if data['tipo']=='publico':                   
+                       obj["Nodos"]="" 
+                       obj["Publico"]=data['receptores']            
+                    
+                       programar.append(obj or 0)
+                       datos['receptores']=programar
+                       print(data)                  
+                    elif data['tipo'] =='nodos':  
+                       obj["Nodos"]=data['receptores'] 
+                       obj["Publico"]=""            
+                    
+                       programar.append(obj or 0)
+                       datos['receptores']=programar
+                       print(data)
+                    
+                    todos=Entrenamiento_Post.objects.all()
+                    for item in todos:
+                        post=Entrenamiento_Post_Envio.objects.create()
+                        post.fk_post_id=item.id_post
+                        post.tipo_recordatorio_id=data['tiempo']
+                        post.tiempo_recordatorio=data['reps']
+                        post.tipo_receptor=json.dumps(datos)
+                        post.save()
+                    return JsonResponse({"message":"ok"})             
+        except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)
+def renderTipocombo(request):
+    if request.method == "POST":
+       if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        
+        try:
+            if request.body:    
+                data = json.load(request)
+                print(data)
+                lista=[]
+                if data["tipo"] == "Publico":
+                   publico=AppPublico.objects.all()
+                   paginator = Paginator(publico, data["limit"])
+                   lista = paginator.get_page(data["page"])
+                   page = data["page"]
+                   limit = data["limit"]
+                   context = {"page": page,"limit": limit,'publico':publico,'data':lista}
+                   html_template = (loader.get_template('Tiporeceptor.html'))
+                   return HttpResponse(html_template.render(context, request)) 
+                elif data["tipo"]== "Nodos" :
+                   grupos=nodos_grupos.objects.filter(fk_grupoNodo_padre_id=None,status_grupo=60)
+                   print(grupos)
+                   context = {'grupo':grupos}
+                   html_template = (loader.get_template('rendercomboreceptor.html'))
+                   return HttpResponse(html_template.render(context, request))           
+                elif data['query'] == "Hijos":
+                    print(data)
+                    grupos=nodos_grupos.objects.filter(fk_grupoNodo_padre_id=data['pk'])
+                    print(grupos)
+                    if grupos.exists():
+                        
+                       context = {'grupo':grupos}
+                    else:
+                       hijo=nodos_grupos.objects.filter(if_gruponodo=data['pk'])
+                       context = {'grupo':hijo,'elegido':hijo[0]}
+                    html_template = (loader.get_template('rendercomboreceptor.html'))
+                    return HttpResponse(html_template.render(context, request))
+               
+        except Exception as e:
+               print(e)
+               return JsonResponse({"message":"error"}, status=500)                   
